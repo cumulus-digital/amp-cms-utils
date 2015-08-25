@@ -28,6 +28,8 @@
 			return;
 		}
 
+		log('Initializing.');
+
 		var page_title = document.title,
 			icon_url,
 			icon_background = 'rgba(0,0,0.5)',
@@ -117,6 +119,7 @@
 
 	$(function() {
 		if ( ! $.smartbanner) {
+			log('Loading SmartBanner library.');
 			$.getScript('https://cdnjs.cloudflare.com/ajax/libs/jquery.smartbanner/1.0.0/jquery.smartbanner.min.js', injectSmartBanner);
 			return;
 		}
