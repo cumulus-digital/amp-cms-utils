@@ -9,7 +9,7 @@
 
 	function log() {
 		if (window._CMLS && window._CMLS.debug && typeof console === 'object' && console.log) {
-			console.log('[TEADS INJECTOR ' + v + ']', [].slice.call(arguments));
+			console.log('[SMART APP BANNER ' + v + ']', [].slice.call(arguments));
 		}
 	}
 
