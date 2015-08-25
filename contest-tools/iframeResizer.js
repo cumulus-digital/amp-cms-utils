@@ -7,7 +7,7 @@
 		}
 		var iframe = $('.entry-content iframe');
 		iframe.iFrameResize({
-			log: true,
+			log: false,
 			checkOrigin: false,
 			heightCalculationMethod: 'max'
 		});
