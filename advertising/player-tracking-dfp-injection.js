@@ -36,45 +36,40 @@
 			return false;
 		},
 
-		getTrackInfo: function getTrackInfo() {
-			return JSON.parse(localStorage.getItem('tdas.controller.' + amp_player_config.station + '.' + amp_player_config.stream_id + '.events.track-meta'));
-		},
-
-		getTrackId: function getTrackId() {
-			var info = this.getTrackInfo();
-			if (info && info.id) {
-				return info.id;
+		getCurrentState: function getCurrentState() {
+			if (localStorage) {
+				return JSON.parse(localStorage.getItem('tdas.controller.' + amp_player_config.station + '.' + amp_player_config.stream_id + '.events.current-state'));
 			}
-			return null;
+			return false;
 		},
 
 		checkCurrent: function checkCurrent() {
-			var current = this.getTrackId();
-			if (this.isChanged(current)) {
-				this.log('Song changed!', current);
-				this.trackIdCache = current;
-				this.setCriteria(this.getTrackInfo());
+			var current = this.getCurrentState();
+			if (current.data && current.data.song && current.data.song.id && this.isChanged(current.data.song.id)) {
+				this.log('Song changed!', current.data.song.id);
+				this.trackIdCache = current.data.song.id;
+				this.setCriteria(current);
 			} else {
-				this.log('Song has not changed.');
+				//this.log('Song has not changed.');
 			}
 			this.setTimer();
 		},
 
 		setCriteria: function setCriteria(meta) {
 			if (window.googletag && googletag.pubadsReady) {
-				if (meta && meta.data && meta.data.data) {
-					meta = meta.data.data;
-					if (meta.artistName) {
-						this.log('Setting Artist', meta.artistName);
-						googletag.pubads().setTargeting('td-player-artist', meta.artistName);
+				if (meta && meta.data && meta.data.song) {
+					meta = meta.data.song;
+					if (meta.artist) {
+						this.log('Setting Artist', meta.artist);
+						googletag.pubads().setTargeting('td-player-artist', meta.artist);
 					}
-					if (meta.collectionName) {
-						this.log('Setting Album', meta.collectionName);
-						googletag.pubads().setTargeting('td-player-album', meta.collectionName);
+					if (meta.album) {
+						this.log('Setting Album', meta.album);
+						googletag.pubads().setTargeting('td-player-album', meta.album);
 					}
-					if (meta.trackName) {
-						this.log('Setting Track', meta.trackName);
-						googletag.pubads().setTargeting('td-player-track', meta.trackName);
+					if (meta.title) {
+						this.log('Setting Track', meta.title);
+						googletag.pubads().setTargeting('td-player-track', meta.title);
 					}
 				}
 			}
@@ -103,6 +98,7 @@
 			window.addEventListener('load', function() {
 				that.log('Caught window load.');
 				setTimeout(function() {
+					that.log('Delayed window load track check firing.');
 					that.checkCurrent();
 				}, 1000);
 			}, false);
