@@ -61,15 +61,15 @@
 				if (meta && meta.data && meta.data.data) {
 					meta = meta.data.data;
 					if (meta.artistName) {
-						log('Setting Artist', meta.artistName);
+						this.log('Setting Artist', meta.artistName);
 						googletag.pubads().setTargeting('td-player-artist', meta.artistName);
 					}
 					if (meta.collectionName) {
-						log('Setting Album', meta.collectionName);
+						this.log('Setting Album', meta.collectionName);
 						googletag.pubads().setTargeting('td-player-album', meta.collectionName);
 					}
 					if (meta.trackName) {
-						log('Setting Track', meta.trackName);
+						this.log('Setting Track', meta.trackName);
 						googletag.pubads().setTargeting('td-player-track', meta.trackName);
 					}
 				}
