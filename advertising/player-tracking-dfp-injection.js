@@ -54,6 +54,8 @@
 				this.log('Song changed!', current);
 				this.trackIdCache = current;
 				this.setCriteria(this.getTrackInfo());
+			} else {
+				this.log('Song has not changed.');
 			}
 			this.setTimer();
 		},
