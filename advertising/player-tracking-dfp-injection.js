@@ -80,6 +80,8 @@
 
 		setTimer: function setTimer() {
 			var that = this;
+			clearTimeout(this.timer);
+			this.timer = null;
 			this.timer = setTimeout(function() {
 				that.checkCurrent();
 			}, this.interval);
@@ -91,9 +93,11 @@
 				return false;
 			}
 
-			// Retrieve current Track ID and set current track criteria
-			this.trackIdCache = this.getTrackId();
-			this.setCriteria(this.getTrackInfo());
+			// Retrieve current track info
+			this.checkCurrent();
+
+			// Explicitly check for track change on window load
+			window.addEventlistener('load', this.checkCurrent());
 
 			// Initialize watch timer
 			this.setTimer();
