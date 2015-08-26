@@ -97,7 +97,7 @@
 			this.checkCurrent();
 
 			// Explicitly check for track change on window load
-			window.addEventlistener('load', this.checkCurrent());
+			window.addEventListener('load', this.checkCurrent());
 
 			// Initialize watch timer
 			this.setTimer();
