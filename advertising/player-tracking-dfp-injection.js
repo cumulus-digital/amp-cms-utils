@@ -84,7 +84,7 @@
 		},
 
 		init: function init() {
-			if ( ! window.amp_player_config && ! window.amp_player_config.station && ! window.amp_player_config.stream_id) {
+			if ( ! window.amp_player_config || ! window.amp_player_config.station || ! window.amp_player_config.stream_id) {
 				log('amp_player_config not available.');
 				return false;
 			}
