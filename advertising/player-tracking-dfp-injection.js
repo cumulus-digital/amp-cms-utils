@@ -13,7 +13,7 @@
 
 		log: function log() {
 			if (window._CMLS && window._CMLS.debug && typeof console === 'object' && console.log) {
-				console.log('[PLAYER WATCH ' + v + ']', [].slice.call(arguments));
+				console.log('[PLAYER WATCH ' + this.v + ']', [].slice.call(arguments));
 			}
 		},
 
