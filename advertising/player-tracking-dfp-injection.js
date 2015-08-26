@@ -89,7 +89,11 @@
 				return false;
 			}
 
+			// Retrieve current Track ID and set current track criteria
 			this.trackIdCache = this.getTrackId();
+			this.setCriteria(this.getTrackInfo());
+
+			// Initialize watch timer
 			this.setTimer();
 			this.initialized = true;
 			this.log('Initialized! Current track ID:', this.trackIdCache);
