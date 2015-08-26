@@ -5,7 +5,7 @@
 (function(window, undefined) {
 	window._CMLS = window._CMLS || {};
 	window._CMLS.embedPlayerWatch = {
-		v: '0.2',
+		v: '0.3',
 		initialized: false,
 		trackIdCache: null,
 		timer: null,
@@ -70,6 +70,10 @@
 					if (meta.title) {
 						this.log('Setting Track', meta.title);
 						googletag.pubads().setTargeting('td-player-track', meta.title);
+					}
+					if (meta.id) {
+						this.log('Setting Song ID', meta.id);
+						googletag.pubads().setTargeting('td-player-id', meta.id);
 					}
 				}
 			}
