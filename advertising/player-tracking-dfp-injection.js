@@ -99,7 +99,7 @@
 			// Explicitly check for track change 1 second after window load
 			var that = this;
 			window.addEventListener('load', function() {
-				this.log('Caught window load.');
+				that.log('Caught window load.');
 				setTimeout(function() {
 					that.checkCurrent();
 				}, 1000);
