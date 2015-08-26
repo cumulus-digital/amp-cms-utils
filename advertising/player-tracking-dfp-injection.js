@@ -5,7 +5,7 @@
 (function(window, undefined) {
 	window._CMLS = window._CMLS || {};
 	window._CMLS.embedPlayerWatch = {
-		v: '0.1',
+		v: '0.2',
 		initialized: false,
 		trackIdCache: null,
 		timer: null,
