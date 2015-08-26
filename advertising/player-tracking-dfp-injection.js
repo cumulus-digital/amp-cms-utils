@@ -96,10 +96,13 @@
 			// Retrieve current track info
 			this.checkCurrent();
 
-			// Explicitly check for track change on window load
+			// Explicitly check for track change 1 second after window load
 			var that = this;
 			window.addEventListener('load', function() {
-				that.checkCurrent();
+				this.log('Caught window load.');
+				setTimeout(function() {
+					that.checkCurrent();
+				}, 1000);
 			}, false);
 
 			// Initialize watch timer
