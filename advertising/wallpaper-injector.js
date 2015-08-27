@@ -163,7 +163,7 @@
 
 	// Reset background to original settings
 	function resetBackground() {
-		if ( ! cache.node) return false;
+		if ( ! cache.node || cache.node.data('cmls-wallpaper-injected') !== 1) return false;
 
 		log('Resetting background to original state.', cache.originalBackgroundStyles);
 
@@ -174,6 +174,9 @@
 		cache.contentNode.css('boxShadow', cache.originalContentStyles.boxShadow);
 
 		$('.takeover-left, .takeover-right, .skyscraper-left, .skyscraper-right').show();
+
+		// Reset background state data
+		cache.node.removeData('cmls-wallpaper-injected');
 	}
 
 	function doClickThrough(e) {
@@ -251,7 +254,7 @@
 		refreshCache();
 
 		// First, reset background
-		resetBackground();
+		if (cache.node.data('cmls-wallpaper-injected') == 1) resetBackground();
 
 		if ( ! checkSpaceForBackground()) {
 			log('No room to display background, skipping request.');
@@ -307,6 +310,9 @@
 			log('Tracking position.', options.trackPosition);
 			monitorScroll();
 		}
+
+		// Store background state
+		cache.node.data('cmls-wallpaper-injected', 1);
 
 	}
 
