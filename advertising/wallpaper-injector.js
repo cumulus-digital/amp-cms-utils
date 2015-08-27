@@ -18,6 +18,9 @@
 		// Node selector for where to determine stick position
 		stickNodeSelector: '.wrapper-header',
 
+		// Node selector for content area
+		contentNodeSelector: '.wrapper-content .grid-container:first',
+
 		// Padding for scroll position check
 		tolerance: 0,
 
@@ -28,12 +31,14 @@
 	// Initial caches
 	var $node = $(settings.nodeSelector),
 		$stickNode = $(settings.stickNodeSelector),
+		$contentNode = $(settings.contentNodeSelector),
 		$window = $(window);
 	var cache = {
 		window: $window,
 		node: $node,
 		nodeOffset: $node.offset(),
 		stickNode: $stickNode,
+		contentNode: $contentNode,
 		originalBackgroundStyles: $node.css([
 			'backgroundImage',
 			'backgroundColor',
@@ -43,7 +48,7 @@
 			'cursor'
 		]),
 		originalContentStyles: {
-			'boxShadow': $node.find('.grid-container:first').css('boxShadow')
+			'boxShadow': $contentNode.css('boxShadow')
 		}
 	};
 
@@ -125,6 +130,13 @@
 		return false;
 	}
 
+	// Check if there's visible space for a background change by
+	// comparing content node's width to insertion node's width
+	function checkSpaceForBackground() {
+		if (cache.contentNode.width() + 100 < cache.node.width()) return true;
+		return false;
+	}
+
 	// Set background fixed
 	function setBackgroundFixed(check) {
 		if ( ! cache.node) return false;
@@ -159,7 +171,7 @@
 
 		clearListeners();
 
-		cache.node.find('.grid-container:first').css('boxShadow', cache.originalContentStyles.boxShadow);
+		cache.contentNode.css('boxShadow', cache.originalContentStyles.boxShadow);
 
 		$('.takeover-left, .takeover-right, .skyscraper-left, .skyscraper-right').show();
 	}
@@ -183,7 +195,7 @@
 		// Remove the skyscrapers
 		$('.takeover-left, .takeover-right, .skyscraper-left, .skyscraper-right').hide();
 
-		cache.node.find('.grid-container:first').css({
+		cache.contentNode.css({
 			cursor: 'default',
 			boxShadow: '0 0 20px rgba(0,0,0,0.3)'
 		});
@@ -202,7 +214,15 @@
 			}
 		}, settings.debounceDelay));
 
-		cache.window.on('resize.' + injectorNamespace, debounce(getStickPosition, 300));
+		cache.window.on('resize.' + injectorNamespace, debounce(function() {
+			// Update Stick Position
+			getStickPosition();
+
+			if ( ! checkSpaceForBackground()) {
+				log('No room to display background, resetting.');
+				resetBackground();
+			}
+		}, 300));
 	}
 
 	// Clear all event listeners in our namespace
@@ -232,6 +252,11 @@
 
 		// First, reset background
 		resetBackground();
+
+		if ( ! checkSpaceForBackground()) {
+			log('No room to display background, skipping request.');
+			return;
+		}
 
 		// Defaults
 		var defaults = {
