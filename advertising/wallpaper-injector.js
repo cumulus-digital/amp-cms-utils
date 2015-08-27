@@ -26,14 +26,15 @@
 	};
 
 	// Initial caches
-	var node = $(settings.nodeSelector);
-	var $window = $(window);
+	var $node = $(settings.nodeSelector),
+		$stickNode = $(settings.stickNodeSelector),
+		$window = $(window);
 	var cache = {
 		window: $window,
-		node: node,
-		nodeOffset: node.offset(),
-		stickNode: $(settings.stickNodeSelector),
-		originalBackgroundStyles: node.css([
+		node: $node,
+		nodeOffset: $node.offset(),
+		stickNode: $stickNode,
+		originalBackgroundStyles: $node.css([
 			'backgroundImage',
 			'backgroundColor',
 			'backgroundAttachment',
@@ -42,7 +43,7 @@
 			'cursor'
 		]),
 		originalContentStyles: {
-			'boxShadow': node.find('.grid-container:first').css('boxShadow')
+			'boxShadow': $node.find('.grid-container:first').css('boxShadow')
 		}
 	};
 
