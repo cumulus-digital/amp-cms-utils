@@ -45,7 +45,7 @@
 
 		checkCurrent: function checkCurrent() {
 			var current = this.getCurrentState();
-			if (current.data && current.data.song && current.data.song.id && this.isChanged(current.data.song.id)) {
+			if (current && current.data && current.data.song && current.data.song.id && this.isChanged(current.data.song.id)) {
 				this.log('Song changed!', current.data.song.id);
 				this.trackIdCache = current.data.song.id;
 				this.setCriteria(current);
