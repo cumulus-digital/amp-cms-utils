@@ -2,7 +2,6 @@
  * Loads AddThis and handles pJAX reinitialization
  */
 (function ($, window, undefined) {
-	window.addthis_config = { 'data_track_addressbar' : false, 'pubid': 'ra-55dc79597bae383e' };
 	function clearAddThis() {
 		window.addthis = null;
 		window._adr = null;
@@ -21,7 +20,7 @@
 	// Do not load on homepage
 	if (window.location.pathname == '/') return;
 	
-	$.getScript('//s7.addthis.com/js/300/addthis_widget.js#async=1')
+	$.getScript('//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-55dc79597bae383e&async=1')
 		.done(function() {
 			addthis.init();
 			addthis.toolbox();
