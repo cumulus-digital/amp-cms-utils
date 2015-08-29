@@ -3,7 +3,7 @@
  */
 (function ($, window, undefined) {
 	window.addthis_config = { 'data_track_addressbar' : false, 'pubid': 'ra-55dc79597bae383e' };
-	if (window.addthis) {
+	function clearAddThis() {
 		window.addthis = null;
 		window._adr = null;
 		window._atc = null;
@@ -16,7 +16,18 @@
 		window.addthis_share.title = window.document.title;
 		$('.addthis-smartlayers,.addthis-toolbox,#_atssh').remove();
 	}
+	if (window.addthis) clearAddThis();
+	
+	// Do not load on homepage
 	if (window.location.pathname == '/') return;
+	
+	// If a click ever brings us to the homepage, get rid of AddThis.
+	$(window).click(function() {
+		setTimeout(function() {
+			if (window.location.pathname == '/') clearAddThis();
+		}, 300);
+	});
+
 	$.getScript('//s7.addthis.com/js/300/addthis_widget.js#async=1')
 		.done(function() {
 			addthis.init();
