@@ -20,11 +20,9 @@
 	// Do not load on homepage
 	if (window.location.pathname == '/') return;
 	
-	$.getScript('//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-55dc79597bae383e&async=1')
-		.done(function() {
-			addthis.init();
-			addthis.toolbox();
-		});
+	var atscr = window.document.createElement('script');
+	atscr.src = '//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-55dc79597bae383e&async=1';
+	window.document.body.appendChild(atscr);
 	window.loadAddThis = function() {
 		addthis.init();
 		addthis.toolbox();
