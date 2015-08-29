@@ -16,6 +16,7 @@
 		window.addthis_share.title = window.document.title;
 		$('.addthis-smartlayers,.addthis-toolbox,#_atssh').remove();
 	}
+	if (window.location.pathname == '/') return;
 	$.getScript('//s7.addthis.com/js/300/addthis_widget.js#async=1')
 		.done(function() {
 			addthis.init();
