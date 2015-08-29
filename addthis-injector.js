@@ -19,6 +19,11 @@
 	
 	// Do not load on homepage
 	if (window.location.pathname == '/') return;
+
+	// For sites with the player, we'll explicitly kill addthis on navigation to the homepage
+	$(window).on('statechange', function() {
+		if (window.location.pathname == '/') clearAddThis();
+	});
 	
 	var atscr = window.document.createElement('script');
 	atscr.src = '//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-55dc79597bae383e&async=1';
