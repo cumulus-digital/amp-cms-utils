@@ -1,6 +1,6 @@
 (function(window, undefined) {
 	
-	var v = 0.3;
+	var v = '0.4';
 
 	// Cookie read/write helpers
 	var cookies = {
@@ -213,11 +213,11 @@
 				var closeButton = frag.getElementById('cmls-sb-close'),
 					linkButton = frag.getElementById('cmls-sb-link');
 
-				closeButton.addEventListener('click', this.close, false);
-				closeButton.addEventListener('touchend', this.close, false);
+				closeButton.addEventListener('click', function(){ this.close(); }, false);
+				closeButton.addEventListener('touchend', function(){ this.close(); }, false);
 
-				linkButton.addEventListener('click', this.close, false);
-				linkButton.addEventListener('touchend', this.close, false);
+				linkButton.addEventListener('click', function(){ this.close(); }, false);
+				linkButton.addEventListener('touchend', function(){ this.close(); }, false);
 
 				return frag.firstChild.firstChild;
 			},
