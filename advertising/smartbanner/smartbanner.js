@@ -134,10 +134,10 @@
 		 * @return {string}       URL to app in store
 		 */
 		function getStoreLink(store, id) {
-			var base = {
-				APPLE: 'https://itunes.apple.com/en/app/id',
-				GOOGLE: 'https://play.google.com/store/apps/details?id='
-			};
+			var base = {};
+				base[APPLE] = 'https://itunes.apple.com/en/app/id';
+				base[GOOGLE] = 'https://play.google.com/store/apps/details?id=';
+			log('Fetching store URL', store, id, base[store]);
 			if (base[store]) return base[store] + id;
 			return undefined;
 		}
