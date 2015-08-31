@@ -39,7 +39,7 @@ html.cmls-sb-injected {
 	display: inline-block;
 	font-size: 22px;
 	font-weight: 300;
-	padding: 10px 0;
+	padding: 8px 0 10px;
 	text-align: center;
 	width: 26px;
 }
@@ -48,7 +48,7 @@ html.cmls-sb-injected {
 	background: #FFF;
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
-	background-size: contain;
+	background-size: 50%;
 	border-radius: 10px;
 	display: inline-block;
 	height: 57px;
