@@ -1,6 +1,20 @@
 (function(window, undefined) {
 	
-	window._CMLS = window._CMLS || {};
+	// Cookie read/write helpers
+	var cookies = {
+		read: function(key) {
+			return(document.cookie.match('(^|; )'+key+'=([^;]*)')||0)[2];
+		},
+		set: function(key, value, exp) {
+			var exdate = new Date();
+			exdate.setDate(exdate.getDate()+exp);
+			value = encodeURI(value) + ( ! exp ?  '' : '; expires=' + exdate.toUTCString() );
+			document.cookie = key + '=' + value + '; path=/';
+		}
+	};
+
+	// Library attaches to corp namespace
+	window._CMLS = window.CMLS || {};
 	window._CMLS.smartBanner = function(options) {
 		var v = 0.1;
 		function log() {
@@ -29,21 +43,26 @@
 				},
 				button: 'View'
 			},
-			force: false,
 			daysToHide: 30
 		};
+		var settings, vendor, banner, bannerTemplate, cache;
 
-		function extend(o1, o2) {
-			var newO = Object.create(o1);
-			Object.keys(o2).map(function(p) {
-				p in newO && (newO[p] = o2[p]);
+		function extend(obj1, obj2) {
+			var newObj = Object.create(obj1);
+			Object.keys(obj2).map(function(p) {
+				if (p in newObj) newObj[p] = obj2[p];
 			});
-			return newO;
+			return newObj;
 		}
-		var settings = extend(defaults, options);
+
+		settings = extend(defaults, options);
 		log('Loaded with settings', settings);
 
-		var bannerTemplate = '' +
+		// Constants
+		var APPLE = 'apple',
+			GOOGLE = 'google';
+
+		bannerTemplate = '' +
 			'<i id="cmls-sb-close">&times;</i>' +
 			'<div id="cmls-sb-icon"></div>' +
 			'<div id="cmls-sb-info">' +
@@ -53,16 +72,9 @@
 			'</div>' +
 			'<a href="#" id="cmls-sb-link">' + settings.strings.button + '</a>';
 
-		// constants
-		var APPLE = 'apple',
-			GOOGLE = 'google',
-			AMAZON = 'amazon';
-
-		// locals
-		var vendor, banner, cache = {
-			htmlPaddingTop: window.document.documentElement.style.paddingTop
-		};
-
+		/**
+		 * Retrieve device type from UA string
+		 */
 		function getDevice() {
 			var ua = typeof userAgent != 'undefined' ? userAgent : navigator.userAgent;
 			// Strip Facebook's crap
@@ -80,10 +92,6 @@
 				{
 					vendor: GOOGLE,
 					regexp: /(?=.*\bAndroid\b)(?=.*\bMobile\b)/i
-				},
-				{
-					vendor: AMAZON,
-					regexp: /(?=.*\bAndroid\b)(?=.*\b(?:SD4930UR|KFOT|KFTT|KFJWI|KFJWA|KFSOWI|KFTHWI|KFTHWA|KFAPWI|KFAPWA|KFARWI|KFASWI|KFSAWI|KFSAWA)\b)/i
 				}
 			];
 			for (var i = 0; i < maps.length; i++) {
@@ -92,9 +100,14 @@
 			return false;
 		}
 
+		/**
+		 * Retrieve app ID from meta tag for a given store
+		 * @param  {string} store         store to look for
+		 * @return {string|undefined}     ID string or undefined
+		 */
 		function getMetaID(store) {
 			var meta, content, id;
-			switch (store) {
+			switch(store) {
 				case APPLE:
 					meta = window.document.querySelector('meta[name="apple-itunes-app"]');
 					break;
@@ -102,91 +115,146 @@
 					meta = window.document.querySelector('meta[name="google-play-app"]');
 					break;
 			}
-			if (meta)
+			if (meta) {
 				content = meta.getAttribute('content');
-				if (content && content.length)
+				if (content && content.length) {
 					id = /app-id([^\s,]+)/i.exec(content);
 					if ( ! id || ! id.length) id = undefined;
-
-			if (id && id.length) return id;
-			return false;
+					return id;
+				}
+			}
+			return undefined;
 		}
 
-		function getStoreLink(store, id) {
-			switch(store) {
-				case APPLE:
-					return 'https://itunes.apple.com/en/app/id' + id;
-				case GOOGLE:
-					return 'http://play.google.com/store/apps/details?id=' + id;
+		/**
+		 * Generates a store URL for a given store and app ID
+		 * @param  {string} store store type
+		 * @param  {string} id    app id
+		 * @return {string}       URL to app in store
+		 */
+		function createStoreLink(store, id) {
+			var base = {
+				APPLE: 'https://itunes.apple.com/en/app/id',
+				GOOGLE: 'https://play.google.com/store/apps/details?id='
+			};
+			if (base[store]) return base[store] + id;
+			return undefined;
+		}
+
+		/**
+		 * Fetch the icon url from settings or touch-icon link tag
+		 */
+		function getIcon() {
+			if (settings.icon.url) return settings.icon.url;
+			var link = window.document.querySelector('link[rel="apple-touch-icon"],link[rel="android-touch-icon"]');
+			if (link) {
+				return link.getAttribute('href');
 			}
 			return null;
 		}
 
-		function readCookie(key) {
-			return(document.cookie.match('(^|; )'+key+'=([^;]*)')||0)[2]
+		/**
+		 * Fetch the app title from settings or doc title
+		 */
+		function getTitle() {
+			if (settings.title) return settings.title;
+			return window.document.title;
 		}
 
-		function setCookie(key, value, exp) {
-			var exdate = new date();
-			exdate.setDate(exdate.getDate()+exp);
-			value = encodeURI(value) + ( ! exp ?  '' : '; expires=' + exdate.toUTCString() );
-			document.cookie=key + '=' + value + '; path=/';
-		}
+		banner = {
+			cache: {
+				htmlPaddingTop: window.document.documentElement.style.paddingTop
+			},
+			template: 
+				'<div id="' + settings.containerId + '">' +
+					'<i id="cmls-sb-close">&times;</i>' +
+					'<div id="cmls-sb-icon"></div>' +
+					'<div id="cmls-sb-info">' +
+						'<div id="cmls-sb-title"></div>' +
+						'<div id="cmls-sb-author"></div>' +
+						'<div id="cmls-sb-instore"></div>' +
+					'</div>' +
+					'<a href="#" id="cmls-sb-link">' + settings.strings.button + '</a>' +
+				'</div>',
+			
+			/**
+			 * Closes the banner and restores document to initial state
+			 */
+			close: function() {
+				this.cache.container.className = this.cache.container.replace('cmls-sb-open', '') + ' cmls-sb-closed';
+				window.document.documentElement.style.paddingTop = this.cache.htmlPaddingTop;
+				//cookies.set('smartbanner-closed', 'true', settings.daysToHide);
+			},
 
-		function closeBanner() {
-			cache.bannerElement.className = cache.bannerElement.replace('cmls-sb-open', '') + ' cmls-sb-closed';
-			window.document.documentElement.style.paddingTop = cache.htmlPaddingTop;
-			//setCookie('smartbanner-closed', 'true', settings.daysToHide);
-		}
+			/**
+			 * Builds and initializes the banner
+			 * @param  {string} vendor   device vendor string
+			 * @return {nodeList}        compiled banner
+			 */
+			init: function init(vendor) {
+				var frag = document.createDocumentFragment(),
+					container = document.createElement('div');
 
-		function injectBanner(banner) {
-			window.document.body.appendChild(banner);
-			cache.bannerElement = window.document.getElementById(settings.containerId);
-			cache.bannerHeight = cache.bannerElement.offsetHeight;
-			log('Discovered banner height', cache.bannerHeight);
-			cache.bannerElement.style.height = 0;
+				container.innerHTML = this.template;
+				frag.appendChild(container);
 
-			window.document.documentElement.className = window.document.documentElement.className + ' cmls-sb-injected';
-			cache.htmlPaddingTop = window.document.documentElement.style.paddingTop;
-			window.document.documentElement.style.paddingTop = cache.bannerHeight;
-			cache.bannerElement.className = cache.bannerElement.className + ' cmls-sb-open';
-		}
+				frag.getElementById('cmls-sb-icon').style.backgroundImage = getIcon();
+				frag.getElementById('cmls-sb-icon').style.backgroundColor = settings.icon.color;
+				frag.getElementById('cmls-sb-title').innerHTML = getTitle();
+				if (settings.author) {
+					frag.getElementById('cmls-sb-author').innerHTML = settings.author;
+				} else {
+					frag.getElementById('cmls-sb-author').parentNode.removeChild(frag.getElementById('cmls-sb-author'));
+				}
+				frag.getElementById('cmls-sb-instore').innerHTML = settings.strings.price[vendor] + ' &ndash; ' + settings.strings.store[vendor];
+				frag.getElementById('cmls-sb-link').href = getStoreLink(vendor);
+
+				var closeButton = frag.getElementById('cmls-sb-close'),
+					linkButton = frag.getElementById('cmls-sb-link');
+
+				closeButton.addEventListener('click', this.close, false);
+				closeButton.addEventListener('touchend', this.close, false);
+
+				linkButton.addEventListener('click', this.close, false);
+				linkButton.addEventListener('touchend', this.close, false);
+
+				return frag.firstChild.firstChild;
+			},
+
+			inject: function(banner) {
+				window.document.body.appendChild(banner);
+				this.cache.container = window.document.getElementById(banner.id);
+				this.cache.containerHeight = this.cache.container.offsetHeight;
+				log('Discovered banner height', this.cache.containerHeight);
+
+				var html = window.document.documentElement;
+				html.className = html.className + ' cmls-sb-injected';
+				this.cache.htmlPaddingTop = html.style.paddingTop;
+				html.style.paddingTop = this.cache.containerHeight;
+
+				this.cache.container.className = this.cache.container.className + ' cmls-sb-open';
+			}
+		};
 
 		vendor = getDevice();
-		log('Detected device', vendor);
+		log('Detected device', vendor ? vendor : 'unsupported');
 
-		// eject if we're not mobile, in an app, or banner was closed
-		if ( ! vendor || navigator.standalone || readCookie('sb-closed') || readCookie('smartbanner-closed') || readCookie('smartbanner-installed')) {
-			log('Not on mobile, ejecting.');
+		if (
+			! vendor ||
+			navigator.standalone ||
+			cookies.read('smartbanner-closed') ||
+			cookies.read('sb-closed') ||
+			cookies.read('smartbanner-installed')
+		) {
+			log('Not supported or closed cookie found, ejecting.');
 			return;
 		}
 
 		log('Generating banner');
+		var bannerNode = banner.init(vendor);
 
-		banner = document.createDocumentFragment();
-		var bannerContainer = document.createElement('div');
-			bannerContainer.id = settings.containerId;
-			bannerContainer.className = vendor == APPLE ? 'cmls-sb-apple' : vendor == GOOGLE ? 'cmls-sb-google' : '';
-			bannerContainer.innerHTML = bannerTemplate;
-		banner.appendChild(bannerContainer);
-
-		banner.getElementById('cmls-sb-icon').style.backgroundImage = settings.icon.url;
-		banner.getElementById('cmls-sb-icon').style.backgroundColor = settings.icon.color;
-		banner.getElementById('cmls-sb-title').innerHTML = settings.title;
-		banner.getElementById('cmls-sb-author').innerHTML = settings.author;
-		banner.getElementById('cmls-sb-instore').innerHTML = settings.strings.price[vendor] + ' &ndash; ' + settings.strings.store[vendor];
-		banner.getElementById('cmls-sb-link').href = getStoreLink(vendor);
-
-		var closeButton = banner.getElementById('cmls-sb-close');
-		closeButton.addEventListener('click', closeBanner, false);
-		closeButton.addEventListener('touchend', closeBanner, false);
-
-		var linkButton = banner.getElementById('cmls-sb-link');
-		linkButton.addEventListener('click', closeBanner, false);
-		linkButton.addEventListener('touchend', closeBanner, false);
-
-		injectBanner(banner.firstChild);
-		log('Injected!');
+		log('Injecting!');
+		banner.inject(bannerNode);
 	};
 
 }(window));
