@@ -132,7 +132,7 @@
 		 * @param  {string} id    app id
 		 * @return {string}       URL to app in store
 		 */
-		function createStoreLink(store, id) {
+		function getStoreLink(store, id) {
 			var base = {
 				APPLE: 'https://itunes.apple.com/en/app/id',
 				GOOGLE: 'https://play.google.com/store/apps/details?id='
