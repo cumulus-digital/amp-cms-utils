@@ -85,7 +85,7 @@
 	function createNiceTitle(title) {
 		var normalizedTitle = title.replace(/(\|\s*)?Cumulus(\|\s*)?/, '').match(/\|\s*([^\|]*)(\|.*)?$/);
 		if (normalizedTitle && normalizedTitle.length) {
-			log('Using normalized title', normalizedTitle);
+			log('Using normalized title', normalizedTitle[1]);
 			return normalizedTitle[1];
 		}
 		return title;
@@ -99,7 +99,7 @@
 	function createIconLinks(logoSelector) {
 		var logoUrl = $(logoSelector).attr('src');
 		if (logoUrl && logoUrl.length) {
-			log('Generating icon link tags');
+			log('Generating icon link tags', logoUrl);
 			return [
 				'<link rel="apple-touch-icon" href="' + logoUrl + '">',
 				'<link rel="android-touch-icon" href="' + logoUrl + '">'
@@ -170,6 +170,9 @@
 		appendToHead(headAppend);
 
 		window._CMLS.smartBanner({
+			icon: {
+				color: iconBackground
+			},
 			title: pageTitle,
 			author: 'Cumulus',
 			button: 'VIEW'
