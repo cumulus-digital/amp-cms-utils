@@ -9,7 +9,7 @@
 		libraryUrl: 'https://rawgit.com/cumulus-digital/amp-cms-utils/master/advertising/smartbanner/smartbanner.js'
 	};
 	
-	var v = '0.8';
+	var v = '0.9';
 
 	function log() {
 		if (window._CMLS && window._CMLS.debug && typeof console === 'object' && console.log) {
