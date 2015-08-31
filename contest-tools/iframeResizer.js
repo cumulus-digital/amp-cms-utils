@@ -9,12 +9,13 @@
 		iframe.iFrameResize({
 			log: false,
 			checkOrigin: false,
-			heightCalculationMethod: 'max'
+			enablePublicMethods: true,
+			heightCalculationMethod: 'taggedElement'
 		});
 	}
 	$(function() {
 		if ( ! $().iFrameResize) {
-			$.getScript('https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/2.8.6/iframeResizer.min.js', resizeIframe);
+			$.getScript('https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.1.1/iframeResizer.min.js', resizeIframe);
 			return;
 		}
 		resizeIframe();
