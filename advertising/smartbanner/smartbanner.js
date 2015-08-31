@@ -198,8 +198,8 @@
 				container.innerHTML = this.template;
 				frag.appendChild(container);
 
-				frag.getElementById('cmls-sb-icon').style.backgroundImage = getIcon();
 				frag.getElementById('cmls-sb-icon').style.backgroundColor = settings.icon.color;
+				frag.getElementById('cmls-sb-icon').style.backgroundImage = 'url("' + getIcon() + '")';
 				frag.getElementById('cmls-sb-title').innerHTML = getTitle();
 				if (settings.author) {
 					frag.getElementById('cmls-sb-author').innerHTML = settings.author;
@@ -230,7 +230,7 @@
 				var html = window.document.documentElement;
 				html.className = html.className + ' cmls-sb-injected';
 				this.cache.htmlPaddingTop = html.style.paddingTop;
-				html.style.paddingTop = this.cache.containerHeight;
+				html.style.paddingTop = this.cache.containerHeight + 'px';
 
 				this.cache.container.className = this.cache.container.className + ' cmls-sb-open';
 			}
