@@ -231,7 +231,7 @@
 				var html = window.document.documentElement;
 				html.className = html.className + ' cmls-sb-injected';
 				this.cache.htmlPaddingTop = html.style.paddingTop;
-				html.style.paddingTop = this.cache.containerHeight + 'px';
+				//html.style.paddingTop = this.cache.containerHeight + 'px';
 
 				this.cache.container.className = this.cache.container.className + ' cmls-sb-open';
 			}
