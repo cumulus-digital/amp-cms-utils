@@ -143,6 +143,7 @@
 			window.document.body.appendChild(banner);
 			cache.bannerElement = window.document.getElementById(settings.containerId);
 			cache.bannerHeight = cache.bannerElement.offsetHeight;
+			log('Discovered banner height', cache.bannerHeight);
 			cache.bannerElement.style.height = 0;
 
 			window.document.documentElement.className = window.document.documentElement.className + ' cmls-sb-injected';

@@ -115,7 +115,10 @@
 	 */
 	function getHeaderBackgroundColor(selector) {
 		var color = $(selector).css('backgroundColor');
-		if (color && color.length) return color;
+		if (color && color.length) {
+			log('Got background color', color);
+			return color;
+		}
 		return 'rgba(0,0,0,0.5)';
 	}
 
