@@ -186,8 +186,7 @@
 	$(function() {
 		if ( ! window._CMLS.smartBanner) {
 			log('Loading SmartBanner library.');
-			$.getScript(settings.libraryUrl, injectSmartBanner);
-			return;
+			$('body').append('<script src="' + settings.libraryUrl + '"></script>');
 		}
 		injectSmartBanner();
 	});
