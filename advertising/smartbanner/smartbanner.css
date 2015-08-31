@@ -1,5 +1,5 @@
 html.cmls-sb-injected {
-	padding-top: 80px;
+	padding-top: 75px;
 	transition: padding-top 0.3s;
 }
 
@@ -46,8 +46,9 @@ html.cmls-sb-injected {
 
 #cmls-sb-icon {
 	background: #FFF;
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
 	background-size: contain;
-	backgrond-position: 50% 50%;
 	border-radius: 10px;
 	display: inline-block;
 	height: 57px;
