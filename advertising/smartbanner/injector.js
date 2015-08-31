@@ -6,7 +6,7 @@
 		logoSelector: 'figure.logo img',
 
 		styleSheetUrl: 'https://cdn.rawgit.com/cumulus-digital/amp-cms-utils/commits/a0b1e63ff6e90594d73b204dd1e01b1f282cc592/advertising/smartbanner/smartbanner.css',
-		libraryUrl: 'https://cdn.rawgit.com/cumulus-digital/amp-cms-utils/a0b1e63ff6e90594d73b204dd1e01b1f282cc592/advertising/smartbanner/injector.js'
+		libraryUrl: 'https://cdn.rawgit.com/cumulus-digital/amp-cms-utils/a0b1e63ff6e90594d73b204dd1e01b1f282cc592/advertising/smartbanner/smartbanner.js'
 	};
 	
 	var v = '0.8';
