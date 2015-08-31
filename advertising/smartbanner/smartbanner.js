@@ -213,11 +213,12 @@
 				var closeButton = frag.getElementById('cmls-sb-close'),
 					linkButton = frag.getElementById('cmls-sb-link');
 
-				closeButton.addEventListener('click', function(){ this.close(); }, false);
-				closeButton.addEventListener('touchend', function(){ this.close(); }, false);
+				var _this = this;
+				closeButton.addEventListener('click', function(){ _this.close(); }, false);
+				closeButton.addEventListener('touchend', function(){ _this.close(); }, false);
 
-				linkButton.addEventListener('click', function(){ this.close(); }, false);
-				linkButton.addEventListener('touchend', function(){ this.close(); }, false);
+				linkButton.addEventListener('click', function(){ _this.close(); }, false);
+				linkButton.addEventListener('touchend', function(){ _this.close(); }, false);
 
 				return frag.firstChild.firstChild;
 			},
