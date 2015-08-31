@@ -182,7 +182,7 @@
 			 * Closes the banner and restores document to initial state
 			 */
 			close: function() {
-				this.cache.container.className = this.cache.container.replace('cmls-sb-open', '') + ' cmls-sb-closed';
+				this.cache.container.className = this.cache.container.className.replace('cmls-sb-open', '') + ' cmls-sb-closed';
 				window.document.documentElement.style.paddingTop = this.cache.htmlPaddingTop;
 				//cookies.set('smartbanner-closed', 'true', settings.daysToHide);
 			},
