@@ -16,7 +16,7 @@
 	// Library attaches to corp namespace
 	window._CMLS = window.CMLS || {};
 	window._CMLS.smartBanner = function(options) {
-		var v = 0.1;
+		var v = 0.2;
 		function log() {
 			if (window._CMLS && window._CMLS.debug && typeof console === 'object' && console.log) {
 				console.log('[SMART APP BANNER ' + v + ']', [].slice.call(arguments));
