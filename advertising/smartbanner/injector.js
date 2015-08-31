@@ -19,7 +19,7 @@
 
 	// Only execute once
 	window._CMLS = window._CMLS || {};
-	if (window._CMLS.smartBannerEnabled2 && window._CMLS.smartBannerEnabled2 === true) {
+	if (window._CMLS.smartBannerEnabled && window._CMLS.smartBannerEnabled === true) {
 		log('Already enabled, skipping.');
 		return;
 	}
