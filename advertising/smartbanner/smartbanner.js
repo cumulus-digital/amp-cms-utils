@@ -199,6 +199,8 @@
 				container.innerHTML = this.template;
 				frag.appendChild(container);
 
+				frag.getElementById(settings.containerId).className = 'cmls-sb-' + vendor;
+
 				frag.getElementById('cmls-sb-icon').style.backgroundColor = settings.icon.color;
 				frag.getElementById('cmls-sb-icon').style.backgroundImage = 'url("' + getIcon() + '")';
 				frag.getElementById('cmls-sb-title').innerHTML = getTitle();
