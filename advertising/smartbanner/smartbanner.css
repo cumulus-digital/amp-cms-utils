@@ -3,12 +3,12 @@ html.cmls-sb-injected {
 	transition: padding-top 0.3s;
 }
 
-.cmls-sb-closed {
-	border: 0;
+#cmls-sb.cmls-sb-closed {
+	border-bottom: 0;
 	max-height: 0;
 	transition: max-height 0.3s;
 }
-.cmls-sb-open {
+#cmls-sb.cmls-sb-open {
 	height: auto;
 	max-height: 100px;
 	transition: max-height 0.3s;
