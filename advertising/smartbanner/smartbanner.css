@@ -15,10 +15,12 @@ html.cmls-sb-injected {
 }
 
 #cmls-sb {
+	-webkit-align-items: center;
 	align-items: center;
 	background: #f2f2f2;
 	border-bottom: 1px solid #bfc0c1;
 	color: #000;
+	display: -webkit-flex;
 	display: flex;
 	font-family: system, -apple-system, ".SFNDisplay-Regular", "Helvetica Neue", "Lucida Grange", sans-serif;
 	left: 0;
@@ -60,6 +62,7 @@ html.cmls-sb-injected {
 	display: inline-block;
 	margin: 8px 0;
 	padding: 5px 7px;
+	-webkit-flex-grow: 1;
 	flex-grow: 1;
 }
 	#cmls-sb-title {
@@ -92,6 +95,7 @@ html.cmls-sb-injected {
 }
 
 	.cmls-sb-google #cmls-sb-close {
+		-webkit-align-self: -webkit-flex-start;
 		align-self: flex-start;
 		background: #eee;
 		border-radius: 100%;
