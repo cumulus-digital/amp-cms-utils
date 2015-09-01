@@ -106,7 +106,7 @@
 		 * @param  {string} store         store to look for
 		 * @return {string|undefined}     ID string or undefined
 		 */
-		function getMetaID(store) {
+		function getMetaId(store) {
 			log('Retrieving app ID for ' + store);
 			var meta, content, id;
 			switch(store) {
