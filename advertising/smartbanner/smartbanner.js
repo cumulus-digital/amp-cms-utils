@@ -107,6 +107,7 @@
 		 * @return {string|undefined}     ID string or undefined
 		 */
 		function getMetaID(store) {
+			log('Retrieving app ID for ' + store);
 			var meta, content, id;
 			switch(store) {
 				case APPLE:
@@ -119,7 +120,7 @@
 			if (meta) {
 				content = meta.getAttribute('content');
 				if (content && content.length) {
-					id = /app-id([^\s,]+)/i.exec(content);
+					id = /app-id=([^\s,]+)/i.exec(content);
 					if ( ! id || ! id.length) id = undefined;
 					return id;
 				}
@@ -210,7 +211,7 @@
 					frag.getElementById('cmls-sb-author').parentNode.removeChild(frag.getElementById('cmls-sb-author'));
 				}
 				frag.getElementById('cmls-sb-instore').innerHTML = settings.strings.price[vendor] + ' &ndash; ' + settings.strings.store[vendor];
-				frag.getElementById('cmls-sb-link').href = getStoreLink(vendor);
+				frag.getElementById('cmls-sb-link').href = getStoreLink(vendor, getMetaId(vendor));
 
 				var closeButton = frag.getElementById('cmls-sb-close'),
 					linkButton = frag.getElementById('cmls-sb-link');
