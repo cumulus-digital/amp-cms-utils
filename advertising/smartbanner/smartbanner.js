@@ -1,6 +1,6 @@
 (function(window, undefined) {
 	
-	var v = '0.4';
+	var v = '0.5';
 
 	// Cookie read/write helpers
 	var cookies = {
