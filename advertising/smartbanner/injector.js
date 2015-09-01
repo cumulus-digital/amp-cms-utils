@@ -2,6 +2,7 @@
 	var v = '0.11',
 		settings = {
 			title: window.document.title,
+			author: 'Cumulus',
 			backgroundColor: 'transparent',
 
 			appWidgetSelector: '.free-apps,.mobile-apps',
@@ -124,7 +125,8 @@
 		 * @return {string}      Background color
 		 */
 		getBackgroundColor: function(node) {
-			var color = node.style.backgroundColor;
+			var color = getComputedStyle(node, null).getPropertyValue('background-color');
+			log('Getting background color', color);
 			if (color) {
 				log('Got background color', color);
 				return color;
@@ -188,6 +190,7 @@
 			setTimeout(injectBanner, 300);
 			return;
 		}
+		log('Injecting', settings);
 		window._CMLS.smartBanner({
 			icon: {
 				color: settings.backgroundColor
@@ -210,7 +213,6 @@
 		log('Initializing.');
 		var injectable = injector.init();
 		if (injectable) {
-			log('Injecting Smart Banner.');
 			injectBanner();
 		}
 	});
