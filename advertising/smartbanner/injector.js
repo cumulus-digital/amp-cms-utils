@@ -1,5 +1,5 @@
 (function(window, undefined) {
-	var v = '0.10',
+	var v = '0.11',
 		settings = {
 			title: window.document.title,
 			backgroundColor: 'transparent',
@@ -9,7 +9,7 @@
 			logoSelector: 'figure.logo img',
 
 			styleSheetUrl: 'https://rawgit.com/cumulus-digital/amp-cms-utils/master/advertising/smartbanner/smartbanner.css',
-			libraryUrl: '' //'https://rawgit.com/cumulus-digital/amp-cms-utils/master/advertising/smartbanner/smartbanner.js'
+			libraryUrl: 'https://rawgit.com/cumulus-digital/amp-cms-utils/master/advertising/smartbanner/smartbanner.js'
 		};
 
 	function log() {
