@@ -169,7 +169,7 @@
 			},
 			template: 
 				'<div id="' + settings.containerId + '">' +
-					'<i id="cmls-sb-close">&times;</i>' +
+					'<i id="cmls-sb-close">&#10761;</i>' +
 					'<div id="cmls-sb-icon"></div>' +
 					'<div id="cmls-sb-info">' +
 						'<div id="cmls-sb-title"></div>' +
