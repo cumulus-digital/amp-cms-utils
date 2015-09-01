@@ -185,7 +185,7 @@
 
 	function injectBanner() {
 		if ( ! window._CMLS.smartBanner) {
-			setTimeout(this, 300);
+			setTimeout(injectBanner, 300);
 			return;
 		}
 		window._CMLS.smartBanner({
@@ -199,7 +199,11 @@
 	}
 
 	var domReady = function(callback) {
-		document.readyState === "interactive" || document.readyState === "complete" ? callback() : document.addEventListener("DOMContentLoaded", callback);
+		if (document.readyState === "interactive" || document.readyState === "complete") {
+			callback();
+		} else {
+			document.addEventListener("DOMContentLoaded", callback);
+		}
 	};
 
 	domReady(function() {
