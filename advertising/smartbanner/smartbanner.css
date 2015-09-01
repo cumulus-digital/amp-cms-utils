@@ -39,7 +39,7 @@ html.cmls-sb-injected {
 	color: #4b4b4b;
 	cursor: pointer;
 	display: inline-block;
-	font-size: 22px;
+	font-size: 18px;
 	font-weight: 300;
 	padding: 8px 0 10px;
 	text-align: center;
@@ -67,8 +67,8 @@ html.cmls-sb-injected {
 }
 	#cmls-sb-title {
 		font-size: 14px;
-		font-weight: 400;
-		margin-bottom: 5px;
+		font-weight: 500;
+		margin-bottom: 2px;
 	}
 	#cmls-sb-author {
 		color: #2a2a2a;
@@ -82,12 +82,12 @@ html.cmls-sb-injected {
 #cmls-sb-link {
 	color: #0079ff;
 	display: inline-block;
-	font-size: 14px;
+	font-size: 18px;
 	font-weight: 400;
 	padding: 20px 0;
 	text-align: center;
 	text-decoration: none;
-	width: 60px;
+	width: 70px;
 }
 
 #cmls-sb.cmls-sb-google {
