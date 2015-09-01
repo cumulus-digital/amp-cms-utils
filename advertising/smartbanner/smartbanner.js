@@ -22,7 +22,7 @@
 	}
 
 	// Library attaches to corp namespace
-	window._CMLS = window.CMLS || {};
+	window._CMLS = window._CMLS || {};
 	window._CMLS.smartBanner = function(options) {
 		options = options || {};
 		var defaults = {
