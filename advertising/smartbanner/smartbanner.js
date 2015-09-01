@@ -122,7 +122,7 @@
 				if (content && content.length) {
 					id = /app-id=([^\s,]+)/i.exec(content);
 					if ( ! id || ! id.length) id = undefined;
-					return id;
+					return id[1];
 				}
 			}
 			return undefined;
