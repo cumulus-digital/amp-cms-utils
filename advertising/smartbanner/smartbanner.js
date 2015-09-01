@@ -184,7 +184,7 @@
 			 */
 			close: function() {
 				this.cache.container.className = this.cache.container.className.replace('cmls-sb-open', '') + ' cmls-sb-closed';
-				window.document.documentElement.style.paddingTop = this.cache.htmlPaddingTop;
+				window.document.documentElement.className = window.document.documentElement.className.replace('cmls-sb-injected', '');
 				//cookies.set('smartbanner-closed', 'true', settings.daysToHide);
 			},
 
