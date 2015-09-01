@@ -183,7 +183,7 @@
 			 * Closes the banner and restores document to initial state
 			 */
 			close: function() {
-				if (ga) {
+				if (typeof ga !== 'undefined') {
 					ga('send', 'event', 'Smart App Banner', 'Closed Banner');
 				}
 				this.cache.container.className = this.cache.container.className.replace('cmls-sb-open', '') + ' cmls-sb-closed';
@@ -192,7 +192,7 @@
 			},
 
 			launchStore: function(vendor, e) {
-				if (ga) {
+				if (typeof ga !== 'undefined') {
 					ga('send', 'event', 'Smart App Banner', 'Launched Store', vendor, {'hitCallback': function() {
 						window.document.location = e.target.href;
 					}});
