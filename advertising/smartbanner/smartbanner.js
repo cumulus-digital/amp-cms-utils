@@ -183,9 +183,22 @@
 			 * Closes the banner and restores document to initial state
 			 */
 			close: function() {
+				if (ga) {
+					ga('send', 'event', 'Smart App Banner', 'Closed Banner');
+				}
 				this.cache.container.className = this.cache.container.className.replace('cmls-sb-open', '') + ' cmls-sb-closed';
 				window.document.documentElement.className = window.document.documentElement.className.replace('cmls-sb-injected', '');
-				//cookies.set('smartbanner-closed', 'true', settings.daysToHide);
+				cookies.set('smartbanner-closed', 'true', settings.daysToHide);
+			},
+
+			launchStore: function(vendor, e) {
+				if (ga) {
+					ga('send', 'event', 'Smart App Banner', 'Launched Store', vendor, {'hitCallback': function() {
+						window.document.location = e.target.href;
+					}});
+					return;
+				}
+				window.document.location = e.target.href;
 			},
 
 			/**
@@ -220,8 +233,8 @@
 				closeButton.addEventListener('click', function(){ _this.close(); }, false);
 				closeButton.addEventListener('touchend', function(){ _this.close(); }, false);
 
-				linkButton.addEventListener('click', function(){ _this.close(); }, false);
-				linkButton.addEventListener('touchend', function(){ _this.close(); }, false);
+				linkButton.addEventListener('click', function(e){ _this.launchStore(vendor, e); }, false);
+				linkButton.addEventListener('touchend', function(e){ _this.launchStore(vendor, e); }, false);
 
 				return frag.firstChild.firstChild;
 			},
