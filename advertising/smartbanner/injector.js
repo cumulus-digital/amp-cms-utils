@@ -1,15 +1,16 @@
-(function($, window, undefined) {
+(function(window, undefined) {
+	var v = '0.10',
+		settings = {
+			title: window.document.title,
+			backgroundColor: 'transparent',
 
-	var settings = {
-		appWidgetSelector: '.free-apps,.mobile-apps',
-		headerSelector: '.wrapper-header',
-		logoSelector: 'figure.logo img',
+			appWidgetSelector: '.free-apps,.mobile-apps',
+			headerSelector: '.wrapper-header',
+			logoSelector: 'figure.logo img',
 
-		styleSheetUrl: 'https://rawgit.com/cumulus-digital/amp-cms-utils/master/advertising/smartbanner/smartbanner.css',
-		libraryUrl: 'https://rawgit.com/cumulus-digital/amp-cms-utils/master/advertising/smartbanner/smartbanner.js'
-	};
-	
-	var v = '0.9';
+			styleSheetUrl: 'https://rawgit.com/cumulus-digital/amp-cms-utils/master/advertising/smartbanner/smartbanner.css',
+			libraryUrl: '' //'https://rawgit.com/cumulus-digital/amp-cms-utils/master/advertising/smartbanner/smartbanner.js'
+		};
 
 	function log() {
 		if (window._CMLS && window._CMLS.debug && typeof console === 'object' && console.log) {
@@ -17,178 +18,199 @@
 		}
 	}
 
-	// Only execute once
+	// Only inject once
 	window._CMLS = window._CMLS || {};
-	if (window._CMLS.smartBannerEnabled && window._CMLS.smartBannerEnabled === true) {
+	if (window._CMLS.smartBannerEnabled) {
 		log('Already enabled, skipping.');
 		return;
 	}
 
-	/**
-	 * Locates and returns app store IDs from supplied app widget object
-	 * @param  {object} appWidget jQuery object for app widget
-	 * @return {object}           discovered IDs for ios and android
-	 */
-	function getAppIds(appWidget) {
-		var returnLinks = {};
-		var links = {
-			ios: appWidget.find('a[href*="itunes.apple.com/us/app"]:first'),
-			android: appWidget.find('a[href*="play.google.com/store"]:first')
-		};
-		if (links.ios && links.ios.length > 0) {
-			var iOSId = links.ios.attr('href').match(/id(\d+)/i);
-			if (iOSId && iOSId.length) {
-				returnLinks.ios = iOSId[1];
+	var injector = {
+
+		/**
+		 * Fetch app IDs from supplied app widget node
+		 * @param  {NodeList}     appWidget  Node to search within
+		 * @return {object|null}             IDs discovered
+		 */
+		getAppIds: function(appWidget) {
+			var ids = {};
+			var links = {
+				apple: appWidget.querySelector('a[href*="itunes.apple.com/us/app"]'),
+				google: appWidget.querySelector('a[href*="play.google.com/store/apps"]')
+			};
+			if (links.apple) {
+				var appleId = links.apple.getAttribute('href').match(/id(\d+)/i);
+				if (appleId && appleId.length) ids.apple = appleId[1];
 			}
-		}
-		if (links.android && links.android.length) {
-			var androidId = links.android.attr('href').match(/id=([0-9a-zA-Z\.]+)/i);
-			if (androidId && androidId.length) {
-				returnLinks.android = androidId[1];
+			if (links.google) {
+				var googleId = links.google.getAttribute('href').match(/id=([0-9A-Za-z\.]+)/i);
+				if (googleId && googleId.length) ids.google = googleId[1];
 			}
-		}
-		return returnLinks;
-	}
+			if (links.apple || links.google) {
+				log('Discovered app IDs', ids);
+				return ids;
+			}
+			return null;
+		},
 
-	/**
-	 * Generated meta tag strings from supplied app ID object
-	 * @param  {object} appIds android and ios app ID strings
-	 * @return {array}         array of meta tag strings
-	 */
-	function createMetaTags(appIds) {
-		log('Generating meta tags');
-		var metaTags = [];
-		function toArray(obj) {
-			return obj === null ? [] : (Array.isArray(obj) ? obj : [obj]);
-		}
-		function generateiOSMeta(id) {
-			return '<meta name="apple-itunes-app" content="app-id=' + id + '">';
-		}
-		function generateAndroidMeta(id) {
-			return '<meta name="google-play-app" content="app-id=' + id + '">';
-		}
-		if (appIds.ios) {
-			metaTags = metaTags.concat(toArray(appIds.ios).map(generateiOSMeta));
-		}
-		if (appIds.android) {
-			metaTags = metaTags.concat(toArray(appIds.android).map(generateAndroidMeta));
-		}
-		return metaTags;
-	}
+		/**
+		 * Generate meta tags from supplied app ID object
+		 * @param  {Object}     ids  apple and google ID strings
+		 * @return {Array|null}      array of meta tag elements
+		 */
+		createMetaTags: function(ids) {
+			log('Generating meta tags');
+			var tags = [];
+			var names = {
+				apple: 'apple-itunes-app',
+				google: 'google-play-app'
+			};
+			var meta;
+			for(var i in ids) {
+				if (names[i]) {
+					meta = window.document.createElement('meta');
+					meta.setAttribute('name', names[i]);
+					meta.setAttribute('content', 'app-id=' + ids[i]);
+					tags.push(meta);
+				}
+			}
+			if (tags.length) {
+				log('Generated meta tags', tags);
+				return tags;
+			}
+			return null;
+		},
 
-	/**
-	 * Attempts to craft a nice looking title from the supplied page title,
-	 * stripping extraneous bits.
-	 * @param  {string} title original page title
-	 * @return {string}       normalized title
-	 */
-	function createNiceTitle(title) {
-		var normalizedTitle = title.replace(/(\|\s*)?Cumulus(\|\s*)?/, '').match(/\|\s*([^\|]*)(\|.*)?$/);
-		if (normalizedTitle && normalizedTitle.length) {
-			log('Using normalized title', normalizedTitle[1]);
-			return normalizedTitle[1];
+		/**
+		 * Generate a sane title from supplied string
+		 * @param  {string} title original title
+		 * @return {string}       sane title
+		 */
+		createNiceTitle: function(title) {
+			var normalizedTitle = title.replace(/(\|\s*)?Cumulus(\|\s*)?/, '').match(/\|\s*([^\|]*)(\|.*)?$/);
+			if (normalizedTitle && normalizedTitle.length) {
+				log('Using nice title', normalizedTitle[1]);
+				return normalizedTitle[1];
+			}
+			return title;
+		},
+
+		/**
+		 * Generate app icon links from a supplied image
+		 * @param  {Image}      logo image to use
+		 * @return {array|null}      link elements
+		 */
+		createIconLinks: function(logo) {
+			if ( ! logo) return null;
+			var src = logo.getAttribute('src');
+			if (src) {
+				log('Generating link tags with logo image url', src);
+				var appleLink = window.document.createElement('link');
+					appleLink.setAttribute('rel', 'apple-touch-icon');
+					appleLink.setAttribute('href', src);
+				var googleLink = window.document.createElement('link');
+					appleLink.setAttribute('rel', 'android-touch-icon');
+					appleLink.setAttribute('href', src);
+				return [
+					appleLink, googleLink
+				];
+			}
+			return null;
+		},
+
+		/**
+		 * Attempts to get the background color of a supplied node
+		 * @param  {Object} node
+		 * @return {string}      Background color
+		 */
+		getBackgroundColor: function(node) {
+			var color = node.style.backgroundColor;
+			if (color) {
+				log('Got background color', color);
+				return color;
+			}
+			return 'transparent';
+		},
+
+		appendToHead: function(arr) {
+			log('Injecting support nodes into head.', arr);
+			var head = window.document.querySelector('head');
+			for(var i = 0; i < arr.length; i++) {
+				head.appendChild(arr[i]);
+			}
+		},
+
+		init: function() {
+			var appWidget = window.document.querySelector(settings.appWidgetSelector);
+			if ( ! appWidget) {
+				log ('No app widget found, ejecting.');
+				return false;
+			}
+
+			var headAppend = [],
+				title = this.createNiceTitle(window.document.title),
+				logo = window.document.querySelector(settings.logoSelector),
+				background = this.getBackgroundColor(window.document.querySelector(settings.headerSelector));
+
+			var metaTags = this.createMetaTags(this.getAppIds(appWidget));
+			if ( ! metaTags || ! metaTags.length) {
+				log('No app IDs found, ejecting.');
+				return false;
+			}
+			headAppend = headAppend.concat(metaTags);
+
+			var iconLinks = this.createIconLinks(logo);
+			headAppend = headAppend.concat(iconLinks);
+
+			var styles = window.document.createElement('link');
+				styles.setAttribute('rel', 'stylesheet');
+				styles.setAttribute('href', settings.styleSheetUrl);
+			headAppend.push(styles);
+
+			if ( ! window._CMLS.smartBanner) {
+				var library = window.document.createElement('script');
+					library.src = settings.libraryUrl;
+				headAppend.push(library);
+			}
+
+			this.appendToHead(headAppend);
+
+			settings.title = title;
+			settings.backgroundColor = background;
+
+			return true;
 		}
-		return title;
-	}
 
-	/**
-	 * Generates app icon link strings from the site logo
-	 * @param  {string} logoSelector CSS selector for site logo
-	 * @return {array|null}	         array of link strings or null if no logo is found
-	 */
-	function createIconLinks(logoSelector) {
-		var logoUrl = $(logoSelector).attr('src');
-		if (logoUrl && logoUrl.length) {
-			log('Generating icon link tags', logoUrl);
-			return [
-				'<link rel="apple-touch-icon" href="' + logoUrl + '">',
-				'<link rel="android-touch-icon" href="' + logoUrl + '">'
-			];
-		}
-		return null;
-	}
+	};
 
-	/**
-	 * Attempts to get the background color of the site masthead
-	 * @param  {string} selector CSS selector for site masthead
-	 * @return {string}          CSS color value
-	 */
-	function getHeaderBackgroundColor(selector) {
-		var color = $(selector).css('backgroundColor');
-		if (color && color.length) {
-			log('Got background color', color);
-			return color;
-		}
-		return 'rgba(0,0,0,0.5)';
-	}
-
-	/**
-	 * Appends a supplied array or string to the doc head
-	 * @param  {object|array|string} arr   elements to append
-	 */
-	function appendToHead(arr) {
-		$('head').append(arr);
-	}
-
-	function injectSmartBanner() {
+	function injectBanner() {
 		if ( ! window._CMLS.smartBanner) {
-			setTimeout(injectSmartBanner, 300);
+			setTimeout(this, 300);
 			return;
 		}
-
-		var appWidget = $(settings.appWidgetSelector);
-		if ( ! appWidget || appWidget.length < 1) {
-			log('No app widget found, aborting.');
-			return;
-		}
-
-		log('Injecting');
-
-		var pageTitle = document.title,
-			iconUrl,
-			iconBackground = getHeaderBackgroundColor(settings.headerSelector),
-			gotLinks = false,
-			headAppend = [];
-
-		var metaTags = createMetaTags(getAppIds(appWidget));
-		if ( ! metaTags || ! metaTags.length) {
-			log('No app IDs found, aborting.');
-		}
-		headAppend = headAppend.concat(metaTags);
-
-		if ( ! $('head link[rel="apple-touch-icon"]').length) {
-			headAppend = headAppend.concat(createIconLinks(settings.logoSelector));
-		}
-
-		pageTitle = createNiceTitle(pageTitle);
-
-		// Add styles
-		headAppend.push(
-			'<link rel="stylesheet" href="' + settings.styleSheetUrl + '" type="text/css">'
-		);
-
-		appendToHead(headAppend);
-
 		window._CMLS.smartBanner({
 			icon: {
-				color: iconBackground
+				color: settings.backgroundColor
 			},
-			title: pageTitle,
-			author: 'Cumulus',
-			button: 'VIEW'
+			title: settings.title,
+			author: settings.author,
+			button: 'View'
 		});
-
-		log('Injected');
-		window._CMLS.smartBannerEnabled = true;
-
 	}
 
-	$(function() {
-		if ( ! window._CMLS.smartBanner) {
-			log('Loading SmartBanner library.');
-			$('body').append('<script src="' + settings.libraryUrl + '"></script>');
+	var domReady = function(callback) {
+		document.readyState === "interactive" || document.readyState === "complete" ? callback() : document.addEventListener("DOMContentLoaded", callback);
+	};
+
+	domReady(function() {
+		log('Initializing.');
+		var injectable = injector.init();
+		if (injectable) {
+			log('Injecting Smart Banner.');
+			injectBanner();
 		}
-		injectSmartBanner();
 	});
 
-}(jQuery, window));
+	log('Loaded.');
+
+}(window));
