@@ -158,12 +158,13 @@
 
 			var currentlyInjected = cache.node.data('cmls-wallpaper-injected');
 
-			if (currentlyInjected == 1) {
+			if (currentlyInjected) {
+				log('Background currently has an injected wallpaper, removing');
 				wp.doBgTransition(cache.originalBackgroundStyles, function() {
 					cache.node.removeData('cmls-wallpaper-injected');
+					cache.node.css('transition', 'none');
 					cache.node.css(cache.originalBackgroundStyles);
 					cache.contentNode.css(cache.originalContentStyles);
-					cache.node.css('transition', 'none');
 					cache.injectedWallpaperStyles = {};
 					if (callback) callback();
 				});
@@ -281,6 +282,7 @@
 			}
 
 			cache.injectedWallpaperStyles = {
+				backgroundAttachment: s.backgroundAttachment,
 				backgroundImage: s.backgroundImage,
 				backgroundRepeat: s.backgroundRepeat,
 				backgroundPosition: s.backgroundPosition
@@ -302,7 +304,7 @@
 				clearTimeout(wp.transitionTimer);
 				cache.node.css(
 					'backgroundPosition',
-					wp.generateBgPositions('-' + wp.getBgImageSize().height)
+					wp.generateBgPositions('-' + (wp.getBgImageSize().height + cache.stickNode.height()))
 				);
 				if (options.backgroundColor)
 					wp.setBgColor(options.backgroundColor);
@@ -330,10 +332,6 @@
 		setBgFixed: function() {
 			if (cache.node.css('backgroundAttachment') == 'fixed') return;
 			log('Setting background fixed.');
-			cache.injectedWallpaperStyles = cache.node.css([
-				'backgroundAttachment',
-				'backgroundPosition'
-			]);
 			cache.node.css({
 				backgroundAttachment: 'fixed',
 				backgroundPosition: wp.generateBgPositions(cache.stickPosition)
@@ -346,7 +344,7 @@
 		clearBgFixed: function() {
 			if (cache.node.css('backgroundAttachment') !== 'fixed') return;
 			log('Clearing background fixed.', cache.injectedWallpaperStyles);
-			cache.node.css('backgroundAttachment', 'scroll');
+			cache.node.css(cache.injectedWallpaperStyles);
 		},
 
 		/**
