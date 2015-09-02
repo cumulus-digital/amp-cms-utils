@@ -286,34 +286,29 @@
 				return;
 			}
 
+			var transitionEnd = "transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd";
+
 			log('Beginning background transition.', options);
-			cache.node.css('transition', 'background-position 0.3s, background-color 1s');
+			cache.node.css('transition', 'background-position 0.4s, background-color 1s');
 
-			wp.transitionTimer = setTimeout(function() {
-
-				clearTimeout(wp.transitionTimer);
-				cache.node.css(
-					'backgroundPosition',
-					wp.generateBgPositions('-' + (wp.getBgImageSize().height + cache.stickNode.height()))
-				);
+			cache.node.one(transitionEnd, function() {
 				if (options.backgroundColor)
 					wp.setBgColor(options.backgroundColor);
 
-				wp.transitionTimer = setTimeout(function() {
-					clearTimeout(wp.transitionTimer);
-					if (options.backgroundImage)
-						wp.setBgImage(options);
+				if (options.backgroundImage)
+					wp.setBgImage(options);
 
-					wp.transitionTimer = setTimeout(function() {
-						clearTimeout(wp.transitionTimer);
-						cache.node.css({
-							transition: 'none'
-						});
-						if (callback) callback();
-					}, 300);
-				}, 300);
+				cache.node.one(transitionEnd, function(e) {
+					if (e.originalEvent.propertyName.indexOf('background-position') < 0) return;
+					cache.node.css('transition', 'none');
+					if (callback) callback();
+				});
+			});
 
-			}, 100);
+			cache.node.css(
+				'backgroundPosition',
+				wp.generateBgPositions('-' + (wp.getBgImageSize().height + cache.stickNode.height()))
+			);
 		},
 
 		/**
