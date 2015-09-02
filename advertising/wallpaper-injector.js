@@ -277,7 +277,8 @@
 		 * @param  {Function} callback Optional callback to execute once complete
 		 */
 		doBgTransition: function(options, callback) {
-			if (window.document.body.className.indexOf('csstransitions') < 0) {
+			// assumes modernizr
+			if (window.document.documentElement.className.indexOf('csstransitions') < 0) {
 				log('Browser does not support transitions, directly setting background');
 				if (options.backgroundImage) wp.setBgImage(options);
 				if (options.backgroundColor) wp.setBgColor(options.backgroundColor);
@@ -309,8 +310,8 @@
 							transition: 'none'
 						});
 						if (callback) callback();
-					}, 200);
-				}, 200);
+					}, 300);
+				}, 300);
 
 			}, 100);
 		},
