@@ -24,7 +24,7 @@
 		contentNodeSelector: '.wrapper-content .grid-container:first',
 
 		// Nodes to hide/show with background
-		obstructiveNodeSelector: '.takeover-left, .takeover-right, .skyscraper-left, .skyscraper-right',
+		obstructiveNodeSelector: '.takeover-left,.takeover-right,.skyscraper-left,.skyscraper-right',
 
 		// Padding for scroll position check
 		tolerance: 0,
@@ -46,19 +46,8 @@
 		stickNode: $stickNode,
 		contentNode: $contentNode,
 		injectedWallpaperStyles: {},
-		originalBackgroundStyles: $node.css([
-			'backgroundImage',
-			'backgroundColor',
-			'backgroundAttachment',
-			'backgroundPosition',
-			'backgroundRepeat',
-			'backgroundSize',
-			'cursor'
-		]),
-		originalContentStyles: $contentNode.css([
-			'boxShadow',
-			'cursor'
-		])
+		originalBackgroundStyles: $node.css(['backgroundImage','backgroundColor','backgroundAttachment','backgroundPosition','backgroundRepeat','backgroundSize','cursor']),
+		originalContentStyles: $contentNode.css(['boxShadow','cursor'])
 	};
 
 	// If library is already defined, bounce.
@@ -156,13 +145,10 @@
 
 			clearListeners();
 
-			var currentlyInjected = cache.node.data('cmls-wallpaper-injected');
-
-			if (currentlyInjected) {
+			if (cache.node.data('cmls-wallpaper-injected')) {
 				log('Background currently has an injected wallpaper, removing');
 				wp.doBgTransition(cache.originalBackgroundStyles, function() {
 					cache.node.removeData('cmls-wallpaper-injected');
-					cache.node.css('transition', 'none');
 					cache.node.css(cache.originalBackgroundStyles);
 					cache.contentNode.css(cache.originalContentStyles);
 					cache.injectedWallpaperStyles = {};
@@ -281,12 +267,7 @@
 				s.backgroundImage = 'url("' + s.backgroundImage + '")';
 			}
 
-			cache.injectedWallpaperStyles = {
-				backgroundAttachment: s.backgroundAttachment,
-				backgroundImage: s.backgroundImage,
-				backgroundRepeat: s.backgroundRepeat,
-				backgroundPosition: s.backgroundPosition
-			};
+			cache.injectedWallpaperStyles = s;
 			cache.node.css(cache.injectedWallpaperStyles);
 		},
 
@@ -296,6 +277,14 @@
 		 * @param  {Function} callback Optional callback to execute once complete
 		 */
 		doBgTransition: function(options, callback) {
+			if (window.document.body.className.indexOf('csstransitions') < 0) {
+				log('Browser does not support transitions, directly setting background');
+				if (options.backgroundImage) wp.setBgImage(options);
+				if (options.backgroundColor) wp.setBgColor(options.backgroundColor);
+				if (callback) callback();
+				return;
+			}
+
 			log('Beginning background transition.', options);
 			cache.node.css('transition', 'background-position 0.3s, background-color 1s');
 
@@ -384,7 +373,6 @@
 			);
 
 			// Hide obstructive nodes
-			log('Hiding obstructive nodes.', globalSettings.obstructiveNodeSelector);
 			$(globalSettings.obstructiveNodeSelector).hide();
 
 			// Set mouse to show click pointer on hover
