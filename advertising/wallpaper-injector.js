@@ -289,12 +289,10 @@
 			var transitionEnd = "transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd";
 
 			log('Beginning background transition.', options);
-			cache.node.css('transition', 'background-position 0.4s, background-color 1s');
+			cache.node.css('transition', 'background-position 0.35s, background-color 2s');
+			cache.transitioning = true;
 
 			cache.node.one(transitionEnd, function() {
-				if (options.backgroundColor)
-					wp.setBgColor(options.backgroundColor);
-
 				if (options.backgroundImage)
 					wp.setBgImage(options);
 
@@ -305,10 +303,16 @@
 				});
 			});
 
-			cache.node.css(
-				'backgroundPosition',
-				wp.generateBgPositions('-' + (wp.getBgImageSize().height + cache.stickNode.height()))
-			);
+			// Need to wait after turning transition
+			setTimeout(function() {
+				cache.node.css(
+					'backgroundPosition',
+					wp.generateBgPositions("-" + cache.node.height())
+				);
+
+				if (options.backgroundColor)
+					wp.setBgColor(options.backgroundColor);				
+			}, 100);
 		},
 
 		/**
