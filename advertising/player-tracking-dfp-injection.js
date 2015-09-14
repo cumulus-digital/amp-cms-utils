@@ -5,9 +5,10 @@
 (function(window, undefined) {
 	window._CMLS = window._CMLS || {};
 	window._CMLS.embedPlayerWatch = {
-		v: '0.3',
+		v: '0.4',
 		initialized: false,
 		trackIdCache: null,
+		stateCache: false,
 		timer: null,
 		interval: 1000,
 
@@ -45,14 +46,35 @@
 
 		checkCurrent: function checkCurrent() {
 			var current = this.getCurrentState();
+			// Check player state
+			if (current && current.data && current.data.stream && current.data.stream.code == 'LIVE_PLAYING') {
+				this.setPlayState(true);
+			} else {
+				this.setPlayState(false);
+			}
 			if (current && current.data && current.data.song && current.data.song.id && this.isChanged(current.data.song.id)) {
 				this.log('Song changed!', current.data.song.id);
 				this.trackIdCache = current.data.song.id;
 				this.setCriteria(current);
+				this.sendEvent(window, 'td-player.trackChange', current.data.song.id);
 			} else {
 				//this.log('Song has not changed.');
 			}
 			this.setTimer();
+		},
+
+		setPlayState: function setPlayState(state) {
+			if (state === true && this.stateCache === false) {
+				this.log('Player is currently streaming.');
+				this.stateCache = true;
+				googletag.pubads().setTargeting('td-player-state', 'playing');
+				this.sendEvent(window, 'td-player.playing');
+			} else if (state === false && this.stateCache === true) {
+				this.log('Player is not currently streaming.');
+				this.stateCache = false;
+				googletag.pubads().setTargeting('td-player-state', 'stopped');
+				this.sendEvent(window, 'td-player.stopped');
+			}
 		},
 
 		setCriteria: function setCriteria(meta) {
@@ -62,14 +84,17 @@
 					if (meta.artist) {
 						this.log('Setting Artist', meta.artist);
 						googletag.pubads().setTargeting('td-player-artist', meta.artist);
+						this.sendEvent(window, 'td-player.artist', meta.artist);
 					}
 					if (meta.album) {
 						this.log('Setting Album', meta.album);
 						googletag.pubads().setTargeting('td-player-album', meta.album);
+						this.sendEvent(window, 'td-player.album', meta.album);
 					}
 					if (meta.title) {
 						this.log('Setting Track', meta.title);
 						googletag.pubads().setTargeting('td-player-track', meta.title);
+						this.sendEvent(window, 'td-player.track', meta.title);
 					}
 					if (meta.id) {
 						this.log('Setting Song ID', meta.id);
@@ -77,6 +102,17 @@
 					}
 				}
 			}
+		},
+
+		sendEvent: function sendEvent(el, eventName, data) {
+			var event;
+			if (window.document.createEvent) {
+				event = window.document.createEvent('CustomEvent');
+				event.initCustomEvent(eventName, true, true, data);
+			} else {
+				event = new CustomEvent(eventName, { 'detail': data });
+			}
+			el.dispatchEvent(event);
 		},
 
 		setTimer: function setTimer() {
