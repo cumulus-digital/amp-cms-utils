@@ -4,6 +4,10 @@
  */
 (function(window, undefined) {
 	window._CMLS = window._CMLS || {};
+
+	// Only inject once
+	if (window._CMLS.embedPlayerWatch) return;
+
 	window._CMLS.embedPlayerWatch = {
 		v: '0.4',
 		initialized: false,
