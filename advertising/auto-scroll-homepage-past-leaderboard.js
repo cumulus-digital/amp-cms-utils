@@ -14,7 +14,10 @@
 	window._CMLS = window._CMLS || {};
 
 	// Only define once.
-	if (window._CMLS[nameSpace]) return;
+	if (window._CMLS[nameSpace]) {
+		window._CMLS[nameSpace].regenerateCache();
+		return;
+	}
 
 	function throttle(fn, threshhold, scope) {
 		threshhold = threshhold || (threshhold = 250);
@@ -38,16 +41,19 @@
 		};
 	}
 
-	var timer,
-		tdpw,
-		leaderboard;
+	var cache;
+
+	function regenerateCache() {
+		cache.leaderboard = $('.wrapper-header div[id*="div-gpt-ad"]:first');
+		cache.tdpw = $('.tdpw:first');
+	}
 
 	function isHomepage() {
 		return window.location.pathname == '/';
 	}
 
 	function generateNewPos() {
-		return leaderboard.offset().top - tdpw.height() + leaderboard.height();
+		return cache.leaderboard.offset().top - cache.tdpw.height() + cache.leaderboard.height();
 	}
 
 	function scrolledPastLeaderboard() {
@@ -67,12 +73,14 @@
 	}
 
 	$(function() {
-		leaderboard = $('.wrapper-header div[id*="div-gpt-ad"]:first');
-		tdpw = $('.tdpw:first');
+		regenerateCache();
 		$(window).on('scroll.' + nameSpace, throttle(function() {
 			if (scrolledPastLeaderboard()) scrolled = true;
 		}, 240));
-		window._CMLS[nameSpace] = setInterval(scrollPage, timeout * 60000);
+		window._CMLS[nameSpace] = {
+			timer: setInterval(scrollPage, timeout * 60000),
+			regenerateCache: regenerateCache
+		};
 	});
 
 }(jQuery, window));
