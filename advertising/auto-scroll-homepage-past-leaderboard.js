@@ -41,7 +41,7 @@
 		};
 	}
 
-	var cache;
+	var cache = {};
 
 	function regenerateCache() {
 		cache.leaderboard = $('.wrapper-header div[id*="div-gpt-ad"]:first');
