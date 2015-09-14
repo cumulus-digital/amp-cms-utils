@@ -1,69 +1,108 @@
-/**
- * Wallpaper injection for AMP CMS
- */
-(function($, w, undefined) {
-	
-	"use strict";
+(function ($, window, undefined) {
 
-	var injectorNamespace = 'cmlsWallpaperInjector',
-		version = '0.10';
-
-	w[injectorNamespace] = w[injectorNamespace] || [];
-	var injectorObject = w[injectorNamespace];
-
-	// Settings
-	var globalSettings = {
-
-		// Node selector for where to inject background
-		nodeSelector: '.wrapper-content',
-
-		// Node selector for where to determine stick position
-		stickNodeSelector: '.wrapper-header',
-
-		// Node selector for content area
-		contentNodeSelector: '.wrapper-content .grid-container:first',
-
-		// Nodes to hide/show with background
-		obstructiveNodeSelector: '.takeover-left,.takeover-right,.skyscraper-left,.skyscraper-right',
-
-		// Padding for scroll position check
-		tolerance: 0,
-
-		// Delay between each reading of scroll position
-		debounceDelay: 50
-	};
-
-	// Initial caches
-	var $node = $(globalSettings.nodeSelector),
-		$stickNode = $(globalSettings.stickNodeSelector),
-		$contentNode = $(globalSettings.contentNodeSelector),
-		wd = w.document;
-	var cache = {
-		w: $(w),
-		wd: $(wd),
-		node: $node,
-		nodeOffset: $node.offset(),
-		stickNode: $stickNode,
-		contentNode: $contentNode,
-		injectedWallpaperStyles: {},
-		originalBackgroundStyles: $node.css(['backgroundImage','backgroundColor','backgroundAttachment','backgroundPosition','backgroundRepeat','backgroundSize','cursor']),
-		originalContentStyles: $contentNode.css(['boxShadow','cursor'])
-	};
+	var nameSpace = 'cmlsWallpaperInjector',
+		version = '0.12',
+		injecting = false;
 
 	// If library is already defined, bounce.
-	if (
-		injectorObject &&
-		injectorObject.verifyLibrary &&
-		injectorObject.verifyLibrary() == version
-	) return;
+	if (window._CMLS && window._CMLS[nameSpace + 'Injected']) return;
+
+	var global = {
+			settings: {
+				// Node selector for where to inject wallpaper
+				injectionNode: '.wrapper-content',
+
+				// Node selector for determining stick position on scroll.
+				// Wallpaper will stick once it scrolls to the initial TOP
+				// position of this node.
+				stickNode: '.wrapper-header',
+
+				// Content area selector
+				contentNode: '.wrapper-content .grid-container:first',
+
+				// Footer selector
+				footerNode: '.wrapper-footer',
+
+				// Node selectors to hide/show along with wallpaper changes.
+				obstructiveNode: '.takeover-left, .takeover-right, .skyscraper-left, .skyscraper-right'
+			},
+			cache: {}
+		},
+		defaults = {
+			backgroundImage: null,
+			backgroundRepeat: 'no-repeat',
+			backgroundSize: 'auto',
+			backgroundPosition: 'center top',
+			backgroundColor: null,
+			clickThrough: null,
+			newWindow: true,
+			trackPosition: true
+		};
+
+	window[nameSpace] = window[nameSpace] || [];
+
+	var styleSheet = '<style id="' + nameSpace + 'Styles">' +
+			'.' + nameSpace + '-base {' +
+				'background-position: 50% -4000px;' +
+				'position: absolute;' +
+				'z-index: 0;' +
+				'top: 0;' +
+				'right: 0;' +
+				'bottom: 0;' +
+				'left: 0;' +
+			'}' +
+			'.' + nameSpace + '-out {' +
+				'background-position: 50% -4000px;' +
+				'-webkit-transition: background-position 0.8s, background-color 0.7s;' +
+				'-moz-transition: background-position 0.8s, background-color 0.7s;' +
+				'-o-transition: background-position 0.8s, background-color 0.7s;' +
+				'-ms-transition: background-position 0.8s, background-color 0.7s;' +
+				'transition: background-position 0.8s, background-color 0.7s;' +
+			'}' +
+			'.' + nameSpace + '-in {' +
+				'background-position: 50% 0%;' +
+				'-webkit-transition: background-position 0.4s, background-color 0.7s;' +
+				'-moz-transition: background-position 0.4s, background-color 0.7s;' +
+				'-o-transition: background-position 0.4s, background-color 0.7s;' +
+				'-ms-transition: background-position 0.4s, background-color 0.7s;' +
+				'transition: background-position 0.4s, background-color 0.7s;' +
+			'}' +
+			'' + global.settings.contentNode + ' {' +
+				'-webkit-transition: box-shadow 1s;' +
+				'-moz-transition: box-shadow 1s;' +
+				'-o-transition: box-shadow 1s;' +
+				'-ms-transition: box-shadow 1s;' +
+				'transition: box-shadow 1s;' +
+			'}' +
+			'.' + nameSpace + '-in ~ .grid-container {' +
+				'box-shadow: 0 0 20px rgba(0,0,0,0.3);' +
+			'}' +
+			'.' + nameSpace + '-fixed {' +
+				'position: fixed;' +
+				'top: 0;' +
+			'}' +
+		'</style>';
+	if ( ! window.document.getElementById(nameSpace + 'Styles')) $('head').append(styleSheet);
 
 	function log() {
-		if (w._CMLS && w._CMLS.debug && typeof console === 'object' && console.log) {
+		if (window._CMLS && window._CMLS.debug && typeof console === 'object' && console.log) {
 			var ts = (new Date());
 			ts = ts.toISOString() ? ts.toISOString() : ts.toUTCString();
 			console.log('[WALLPAPER INJECTOR ' + version + ']', ts, [].slice.call(arguments));
 		}
 	}
+
+	function refreshGlobalCache() {
+		global.cache.node = $(global.settings.injectionNode);
+		global.cache.stickNode = $(global.settings.stickNode);
+		global.cache.stickAt = global.cache.stickNode.offset().top;
+		global.cache.contentNode = $(global.settings.contentNode);
+		global.cache.footerNode = $(global.settings.footerNode);
+		global.cache.window = $(window);
+		global.cache.document = $(window.document);
+		global.cache.obstructiveNode = $(global.settings.obstructiveNode);
+	}
+	refreshGlobalCache();
 
 	function debounce(fn, delay) {
 		var timer = null;
@@ -98,451 +137,338 @@
 		};
 	}
 
-	/**
-	 * Refresh node cache
-	 */
-	function refreshCache() {
-		log('Cache refresh requested.', { 'Current Cache': cache });
-		cache.node = $(globalSettings.nodeSelector);
-		cache.nodeOffset = cache.node.offset();
-		cache.stickNode = $(globalSettings.stickNodeSelector);
-		cache.stickPosition = cache.stickNode.offset().top;
-		log('Cache refreshed.', { 'New Cache': cache });
-	}
+	var wallpaper = {
 
-	/**
-	 * Remove all event listeners in our namespace
-	 */
-	function clearListeners() {
-		log('Clearing all window listeners in our namespace.');
-		cache.w.off('.' + injectorNamespace);
-		cache.wd.off('.' + injectorNamespace);
-	}
+		bgNode: null,
 
-	/**
-	 * Checks if the background is visible within the current window
-	 * @return {Boolean} true if yes, false if no
-	 */
-	function isBgVisible() {
-		return (cache.contentNode.width() + 100 < cache.node.width());
-	}
-
-	/**
-	 * Functions that deal directly with altering the background
-	 * @type {Object}
-	 */
-	var wp = {
-
-		transitionTimer: null,
-
-		/**
-		 * Reset background to initial state, clear listeners
-		 */
-		reset: function reset(callback) {
-			log('Resetting background to original state.', cache.originalBackgroundStyles);
-
-			$(globalSettings.obstructiveNodeSelector).show();
-
-			clearListeners();
-
-			if (cache.node.data('cmls-wallpaper-injected')) {
-				log('Background currently has an injected wallpaper, removing');
-				wp.doBgTransition(cache.originalBackgroundStyles, function() {
-					cache.node.removeData('cmls-wallpaper-injected');
-					cache.node.css(cache.originalBackgroundStyles);
-					cache.contentNode.css(cache.originalContentStyles);
-					cache.injectedWallpaperStyles = {};
-					if (callback) callback();
-				});
+		getBackgroundNode: function() {
+			if (wallpaper.bgNode && wallpaper.bgNode.length)
+				return wallpaper.bgNode;
+			var testNode = global.cache.node.children('#' + nameSpace + 'Node');
+			if (testNode.length) {
+				log('Wallpaper container exists but is not cached.');
+				wallpaper.bgNode = testNode;
 			} else {
-				cache.node.css(cache.originalBackgroundStyles);
-				cache.contentNode.css(cache.originalContentStyles);
+				log('Injecting wallpaper container.');
+				var bgNode = $('<div id="' + nameSpace + 'Node" />');
+				global.cache.node.prepend(bgNode);
+				wallpaper.bgNode = $('#' + nameSpace + 'Node');
+				wallpaper.bgNode.addClass(nameSpace + '-base').css('zIndex');
+				wallpaper.raiseContentArea();
 			}
-
-			cache.node.removeData('cmls-wallpaper-injected');
-			if (callback) callback();
+			return wallpaper.bgNode;
 		},
 
-		/**
-		 * Compute the size of the current background.
-		 * Modified from http://stackoverflow.com/a/30000591
-		 * @return {Object}      width,height of background
-		 */
-		getBgImageSize: function() {
-			var currentStyles = cache.node.css([
-					'backgroundImage',
-					'backgroundSize',
-					'width',
-					'height'
-				]),
-				cssSize = currentStyles.backgroundSize.split(' '),
-				image = new Image(),
-				src = currentStyles.backgroundImage.replace(/url\((['"])?(.*?)\1\)/gi, '$2'),
-				elW = parseInt(currentStyles.width.replace('px', ''), 10),
-				elH = parseInt(currentStyles.height.replace('px', ''), 10),
-				elDim = [elW, elH],
-				compDim = [cssSize[0], (cssSize.length > 1 ? cssSize[1] : 'auto')],
-				ratio;
+		getCurrentRequestData: function() {
+			var bgNode = wallpaper.getBackgroundNode(),
+				data = null;
+			log('Retrieving current wallpaper settings.', $.hasData(bgNode[0]));
+			if ($.hasData(bgNode[0]) && bgNode.data('requestOptions'))
+				data = bgNode.data('requestOptions');
+			log('Current wallpaper settings:', data);
+			return data;
+		},
 
-			image.src = src;
-			ratio = image.width > image.height ? image.width / image.height : image.height / image.width;
+		clearListeners: function() {
+			log('Clearing all event listeners.');
+			global.cache.window.off('.' + nameSpace);
+			global.cache.document.off('.' + nameSpace);
+		},
 
-			if (cssSize[0] === 'cover') {
-				if (elW > elH) {
-					if (elW / elH >= ratio) {
-						compDim = [elW, 'auto'];
-					} else {
-						compDim = ['auto', elH];
-					}
+		reset: function(callBack, newBackgroundColor) {
+			log('Resetting.');
+
+			refreshGlobalCache();
+			wallpaper.clearListeners();
+			global.cache.obstructiveNode.show();
+
+			var bgNode = wallpaper.getBackgroundNode();
+
+			function finishReset() {
+				log('RESET: Clearing wallpaper.');
+				bgNode
+					.removeClass(nameSpace + '-out')
+					.attr('style', '')
+					.css('backgroundColor', newBackgroundColor);
+				wallpaper.bgNode = null;
+				if (callBack) {
+					log('RESET: Firing callback.');
+					callBack();
 				} else {
-					compDim = ['auto', elH];
+					log('RESET: No callback specified, wallpaper is reset.');
 				}
-			} else if (cssSize[0] === 'contain') {
-				if (elW < elH) {
-					compDim = [elW, 'auto'];
-				} else {
-					if (elW / elH >= ratio) {
-						compDim = ['auto', elH];
-					} else {
-						compDim = [elW, 'auto'];
-					}
+			}
+
+			bgNode
+				.removeData()
+				.removeAttr('data')
+				.addClass(nameSpace + '-out')
+				.removeClass(nameSpace + '-in')
+				//.removeClass(nameSpace + '-fixed')
+				.css('backgroundPosition', '');
+
+			if ( ! newBackgroundColor) newBackgroundColor = 'transparent';
+			bgNode.css('backgroundColor', newBackgroundColor);
+
+			if ($('html').hasClass('csstransitions')) {
+				log('RESET: Waiting for transition.');
+				var timer = 300;
+				if (bgNode.css('backgroundImage') != 'none') { 
+					log('RESET: Already has a wallpaper, increasing transition timer.', bgNode.css('backgroundImage'));
+					timer = 600;
 				}
+				setTimeout(function() {
+					if ( ! window._CMLS.skip) finishReset();
+				}, timer);
 			} else {
-				for (var i = cssSize.length; i--;) {
-					if (cssSize[i].indexOf('px') > -1) {
-						compDim[i] = cssSize[i].replace('px', '');
-					} else if (cssSize[i].indexOf('%') > -1) {
-						compDim[i] = elDim[i] * (cssSize[i].replace('%', '') / 100);
-					}
-				}
+				finishReset();
 			}
-			if (compDim[0] === 'auto' && compDim[1] === 'auto') {
-				compDim = [image.width, image.height];
-			} else {
-				ratio = compDim[0] === 'auto' ? image.height / compDim[1] : image.width / computedDimensions[0];
-				compDim = [
-					compDim[0] === 'auto' ? image.width / ratio : compDim[0],
-					compDim[1] === 'auto' ? image.height / ratio : compDim[1]
-				];
-			}
-			log('Computed background size.', { width: compDim[0], height: compDim[1]});
-			return { width: compDim[0], height: compDim[1] };
 		},
 
-		/**
-		 * Generates new background positions with a given top value, multi-position aware.
-		 * @param  {String} newTop New top position to set (without 'px')
-		 * @return {String}        New positions
-		 */
-		generateBgPositions: function(newTop) {
-			var currentPositions = cache.node.css('backgroundPosition').split(','),
-				newPositions = [];
-			for (var i = 0; i < currentPositions.length; i++) {
-				bgPos = currentPositions[i].split(' ');
-				newPositions.push(bgPos[0] + ' ' + newTop + 'px');
-			}
-			return newPositions.join(',');
-		},
-
-		/**
-		 * Updates node with a given background image
-		 * @param {Object} options Background image properties
-		 */
-		setBgImage: function(options) {
-			var defaults = {
-				backgroundAttachment: 'scroll',
-				backgroundImage: null,
-				backgroundRepeat: 'no-repeat',
-				backgroundPosition: 'top center',
-				backgroundSize: 'auto'
-			};
-			var s = $.extend({}, defaults, options);
-
-			log('Setting background image.', s);
-
-			// Allows multiple backgrounds!
-			if (typeof s.backgroundImage == 'object') {
-				s.backgroundImage = 'url("' + s.backgroundImage.join('"), url("') + '")';
-			} else {
-				s.backgroundImage = 'url("' + s.backgroundImage + '")';
-			}
-
-			cache.injectedWallpaperStyles = s;
-			cache.node.css(cache.injectedWallpaperStyles);
-		},
-
-		/**
-		 * Uses CSS transitions to animate background entry
-		 * @param  {Object} options Background styles
-		 * @param  {Function} callback Optional callback to execute once complete
-		 */
-		doBgTransition: function(options, callback) {
-			// assumes modernizr
-			if (window.document.documentElement.className.indexOf('csstransitions') < 0) {
-				log('Browser does not support transitions, directly setting background');
-				if (options.backgroundImage) wp.setBgImage(options);
-				if (options.backgroundColor) wp.setBgColor(options.backgroundColor);
-				if (callback) callback();
-				return;
-			}
-
-			var transitionEnd = "transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd";
-
-			log('Beginning background transition.', options);
-			cache.node.css('transition', 'background-position 0.35s, background-color 2s');
-			cache.transitioning = true;
-
-			cache.node.one(transitionEnd, function() {
-				if (options.backgroundImage)
-					wp.setBgImage(options);
-
-				cache.node.one(transitionEnd, function(e) {
-					if (e.originalEvent.propertyName.indexOf('background-position') < 0) return;
-					cache.node.css('transition', 'none');
-					if (callback) callback();
-				});
-			});
-
-			// Need to wait after turning transition
-			setTimeout(function() {
-				cache.node.css(
-					'backgroundPosition',
-					wp.generateBgPositions("-" + cache.node.height())
-				);
-
-				if (options.backgroundColor)
-					wp.setBgColor(options.backgroundColor);				
-			}, 100);
-		},
-
-		/**
-		 * Sets background to fixed position, top attached to the stick position
-		 */
-		setBgFixed: function() {
-			if (cache.node.css('backgroundAttachment') == 'fixed') return;
-			log('Setting background fixed.');
-			cache.node.css({
-				backgroundAttachment: 'fixed',
-				backgroundPosition: wp.generateBgPositions(cache.stickPosition)
-			});
-		},
-
-		/**
-		 * Resets background to injection state
-		 */
-		clearBgFixed: function() {
-			if (cache.node.css('backgroundAttachment') !== 'fixed') return;
-			log('Clearing background fixed.', cache.injectedWallpaperStyles);
-			cache.node.css(cache.injectedWallpaperStyles);
-		},
-
-		/**
-		 * Updates node with a given background color
-		 * @param {String} color HTML color value
-		 */
-		setBgColor: function(color) {
-			log('Setting background color.', color);
-			cache.node.css('backgroundColor', color);
-		},
-
-		/**
-		 * Assign a click-through event on the wallpaper
-		 * @param {Object} options clickThrough url and newWindow switch.
-		 */
-		setClickThrough: function(options) {
-			var defaults = {
-				clickThrough: null,
-				newWindow: true
-			};
-			var s = $.extend({}, defaults, options);
-
-			log('Setting click through.', s);
-
-			$(w.document).on(
-				'click.' + injectorNamespace,
-				globalSettings.nodeSelector,
-				function(e) {
-					if (cache.node[0] !== e.target) return;
-					if (s.newWindow) {
-						log('Opening click-through in a new window.');
-						return w.open(s.clickThrough);
-					}
-					log('Opening click-through in current window.');
-					wd.location = s.clickThrough;
-				}
+		setBackgroundFixed: function(force) {
+			var bgNode = wallpaper.getBackgroundNode();
+			if (bgNode.hasClass(nameSpace + '-fixed') && force !== true) return;
+			bgNode.addClass(nameSpace + '-fixed');
+			bgNode.css(
+				'top',
+				global.cache.stickAt
 			);
-
-			// Hide obstructive nodes
-			$(globalSettings.obstructiveNodeSelector).hide();
-
-			// Set mouse to show click pointer on hover
-			cache.node[0].style.cursor = 'pointer';
-
-			// Set mouse to show default pointer over content area, give it a shadow
-			cache.contentNode.css({
-				cursor: 'default',
-				boxShadow: '0 0 20px rgba(0,0,0,0.3)'
-			});
 		},
-
-		/**
-		 * Get current height of the "top" position background container should stick to
-		 * @return {Number} Current "top" position of node considered top of the page
-		 */
-		getStickPosition: function() {
-			log('Fetching stick position');
-			cache.stickPosition = cache.stickNode.offset().top;
-			return cache.stickPosition;
+		clearBackgroundFixed: function() {
+			var bgNode = wallpaper.getBackgroundNode();
+			if ( ! bgNode.hasClass(nameSpace + '-fixed')) return;
+			bgNode.removeClass(nameSpace + '-fixed')
+				.css('top', '');
 		},
-
-		/**
-		 * Checks if scroll position has passed the "stick" position
-		 * @return {Boolean} true if yes, false if no
-		 */
+		refreshStickPosition: function() {
+			log('Refreshing stick position.');
+			global.cache.stickAt = global.cache.stickNode.offset().top;
+			return global.cache.stickAt;
+		},
 		passedStickPosition: function() {
-			// Bounce if we don't have a node to check yet
-			if ( ! cache.node) return false;
-
-			var scrollTop = cache.w.scrollTop();
-			if (cache.node.offset().top < scrollTop + cache.stickPosition + globalSettings.tolerance) {
+			var scrollTop = global.cache.window.scrollTop(),
+				offset = global.cache.node.offset().top;
+			if (offset < scrollTop + global.cache.stickAt)
 				return true;
-			}
 			return false;
 		},
-
-		/**
-		 * Start tracking scroll position
-		 * @return {[type]} [description]
-		 */
+		checkScrollPosition: function(force) {
+			if (wallpaper.passedStickPosition()) {
+				wallpaper.setBackgroundFixed(force);
+				return;
+			}
+			wallpaper.clearBackgroundFixed();
+		},
 		startTrackingScroll: function() {
-			// Refresh stickPosition
-			wp.getStickPosition();
+			log('Initializing scroll tracking.');
+			var bgNode = wallpaper.getBackgroundNode();
+			wallpaper.refreshStickPosition();
 
-			// Set fixed position if we're passed stick position
-			function checkScrollPosition() {
-				if(wp.passedStickPosition()) {
-					wp.setBgFixed();
-				} else if (cache.node.css('backgroundAttachment') == 'fixed') {
-					wp.clearBgFixed();
-				}				
+			wallpaper.checkScrollPosition(true);
+			bgNode.data('trackingScroll', 1);
+
+			global.cache.window.on('scroll.' + nameSpace, throttle(function() {
+				wallpaper.checkScrollPosition();
+			}, 60));
+
+			global.cache.window.on('resize.' + nameSpace, debounce(function() {
+				wallpaper.refreshStickPosition();
+			}, 480));
+		},
+
+		raiseContentArea: function() {
+			log('Raising content area above wallpaper container.');
+			var bgNode = wallpaper.getBackgroundNode();
+			var originalContentStyle = global.cache.contentNode.css(['position', 'zIndex']);
+			var originalFooterStyle = global.cache.footerNode.css(['position', 'zIndex']);
+			if (originalContentStyle.position == 'static') {
+				log('Setting content area position to relative.');
+				global.cache.contentNode.css('position', 'relative');
+			}
+			if (originalContentStyle.zIndex == 'auto' || originalContentStyle.zIndex <= bgNode.css('zIndex')) {
+				log('Setting content area z-index.');
+				global.cache.contentNode.css('zIndex', bgNode.css('zIndex') + 1);
+			}
+			if (originalFooterStyle.position == 'static') {
+				log('Setting footer position to relative.');
+				global.cache.footerNode.css('position', 'relative');
+			}
+			global.cache.contentNode.data('originalStyles', originalContentStyle);
+			global.cache.footerNode.data('originalStyles', originalFooterStyle);
+			log('Content area raised.');
+		},
+
+		lowerContentArea: function() {
+			if ($.hasData(global.cache.contentNode[0]) && global.cache.contentNode.data('originalStyles')) {
+				global.cache.contentNode.css(global.cache.contentNode.data('originalStyles'));
+			}
+			if ($.hasData(global.cache.footerNode[0]) && global.cache.footerNode.data('originalStyles')) {
+				global.cache.footerNode.css(global.cache.footerNode.data('originalStyles'));
+			}
+		},
+
+		injectClickThrough: function(href, newWindow) {
+			var bgNode = wallpaper.getBackgroundNode(),
+				link = $('<a/>');
+			bgNode.children('a').remove();
+			link.css({
+				display: 'block',
+				height: '100%',
+				width: '100%'
+			}).attr('href', href);
+			if (newWindow) link.attr('target', '_blank');
+			bgNode.append(link);
+			global.cache.obstructiveNode.hide();
+		},
+
+		generate: function(options) {
+			log('Generating wallpaper injection.');
+
+			var settings = $.extend({}, defaults, options);
+
+			var bgNode = wallpaper.getBackgroundNode(),
+				newStyle = {};
+
+			if (settings.backgroundImage) {
+				newStyle.backgroundImage = 'url("' + settings.backgroundImage + '")';
+				newStyle.backgroundRepeat = settings.backgroundRepeat;
+				newStyle.backgroundSize = settings.backgroundSize;
+				//newStyle.backgroundPosition = settings.backgroundPosition;
 			}
 
-			// Check if we've passed stick position on window scroll
-			cache.w.on(
-				'scroll.' + injectorNamespace,
-				throttle(function() { checkScrollPosition(); }, globalSettings.debounceDelay)
-			);
+			if (settings.backgroundColor) {
+				newStyle.backgroundColor = settings.backgroundColor;
+			}
 
-			// Check scroll immediately
-			checkScrollPosition();
+			if (settings.clickThrough) {
+				wallpaper.injectClickThrough(settings.clickThrough, settings.newWindow);
+			}
 
-			// Refresh the stick position whenever window is resized
-			cache.w.on('resize.' + injectorNamespace, debounce(function() {
-				wp.getStickPosition();
+			function display() {
+				log('Displaying new wallpaper.', newStyle);
+				bgNode.css(newStyle)
+					.addClass(nameSpace + '-in')
+					.removeClass(nameSpace + '-out');
+				injecting = false;
+			}
 
-				if ( ! isBgVisible()) {
-					log('Background would not be visible, resetting.');
-					wp.reset();
-				}
-			}, 500));
+			bgNode.data('requestOptions', settings);
+
+			// Preload image before display
+			if (settings.backgroundImage) {
+				log('Preloading new wallpaper image.');
+				bgNode.addClass(nameSpace + '-out');
+				$('<img/>').load(function() {
+					$(this).remove();
+					display();
+				}).attr('src', settings.backgroundImage);
+			} else {
+				display();
+			}
+
+			if (settings.trackPosition) wallpaper.startTrackingScroll();
 		}
-
 	};
 
-	function processWallpaper(options) {
-		log('Caught wallpaper request.', options);
+	function resetRequestArray() {
+		window[nameSpace] = new WallpaperInjectorArray();
+	}
 
-		// Make sure there's actually visible space for a background
-		if ( ! isBgVisible()) {
-			log('Background would not be visible, skipping request.');
+	function process(options) {
+		injecting = true;
+		refreshGlobalCache();
+
+		if (global.cache.contentNode.width() < 100) {
+			setTimeout(function() {
+				processRequest(options);
+			}, 480);
 			return;
 		}
 
-		// Defaults
-		var defaults = {
-			backgroundImage: null,
-			backgroundRepeat: 'no-repeat',
-			backgroundColor: null,
-			backgroundSize: 'auto',
-			clickThrough: null,
-			newWindow: true,
-			trackPosition: true
-		};
-		var s = $.extend({}, defaults, options);
+		log('Content node ready.');
 
-		log ('Processing wallpaper', s);
+		if ( ! options && window[nameSpace]) options = window[nameSpace].slice(-1)[0];
 
-		var postActions = [];
-
-		// Do we have a background image?
-		if (s.backgroundImage) {
-			var bgSettings = {
-				backgroundImage: s.backgroundImage,
-				backgroundRepeat: s.backgroundRepeat				
-			};
-			if (s.backgroundColor) {
-				bgSettings.backgroundColor = s.backgroundColor;
-			}
-			wp.doBgTransition(bgSettings, function() {
-				if (s.trackPosition) wp.startTrackingScroll();
-			});
-		} else if (s.backgroundColor) {
-			wp.setBgColor(s.backgroundColor);
+		if ( ! window[nameSpace] || ! window[nameSpace].length) {
+			log('Received empty request, resetting wallpaper.');
+			wallpaper.reset();
+			return;
 		}
 
-		// Do we have a click-through?
-		if (s.clickThrough) {
-			wp.setClickThrough({
-				clickThrough: s.clickThrough,
-				newWindow: s.newWindow
-			});
+		// Clear request object
+		resetRequestArray();
+
+		var settings = $.extend({}, defaults, options);
+		log('Processing request:', settings);
+
+		// Compare request to current wallpaper
+		var currentWallpaper = wallpaper.getCurrentRequestData();
+		
+		log('Testing current wallpaper against request.', currentWallpaper, settings);
+		if (
+			currentWallpaper &&
+			currentWallpaper.backgroundImage == settings.backgroundImage &&
+			currentWallpaper.backgroundRepeat == settings.backgroundRepeat &&
+			currentWallpaper.backgroundSize == settings.backgroundSize &&
+			currentWallpaper.backgroundPosition == settings.backgroundPosition &&
+			currentWallpaper.backgroundColor == settings.backgroundColor &&
+			currentWallpaper.newWindow == settings.newWindow &&
+			currentWallpaper.trackPosition == settings.trackPosition
+		) {
+			log('Requested wallpaper is already set.');
+			return;
 		}
 
-		// Should we monitor scrolling position?
-		if (s.trackPosition) {
-			wp.startTrackingScroll();
-		}
-
-		// Store background state
-		cache.node.data('cmls-wallpaper-injected', 1);
+		log('Generating wallpaper.');
+		wallpaper.reset(function() {
+			wallpaper.generate(settings);
+		}, settings.backgroundColor);
 
 	}
 
-	function processInjectorObject() {
-		injectorObject = w[injectorNamespace] || [];
-		if (injectorObject && injectorObject.length) {
-			processWallpaper(injectorObject.slice(-1)[0]);
-			w[injectorNamespace] = [];
-		} else {
-			wp.reset();
+	// Array mock allows us to define wallpapers before library loads
+	var WallpaperInjectorArray = function() {};
+	WallpaperInjectorArray.prototype = [];
+	WallpaperInjectorArray.prototype.verifyLibrary = function() {
+		return version;
+	};
+	WallpaperInjectorArray.prototype.originalPush = WallpaperInjectorArray.prototype.push;
+	WallpaperInjectorArray.prototype.push = function() {
+		log('Push has been called on Injector Array.');
+		for (var i = 0; i < arguments.length; i++) {
+			this.originalPush(arguments[i]);
 		}
-	}
+		process();
+	};
 
-	/**
-	 * Hook into googletag render event and process new requests as they come in
-	 */
-	w.googletag = w.googletag || {};
-	w.googletag.cmd = w.googletag.cmd || [];
-	googletag.cmd.push(function() {
-		googletag.pubads().addEventListener('slotRenderEnded', function(e) {
-			if (e.slot.o.pos == 'wallpaper-ad') {
-				log('Caught googletag render on position "wallpaper-ad."', injectorObject);
-				processInjectorObject();
-			}
-		});
-	});
 
-	/**
-	 * Initialize library and start listening!
-	 */
+	// Initialize library
 	$(function() {
-		// Act on most recent request
-		if (injectorObject && injectorObject.length) {
-			log('Found existing injection requests', injectorObject);
-			processInjectorObject();
+		if (window[nameSpace] && window[nameSpace].length) {
+			log('Found existing injection request, processing...', window[nameSpace]);
+			process();
 		}
 
+		// Hook into googletag render event to process empty requests
+		window.googletag = window.googletag || {};
+		window.googletag.cmd = window.googletag.cmd || [];
+		googletag.cmd.push(function() {
+			googletag.pubads().addEventListener('slotRenderEnded', function(e) {
+				if (e.slot.o.pos == 'wallpaper-ad') {
+					log('Caught googletag render on position "wallpaper-ad"!', JSON.stringify(window[nameSpace]));
+					if (injecting === false && window[nameSpace].length < 1) {
+						log('Googletag render contained no request, considering this a reset request.');
+						throttle(process(), 2000);
+					} else {
+						log('Googletag render contained a request, letting request fall to WallpaperInjectorArray handler.');
+					}
+				}
+			});
+		});
+
+		resetRequestArray();
+
+		window._CMLS[nameSpace + 'Injected'] = 1;
 		log('Initialized.');
 	});
-
 }(jQuery, window));
