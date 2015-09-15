@@ -7,7 +7,7 @@
 		version = '0.1',
 
 		// minutes before automatically scrolling
-		timeout = 3;
+		timeout = 0.05; // 3 seconds
 
 	var scrolled = false;
 
