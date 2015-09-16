@@ -52,7 +52,7 @@
 	var cache = {};
 
 	function isHomepage() {
-		return window.location.pathname == '/' || window.location.search.indexOf('?p=') != 0;
+		return window.location.pathname == '/' && window.location.search.indexOf('?p=') != 0;
 	}
 
 	function hasLeaderboardOnTop() {
