@@ -52,7 +52,7 @@
 	var cache = {};
 
 	function isHomepage() {
-		return window.location.pathname == '/';
+		return window.location.pathname == '/' || window.location.search.indexOf('?p=') != 0;
 	}
 
 	function hasLeaderboardOnTop() {
@@ -149,7 +149,7 @@
 					e.slot.getTargeting('pos').indexOf('top') > -1
 				) {
 					log('Caught googletag render event.');
-				
+
 					var conditions = areConditionsGood();
 
 					if (conditions !== true) {
