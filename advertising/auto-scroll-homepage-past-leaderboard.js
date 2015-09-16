@@ -7,7 +7,7 @@
 		version = '0.3';
 
 		// Minutes before automatically scrolling
-		timeout = 0.083; // 5 seconds
+		timeout = 0.066; // 4 seconds
 
 	var scrolled = false;
 
