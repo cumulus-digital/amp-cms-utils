@@ -454,9 +454,10 @@
 		window.googletag.cmd = window.googletag.cmd || [];
 		googletag.cmd.push(function() {
 			googletag.pubads().addEventListener('slotRenderEnded', function(e) {
-				if (e.slot.o.pos == 'wallpaper-ad') {
+				var pos = e.slot.getTargeting('pos');
+				if (pos == 'wallpaper-ad' || (pos.length && pos.indexOf('wallpaper-ad') > -1)) {
 					log('Caught googletag render on position "wallpaper-ad"!', JSON.stringify(window[nameSpace]));
-					if (injecting === false && window[nameSpace].length < 1) {
+					if (e.isEmpty) {
 						log('Googletag render contained no request, considering this a reset request.');
 						throttle(process(), 2000);
 					} else {
