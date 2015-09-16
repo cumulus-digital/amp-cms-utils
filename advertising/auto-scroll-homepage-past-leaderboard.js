@@ -1,22 +1,30 @@
 /**
- * Scroll past the leaderboard on the homepage after x minutes
+ * Automatically scroll past the leaderboard on site homepages
  */
 (function($, window, undefined) {
 
 	var nameSpace = 'cmlsAutoScrollPastLeaderboard',
-		version = '0.1',
+		version = '0.3';
 
-		// minutes before automatically scrolling
+		// Minutes before automatically scrolling
 		timeout = 0.083; // 5 seconds
 
 	var scrolled = false;
 
+	// Only define once
 	window._CMLS = window._CMLS || {};
-
-	// Only define once.
 	if (window._CMLS[nameSpace]) {
-		window._CMLS[nameSpace].regenerateCache();
 		return;
+	}
+
+	window._CMLS[nameSpace] = window._CMLS[nameSpace] || {};
+
+	function log() {
+		if (window._CMLS && window._CMLS.debug && typeof console === 'object' && console.log) {
+			var ts = (new Date());
+			ts = ts.toISOString() ? ts.toISOString() : ts.toUTCString();
+			console.log('%c[AUTO SCROLL ' + version + ']', 'background: #759bbe; color: #FFF', ts, [].slice.call(arguments));
+		}
 	}
 
 	function throttle(fn, threshhold, scope) {
@@ -43,44 +51,118 @@
 
 	var cache = {};
 
-	function regenerateCache() {
-		cache.leaderboard = $('.wrapper-header div[id*="div-gpt-ad"]:first');
-		cache.tdpw = $('.tdpw:first');
-	}
-
 	function isHomepage() {
 		return window.location.pathname == '/';
+	}
+
+	function hasLeaderboardOnTop() {
+		var offset = cache.leaderboard.offset();
+		return cache.tdpw.length && offset.top < 100;
 	}
 
 	function generateNewPos() {
 		return cache.leaderboard.offset().top - cache.tdpw.height() + cache.leaderboard.height();
 	}
 
-	function scrolledPastLeaderboard() {
-		if ($(window).scrollTop() > generateNewPos()) {
+	function hasScrolledPastLeaderboard() {
+		if ($(window).scrollTop() >= generateNewPos()) {
 			return true;
 		}
 		return false;
 	}
 
 	function scrollPage() {
-		if ( ! isHomepage()) return;
-		if (scrolled) return;
+		var conditions = areConditionsGood();
+
+		if (conditions !== true) {
+			log('Scrolling check found bad conditions.', conditions);
+			return;
+		}
+		log('Scrolling homepage past leaderboard.');
 		$('html,body').animate({
 			scrollTop: generateNewPos()
-		}, 1000);
+		}, 600);
 		scrolled = true;
 	}
 
+	window._CMLS[nameSpace].regenerateCache = function() {
+		cache.leaderboard = $('.wrapper-header div[id*="div-gpt-ad"]:first');
+		cache.tdpw = $('.tdpw:first');
+	};
+
+	function setTimer() {
+		log('Setting timer.');
+		window._CMLS[nameSpace].timer = setTimeout(
+			scrollPage,
+			timeout * 60000
+		);
+	}
+
+	function areConditionsGood() {
+		if ( ! isHomepage()) {
+			return 'Not on homepage.';
+		}
+
+		window._CMLS[nameSpace].regenerateCache();
+		if ( ! hasLeaderboardOnTop()) {
+			return 'Leaderboard is not on top.';
+		}
+
+		scrolled = hasScrolledPastLeaderboard();
+		if (scrolled) {
+			return 'Already scrolled passed leaderboard.';
+		}
+
+		return true;
+	}
+
+	window._CMLS[nameSpace].init = function() {
+		window._CMLS = window._CMLS || {};
+		if (window._CMLS[nameSpace]) {
+			log('Initializing auto-scroll.');
+
+			var conditions = areConditionsGood();
+
+			if (conditions !== true) {
+				log('Init check found bad conditions.', conditions);
+				return;
+			}
+
+			$(window).on('load', function() {
+				setTimer();
+			});
+		}
+	};
+
 	$(function() {
-		regenerateCache();
+		window._CMLS[nameSpace].init();
 		$(window).on('scroll.' + nameSpace, throttle(function() {
-			if (scrolledPastLeaderboard()) scrolled = true;
+			if (hasScrolledPastLeaderboard()) scrolled = true;
 		}, 240));
-		window._CMLS[nameSpace] = {
-			timer: setInterval(scrollPage, timeout * 60000),
-			regenerateCache: regenerateCache
-		};
+
+		window.googletag = window.googletag || {};
+		window.googletag.cmd = window.googletag.cmd || [];
+		googletag.cmd.push(function() {
+			googletag.pubads().addEventListener('slotRenderEnded', function(e) {
+				if (
+					! e.isEmpty && 
+					e.slot.getTargeting('pos').indexOf('top') > -1
+				) {
+					log('Caught googletag render event.');
+				
+					var conditions = areConditionsGood();
+
+					if (conditions !== true) {
+						log('Googletag check found bad conditions.', conditions);
+						return;
+					}
+
+					$('#'+e.slot.getSlotElementId() + ' iframe[id*="google_ads"]').load(function() {
+						setTimer();
+					});
+				}
+			});
+		});
 	});
 
 }(jQuery, window));
