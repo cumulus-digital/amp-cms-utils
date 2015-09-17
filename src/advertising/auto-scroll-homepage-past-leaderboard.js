@@ -87,6 +87,7 @@
 	function playerBarPosition() {
 		if (
 			cache.playerbar.length &&
+			cache.playerbar.attr('id') &&
 			cache.playerbar.attr('id').toLowerCase() === 'tgmp_frame' &&
 			window.tgmp &&
 			window.tgmp.options &&
