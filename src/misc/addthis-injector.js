@@ -45,7 +45,7 @@
 	}
 
 	// For sites with Triton player, reset addthis on navigation
-	$(window).on('statechange', function() {
+	$(window).on('pageChange', function() {
 		resetAddthis();
 	});
 	
