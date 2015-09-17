@@ -1,3 +1,4 @@
+/* globals ga */
 (function(window, undefined) {
 	
 	var v = '0.5';
@@ -46,12 +47,14 @@
 			},
 			daysToHide: 30
 		};
-		var settings, vendor, banner, bannerTemplate, cache;
+		var settings, vendor, banner, bannerTemplate;
 
 		function extend(obj1, obj2) {
 			var newObj = Object.create(obj1);
 			Object.keys(obj2).map(function(p) {
-				if (p in newObj) newObj[p] = obj2[p];
+				if (p in newObj) {
+					newObj[p] = obj2[p];
+				}
 			});
 			return newObj;
 		}
@@ -77,12 +80,12 @@
 		 * Retrieve device type from UA string
 		 */
 		function getDevice() {
-			var ua = typeof userAgent != 'undefined' ? userAgent : navigator.userAgent;
+			var ua = typeof userAgent !== 'undefined' ? userAgent : navigator.userAgent; // jshint ignore:line
 			// Strip Facebook's crap
 			// pulled from https://github.com/kaimallea/isMobile
 			var fb = ua.split('[FBAN');
 			if (typeof fb[1] !== 'undefined') {
-				ua = tmp[0];
+				ua = fb[0];
 			}
 			log('UA', ua);
 			var maps = [
@@ -96,7 +99,9 @@
 				}
 			];
 			for (var i = 0; i < maps.length; i++) {
-				if (ua.match(maps[i].regexp)) return maps[i].vendor;
+				if (ua.match(maps[i].regexp)) {
+					return maps[i].vendor;
+				}
 			}
 			return false;
 		}
@@ -121,7 +126,9 @@
 				content = meta.getAttribute('content');
 				if (content && content.length) {
 					id = /app-id=([^\s,]+)/i.exec(content);
-					if ( ! id || ! id.length) id = undefined;
+					if ( ! id || ! id.length) {
+						id = undefined;
+					}
 					return id[1];
 				}
 			}
@@ -139,7 +146,9 @@
 				base[APPLE] = 'https://itunes.apple.com/en/app/id';
 				base[GOOGLE] = 'https://play.google.com/store/apps/details?id=';
 			log('Fetching store URL', store, id, base[store]);
-			if (base[store]) return base[store] + id;
+			if (base[store]) {
+				return base[store] + id;
+			}
 			return undefined;
 		}
 
@@ -147,7 +156,9 @@
 		 * Fetch the icon url from settings or touch-icon link tag
 		 */
 		function getIcon() {
-			if (settings.icon.url) return settings.icon.url;
+			if (settings.icon.url) {
+				return settings.icon.url;
+			}
 			var link = window.document.querySelector('link[rel="apple-touch-icon"],link[rel="android-touch-icon"]');
 			if (link) {
 				return link.getAttribute('href');
@@ -159,7 +170,9 @@
 		 * Fetch the app title from settings or doc title
 		 */
 		function getTitle() {
-			if (settings.title) return settings.title;
+			if (settings.title) {
+				return settings.title;
+			}
 			return window.document.title;
 		}
 

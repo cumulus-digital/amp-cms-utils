@@ -41,11 +41,15 @@
 			};
 			if (links.apple) {
 				var appleId = links.apple.getAttribute('href').match(/id(\d+)/i);
-				if (appleId && appleId.length) ids.apple = appleId[1];
+				if (appleId && appleId.length) {
+					ids.apple = appleId[1];
+				}
 			}
 			if (links.google) {
 				var googleId = links.google.getAttribute('href').match(/id=([0-9A-Za-z\.]+)/i);
-				if (googleId && googleId.length) ids.google = googleId[1];
+				if (googleId && googleId.length) {
+					ids.google = googleId[1];
+				}
 			}
 			if (links.apple || links.google) {
 				log('Discovered app IDs', ids);
@@ -102,7 +106,9 @@
 		 * @return {array|null}      link elements
 		 */
 		createIconLinks: function(logo) {
-			if ( ! logo) return null;
+			if ( ! logo) {
+				return null;
+			}
 			var src = logo.getAttribute('src');
 			if (src) {
 				log('Generating link tags with logo image url', src);

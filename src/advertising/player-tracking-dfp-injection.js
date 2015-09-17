@@ -2,11 +2,14 @@
  * Watches for changes to song data from the embedded player
  * and updates DFP targeting criteria on track change.
  */
+/* globals amp_player_config, googletag */
 (function(window, undefined) {
 	window._CMLS = window._CMLS || {};
 
 	// Only inject once
-	if (window._CMLS.embedPlayerWatch) return;
+	if (window._CMLS.embedPlayerWatch) {
+		return;
+	}
 
 	window._CMLS.embedPlayerWatch = {
 		v: '0.4',
@@ -33,7 +36,7 @@
 		 */
 		isChanged: function testTrack(current) {
 			if (current) {
-				if (current == this.trackIdCache) {
+				if (current === this.trackIdCache) {
 					return false;
 				}
 				return true;
@@ -51,7 +54,7 @@
 		checkCurrent: function checkCurrent() {
 			var current = this.getCurrentState();
 			// Check player state
-			if (current && current.data && current.data.stream && current.data.stream.code == 'LIVE_PLAYING') {
+			if (current && current.data && current.data.stream && current.data.stream.code.toUpperCase() === 'LIVE_PLAYING') {
 				this.setPlayState(true);
 			} else {
 				this.setPlayState(false);

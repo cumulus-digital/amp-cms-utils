@@ -4,7 +4,7 @@
 (function($, window, undefined) {
 
 	var nameSpace = 'cmlsAutoScrollPastLeaderboard',
-		version = '0.3';
+		version = '0.3',
 
 		// Minutes before automatically scrolling
 		timeout = 0.05; // 3 seconds
@@ -52,7 +52,7 @@
 	var cache = {};
 
 	function isHomepage() {
-		return window.location.pathname == '/' && /[\?&]?p=/i.test(window.location.search) === false;
+		return window.location.pathname === '/' && /[\?&]?p=/i.test(window.location.search) === false;
 	}
 
 	function hasLeaderboardOnTop() {
@@ -137,13 +137,15 @@
 	$(function() {
 		window._CMLS[nameSpace].init();
 		$(window).on('scroll.' + nameSpace, throttle(function() {
-			if (hasScrolledPastLeaderboard()) scrolled = true;
+			if (hasScrolledPastLeaderboard()) {
+				scrolled = true;
+			}
 		}, 240));
 
 		window.googletag = window.googletag || {};
 		window.googletag.cmd = window.googletag.cmd || [];
-		googletag.cmd.push(function() {
-			googletag.pubads().addEventListener('slotRenderEnded', function(e) {
+		window.googletag.cmd.push(function() {
+			window.googletag.pubads().addEventListener('slotRenderEnded', function(e) {
 				if (
 					! e.isEmpty && 
 					e.slot.getTargeting('pos').indexOf('top') > -1

@@ -1,6 +1,7 @@
 /**
  * Loads AddThis and handles pJAX reinitialization
  */
+/* globals addthis */
 (function ($, window, undefined) {
 	function clearAddThis() {
 		window.addthis = null;
@@ -15,18 +16,24 @@
 		window.addthis_share.title = window.document.title;
 		$('.addthis-smartlayers,.addthis-toolbox,#_atssh').remove();
 	}
-	if (window.addthis) clearAddThis();
+	if (window.addthis) {
+		clearAddThis();
+	}
 	
 	function isHomepage() {
-		return window.location.pathname == '/' && /[\?&]?p=/i.test(window.location.search) === false;
+		return window.location.pathname === '/' && /[\?&]?p=/i.test(window.location.search) === false;
 	}
 
 	// Do not load on homepage
-	if (isHomepage()) return;
+	if (isHomepage()) {
+		return;
+	}
 
 	// For sites with the player, we'll explicitly kill addthis on navigation to the homepage
 	$(window).on('statechange', function() {
-		if (isHomepage()) clearAddThis();
+		if (isHomepage()) {
+			clearAddThis();
+		}
 	});
 	
 	var atscr = window.document.createElement('script');

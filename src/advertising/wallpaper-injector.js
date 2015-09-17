@@ -1,3 +1,4 @@
+/* globals googletag */
 (function ($, window, undefined) {
 
 	var nameSpace = 'cmlsWallpaperInjector',
@@ -5,7 +6,9 @@
 		injecting = false;
 
 	// If library is already defined, bounce.
-	if (window._CMLS && window._CMLS[nameSpace + 'Injected']) return;
+	if (window._CMLS && window._CMLS[nameSpace + 'Injected']) {
+		return;
+	}
 
 	var global = {
 			settings: {
@@ -82,7 +85,9 @@
 				'top: 0;' +
 			'}' +
 		'</style>';
-	if ( ! window.document.getElementById(nameSpace + 'Styles')) $('head').append(styleSheet);
+	if ( ! window.document.getElementById(nameSpace + 'Styles')) {
+		$('head').append(styleSheet);
+	}
 
 	function log() {
 		if (window._CMLS && window._CMLS.debug && typeof console === 'object' && console.log) {
@@ -142,8 +147,9 @@
 		bgNode: null,
 
 		getBackgroundNode: function() {
-			if (wallpaper.bgNode && wallpaper.bgNode.length)
+			if (wallpaper.bgNode && wallpaper.bgNode.length) {
 				return wallpaper.bgNode;
+			}
 			var testNode = global.cache.node.children('#' + nameSpace + 'Node');
 			if (testNode.length) {
 				log('Wallpaper container exists but is not cached.');
@@ -163,8 +169,9 @@
 			var bgNode = wallpaper.getBackgroundNode(),
 				data = null;
 			log('Retrieving current wallpaper settings.', $.hasData(bgNode[0]));
-			if ($.hasData(bgNode[0]) && bgNode.data('requestOptions'))
+			if ($.hasData(bgNode[0]) && bgNode.data('requestOptions')) {
 				data = bgNode.data('requestOptions');
+			}
 			log('Current wallpaper settings:', data);
 			return data;
 		},
@@ -207,18 +214,22 @@
 				//.removeClass(nameSpace + '-fixed')
 				.css('backgroundPosition', '');
 
-			if ( ! newBackgroundColor) newBackgroundColor = 'transparent';
+			if ( ! newBackgroundColor) {
+				newBackgroundColor = 'transparent';
+			}
 			bgNode.css('backgroundColor', newBackgroundColor);
 
 			if ($('html').hasClass('csstransitions')) {
 				log('RESET: Waiting for transition.');
 				var timer = 300;
-				if (bgNode.css('backgroundImage') != 'none') { 
+				if (bgNode.css('backgroundImage') !== 'none') { 
 					log('RESET: Already has a wallpaper, increasing transition timer.', bgNode.css('backgroundImage'));
 					timer = 600;
 				}
 				setTimeout(function() {
-					if ( ! window._CMLS.skip) finishReset();
+					if ( ! window._CMLS.skip) {
+						finishReset();
+					}
 				}, timer);
 			} else {
 				finishReset();
@@ -227,7 +238,9 @@
 
 		setBackgroundFixed: function(force) {
 			var bgNode = wallpaper.getBackgroundNode();
-			if (bgNode.hasClass(nameSpace + '-fixed') && force !== true) return;
+			if (bgNode.hasClass(nameSpace + '-fixed') && force !== true) {
+				return;
+			}
 			bgNode.addClass(nameSpace + '-fixed');
 			bgNode.css(
 				'top',
@@ -236,7 +249,9 @@
 		},
 		clearBackgroundFixed: function() {
 			var bgNode = wallpaper.getBackgroundNode();
-			if ( ! bgNode.hasClass(nameSpace + '-fixed')) return;
+			if ( ! bgNode.hasClass(nameSpace + '-fixed')) {
+				return;
+			}
 			bgNode.removeClass(nameSpace + '-fixed')
 				.css('top', '');
 		},
@@ -248,8 +263,9 @@
 		passedStickPosition: function() {
 			var scrollTop = global.cache.window.scrollTop(),
 				offset = global.cache.node.offset().top;
-			if (offset < scrollTop + global.cache.stickAt)
+			if (offset < scrollTop + global.cache.stickAt) {
 				return true;
+			}
 			return false;
 		},
 		checkScrollPosition: function(force) {
@@ -281,15 +297,15 @@
 			var bgNode = wallpaper.getBackgroundNode();
 			var originalContentStyle = global.cache.contentNode.css(['position', 'zIndex']);
 			var originalFooterStyle = global.cache.footerNode.css(['position', 'zIndex']);
-			if (originalContentStyle.position == 'static') {
+			if (originalContentStyle.position === 'static') {
 				log('Setting content area position to relative.');
 				global.cache.contentNode.css('position', 'relative');
 			}
-			if (originalContentStyle.zIndex == 'auto' || originalContentStyle.zIndex <= bgNode.css('zIndex')) {
+			if (originalContentStyle.zIndex === 'auto' || originalContentStyle.zIndex <= bgNode.css('zIndex')) {
 				log('Setting content area z-index.');
 				global.cache.contentNode.css('zIndex', bgNode.css('zIndex') + 1);
 			}
-			if (originalFooterStyle.position == 'static') {
+			if (originalFooterStyle.position === 'static') {
 				log('Setting footer position to relative.');
 				global.cache.footerNode.css('position', 'relative');
 			}
@@ -316,7 +332,9 @@
 				height: '100%',
 				width: '100%'
 			}).attr('href', href);
-			if (newWindow) link.attr('target', '_blank');
+			if (newWindow) {
+				link.attr('target', '_blank');
+			}
 			bgNode.append(link);
 			global.cache.obstructiveNode.hide();
 		},
@@ -366,7 +384,9 @@
 				display();
 			}
 
-			if (settings.trackPosition) wallpaper.startTrackingScroll();
+			if (settings.trackPosition) {
+				wallpaper.startTrackingScroll();
+			}
 		}
 	};
 
@@ -378,16 +398,19 @@
 		injecting = true;
 		refreshGlobalCache();
 
+		// Wait for contentNode to exist and have content
 		if (global.cache.contentNode.width() < 100) {
 			setTimeout(function() {
-				processRequest(options);
+				process(options);
 			}, 480);
 			return;
 		}
 
 		log('Content node ready.');
 
-		if ( ! options && window[nameSpace]) options = window[nameSpace].slice(-1)[0];
+		if ( ! options && window[nameSpace]) {
+			options = window[nameSpace].slice(-1)[0];
+		}
 
 		if ( ! window[nameSpace] || ! window[nameSpace].length) {
 			log('Received empty request, resetting wallpaper.');
@@ -407,13 +430,13 @@
 		log('Testing current wallpaper against request.', currentWallpaper, settings);
 		if (
 			currentWallpaper &&
-			currentWallpaper.backgroundImage == settings.backgroundImage &&
-			currentWallpaper.backgroundRepeat == settings.backgroundRepeat &&
-			currentWallpaper.backgroundSize == settings.backgroundSize &&
-			currentWallpaper.backgroundPosition == settings.backgroundPosition &&
-			currentWallpaper.backgroundColor == settings.backgroundColor &&
-			currentWallpaper.newWindow == settings.newWindow &&
-			currentWallpaper.trackPosition == settings.trackPosition
+			currentWallpaper.backgroundImage === settings.backgroundImage &&
+			currentWallpaper.backgroundRepeat === settings.backgroundRepeat &&
+			currentWallpaper.backgroundSize === settings.backgroundSize &&
+			currentWallpaper.backgroundPosition === settings.backgroundPosition &&
+			currentWallpaper.backgroundColor === settings.backgroundColor &&
+			currentWallpaper.newWindow === settings.newWindow &&
+			currentWallpaper.trackPosition === settings.trackPosition
 		) {
 			log('Requested wallpaper is already set.');
 			return;
@@ -455,7 +478,7 @@
 		googletag.cmd.push(function() {
 			googletag.pubads().addEventListener('slotRenderEnded', function(e) {
 				var pos = e.slot.getTargeting('pos');
-				if (pos == 'wallpaper-ad' || (pos.length && pos.indexOf('wallpaper-ad') > -1)) {
+				if (pos.toLowerCase() === 'wallpaper-ad' || (pos.length && pos.indexOf('wallpaper-ad') > -1)) {
 					log('Caught googletag render on position "wallpaper-ad"!', JSON.stringify(window[nameSpace]));
 					if (e.isEmpty) {
 						log('Googletag render contained no request, considering this a reset request.');

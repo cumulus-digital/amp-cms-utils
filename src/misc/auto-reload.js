@@ -3,12 +3,15 @@
  * Reloads homepage on a timer without interrupting stream on sites with
  * Triton's new embed player.
  */
+/* globals History */
 (function(window, undefined) {
 
 	window._CMLS = window._CMLS || {};
 
 	// Only define once
-	if (window._CMLS.autoReloadReference) return;
+	if (window._CMLS.autoReloadReference) {
+		return;
+	}
 
 	/**
 	 * Reloader
@@ -128,15 +131,12 @@
 
 	function process() {
 		var options = window._CMLS.autoReload.slice(-1)[0];
-		new Reloader(options);
+		window._CMLS.autoReloadInstance = new Reloader(options);
 		resetRequestArray();
 	}
 
 	var ReloaderArray = function(){};
 	ReloaderArray.prototype = [];
-	ReloaderArray.prototype.verifyLibrary = function() {
-		return version;
-	};
 	ReloaderArray.prototype.originalPush = ReloaderArray.prototype.push;
 	ReloaderArray.prototype.push = function() {
 		for (var i = 0; i < arguments.length; i++) {

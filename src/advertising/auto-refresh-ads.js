@@ -1,6 +1,7 @@
 /**
  * Reload ads every 6 minutes
  */
+/* globals googletag */
 (function(window, undefined) {
 	var nameSpace = 'AutoRefreshAds',
 		version = '0.1',
@@ -9,7 +10,9 @@
 		timeout = 6;
 
 	window._CMLS = window._CMLS || {};
-	if (window._CMLS[nameSpace]) return;
+	if (window._CMLS[nameSpace]) {
+		return;
+	}
 
 	function log() {
 		if (window._CMLS && window._CMLS.debug && typeof console === 'object' && console.log) {
@@ -35,8 +38,10 @@
 		window.googletag = window.googletag || {};
 		window.googletag.cmd = window.googletag.cmd || [];
 		window.googletag.cmd.push(function() {
-			googletag.pubads().addEventListener('slotRenderEnded', function(e) {
-				if (window._CMLS[nameSpace] && window._CMLS[nameSpace].timer) return;
+			googletag.pubads().addEventListener('slotRenderEnded', function() {
+				if (window._CMLS[nameSpace] && window._CMLS[nameSpace].timer) {
+					return;
+				}
 				log('Starting timer.');
 				window._CMLS[nameSpace].timer = setTimeout(function() {
 					if (googletag && googletag.pubads) {
