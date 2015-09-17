@@ -23,6 +23,13 @@
 		timer: null
 	};
 
+	function clearTimer() {
+		if (window._CMLS && window._CMLS[nameSpace] && window._CMLS[nameSpace].timer) {
+			clearTimeout(window._CMLS[nameSpace].timer);
+			window._CMLS[nameSpace].timer = null;
+		}
+	}
+
 	// Restart timer when ads refresh
 	window.addEventListener('td-player.playing', function() {
 		window.googletag = window.googletag || {};
@@ -43,12 +50,13 @@
 		});
 	}, false);
 
+	window.addEventListener('td-player.stopped', function() {
+		clearTimer();
+	}, false);
+
 	// Clear timer when history changes
 	window.addEventListener('statechange', function() {
-		if (window._CMLS && window._CMLS[nameSpace] && window._CMLS[nameSpace].timer) {
-			clearTimeout(window._CMLS[nameSpace].timer);
-			window._CMLS[nameSpace].timer = null;
-		}
+		clearTimer();
 	}, false);
 
 }(window));
