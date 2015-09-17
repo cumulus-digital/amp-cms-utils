@@ -2,8 +2,6 @@
  * Automatically scroll past the leaderboard on site homepages
  */
 
-/* globals tgmp */
-
 (function($, window, undefined) {
 
 	var nameSpace = 'cmlsAutoScrollPastLeaderboard',
@@ -90,11 +88,11 @@
 		if (
 			cache.playerbar.length &&
 			cache.playerbar.attr('id').toLowerCase() === 'tgmp_frame' &&
-			tgmp &&
-			tgmp.options &&
-			tgmp.options.position
+			window.tgmp &&
+			window.tgmp.options &&
+			window.tgmp.options.position
 		) {
-			if (tgmp.options.position.toLowerCase() === 'bottom') {
+			if (window.tgmp.options.position.toLowerCase() === 'bottom') {
 				return PLAYER_POSITION_BOTTOM;
 			}
 		}
