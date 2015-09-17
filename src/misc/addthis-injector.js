@@ -13,6 +13,11 @@
 		}
 	}
 
+	// Only inject once
+	if (window.addthis) {
+		return;
+	}
+
 	function injectAddthis() {
 		log('Injecting.');
 		var atscr = window.document.createElement('script');
