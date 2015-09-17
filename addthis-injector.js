@@ -17,12 +17,16 @@
 	}
 	if (window.addthis) clearAddThis();
 	
+	function isHomepage() {
+		return window.location.pathname == '/' && /[\?&]?p=/i.test(window.location.search) === false;
+	}
+
 	// Do not load on homepage
-	if (window.location.pathname == '/') return;
+	if (isHomepage()) return;
 
 	// For sites with the player, we'll explicitly kill addthis on navigation to the homepage
 	$(window).on('statechange', function() {
-		if (window.location.pathname == '/') clearAddThis();
+		if (isHomepage()) clearAddThis();
 	});
 	
 	var atscr = window.document.createElement('script');
