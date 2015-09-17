@@ -1,46 +1,46 @@
 /**
  * Loads AddThis and handles pJAX reinitialization
  */
-/* globals addthis */
 (function ($, window, undefined) {
-	function clearAddThis() {
-		window.addthis = null;
-		window._adr = null;
-		window._atc = null;
-		window._atd = null;
-		window._ate = null;
-		window._atr = null;
-		window._atw = null;
-		window.addthis_share = window.addthis_share||{};
-		window.addthis_share.url = window.location.href;
-		window.addthis_share.title = window.document.title;
-		$('.addthis-smartlayers,.addthis-toolbox,#_atssh').remove();
-	}
-	if (window.addthis) {
-		clearAddThis();
-	}
-	
-	function isHomepage() {
-		return window.location.pathname === '/' && /[\?&]?p=/i.test(window.location.search) === false;
+
+	var version = '0.2';
+
+	function log() {
+		if (window._CMLS && window._CMLS.debug && typeof console === 'object' && console.log) {
+			var ts = (new Date());
+			ts = ts.toISOString() ? ts.toISOString() : ts.toUTCString();
+			console.log('[ADDTHIS INJECTOR ' + version + ']', ts, [].slice.call(arguments));
+		}
 	}
 
-	// Do not load on homepage
-	if (isHomepage()) {
+	function injectAddthis() {
+		var atscr = window.document.createElement('script');
+		atscr.src = '//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-55dc79597bae383e';
+		atscr.async = true;
+		window.document.body.appendChild(atscr);
+	}
+
+	// Check if we're using TuneGenie's player
+	if (window.tgmp) {
+		if (window === window.top) {
+			log('Using TuneGenie player and injected in top window, ejecting.');
+			return;
+		}
+		// Inject every time.
+		injectAddthis();
 		return;
 	}
 
-	// For sites with the player, we'll explicitly kill addthis on navigation to the homepage
-	$(window).on('statechange', function() {
-		if (isHomepage()) {
-			clearAddThis();
+	function resetAddthis() {
+		if (window.addthis) {
+			window.addthis.layers.refresh();
 		}
+	}
+
+	// For sites with Triton player, reset addthis on navigation
+	$(window).on('statechange', function() {
+		resetAddthis();
 	});
 	
-	var atscr = window.document.createElement('script');
-	atscr.src = '//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-55dc79597bae383e&async=1';
-	window.document.body.appendChild(atscr);
-	window.loadAddThis = function() {
-		addthis.init();
-		addthis.toolbox();
-	};
-}(jQuery, window));
+	injectAddthis();
+}(jQuery, window.self));
