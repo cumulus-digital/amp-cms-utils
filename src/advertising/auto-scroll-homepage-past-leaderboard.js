@@ -6,6 +6,11 @@
 
 (function($, window, undefined) {
 
+	// If using TuneGenie's player, don't operate on the top window
+	if (tgmp && window === window.top) {
+		return;
+	}
+
 	var nameSpace = 'cmlsAutoScrollPastLeaderboard',
 		version = '0.4',
 
@@ -234,4 +239,4 @@
 		});
 	});
 
-}(jQuery, window));
+}(jQuery, window.self));
