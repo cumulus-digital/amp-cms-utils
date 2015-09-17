@@ -6,11 +6,6 @@
 
 (function($, window, undefined) {
 
-	// If using TuneGenie's player, don't operate on the top window
-	if (tgmp && window === window.top) {
-		return;
-	}
-
 	var nameSpace = 'cmlsAutoScrollPastLeaderboard',
 		version = '0.4',
 
@@ -33,6 +28,12 @@
 			ts = ts.toISOString() ? ts.toISOString() : ts.toUTCString();
 			console.log('%c[AUTO SCROLL ' + version + ']', 'background: #759bbe; color: #FFF', ts, [].slice.call(arguments));
 		}
+	}
+
+	// If using TuneGenie's player, don't operate on the top window
+	if (tgmp && window === window.top) {
+		log('Called in top window while using TuneGenie player, exiting.');
+		return;
 	}
 
 	function throttle(fn, threshhold, scope) {
