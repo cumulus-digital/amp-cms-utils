@@ -44,22 +44,24 @@
 
 	function resetAddthis() {
 		if (window.addthis) {
-			var addthisObject = $('.atss-left');
-			if ( ! addthisObject.length) {
+			var addthisLayer = $('.atss-left');
+			// Re-inject if the widget doesn't already exist on the page
+			if ( ! addthisLayer.length) {
 				injectAddthis();
-			}
-			if (isHomepage()) {
-				addthisObject.addClass('slideOutLeft');
-			} else if (addthisObject.hasClass('slideOutLeft')) {
-				addthisObject.removeClass('slideOutLeft');
 			}
 			log('Resetting.');
 			window.addthis.layers.refresh();
+			addthisLayer.removeClass('slideOutLeft');
 		}
 	}
 
+	// Hide addthis initially on navigation
+	$(window).on('statechange', function() {
+		$('.atss-left').addClass('slideOutLeft');
+	});
+
 	// For sites with Triton player, reset addthis on navigation
-	$(window).on('statechange pageChange', function() {
+	$(window).on('pageChange', function() {
 		resetAddthis();
 	});
 	
