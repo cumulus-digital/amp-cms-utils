@@ -13,39 +13,6 @@
 		"outputStyle": 2,
 		"syntaxCheckerStyle": 1
 		},
-	"\/dist\/advertising\/auto-scroll-homepage-past-leaderboard-min.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/dist\/advertising\/auto-scroll-homepage-past-leaderboard-min.js",
-		"outputAbbreviatedPath": "\/dist\/advertising\/auto-scroll-homepage-past-leaderboard-min-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 2,
-		"syntaxCheckerStyle": 1
-		},
-	"\/dist\/advertising\/player-tracking-dfp-injection-min.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/dist\/advertising\/player-tracking-dfp-injection-min.js",
-		"outputAbbreviatedPath": "\/dist\/advertising\/player-tracking-dfp-injection-min-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 2,
-		"syntaxCheckerStyle": 1
-		},
-	"\/dist\/advertising\/teadsinjector-min.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/dist\/advertising\/teadsinjector-min.js",
-		"outputAbbreviatedPath": "\/dist\/advertising\/teadsinjector-min-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 2,
-		"syntaxCheckerStyle": 1
-		},
 	"\/dist\/advertising\/wallpaper-injector-min.js": {
 		"fileType": 64,
 		"ignore": 1,
@@ -63,39 +30,6 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/dist\/compiled-allsites-min.js",
 		"outputAbbreviatedPath": "\/dist\/compiled-allsites-min-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 2,
-		"syntaxCheckerStyle": 1
-		},
-	"\/dist\/misc\/addthis-injector-min.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/dist\/misc\/addthis-injector-min.js",
-		"outputAbbreviatedPath": "\/dist\/misc\/addthis-injector-min-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 2,
-		"syntaxCheckerStyle": 1
-		},
-	"\/dist\/misc\/auto-reload-min.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/dist\/misc\/auto-reload-min.js",
-		"outputAbbreviatedPath": "\/dist\/misc\/auto-reload-min-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 2,
-		"syntaxCheckerStyle": 1
-		},
-	"\/dist\/smartbanner\/injector-min.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/dist\/smartbanner\/injector-min.js",
-		"outputAbbreviatedPath": "\/dist\/smartbanner\/injector-min-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 2,
@@ -134,8 +68,8 @@
 		},
 	"\/src\/advertising\/auto-scroll-homepage-past-leaderboard.js": {
 		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
+		"ignore": 1,
+		"ignoreWasSetByUser": 1,
 		"inputAbbreviatedPath": "\/src\/advertising\/auto-scroll-homepage-past-leaderboard.js",
 		"outputAbbreviatedPath": "\/dist\/advertising\/auto-scroll-homepage-past-leaderboard-min.js",
 		"outputPathIsOutsideProject": 0,
@@ -156,8 +90,8 @@
 		},
 	"\/src\/advertising\/player-tracking-dfp-injection.js": {
 		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
+		"ignore": 1,
+		"ignoreWasSetByUser": 1,
 		"inputAbbreviatedPath": "\/src\/advertising\/player-tracking-dfp-injection.js",
 		"outputAbbreviatedPath": "\/dist\/advertising\/player-tracking-dfp-injection-min.js",
 		"outputPathIsOutsideProject": 0,
@@ -167,8 +101,8 @@
 		},
 	"\/src\/advertising\/teadsinjector.js": {
 		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
+		"ignore": 1,
+		"ignoreWasSetByUser": 1,
 		"inputAbbreviatedPath": "\/src\/advertising\/teadsinjector.js",
 		"outputAbbreviatedPath": "\/dist\/advertising\/teadsinjector-min.js",
 		"outputPathIsOutsideProject": 0,
@@ -200,8 +134,8 @@
 		},
 	"\/src\/misc\/addthis-injector.js": {
 		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
+		"ignore": 1,
+		"ignoreWasSetByUser": 1,
 		"inputAbbreviatedPath": "\/src\/misc\/addthis-injector.js",
 		"outputAbbreviatedPath": "\/dist\/misc\/addthis-injector-min.js",
 		"outputPathIsOutsideProject": 0,
