@@ -4,7 +4,7 @@
 (function($, window, undefined) {
 
 	var nameSpace = 'cmlsAutoScrollPastLeaderboard',
-		version = '0.3',
+		version = '0.4',
 
 		// Minutes before automatically scrolling
 		timeout = 0.05; // 3 seconds
@@ -55,15 +55,34 @@
 		return window.location.pathname === '/' && /[\?&]?p=/i.test(window.location.search) === false;
 	}
 
+	/**
+	 * Determine if site has leaderboard on top of the masthead
+	 * @return {Boolean}
+	 */
 	function hasLeaderboardOnTop() {
+		if ( ! cache.leaderboard || ! cache.tdpw) {
+			return false;
+		}
 		var offset = cache.leaderboard.offset();
 		return cache.tdpw.length && offset.top < 100;
 	}
 
+	/**
+	 * Determine the bottom of the leaderboard, accounting for its offset and the
+	 * player's height.
+	 * @return {Number} Bottom offset of the leaderboard
+	 */
 	function generateNewPos() {
-		return cache.leaderboard.offset().top - cache.tdpw.height() + cache.leaderboard.height();
+		if (cache.leaderboard) {
+			return cache.leaderboard.offset().top - cache.tdpw.height() + cache.leaderboard.height();
+		}
+		return 0;
 	}
 
+	/**
+	 * Determine if current scroll position is past the bottom of the leaderboard
+	 * @return {Boolean} [description]
+	 */
 	function hasScrolledPastLeaderboard() {
 		if ($(window).scrollTop() >= generateNewPos()) {
 			return true;
@@ -71,6 +90,10 @@
 		return false;
 	}
 
+	/**
+	 * Scroll the page past the leaderboard.
+	 * @return {undefined}
+	 */
 	function scrollPage() {
 		var conditions = areConditionsGood();
 
@@ -85,11 +108,19 @@
 		scrolled = true;
 	}
 
+	/**
+	 * Regenerate node caches
+	 * @return {undefined}
+	 */
 	window._CMLS[nameSpace].regenerateCache = function() {
 		cache.leaderboard = $('.wrapper-header div[id*="div-gpt-ad"]:first');
 		cache.tdpw = $('.tdpw:first');
 	};
 
+	/**
+	 * Initialize timer
+	 * @return {undefined}
+	 */
 	function setTimer() {
 		log('Setting timer.');
 		window._CMLS[nameSpace].timer = setTimeout(
@@ -98,6 +129,12 @@
 		);
 	}
 
+	/**
+	 * Determine if conditions favor activating the library.
+	 * Checks if user is on the homepage, if the leaderboard is on top,
+	 * and if they have already scrolled
+	 * @return {String|Boolean} Returns true if conditions are good, error string otherwise.
+	 */
 	function areConditionsGood() {
 		if ( ! isHomepage()) {
 			return 'Not on homepage.';
