@@ -13,11 +13,6 @@
 		}
 	}
 
-	// Only inject once
-	if (window.addthis) {
-		return;
-	}
-
 	function injectAddthis() {
 		log('Injecting.');
 		var atscr = window.document.createElement('script');
@@ -37,15 +32,26 @@
 		return;
 	}
 
+	// Check if we're on the homepage
+	function isHomepage() {
+		return window.location.pathname === '/' && /[\?&]?p=/i.test(window.location.search) === false;
+	}
+
 	function resetAddthis() {
 		if (window.addthis) {
+			var addthisObject = $('.atss-left');
+			if (isHomepage()) {
+				addthisObject.addClass('slideOutLeft');
+			} else if (addthisObject.hasClass('slideOutLeft')) {
+				addthisObject.removeClass('slideOutLeft');
+			}
 			log('Resetting.');
 			window.addthis.layers.refresh();
 		}
 	}
 
 	// For sites with Triton player, reset addthis on navigation
-	$(window).on('pageChange', function() {
+	$(window).on('statechange pageChange', function() {
 		resetAddthis();
 	});
 	
