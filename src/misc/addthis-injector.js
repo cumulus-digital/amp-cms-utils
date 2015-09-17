@@ -40,6 +40,9 @@
 	function resetAddthis() {
 		if (window.addthis) {
 			var addthisObject = $('.atss-left');
+			if ( ! addthisObject.length) {
+				injectAddthis();
+			}
 			if (isHomepage()) {
 				addthisObject.addClass('slideOutLeft');
 			} else if (addthisObject.hasClass('slideOutLeft')) {
@@ -55,5 +58,7 @@
 		resetAddthis();
 	});
 	
-	injectAddthis();
+	if ( ! isHomepage()) {
+		injectAddthis();
+	}
 }(jQuery, window.self));
