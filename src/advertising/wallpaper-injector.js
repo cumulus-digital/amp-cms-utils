@@ -24,7 +24,7 @@
 		return;
 	}
 
-	var global = {
+	var globals = {
 			settings: {
 				// Node selector for where to inject wallpaper
 				injectionNode: '.wrapper-content',
@@ -84,7 +84,7 @@
 				'-ms-transition: background-position 0.4s, background-color 0.7s;' +
 				'transition: background-position 0.4s, background-color 0.7s;' +
 			'}' +
-			'' + global.settings.contentNode + ' {' +
+			'' + globals.settings.contentNode + ' {' +
 				'-webkit-transition: box-shadow 1s;' +
 				'-moz-transition: box-shadow 1s;' +
 				'-o-transition: box-shadow 1s;' +
@@ -104,14 +104,14 @@
 	}
 
 	function refreshGlobalCache() {
-		global.cache.node = $(global.settings.injectionNode);
-		global.cache.stickNode = $(global.settings.stickNode);
-		global.cache.stickAt = global.cache.stickNode.offset().top;
-		global.cache.contentNode = $(global.settings.contentNode);
-		global.cache.footerNode = $(global.settings.footerNode);
-		global.cache.window = $(window);
-		global.cache.document = $(window.document);
-		global.cache.obstructiveNode = $(global.settings.obstructiveNode);
+		globals.cache.node = $(globals.settings.injectionNode);
+		globals.cache.stickNode = $(globals.settings.stickNode);
+		globals.cache.stickAt = globals.cache.stickNode.offset().top;
+		globals.cache.contentNode = $(globals.settings.contentNode);
+		globals.cache.footerNode = $(globals.settings.footerNode);
+		globals.cache.window = $(window);
+		globals.cache.document = $(window.document);
+		globals.cache.obstructiveNode = $(globals.settings.obstructiveNode);
 	}
 	refreshGlobalCache();
 
@@ -156,14 +156,14 @@
 			if (wallpaper.bgNode && wallpaper.bgNode.length) {
 				return wallpaper.bgNode;
 			}
-			var testNode = global.cache.node.children('#' + nameSpace + 'Node');
+			var testNode = globals.cache.node.children('#' + nameSpace + 'Node');
 			if (testNode.length) {
 				log('Wallpaper container exists but is not cached.');
 				wallpaper.bgNode = testNode;
 			} else {
 				log('Injecting wallpaper container.');
 				var bgNode = $('<div id="' + nameSpace + 'Node" />');
-				global.cache.node.prepend(bgNode);
+				globals.cache.node.prepend(bgNode);
 				wallpaper.bgNode = $('#' + nameSpace + 'Node');
 				wallpaper.bgNode.addClass(nameSpace + '-base').css('zIndex');
 				wallpaper.raiseContentArea();
@@ -184,8 +184,8 @@
 
 		clearListeners: function() {
 			log('Clearing all event listeners.');
-			global.cache.window.off('.' + nameSpace);
-			global.cache.document.off('.' + nameSpace);
+			globals.cache.window.off('.' + nameSpace);
+			globals.cache.document.off('.' + nameSpace);
 		},
 
 		reset: function(callBack, newBackgroundColor) {
@@ -193,7 +193,7 @@
 
 			refreshGlobalCache();
 			wallpaper.clearListeners();
-			global.cache.obstructiveNode.show();
+			globals.cache.obstructiveNode.show();
 
 			var bgNode = wallpaper.getBackgroundNode();
 
@@ -250,7 +250,7 @@
 			bgNode.addClass(nameSpace + '-fixed');
 			bgNode.css(
 				'top',
-				global.cache.stickAt
+				globals.cache.stickAt
 			);
 		},
 		clearBackgroundFixed: function() {
@@ -263,13 +263,13 @@
 		},
 		refreshStickPosition: function() {
 			log('Refreshing stick position.');
-			global.cache.stickAt = global.cache.stickNode.offset().top;
-			return global.cache.stickAt;
+			globals.cache.stickAt = globals.cache.stickNode.offset().top;
+			return globals.cache.stickAt;
 		},
 		passedStickPosition: function() {
-			var scrollTop = global.cache.window.scrollTop(),
-				offset = global.cache.node.offset().top;
-			if (offset < scrollTop + global.cache.stickAt) {
+			var scrollTop = globals.cache.window.scrollTop(),
+				offset = globals.cache.node.offset().top;
+			if (offset < scrollTop + globals.cache.stickAt) {
 				return true;
 			}
 			return false;
@@ -289,11 +289,11 @@
 			wallpaper.checkScrollPosition(true);
 			bgNode.data('trackingScroll', 1);
 
-			global.cache.window.on('scroll.' + nameSpace, throttle(function() {
+			globals.cache.window.on('scroll.' + nameSpace, throttle(function() {
 				wallpaper.checkScrollPosition();
 			}, 60));
 
-			global.cache.window.on('resize.' + nameSpace, debounce(function() {
+			globals.cache.window.on('resize.' + nameSpace, debounce(function() {
 				wallpaper.refreshStickPosition();
 			}, 480));
 		},
@@ -301,31 +301,31 @@
 		raiseContentArea: function() {
 			log('Raising content area above wallpaper container.');
 			var bgNode = wallpaper.getBackgroundNode();
-			var originalContentStyle = global.cache.contentNode.css(['position', 'zIndex']);
-			var originalFooterStyle = global.cache.footerNode.css(['position', 'zIndex']);
+			var originalContentStyle = globals.cache.contentNode.css(['position', 'zIndex']);
+			var originalFooterStyle = globals.cache.footerNode.css(['position', 'zIndex']);
 			if (originalContentStyle.position === 'static') {
 				log('Setting content area position to relative.');
-				global.cache.contentNode.css('position', 'relative');
+				globals.cache.contentNode.css('position', 'relative');
 			}
 			if (originalContentStyle.zIndex === 'auto' || originalContentStyle.zIndex <= bgNode.css('zIndex')) {
 				log('Setting content area z-index.');
-				global.cache.contentNode.css('zIndex', bgNode.css('zIndex') + 1);
+				globals.cache.contentNode.css('zIndex', bgNode.css('zIndex') + 1);
 			}
 			if (originalFooterStyle.position === 'static') {
 				log('Setting footer position to relative.');
-				global.cache.footerNode.css('position', 'relative');
+				globals.cache.footerNode.css('position', 'relative');
 			}
-			global.cache.contentNode.data('originalStyles', originalContentStyle);
-			global.cache.footerNode.data('originalStyles', originalFooterStyle);
+			globals.cache.contentNode.data('originalStyles', originalContentStyle);
+			globals.cache.footerNode.data('originalStyles', originalFooterStyle);
 			log('Content area raised.');
 		},
 
 		lowerContentArea: function() {
-			if ($.hasData(global.cache.contentNode[0]) && global.cache.contentNode.data('originalStyles')) {
-				global.cache.contentNode.css(global.cache.contentNode.data('originalStyles'));
+			if ($.hasData(globals.cache.contentNode[0]) && globals.cache.contentNode.data('originalStyles')) {
+				globals.cache.contentNode.css(globals.cache.contentNode.data('originalStyles'));
 			}
-			if ($.hasData(global.cache.footerNode[0]) && global.cache.footerNode.data('originalStyles')) {
-				global.cache.footerNode.css(global.cache.footerNode.data('originalStyles'));
+			if ($.hasData(globals.cache.footerNode[0]) && globals.cache.footerNode.data('originalStyles')) {
+				globals.cache.footerNode.css(globals.cache.footerNode.data('originalStyles'));
 			}
 		},
 
@@ -342,7 +342,7 @@
 				link.attr('target', '_blank');
 			}
 			bgNode.append(link);
-			global.cache.obstructiveNode.hide();
+			globals.cache.obstructiveNode.hide();
 		},
 
 		generate: function(options) {
@@ -405,7 +405,7 @@
 		refreshGlobalCache();
 
 		// Wait for contentNode to exist and have content
-		if (global.cache.contentNode.width() < 100) {
+		if (globals.cache.contentNode.width() < 100) {
 			setTimeout(function() {
 				process(options);
 			}, 480);
