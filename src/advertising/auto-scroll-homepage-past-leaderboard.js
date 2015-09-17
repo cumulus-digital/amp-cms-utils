@@ -118,6 +118,9 @@
 	 * @return {Boolean} [description]
 	 */
 	function hasScrolledPastLeaderboard() {
+		if (window[nameSpace].scrolled === true) {
+			return true;
+		}
 		if ($(window).scrollTop() >= generateNewPos()) {
 			return true;
 		}
