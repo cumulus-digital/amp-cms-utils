@@ -26,6 +26,45 @@
 		return;
 	}
 
+	// Constants
+	var APPLE = 'apple',
+		GOOGLE = 'google';
+
+	/**
+	 * Retrieve device type from UA string
+	 */
+	function getDevice() {
+		var ua = typeof userAgent !== 'undefined' ? userAgent : navigator.userAgent; // jshint ignore:line
+		// Strip Facebook's crap
+		// pulled from https://github.com/kaimallea/isMobile
+		var fb = ua.split('[FBAN');
+		if (typeof fb[1] !== 'undefined') {
+			ua = fb[0];
+		}
+		log('UA', ua);
+		var maps = [
+			{
+				vendor: APPLE,
+				regexp: /iP[honead]+/i
+			},
+			{
+				vendor: GOOGLE,
+				regexp: /(?=.*\bAndroid\b)(?=.*\bMobile\b)/i
+			}
+		];
+		for (var i = 0; i < maps.length; i++) {
+			if (ua.match(maps[i].regexp)) {
+				return maps[i].vendor;
+			}
+		}
+		return false;
+	}
+
+	if ( ! getDevice()) {
+		log('Unsupported device, exiting.');
+		return;
+	}
+
 	var injector = {
 
 		/**
