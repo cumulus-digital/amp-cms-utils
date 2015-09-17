@@ -1,6 +1,9 @@
 /**
  * Automatically scroll past the leaderboard on site homepages
  */
+
+/* globals tgmp */
+
 (function($, window, undefined) {
 
 	var nameSpace = 'cmlsAutoScrollPastLeaderboard',
@@ -49,7 +52,9 @@
 		};
 	}
 
-	var cache = {};
+	var cache = {},
+		PLAYER_POSITION_TOP = 1,
+		PLAYER_POSITION_BOTTOM = 2;
 
 	function isHomepage() {
 		return window.location.pathname === '/' && /[\?&]?p=/i.test(window.location.search) === false;
@@ -60,21 +65,46 @@
 	 * @return {Boolean}
 	 */
 	function hasLeaderboardOnTop() {
-		if ( ! cache.leaderboard || ! cache.tdpw) {
+		if ( ! cache.leaderboard || ! cache.playerbar) {
 			return false;
 		}
-		var offset = cache.leaderboard.offset();
-		return cache.tdpw.length && offset.top < 100;
+		var adOffset = cache.leaderboard.offset();
+		if (playerBarPosition() === PLAYER_POSITION_TOP) {
+			return adOffset.top < 100;
+		}
+		return adOffset.top < 30;
+	}
+
+	/**
+	 * Determine the player position with support for TuneGenie and Triton players
+	 * @return {String} 'top' or 'bottom'
+	 */
+	function playerBarPosition() {
+		if (
+			cache.playerbar.length &&
+			cache.playerbar.attr('id').toLowerCase() === 'tgmp_frame' &&
+			tgmp &&
+			tgmp.options &&
+			tgmp.options.position
+		) {
+			if (tgmp.options.position.toLowerCase() === 'bottom') {
+				return PLAYER_POSITION_BOTTOM;
+			}
+		}
+		return PLAYER_POSITION_TOP;
 	}
 
 	/**
 	 * Determine the bottom of the leaderboard, accounting for its offset and the
-	 * player's height.
+	 * player's height vs scrollTop
 	 * @return {Number} Bottom offset of the leaderboard
 	 */
 	function generateNewPos() {
 		if (cache.leaderboard) {
-			return cache.leaderboard.offset().top - cache.tdpw.height() + cache.leaderboard.height();
+			if (playerBarPosition() === PLAYER_POSITION_TOP) {
+				return cache.leaderboard.offset().top - cache.playerbar.height() + cache.leaderboard.height();
+			}
+			return cache.leaderboard.offset().top + cache.leaderboard.height();
 		}
 		return 0;
 	}
@@ -114,7 +144,7 @@
 	 */
 	window._CMLS[nameSpace].regenerateCache = function() {
 		cache.leaderboard = $('.wrapper-header div[id*="div-gpt-ad"]:first');
-		cache.tdpw = $('.tdpw:first');
+		cache.playerbar = $('.tdpw:first,#tgmp_frame:first');
 	};
 
 	/**
