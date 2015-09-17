@@ -21,6 +21,7 @@
 	}
 
 	window._CMLS[nameSpace] = window._CMLS[nameSpace] || {};
+	window._CMLS[nameSpace].scrolled = false;
 
 	function log() {
 		if (window._CMLS && window._CMLS.debug && typeof console === 'object' && console.log) {
@@ -31,7 +32,7 @@
 	}
 
 	// If using TuneGenie's player, don't operate on the top window
-	if (tgmp && window === window.top) {
+	if (window.tgmp && window === window.top) {
 		log('Called in top window while using TuneGenie player, exiting.');
 		return;
 	}
