@@ -14,6 +14,7 @@
 	}
 
 	function injectAddthis() {
+		log('Injecting.');
 		var atscr = window.document.createElement('script');
 		atscr.src = '//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-55dc79597bae383e';
 		atscr.async = true;
@@ -33,6 +34,7 @@
 
 	function resetAddthis() {
 		if (window.addthis) {
+			log('Resetting.');
 			window.addthis.layers.refresh();
 		}
 	}
