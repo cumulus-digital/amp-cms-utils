@@ -5,6 +5,11 @@
 
 	var version = '0.2';
 
+	// Don't overwrite existing addthis functions
+	if (window.addthis) {
+		return;
+	}
+
 	function log() {
 		if (window._CMLS && window._CMLS.debug && typeof console === 'object' && console.log) {
 			var ts = (new Date());
