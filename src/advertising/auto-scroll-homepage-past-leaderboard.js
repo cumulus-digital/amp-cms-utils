@@ -10,8 +10,6 @@
 		// Minutes before automatically scrolling
 		timeout = 0.05; // 3 seconds
 
-	var scrolled = false;
-
 	// Only define once
 	window._CMLS = window._CMLS || {};
 	if (window._CMLS[nameSpace]) {
@@ -141,7 +139,7 @@
 		$('html,body').animate({
 			scrollTop: generateNewPos()
 		}, 600);
-		scrolled = true;
+		window._CMLS[nameSpace].scrolled = true;
 	}
 
 	/**
@@ -181,8 +179,8 @@
 			return 'Leaderboard is not on top.';
 		}
 
-		scrolled = hasScrolledPastLeaderboard();
-		if (scrolled) {
+		window._CMLS[nameSpace].scrolled = hasScrolledPastLeaderboard();
+		if (window._CMLS[nameSpace].scrolled) {
 			return 'Already scrolled passed leaderboard.';
 		}
 
@@ -211,7 +209,7 @@
 		window._CMLS[nameSpace].init();
 		$(window).on('scroll.' + nameSpace, throttle(function() {
 			if (hasScrolledPastLeaderboard()) {
-				scrolled = true;
+				window._CMLS[nameSpace].scrolled = true;
 			}
 		}, 240));
 
