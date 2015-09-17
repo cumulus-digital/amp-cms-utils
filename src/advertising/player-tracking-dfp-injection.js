@@ -11,6 +11,11 @@
 		return;
 	}
 
+	// Don't inject at all if we're using TuneGenie's player
+	if (window.tgmp) {
+		return;
+	}
+
 	window._CMLS.embedPlayerWatch = {
 		v: '0.4',
 		initialized: false,

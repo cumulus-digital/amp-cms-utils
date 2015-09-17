@@ -15,6 +15,12 @@
 		}
 	}
 
+	// Don't run in the topmost window if we're using TuneGenie's player
+	if (window.tgmp && window === window.top) {
+		log('Using TuneGenie player and injected in top window, ejecting.');
+		return;
+	}
+
 	// Define only once.
 	window._CMLS = window._CMLS || {};
 	if (window._CMLS.cGroups && window._CMLS.cGroups.length) {
@@ -48,4 +54,4 @@
 		});
 	});
 
-}(jQuery, window));
+}(jQuery, window.self));

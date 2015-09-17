@@ -5,6 +5,20 @@
 		version = '0.12',
 		injecting = false;
 
+	function log() {
+		if (window._CMLS && window._CMLS.debug && typeof console === 'object' && console.log) {
+			var ts = (new Date());
+			ts = ts.toISOString() ? ts.toISOString() : ts.toUTCString();
+			console.log('[WALLPAPER INJECTOR ' + version + ']', ts, [].slice.call(arguments));
+		}
+	}
+
+	// Don't run in the topmost window if we're using TuneGenie's player
+	if (window.tgmp && window === window.top) {
+		log('Using TuneGenie player and injected in top window, ejecting.');
+		return;
+	}
+
 	// If library is already defined, bounce.
 	if (window._CMLS && window._CMLS[nameSpace + 'Injected']) {
 		return;
@@ -87,14 +101,6 @@
 		'</style>';
 	if ( ! window.document.getElementById(nameSpace + 'Styles')) {
 		$('head').append(styleSheet);
-	}
-
-	function log() {
-		if (window._CMLS && window._CMLS.debug && typeof console === 'object' && console.log) {
-			var ts = (new Date());
-			ts = ts.toISOString() ? ts.toISOString() : ts.toUTCString();
-			console.log('[WALLPAPER INJECTOR ' + version + ']', ts, [].slice.call(arguments));
-		}
 	}
 
 	function refreshGlobalCache() {
@@ -495,4 +501,4 @@
 		window._CMLS[nameSpace + 'Injected'] = 1;
 		log('Initialized.');
 	});
-}(jQuery, window));
+}(jQuery, window.self));

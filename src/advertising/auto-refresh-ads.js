@@ -9,10 +9,6 @@
 		// Time before refreshing ads in minutes
 		timeout = 6;
 
-	window._CMLS = window._CMLS || {};
-	if (window._CMLS[nameSpace]) {
-		return;
-	}
 
 	function log() {
 		if (window._CMLS && window._CMLS.debug && typeof console === 'object' && console.log) {
@@ -20,6 +16,18 @@
 			ts = ts.toISOString() ? ts.toISOString() : ts.toUTCString();
 			console.log('%c[AUTO REFRESH ADS ' + version + ']', 'background: #557b9e; color: #FFF', ts, [].slice.call(arguments));
 		}
+	}
+
+	// Don't run in the topmost window if we're using TuneGenie's player
+	if (window.tgmp && window === window.top) {
+		log('Using TuneGenie player and injected in top window, ejecting.');
+		return;
+	}
+
+	// Only inject once
+	window._CMLS = window._CMLS || {};
+	if (window._CMLS[nameSpace]) {
+		return;
 	}
 
 	window._CMLS[nameSpace] = {
@@ -64,4 +72,4 @@
 		clearTimer();
 	}, false);
 
-}(window));
+}(window.self));
