@@ -9,8 +9,8 @@
 			headerSelector: '.wrapper-header',
 			logoSelector: 'figure.logo img',
 
-			styleSheetUrl: 'https://cdn.rawgit.com/cumulus-digital/amp-cms-utils/3f5b5d858347dd35e7a8ecb47ccbbca614e012c0/advertising/smartbanner/smartbanner.css',
-			libraryUrl: 'https://cdn.rawgit.com/cumulus-digital/amp-cms-utils/3f5b5d858347dd35e7a8ecb47ccbbca614e012c0/advertising/smartbanner/smartbanner.js'
+			styleSheetUrl: 'https://cdn.rawgit.com/cumulus-digital/amp-cms-utils/0a1cff3621f001382c724f36268123aa5f8f1c49/dist/smartbanner/smartbanner.css',
+			libraryUrl: 'https://cdn.rawgit.com/cumulus-digital/amp-cms-utils/0a1cff3621f001382c724f36268123aa5f8f1c49/dist/smartbanner/smartbanner-min.js'
 		};
 
 	function log() {
