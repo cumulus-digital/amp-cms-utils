@@ -55,7 +55,6 @@
 				window._atw = null;
 				window.addthis_share = {};
 				$('.addthis-smartlayers,.addthis-toolbox,#_atssh').remove();
-				injectAddthis();
 			}
 			log('Resetting.');
 			window.addthis.layers.refresh();
@@ -69,10 +68,19 @@
 
 	// Hide addthis initially on navigation
 	$(window).on('statechange', function() {
-		$('.atss-left').addClass('slideOutLeft');
-		if (window.addthis) {
-			window.addthis.layers.refresh();
+		var addthisLayer = $('.atss-left');
+		if ( ! addthisLayer.length) {
+			window.addthis = null;
+			window._adr = null;
+			window._atc = null;
+			window._atd = null;
+			window._ate = null;
+			window._atw = null;
+			window.addthis_share = {};
+			$('.addthis-smartlayers,.addthis-toolbox,#_atssh').remove();
+			injectAddthis();
 		}
+		$('.atss-left').addClass('slideOutLeft');
 	});
 
 	// For sites with Triton player, reset addthis on navigation
