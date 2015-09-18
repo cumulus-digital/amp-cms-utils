@@ -51,7 +51,11 @@
 			}
 			log('Resetting.');
 			window.addthis.layers.refresh();
-			addthisLayer.removeClass('slideOutLeft');
+			if ( ! isHomepage()) {
+				addthisLayer.removeClass('slideOutLeft');
+			} else {
+				addthisLayer.addClass('slideOutLeft');
+			}
 		}
 	}
 
