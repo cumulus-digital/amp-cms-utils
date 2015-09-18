@@ -21,9 +21,17 @@
 	function injectAddthis() {
 		log('Injecting.');
 		var atscr = window.document.createElement('script');
-		atscr.src = '//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-55dc79597bae383e';
+		atscr.src = '//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-55dc79597bae383e&async=1';
 		atscr.async = true;
 		window.document.body.appendChild(atscr);
+		window.loadAddThis = function() {
+			window.addthis.init();
+			window.addthis.toolbox();
+			window.addthis.layers.refresh();
+			window.addthis_share = window.addthis_share || {};
+			window.addthis_share.url = window.location.href;
+			window.addthis_share.title = window.document.title;
+		};
 	}
 
 	// Check if we're using TuneGenie's player
