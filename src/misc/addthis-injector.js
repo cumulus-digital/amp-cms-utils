@@ -47,6 +47,14 @@
 			var addthisLayer = $('.atss-left');
 			// Re-inject if the widget doesn't already exist on the page
 			if ( ! addthisLayer.length) {
+				window.addthis = null;
+				window._adr = null;
+				window._atc = null;
+				window._atd = null;
+				window._ate = null;
+				window._atw = null;
+				window.addthis_share = {};
+				$('.addthis-smartlayers,.addthis-toolbox,#_atssh').remove();
 				injectAddthis();
 			}
 			log('Resetting.');
