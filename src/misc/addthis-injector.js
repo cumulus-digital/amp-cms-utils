@@ -70,6 +70,9 @@
 	// Hide addthis initially on navigation
 	$(window).on('statechange', function() {
 		$('.atss-left').addClass('slideOutLeft');
+		if (window.addthis) {
+			window.addthis.layers.refresh();
+		}
 	});
 
 	// For sites with Triton player, reset addthis on navigation
