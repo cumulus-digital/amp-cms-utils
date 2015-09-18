@@ -44,7 +44,8 @@
 
 	function resetAddthis() {
 		if (window.addthis) {
-			var addthisLayer = $('.atss-left');
+			var addthisLayer = $('.atss-left'),
+				transitions = $('html.csstransitions').length;
 			// Re-inject if the widget doesn't already exist on the page
 			if ( ! addthisLayer.length) {
 				window.addthis = null;
@@ -58,17 +59,19 @@
 			}
 			log('Resetting.');
 			window.addthis.layers.refresh();
+			var newClass = transitions ? 'slideOutLeft' : 'at4-hide';
 			if ( ! isHomepage()) {
-				addthisLayer.removeClass('slideOutLeft');
+				addthisLayer.removeClass(newClass);
 			} else {
-				addthisLayer.addClass('slideOutLeft');
+				addthisLayer.addClass(newClass);
 			}
 		}
 	}
 
 	// Hide addthis initially on navigation
 	$(window).on('statechange', function() {
-		var addthisLayer = $('.atss-left');
+		var addthisLayer = $('.atss-left'),
+			transitions = $('html.csstransitions').length;
 		if ( ! addthisLayer.length) {
 			window.addthis = null;
 			window._adr = null;
@@ -80,7 +83,11 @@
 			$('.addthis-smartlayers,.addthis-toolbox,#_atssh').remove();
 			injectAddthis();
 		}
-		$('.atss-left').addClass('slideOutLeft');
+		if (transitions) {
+			addthisLayer.addClass('slideOutLeft');
+		} else {
+			addthisLayer.addClass('at4-hide');
+		}
 	});
 
 	// For sites with Triton player, reset addthis on navigation
