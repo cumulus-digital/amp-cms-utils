@@ -11,4 +11,3 @@
 // Misc
 // @codekit-append "misc/addthis-injector.js"
 // @codekit-append "misc/auto-reload.js"
-// @codekit-append "smartbanner/injector.js"
