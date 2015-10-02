@@ -8,7 +8,7 @@
 		version = '0.4',
 
 		// Minutes before automatically scrolling
-		timeout = 0.05; // 3 seconds
+		timeout = 0.13; // 8 seconds
 
 	// Only define once
 	window._CMLS = window._CMLS || {};
