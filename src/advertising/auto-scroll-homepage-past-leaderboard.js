@@ -18,6 +18,7 @@
 
 	window._CMLS[nameSpace] = window._CMLS[nameSpace] || {};
 	window._CMLS[nameSpace].scrolled = false;
+	window._CMLS[nameSpace].disabled = window._CMLS[nameSpace].disabled || false;
 
 	function log() {
 		if (window._CMLS && window._CMLS.debug && typeof console === 'object' && console.log) {
@@ -185,6 +186,10 @@
 		window._CMLS[nameSpace].scrolled = hasScrolledPastLeaderboard();
 		if (window._CMLS[nameSpace].scrolled) {
 			return 'Already scrolled passed leaderboard.';
+		}
+
+		if (window._CMLS[nameSpace].disabled) {
+			return 'Auto-scroll disabled for this site.';
 		}
 
 		return true;
