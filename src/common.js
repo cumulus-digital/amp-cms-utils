@@ -30,11 +30,6 @@
 			name = arguments[0],
 			message = Array.prototype.slice.call(arguments,1);
 
-		console.log('namesToColors:', window._CMLS.loggerNamesToColors);
-		console.log('arguments:', arguments);
-		console.log('name:', name);
-		console.log('message:', message);
-
 		// Use cached colors for provided name, if possible.
 		if (window._CMLS.loggerNamesToColors[name]) {
 			background = window._CMLS.loggerNamesToColors[name].background;

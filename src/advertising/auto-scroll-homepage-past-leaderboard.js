@@ -8,7 +8,8 @@
 		throw { message: 'Auto-scroll script called without supplying jQuery.' };
 	}
 
-	var nameSpace = 'cmlsAutoScrollPastLeaderboard',
+	var scriptName = 'AUTO SCROLL',
+		nameSpace = 'cmlsAutoScrollPastLeaderboard',
 		version = '0.7',
 
 		settings = {
@@ -27,7 +28,7 @@
 	}
 
 	function log() {
-		window._CMLS.logger(nameSpace + ' v' + version, arguments);
+		window._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
 
 	window._CMLS[nameSpace] = {
