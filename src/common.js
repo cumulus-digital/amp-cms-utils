@@ -27,8 +27,8 @@
 		window._CMLS.loggerNamesToColors = window._CMLS.loggerNamesToColors || {};
 
 		var background, complement,
-			name = [].slice.call(arguments,0,1),
-			message = [].slice.call(arguments,1);
+			name = arguments[0],
+			message = Array.prototype.slice.call(arguments,1);
 
 		console.log('name:', name);
 		console.log('message:', message);
