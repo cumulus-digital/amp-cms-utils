@@ -165,9 +165,12 @@
 	 * @return {object} Player type and position
 	 */
 	window._CMLS.whichPlayer = function() {
+		if (window._CMLS.whichPlayerCache) {
+			return window._CMLS.whichPlayerCache;
+		}
 		var discovered = {
 			type: null,
-			position: null
+			position: null,
 		};
 		if (window.tgmp) {
 			discovered.type = window._CMLS.const.PLAYER_TUNEGENIE;
@@ -180,7 +183,18 @@
 			discovered.type = window._CMLS.const.PLAYER_TRITON;
 			discovered.position = window._CMLS.const.PLAYER_POSITION_TOP;
 		}
-		return discovered;
+		window._CMLS.whichPlayerCache = discovered;
+		return window._CMLS.whichPlayerCache;
+	};
+
+	/**
+	 * Uses current location pathname to determine if we're on the homepage.
+	 * NOTE: With TuneGenie's player, scripts using this function should only
+	 * execute after page load.
+	 * @return {Boolean}
+	 */
+	window._CMLS.isHomepage = function() {
+		return window.location.pathname === '/' && /[\?&]?p=/i.test(window.location.search) === false;
 	};
 
 }(window));
