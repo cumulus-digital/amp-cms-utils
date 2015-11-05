@@ -1,57 +1,78 @@
 /**
- * Reads cms-sgroup DFP targeting criteria and generates GTM events with them.
- * MUST BE FIRED AT DOM READY EVENT gtm.dom
+ * Reads DFP targeting criteria from googletag.pubads() and generates
+ * GTM and window events from them.
  */
-(function($, window, undefined) {
-	"use strict";
-	
-	var version = '0.4';
+(function(window) {
+
+	var scriptName = 'GLOBALIZE SGROUPS',
+		nameSpace = 'globalizeSGroups',
+		version = '0.5';
 
 	function log() {
-		if (window._CMLS && window._CMLS.debug && typeof console === 'object' && console.log) {
-			var ts = (new Date());
-			ts = ts.toISOString() ? ts.toISOString() : ts.toUTCString();
-			console.log('%c[GLOBALIZE SGROUPS ' + version + ']', 'background: #75be84; color: #FFF', ts, [].slice.call(arguments));
-		}
+		window._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
 
-	// Don't run in the topmost window if we're using TuneGenie's player
-	if (window.tgmp && window === window.top) {
-		log('Using TuneGenie player and injected in top window, ejecting.');
-		return;
-	}
-
-	// Define only once.
 	window._CMLS = window._CMLS || {};
-	if (window._CMLS.cGroups && window._CMLS.cGroups.length) {
-		log('Already defined, skipping');
-		return;
-	}
+	window._CMLS[nameSpace] = {
+		cycles: 0,
+		timer: null,
 
-	$(function() {
-		log('Initializing');
-		$('script:not([src]):contains("cms-sgroup"):first').each(function(i, s) {
-			var sGroups = s.innerHTML.match(/'cms-sgroup'\s*,\s*\[?'([^\]|\)]+)/i);
-			if (sGroups && sGroups.length > 1) {
-				log('sgroups retrieved, firing events');
-				sGroups = sGroups[1].replace(/'$/, '').split(/',\s*'/);
-				window._CMLS.cGroups = window._CMLS.cGroups || [];
-				window._CMLS.cGroups.push.apply(window._CMLS.cGroups, sGroups);
-				window.sharedContainerDataLayer = window.sharedContainerDataLayer || [];
-				window.sharedContainerDataLayer.push({'event': 'cms-sgroup'});
-				window.corpDataLayer = window.corpDataLayer || [];
-				window.corpDataLayer.push({'event': 'cms-sgroup'});
-				for(var l = 0; l < sGroups.length; l++) {
-					if (sGroups[l].indexOf('Format') > -1 || sGroups[l].indexOf('Market') > -1) {
-						log('Firing event', sGroups[l]);
-						window.sharedContainerDataLayer.push({'event': sGroups[l]});
-						window.corpDataLayer.push({'event': sGroups[l]});
-					}
-				}
-			} else {
-				log('sgroups could not be retireved');
+		/**
+		 * Simple cross-browser event trigger
+		 * @param  {string} name name of event
+		 * @param  {*}      data Data to send with event
+		 * @return {void}
+		 */
+		trigger: function trigget(name, data) {
+			var ev;
+			if (CustomEvent) {
+				ev = new CustomEvent(name, {detail: data, bubbles: true, cancellable: true});
+			} else if (window.document.createEvent) {
+				ev = window.document.createEvent('CustomEvent');
+				ev.initEvent(name, true, true, data);
 			}
-		});
+			window.dispatchEvent(ev);
+		},
+
+		globalize: function globalize() {
+			if ( ! (window.googletag.pubads().G && window.googletag.pubads().G['cms-sgroup'])) {
+				if (window._CMLS[nameSpace].cycles > 10) {
+					log('Could not retrieve cms-sgroup in a reasonable time, aborting.');
+					return;
+				}
+				log('Googletag not ready, waiting to retry...');
+				if (window._CMLS[nameSpace].timer) {
+					clearTimeout(window._CMLS[nameSpace].timer);
+					window._CMLS[nameSpace].timer = null;
+				}
+				window._CMLS[nameSpace].timer = setTimeout(window._CMLS[nameSpace].globalize, 500);
+				window._CMLS[nameSpace].cycles++;
+				return;
+			}
+
+			log('Globalizing cms-sgroup');
+			window._CMLS.cGroups = window._CMLS.cGroups || [];
+			window._CMLS.cGroups = window.googletag.pubads().G['cms-sgroup'];
+
+			var events = ['cms-sgroup'].concat(window._CMLS.cGroups);
+
+			window.sharedContainerDataLayer = window.sharedContainerDataLayer || [];
+			window.corpDataLayer = window.corpDataLayer || [];
+
+			log('Firing events');
+			for (var i = 0, j = events.length; i < j; i++) {
+				window.sharedContainerDataLayer.push({'event': events[i]});
+				window.corpDataLayer.push({'event': events[i]});
+				window._CMLS[nameSpace].trigger('cms-sgroup', events[i]);
+			}
+		}
+	};
+
+	window.googletag = window.googletag || {};
+	window.googletag.cmd = window.googletag.cmd || [];
+	window.googletag.cmd.push(function() {
+		log('Googletag command queue initiated.');
+		window._CMLS[nameSpace].globalize();
 	});
 
-}(jQuery, window.self));
+}(window, undefined));
