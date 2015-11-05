@@ -24,22 +24,22 @@
 			return false;
 		}
 
-		window._CMLS.logger.namesToColors = window._CMLS.logger.namesToColors || {};
+		window._CMLS.loggerNamesToColors = window._CMLS.loggerNamesToColors || {};
 
 		var background, complement,
 			name = [].slice.call(arguments,0,1),
 			message = [].slice.call(arguments,1);
 
 		// Use cached colors for provided name, if possible.
-		if (window._CMLS.logger.namesToColors[name]) {
-			background = window._CMLS.logger.namesToColors[name].background;
-			complement = window._CMLS.logger.namesToColors[name].complement;
+		if (window._CMLS.loggerNamesToColors[name]) {
+			background = window._CMLS.loggerNamesToColors[name].background;
+			complement = window._CMLS.loggerNamesToColors[name].complement;
 		} else {
 			// Calculate a random color and its complement
 			background = Math.floor(Math.random()*16777215).toString(16);
 			complement = ("000000" + (0xFFFFFF ^ parseInt(background, 16)).toString(16)).slice(-6);
 
-			window._CMLS.logger.namesToColors[name] = {
+			window._CMLS.loggerNamesToColors[name] = {
 				background: background,
 				complement: complement
 			};
