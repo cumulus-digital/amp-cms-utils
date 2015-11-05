@@ -30,7 +30,8 @@
 			name = [].slice.call(arguments,0,1),
 			message = [].slice.call(arguments,1);
 
-		console.log(name, message);
+		console.log('name:', name);
+		console.log('message:', message);
 
 		// Use cached colors for provided name, if possible.
 		if (window._CMLS.loggerNamesToColors[name]) {
