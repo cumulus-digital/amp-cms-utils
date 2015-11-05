@@ -27,8 +27,8 @@
 		window._CMLS.logger.namesToColors = window._CMLS.logger.namesToColors || {};
 
 		var background, complement,
-			name = arguments.slice(0,1),
-			message = arguments.slide(1);
+			name = [].slice.call(arguments,0,1),
+			message = [].slice.call(arguments,1);
 
 		// Use cached colors for provided name, if possible.
 		if (window._CMLS.logger.namesToColors[name]) {
