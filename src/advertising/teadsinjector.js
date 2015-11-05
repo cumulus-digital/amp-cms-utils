@@ -56,7 +56,7 @@
 			window._CMLS[nameSpace].inject({
 				pid: PID,
 				slot: '.wrapper-content',
-				format: 'inboard',
+				format: 'inread',
 				before: true,
 				css: 'margin: auto !important; padding-top: 5px; padding-bottom: 5px;',
 				size: {w: windowSize.w}
