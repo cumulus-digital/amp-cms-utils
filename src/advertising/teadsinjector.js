@@ -50,13 +50,16 @@
 
 		inboard: function inboardInjector(PID) {
 
+			var windowSize = window._CMLS[nameSpace].getWindowSize();
+			log('Injecting inboard with width ' + windowSize.w);
+
 			window._CMLS[nameSpace].inject({
 				pid: PID,
 				slot: '.wrapper-content',
 				format: 'inboard',
 				before: true,
 				css: 'margin: auto !important; padding-top: 5px; padding-bottom: 5px;',
-				size: {w: window._CMLS[nameSpace].getWindowSize().w}
+				size: {w: windowSize.w}
 			});
 
 		},
