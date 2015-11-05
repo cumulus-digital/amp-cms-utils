@@ -34,6 +34,7 @@
 	window._CMLS[nameSpace] = {
 		scrolled: false,
 		disabled: false,
+		timer: null,
 		cache: {},
 
 		/**
@@ -56,9 +57,7 @@
 				return false;
 			}
 			var adOffset = this.cache.leaderboard.offset();
-			log('Player position', this.playerOnTop());
 			if (this.playerOnTop()) {
-				log('leaderboardOnTop checking with player found at top of window.');
 				return adOffset.top < 150;
 			}
 			return adOffset.top < 50;
@@ -70,7 +69,7 @@
 		 */
 		playerOnTop: function playerOnTop() {
 			var player = window._CMLS.whichPlayer();
-			if (player.position === window._CMLS.const.PLAYER_POSTITION_TOP) {
+			if (player.position === window._CMLS.const.PLAYER_POSITION_TOP) {
 				return true;
 			}
 			return false;
@@ -133,69 +132,70 @@
 		},
 
 		/**
-		 * Initializes animation queue with delay, checks conditions before
-		 * and during animation.
+		 * Perform a last-minute conditions check and scroll the page.
 		 * @return {void}
 		 */
-		initAnimation: function initAnimation() {
-			log('Initializing animation queue.');
+		scrollPage: function scrollPage() {
+			var that = this;
+
+			log('Pre-animation conditions check.');
+			var conditions = this.conditionsGood();
+			if (conditions !== true) {
+				log('Conditions check failed.', conditions);
+				this.stopTimer();
+			}
+
+			$('html,body').animate(
+				{ scrollTop: that.generateScrollToPosition() },
+				{
+					queue: nameSpace,
+					duration: 550
+				}
+			).dequeue(nameSpace);
+		},
+
+		/**
+		 * Initializes scroll delay.
+		 * @return {void}
+		 */
+		initTimer: function initTimer() {
+			log('Initializing scroll timer.');
 			var that = this;
 
 			var conditions = that.conditionsGood();
 			if (conditions !== true) {
 				log('Conditions check after leaderboard render found bad conditions.', conditions);
-				that.stopAnimation();
+				that.stopTimer();
 				return;
 			}
 
 			$('html,body')
 				.clearQueue(nameSpace)
-				.stop(nameSpace, true)
-				.delay(100, nameSpace)
-				.dequeue(nameSpace)
-				.delay(settings.timeout * 60000, nameSpace)
-				.queue(nameSpace, function() {
-					log('Pre-animation conditions check.');
-					var conditions = that.conditionsGood();
-					if (conditions !== true) {
-						log(conditions);
-						that.stopAnimation();
-						return false;
-					}
-					log('Conditions check passes.');
-				})
-				.animate(
-					{ scrollTop: that.generateScrollToPosition() },
-					{
-						queue: nameSpace,
-						duration: 550,
-						step: function() {
-							if (that.scrolled === true) {
-								log('Interrupting animation.');
-								that.stopAnimation();
-								return false;
-							}
-						}
-					}
-				)
-				.dequeue(nameSpace);
+				.stop(nameSpace, true);
+			clearTimeout(this.timer);
+			this.timer = null;
+
+			this.timer = setTimeout(function() {
+				that.scrollPage();
+			}, settings.timeout * 60000);
 		},
 
 		/**
 		 * Halts any current scroll animation and clears the queue.
 		 * @return {void}
 		 */
-		stopAnimation: function stopAnimation() {
-			log('Stopping animation, clearing queue.');
+		stopTimer: function stopTimer() {
+			log('Stopping timer, clearing animation queue.');
 			$('html,body')
 				.clearQueue(nameSpace)
-				.stop(nameSpace, true)
-				.dequeue(nameSpace);
+				.stop(nameSpace, true);
+			clearTimeout(this.timer);
+			this.timer = null;
 		},
 
-		resetAnimation: function resetAnimation() {
-			log('Resetting animation queue.');
-			this.initAnimation();
+		resetTimer: function resetTimer() {
+			log('Resetting scroll timer.');
+			this.initTimer();
 		},
 
 		init: function init() {
@@ -215,7 +215,7 @@
 			this.cache.window.on('scroll.' + nameSpace, window._CMLS.throttle(function() {
 				if (that.hasScrolledPastLeaderboard()) {
 					that.scrolled = true;
-					that.stopAnimation();
+					that.stopTimer();
 					that.cache.window.off('scroll.' + nameSpace);
 				}
 			}, 500));
@@ -233,9 +233,9 @@
 						var conditions = that.conditionsGood();
 						if (conditions !== true) {
 							log('Conditions check after leaderboard render found bad conditions.', conditions);
-							that.stopAnimation();
+							that.stopTimer();
 						} else {
-							that.resetAnimation();
+							that.resetTimer();
 						}
 
 						window.googletag.pubads().removeEventListener('slotRenderEnded', cmlsAutoScrollPastLeaderboardRenderListener);
@@ -245,12 +245,12 @@
 
 			// If document is already loaded, start queue
 			if (window.document.readyState === 'complete') {
-				this.initAnimation();
+				this.initTimer();
 				return;
 			}
 
 			this.cache.window.on('load', function() {
-				that.initAnimation();
+				that.initTimer();
 			});
 		}
 	};
