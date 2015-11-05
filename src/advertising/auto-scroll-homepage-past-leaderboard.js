@@ -27,7 +27,7 @@
 	}
 
 	function log() {
-		var message = [].concat([nameSpace + ' v' + version], ['(' + log.caller + ')'], [].slice.call(arguments));
+		var message = [].concat([nameSpace + ' v' + version], [].slice.call(arguments));
 		window._CMLS.logger(message);
 	}
 
