@@ -50,7 +50,7 @@
 				
 		message = [].concat(['%c[' + name + ']', 'background: #' + background + '; color: #' + complement, ts], message);
 		
-		console.debug.apply(message);
+		console.debug.apply(console, message);
 	};
 
 	/**
