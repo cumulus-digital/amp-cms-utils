@@ -4,11 +4,15 @@
 
 (function($, window, undefined) {
 
+	if (! $ || ! $.fn.jquery) {
+		throw { message: 'Auto-scroll script called without jQuery.' };
+	}
+
 	var nameSpace = 'cmlsAutoScrollPastLeaderboard',
-		version = '0.4',
+		version = '0.5',
 
 		// Minutes before automatically scrolling
-		timeout = 0.13; // 8 seconds
+		timeout = 0.15;
 
 	// Only define once
 	window._CMLS = window._CMLS || {};
@@ -129,24 +133,6 @@
 	}
 
 	/**
-	 * Scroll the page past the leaderboard.
-	 * @return {undefined}
-	 */
-	function scrollPage() {
-		var conditions = areConditionsGood();
-
-		if (conditions !== true) {
-			log('Scrolling check found bad conditions.', conditions);
-			return;
-		}
-		log('Scrolling homepage past leaderboard.');
-		$('html,body').animate({
-			scrollTop: generateNewPos()
-		}, 600);
-		window._CMLS[nameSpace].scrolled = true;
-	}
-
-	/**
 	 * Regenerate node caches
 	 * @return {undefined}
 	 */
@@ -154,18 +140,6 @@
 		cache.leaderboard = $('.wrapper-header div[id*="div-gpt-ad"]:first');
 		cache.playerbar = $('.tdpw:first,#tgmp_frame:first');
 	};
-
-	/**
-	 * Initialize timer
-	 * @return {undefined}
-	 */
-	function setTimer() {
-		log('Setting timer.');
-		window._CMLS[nameSpace].timer = setTimeout(
-			scrollPage,
-			timeout * 60000
-		);
-	}
 
 	/**
 	 * Determine if conditions favor activating the library.
@@ -195,6 +169,40 @@
 		return true;
 	}
 
+	function initAnimation() {
+		$('html,body')
+			.delay(timeout * 60000, nameSpace)
+			.animate(
+				{ scrollTop: generateNewPos() },
+				{
+					queue: nameSpace,
+					start: function() {
+						if ( ! areConditionsGood()) {
+							stopAnimation();
+							return false;
+						}
+						log('Scrolling homepage past leaderboard.');
+					},
+					done: function() {
+						window._CMLS[nameSpace].scrolled = true;
+					},
+					duration: 550
+				}
+			)
+			.dequeue(nameSpace);
+	}
+
+	function stopAnimation() {
+		$('html,body')
+			.stop(nameSpace, true)
+			.clearQueue(nameSpace);
+	}
+
+	function resetAnimation() {
+		stopAnimation();
+		initAnimation();
+	}
+
 	window._CMLS[nameSpace].init = function() {
 		window._CMLS = window._CMLS || {};
 		if (window._CMLS[nameSpace]) {
@@ -208,7 +216,7 @@
 			}
 
 			$(window).on('load', function() {
-				setTimer();
+				initAnimation();
 			});
 		}
 	};
@@ -218,8 +226,9 @@
 		$(window).on('scroll.' + nameSpace, throttle(function() {
 			if (hasScrolledPastLeaderboard()) {
 				window._CMLS[nameSpace].scrolled = true;
+				$(window).off('.' + nameSpace);
 			}
-		}, 240));
+		}, 500));
 
 		window.googletag = window.googletag || {};
 		window.googletag.cmd = window.googletag.cmd || [];
@@ -235,12 +244,11 @@
 
 					if (conditions !== true) {
 						log('Googletag check found bad conditions.', conditions);
+						stopAnimation();
 						return;
 					}
 
-					$('#'+e.slot.getSlotElementId() + ' iframe[id*="google_ads"]').load(function() {
-						setTimer();
-					});
+					resetAnimation();
 				}
 			});
 		});
