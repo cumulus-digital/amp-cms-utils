@@ -2,6 +2,8 @@
  * Compiled script for ALL SITES
  */
 
+// @codekit-append "common.js"
+
 // Advertising libraries
 // @codekit-append "advertising/globalize-sgroups.js"
 // @codekit-append "advertising/teadsinjector.js"

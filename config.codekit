@@ -132,6 +132,17 @@
 		"outputStyle": 2,
 		"syntaxCheckerStyle": 1
 		},
+	"\/src\/common.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 1,
+		"inputAbbreviatedPath": "\/src\/common.js",
+		"outputAbbreviatedPath": "\/dist\/common-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 2,
+		"syntaxCheckerStyle": 1
+		},
 	"\/src\/compiled-allsites.js": {
 		"fileType": 64,
 		"ignore": 0,
