@@ -58,7 +58,7 @@
 	 * (from Underscore.js)
 	 * @return {number} Current time
 	 */
-	window._CMLS.now = Date.now() || function() {
+	window._CMLS.now = Date.now || function() {
 		return new Date().getTime();
 	};
 
