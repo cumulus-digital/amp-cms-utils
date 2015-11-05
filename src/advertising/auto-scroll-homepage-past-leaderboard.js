@@ -172,20 +172,19 @@
 	function initAnimation() {
 		$('html,body')
 			.delay(timeout * 60000, nameSpace)
+			.queue(nameSpace, function() {
+				var conditions = areConditionsGood();
+				if ( ! conditions) {
+					log(conditions);
+					stopAnimation();
+					return false;
+				}
+				log('Scrolling homepage past leaderboard.');
+			})
 			.animate(
 				{ scrollTop: generateNewPos() },
 				{
 					queue: nameSpace,
-					start: function() {
-						if ( ! areConditionsGood()) {
-							stopAnimation();
-							return false;
-						}
-						log('Scrolling homepage past leaderboard.');
-					},
-					done: function() {
-						window._CMLS[nameSpace].scrolled = true;
-					},
 					duration: 550
 				}
 			)
@@ -194,8 +193,8 @@
 
 	function stopAnimation() {
 		$('html,body')
-			.stop(nameSpace, true)
-			.clearQueue(nameSpace);
+			.clearQueue(nameSpace)
+			.stop(nameSpace, true, false);
 	}
 
 	function resetAnimation() {
