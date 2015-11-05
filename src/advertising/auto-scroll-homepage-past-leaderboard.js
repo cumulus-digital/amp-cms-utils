@@ -52,6 +52,7 @@
 		 */
 		leaderboardOnTop: function leaderboardOnTop() {
 			if ( ! this.cache.leaderboard) {
+				log('Leaderboard was not cached.');
 				return false;
 			}
 			var adOffset = this.cache.leaderboard.offset();

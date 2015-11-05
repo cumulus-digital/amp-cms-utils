@@ -91,7 +91,7 @@
 	"\/src\/advertising\/globalize-sgroups.js": {
 		"fileType": 64,
 		"ignore": 1,
-		"ignoreWasSetByUser": 0,
+		"ignoreWasSetByUser": 1,
 		"inputAbbreviatedPath": "\/src\/advertising\/globalize-sgroups.js",
 		"outputAbbreviatedPath": "\/dist\/advertising\/globalize-sgroups-min.js",
 		"outputPathIsOutsideProject": 0,
@@ -168,7 +168,7 @@
 	"\/src\/misc\/auto-reload.js": {
 		"fileType": 64,
 		"ignore": 1,
-		"ignoreWasSetByUser": 0,
+		"ignoreWasSetByUser": 1,
 		"inputAbbreviatedPath": "\/src\/misc\/auto-reload.js",
 		"outputAbbreviatedPath": "\/dist\/misc\/auto-reload-min.js",
 		"outputPathIsOutsideProject": 0,
