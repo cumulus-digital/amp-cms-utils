@@ -17,23 +17,6 @@
 		cycles: 0,
 		timer: null,
 
-		/**
-		 * Simple cross-browser event trigger
-		 * @param  {string} name name of event
-		 * @param  {*}      data Data to send with event
-		 * @return {void}
-		 */
-		trigger: function trigget(name, data) {
-			var ev;
-			if (CustomEvent) {
-				ev = new CustomEvent(name, {detail: data, bubbles: true, cancellable: true});
-			} else if (window.document.createEvent) {
-				ev = window.document.createEvent('CustomEvent');
-				ev.initEvent(name, true, true, data);
-			}
-			window.dispatchEvent(ev);
-		},
-
 		globalize: function globalize() {
 			if ( ! (window.googletag.pubads().G && window.googletag.pubads().G['cms-sgroup'])) {
 				if (window._CMLS[nameSpace].cycles > 10) {
@@ -63,7 +46,7 @@
 			for (var i = 0, j = events.length; i < j; i++) {
 				window.sharedContainerDataLayer.push({'event': events[i]});
 				window.corpDataLayer.push({'event': events[i]});
-				window._CMLS[nameSpace].trigger('cms-sgroup', events[i]);
+				window._CMLS.triggerEvent(window, 'cms-sgroup', events[i]);
 			}
 		}
 	};
