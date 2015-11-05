@@ -56,8 +56,10 @@
 				return false;
 			}
 			var adOffset = this.cache.leaderboard.offset();
+			log('Player position', this.playerOnTop());
 			if (this.playerOnTop()) {
-				return adOffset.top < 100;
+				log('leaderboardOnTop checking with player found at top of window.');
+				return adOffset.top < 150;
 			}
 			return adOffset.top < 50;
 		},
