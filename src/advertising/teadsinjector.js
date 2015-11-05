@@ -1,46 +1,31 @@
 /**
- * National Teads injector.
- * Receives Teads PIDs and injects teads scripting
- * Usage:
- * 		window._teadsinjector.push({
- *			pid: '1234',
- *			format: 'inboard'
- *		});
+ * Receives Teads PIDs and injects Teads' scripting.
+ * Local usage:
+ * 	window._teadsinjector.push({
+ * 		pid: '1234',
+ * 		format: 'inboard'
+ * 	});
  */
-try {
 (function(window, undefined) {
 
-	var v = '0.6';
+	var scriptName = 'TEADS INJECTOR',
+		nameSpace = 'teadsInjector',
+		version = '0.7';
+
+	// Only define once.
+	if (window._CMLS[nameSpace] || window.teads) {
+		return;
+	}
 
 	function log() {
-		if (window._CMLS && window._CMLS.debug && typeof console === 'object' && console.log) {
-			console.log('[TEADS INJECTOR ' + v + ']', [].slice.call(arguments));
-		}
+		window._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
 
-	// Don't run in the topmost window if we're using TuneGenie's player
-	if (window.tgmp && window === window.top) {
-		log('Using TuneGenie player and injected in top window, ejecting.');
-		return;
-	}
-
-	// Bounce if we're already defined.
-	if (window._teadsInject) {
-		log('Injector already loaded, skipping.');
-		return;
-	}
-
-	// Bounce if this is a FLEX site
-	if (document.getElementById('flex_body')) {
-		log('FLEX body found, skipping.');
-		return;
-	}
-
-	var injector = {
-		detectWindowSize: function detectWindowSize() {
+	window._CMLS[nameSpace] = {
+		getWindowSize: function getWindowSize() {
 			var width = 1000, height = 1000;
-			
-			if (typeof(window.innerWidth) === 'number') {
+
+			if (typeof window.innerWidth === 'number') {
 				width = window.innerWidth;
 			} else if (document.documentElement && document.documentElement.clientWidth) {
 				width = document.documentElement.clientWidth;
@@ -65,24 +50,24 @@ try {
 
 		inboard: function inboardInjector(PID) {
 
-			injector.go({
+			window._CMLS[nameSpace].inject({
 				pid: PID,
 				slot: '.wrapper-content',
 				format: 'inboard',
 				before: true,
 				css: 'margin: auto !important; padding-top: 5px; padding-bottom: 5px;',
-				size: {w: injector.detectWindowSize().w}
+				size: {w: window._CMLS[nameSpace].getWindowSize().w}
 			});
 
 		},
 
 		inread: function inreadInjector(PID) {
 
-			injector.go({
+			window._CMLS[nameSpace].inject({
 				pid: PID,
 				slot: '.loop .post .entry-content p',
 				filter: function() {
-					var body = window.top.document.getElementsByTagName('body')[0];
+					var body = window.document.getElementsByTagName('body')[0];
 					return body.className.indexOf('single-post') > -1;
 				},
 				format: 'inread',
@@ -92,14 +77,14 @@ try {
 
 		},
 
-		inject: function injectorInject(type, pid) {
-			if (type && pid) {
-				log('Received request for ' + type + ' with PID ' + pid);
-				injector[type](pid);
+		process: function inject(format, pid) {
+			if (format && pid) {
+				log('Received request for ' + format + ' with PID ' + pid);
+				window._CMLS[nameSpace][format](pid);
 			}
 		},
 
-		go: function injectorGo(options) {
+		inject: function processRequest(options) {
 
 			if ( ! options.pid || ! options.slot || ! options.format) {
 				return false;
@@ -125,35 +110,36 @@ try {
 			log('Injecting!', options);
 
 		}
-
 	};
 
-	// Overload array to listen for future push events
-	var Teadsarray = function() {};
-	Teadsarray.prototype = [];
-	Teadsarray.prototype.push = function() {
+	// Create a fake array to overload push
+	var TeadsArray = function() {};
+	TeadsArray.prototype = [];
+	TeadsArray.prototype.push = function() {
 		for (var i = 0; i < arguments.length; i++) {
-			if (arguments[i].pid && arguments[i].format) {
-				injector.inject(arguments[i].format, arguments[i].pid);
+			if (arguments[i].format && arguments[i].pid) {
+				window._CMLS[nameSpace].process(
+					arguments[i].format,
+					arguments[i].pid
+				);
 			}
 		}
 	};
 
-	log('Loaded.');
-
-	// Handle any existing requests
+	// Handle any existing requests before we loaded.
 	if (window._teadsinjector && window._teadsinjector.length) {
 		for (var i = 0; i < window._teadsinjector.length; i++) {
-			if (window._teadsinjector[i].pid && window._teadsinjector[i].format) {
-				injector.inject(window._teadsinjector[i].format, window._teadsinjector[i].pid);
+			if (window._teadsinjector[i].format && window._teadsinjector[i].pid) {
+				window._CMLS[nameSpace].process(
+					window._teadsinjector[i].format,
+					window._teadsinjector[i].pid
+				);
 			}
 		}
 	}
 
-	// change variable to our custom listener
-	window._teadsinjector = new Teadsarray();
-	window._teadsInject = injector.inject;
+	window._teadsinjector = new TeadsArray();
 
 	log('Listening for future requests.');
-}(window.self));
-} catch(e) {}
+
+}(window));
