@@ -1,167 +1,190 @@
 /**
- * Watches for changes to song data from the embedded player
- * and updates DFP targeting criteria on track change.
+ * Watches for changes to song data from Triton player,
+ * updates DFP targeting criteria.
  */
-/* globals amp_player_config, googletag */
 (function(window, undefined) {
-	window._CMLS = window._CMLS || {};
 
-	// Only inject once
-	if (window._CMLS.embedPlayerWatch) {
-		return;
+	var scriptName = 'PLAYER WATCH',
+		nameSpace = 'playerWatch',
+		version = '0.5';
+
+	function log() {
+		window._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
 
-	// Don't inject at all if we're using TuneGenie's player
-	if (window.tgmp) {
-		return;
+	// Only define once
+	if (window._CMLS[nameSpace]) {
+		return false;
 	}
 
-	window._CMLS.embedPlayerWatch = {
-		v: '0.4',
+	// Only operate if we're using Triton's player
+	if ( ! window.TDPW) {
+		log('Triton player not enabled, exiting.');
+		return false;
+	}
+
+	window._CMLS[nameSpace] = {
 		initialized: false,
-		trackIdCache: null,
-		stateCache: false,
+		cache: {},
 		timer: null,
-		interval: 1000,
+		interval: 2500,
 
-		log: function log() {
-			if (window._CMLS && window._CMLS.debug && typeof console === 'object' && console.log) {
-				var ts = (new Date());
-				ts = ts.toISOString() ? ts.toISOString() : ts.toUTCString();
-				console.log('[PLAYER WATCH ' + this.v + ']', ts, [].slice.call(arguments));
+		const: {
+			STOPPED: 0,
+			PLAYING: 1
+		},
+
+		/**
+		 * Sets targeting criteria in DFP
+		 * @param {string} key   DFP targeting key
+		 * @param {string} value DFP target value
+		 */
+		setDFPCriteria: function setDFPCriteria(key, value) {
+			window.googletag = window.googletag || {};
+			window.googletag.cmd = window.googletag.cmd || [];
+			window.googletag.cmd.push(function() {
+				log('Setting targeting', key, value);
+				window.googletag.pubads().setTargeting(key, value);
+			});
+		},
+
+		/**
+		 * Loads current track info from local storage, sets state.
+		 * @return {[type]} [description]
+		 */
+		checkCurrentTrack: function getCurrentTrack() {
+			var currentTrack = localStorage && JSON ? JSON.parse(
+				localStorage.getItem(
+					'tdas.controller.' + 
+					window.amp_player_config.station +
+					'.' +
+					window.amp_player_config.stream_id +
+					'.events.current-state'
+				)
+			) : false;
+			
+			if (
+				currentTrack &&
+				currentTrack.data
+			) {
+
+				// Check and store the current play state
+				if (
+					currentTrack.data.stream &&
+					currentTrack.data.stream.code.toUpperCase() === 'LIVE_PLAYING'
+				) {
+					this.setState(this.const.PLAYING);
+				} else {
+					this.setState(this.const.STOPPED);
+				}
+
+				// Check if song differs from cache
+				if (
+					currentTrack.data.song &&
+					currentTrack.data.song.id &&
+					this.hasTrackChanged(currentTrack.data.song.id)
+				) {
+					this.trackHasChanged(currentTrack.data.song);
+				}
+
 			}
 		},
 
 		/**
-		 * Returns true if given track information differs from cache
-		 * @param  {string}  current Track id string from
-		 *                           tdas.controlls.STATION.STREAM.track-meta
-		 *                           localStorage object.
+		 * Check if given state differs from cache, if so store it, set
+		 * DFP criteria, and trigger events
+		 * @param {Number} state Number representing state constant
+		 */
+		setState: function setState(state) {
+			if (state === this.const.PLAYING && state !== this.cache.state) {
+				log('Player is streaming.');
+				this.cache.state = state;
+				this.setDFPCriteria('td-player-state', 'PLAYING');
+				window._CMLS.triggerEvent(window, 'td-player.playing');
+				return;
+			}
+			if (state === this.const.STOPPED && state !== this.cache.state) {
+				log('Player is stopped.');
+				this.cache.state = state;
+				this.setDFPCriteria('td-player-state', 'STOPPED');
+				window._CMLS.triggerEvent(window, 'td-player.stopped');
+				return;
+			}
+		},
+
+		/**
+		 * Tests a given track ID against cache
+		 * @param  {string}  id Track ID
 		 * @return {Boolean}
 		 */
-		isChanged: function testTrack(current) {
-			if (current) {
-				if (current === this.trackIdCache) {
-					return false;
-				}
+		hasTrackChanged: function hasTrackChanged(id) {
+			if (id && id !== this.cache.trackId) {
 				return true;
 			}
 			return false;
 		},
 
-		getCurrentState: function getCurrentState() {
-			if (localStorage) {
-				return JSON.parse(localStorage.getItem('tdas.controller.' + amp_player_config.station + '.' + amp_player_config.stream_id + '.events.current-state'));
+		/**
+		 * Stores updated track info, sets DFP criteria, and triggers
+		 * td-player.trackchange event.
+		 * @param  {Object} data Data concerning song
+		 * @return {void}
+		 */
+		trackHasChanged: function trackHasChanged(data) {
+			log('Song has changed!', data);
+			this.cache.trackId = data.id;
+			if (data.artist) {
+				this.setDFPCriteria('td-player-artist', data.artist);
 			}
-			return false;
+			if (data.album) {
+				this.setDFPCriteria('td-player-album', data.album);
+			}
+			if (data.title) {
+				this.setDFPCriteria('td-player-track', data.title);
+			}
+			this.setDFPCriteria('td-player-id', data.id);
+			window._CMLS.triggerEvent(window, 'td-player.trackchange', data);
 		},
 
-		checkCurrent: function checkCurrent() {
-			var current = this.getCurrentState();
-			// Check player state
-			if (current && current.data && current.data.stream && current.data.stream.code.toUpperCase() === 'LIVE_PLAYING') {
-				this.setPlayState(true);
-			} else {
-				this.setPlayState(false);
-			}
-			if (current && current.data && current.data.song && current.data.song.id && this.isChanged(current.data.song.id)) {
-				this.log('Song changed!', current.data.song.id);
-				this.trackIdCache = current.data.song.id;
-				this.setCriteria(current);
-				this.sendEvent(window, 'td-player.trackChange', current.data.song.id);
-			} else {
-				//this.log('Song has not changed.');
-			}
-			this.setTimer();
-		},
-
-		setPlayState: function setPlayState(state) {
-			if (state === true && this.stateCache === false) {
-				this.log('Player is currently streaming.');
-				this.stateCache = true;
-				googletag.pubads().setTargeting('td-player-state', 'playing');
-				this.sendEvent(window, 'td-player.playing');
-			} else if (state === false && this.stateCache === true) {
-				this.log('Player is not currently streaming.');
-				this.stateCache = false;
-				googletag.pubads().setTargeting('td-player-state', 'stopped');
-				this.sendEvent(window, 'td-player.stopped');
-			}
-		},
-
-		setCriteria: function setCriteria(meta) {
-			if (window.googletag && googletag.pubadsReady) {
-				if (meta && meta.data && meta.data.song) {
-					meta = meta.data.song;
-					if (meta.artist) {
-						this.log('Setting Artist', meta.artist);
-						googletag.pubads().setTargeting('td-player-artist', meta.artist);
-						this.sendEvent(window, 'td-player.artist', meta.artist);
-					}
-					if (meta.album) {
-						this.log('Setting Album', meta.album);
-						googletag.pubads().setTargeting('td-player-album', meta.album);
-						this.sendEvent(window, 'td-player.album', meta.album);
-					}
-					if (meta.title) {
-						this.log('Setting Track', meta.title);
-						googletag.pubads().setTargeting('td-player-track', meta.title);
-						this.sendEvent(window, 'td-player.track', meta.title);
-					}
-					if (meta.id) {
-						this.log('Setting Song ID', meta.id);
-						googletag.pubads().setTargeting('td-player-id', meta.id);
-					}
-				}
-			}
-		},
-
-		sendEvent: function sendEvent(el, eventName, data) {
-			var event;
-			if (window.document.createEvent) {
-				event = window.document.createEvent('CustomEvent');
-				event.initCustomEvent(eventName, true, true, data);
-			} else {
-				event = new CustomEvent(eventName, { 'detail': data });
-			}
-			el.dispatchEvent(event);
-		},
-
-		setTimer: function setTimer() {
+		/**
+		 * Starts timer
+		 * @return {void}
+		 */
+		startTimer: function startTimer() {
 			var that = this;
 			clearTimeout(this.timer);
 			this.timer = null;
 			this.timer = setTimeout(function() {
-				that.checkCurrent();
+				that.checkCurrentTrack();
+				that.startTimer();
 			}, this.interval);
 		},
 
+		/**
+		 * Initializes library, filling caches and starting the timer.
+		 * @return {Object} Returns itself.
+		 */
 		init: function init() {
-			if ( ! window.amp_player_config || ! window.amp_player_config.station || ! window.amp_player_config.stream_id) {
-				this.log('amp_player_config not available.');
+			if (
+				! window.amp_player_config ||
+				! window.amp_player_config.station ||
+				! window.amp_player_config.stream_id
+			) {
+				log('Player configuration not available, exiting.');
 				return false;
 			}
 
-			// Retrieve current track info
-			this.checkCurrent();
+			// Refresh and check current track data
+			this.checkCurrentTrack();
 
-			// Explicitly check for track change 1 second after window load
-			var that = this;
-			window.addEventListener('load', function() {
-				that.log('Caught window load.');
-				setTimeout(function() {
-					that.log('Delayed window load track check firing.');
-					that.checkCurrent();
-				}, 1000);
-			}, false);
-
-			// Initialize watch timer
-			this.setTimer();
+			this.startTimer();
 			this.initialized = true;
-			this.log('Initialized! Current track ID:', this.trackIdCache);
+			log('Initialized!', this.cache.trackId);
 			return this;
-		}
 
+		}
 	};
-	window._CMLS.embedPlayerWatch.init();
+
+	window._CMLS[nameSpace].init();
+
 }(window));
