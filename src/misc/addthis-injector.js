@@ -56,7 +56,7 @@
 					'share': {
 						'position': 'left',
 						'offset': { 'bottom': '100px' },
-						'services' : 'facebook,twitter,tumblr,pinterest_share,print,more'
+						'services' : 'facebook,twitter,tumblr,email,more'
 					}
 				}, function(layer) {
 					window._CMLS[nameSpace].layer = layer;
