@@ -11,14 +11,15 @@
 		// Time before refreshing ads, in minutes
 		timeout = 6;
 
-	// Only inject once
-	if (window._CMLS[nameSpace]) {
-		window._CMLS[nameSpace].restart();
-		return;
-	}
-
 	function log() {
 		window._CMLS.logger(scriptName + ' v' + version, arguments);
+	}
+
+	// Only inject once
+	if (window._CMLS[nameSpace]) {
+		log('Script loaded while already active, restarting timer.');
+		window._CMLS[nameSpace].restart();
+		return;
 	}
 
 	window._CMLS[nameSpace] = {
