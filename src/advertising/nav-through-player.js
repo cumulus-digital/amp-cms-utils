@@ -45,6 +45,9 @@
 			if ( ! window._CMLS[nameSpace].isPlayerActive) {
 				return;
 			}
+			if (link.hostname !== window.location.hostname) {
+				return;
+			}
 
 			var $link = link.jquery ? link : $(link);
 			$link
@@ -56,6 +59,7 @@
 			if (e) {
 				e.preventDefault();
 			}
+			log('Intercepting click.');
 			window._CMLS[nameSpace].navigate(e.currentTarget.href);
 		},
 
