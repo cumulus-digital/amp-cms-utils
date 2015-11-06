@@ -11,3 +11,4 @@
 // @codekit-append "advertising/auto-scroll-homepage-past-leaderboard.js"
 
 // Misc
+// @codekit-append "misc/addthis-injector.js"
