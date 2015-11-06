@@ -185,7 +185,7 @@
 		 * @return {void}
 		 */
 		stopTimer: function stopTimer() {
-			log('Stopping timer, clearing animation queue.');
+			log('Stopping timer, clearing animation queue.', this.timer);
 			$('html,body')
 				.clearQueue(nameSpace)
 				.stop(nameSpace, true);
