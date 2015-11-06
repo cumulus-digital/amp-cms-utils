@@ -4,7 +4,7 @@
 (function(window, undefined) {
 	var scriptName = 'AUTO REFRESH ADS',
 		nameSpace = 'autoRefreshAds',
-		version = '0.2',
+		version = '0.3',
 
 		// Time before refreshing ads, in minutes
 		timeout = 8;
