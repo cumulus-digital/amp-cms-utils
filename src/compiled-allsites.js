@@ -15,3 +15,5 @@
 
 // Misc
 // @codekit-append "misc/auto-reload.js"
+// @codekit-append "misc/addthis-injector.js"
+
