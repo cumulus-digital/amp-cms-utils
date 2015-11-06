@@ -1,152 +1,116 @@
 /**
- * Auto-Reload
- * Reloads homepage on a timer without interrupting stream on sites with
- * Triton's new embed player.
+ * When enabled, reloads homepage on a timer without interrupting stream.
  */
-/* globals History */
 (function(window, undefined) {
 
-	window._CMLS = window._CMLS || {};
+	var scriptName = 'AUTO-RELOADER',
+		nameSpace = 'autoReloader',
+		version = '0.7';
 
 	// Only define once
-	if (window._CMLS.autoReloadReference) {
+	if (window._CMLS[nameSpace]) {
 		return;
 	}
 
-	/**
-	 * Reloader
-	 * @param {object} options Options for reloader.  Should include parameters 'condition'
-	 *                         and 'timeout'
-	 * @return {object}           Returns itself.
-	 */
-	var Reloader = function(options) {
-		this.version = '0.6';
+	function log() {
+		window._CMLS.logger(scriptName + ' v' + version, arguments);
+	}
 
-		// CSS Selector that must be found on page for reload to fire.
-		this.condition = options && options.condition ? options.condition : 'body.home';
-
-		// Time to reload.
-		this.timeout = options && options.timeout ? options.timeout * 60000 : 480000;
-
-		this.active = false;
-		this.timer = null;
+	window._CMLS[nameSpace] = {
+		condition: 'body.home',
+		timeout: 480000,
+		active: false,
+		timer: null,
+		player: window._CMLS.whichPlayer(),
 
 		/**
-		 * Logs messages to console if available and debug is on.
+		 * Checks if condition selector exists
+		 * @return {Boolean}
 		 */
-		this.log = function log() {
-			if (window._CMLS && window._CMLS.debug && typeof console === 'object' && console.log) {
-				var ts = (new Date());
-				ts = ts.toISOString() ? ts.toISOString() : ts.toUTCString();
-				console.log('[AUTO-RELOAD ' + this.version + ']', ts, [].slice.call(arguments));
-			}
-		};
-
-		/**
-		 * Determines if condition selector is met.
-		 * @return {boolean} True if selector is found.
-		 */
-		this.checkCondition = function checkCondition() {
+		checkCondition: function checkCondition() {
 			return window.document.querySelector(this.condition) ? true : false;
-		};
+		},
 
-		/**
-		 * Resets and restarts the timer
-		 */
-		this.reset = function reset() {
-			if (this.timer) {
-				this.log('Clearing timer.');
-				clearTimeout(this.timer);
-				this.timer = null;
-			}
+		reset: function reset() {
+			log('Resetting.');
+			clearTimeout(this.timer);
+			this.timer = null;
+			this.restart();
+		},
+
+		start: function start() {
+			log('Starting timer.');
+			this.active = true;
+			this.reset();
+		},
+
+		stop: function stop() {
+			log('Stopping timer.');
+			this.active = false;
+			this.reset();
+		},
+
+		restart: function restart() {
 			if (this.active) {
-				this.log('Restarting timer.');
+				log('Restarting timer.', this.timeout);
 				var that = this;
+				clearTimeout(this.timer);
 				this.timer = setTimeout(function() {
 					that.fire();
 					that.reset();
 				}, this.timeout);
 			}
-		};
+		},
 
-		/**
-		 * Reload the page.
-		 * Reload event will only fire if condition is met, prevents
-		 * firing if they have navigated away from the conditional page
-		 * while timer is still running.
-		 */
-		this.fire = function fire() {
+		destroy: function destroy() {
+			log('Destroying timer.');
+			this.stop();
+		},
+
+		fire: function fire() {
 			if (this.checkCondition()) {
-				this.log('Reloading the page.');
-				if (window.History && window.History.Adapter) {
-					History.Adapter.trigger(window, 'statechange');
-				} else {
-					window.location.reload();
+				log('Reloading the page.');
+				if (this.player.type === window._CMLS.const.PLAYER_TRITON) {
+					window.History.Adapter.trigger(window, 'statechange');
+					return;
 				}
+				if (this.player.type === window._CMLS.const.PLAYER_TUNEGENIE) {
+					window.tgmp.updateLocation(window.location.href);
+					return;
+				}
+				window.location.reload();
 			} else {
-				this.log('Condition not met.');
+				log('Condition not met, self-destructing.');
 				this.destroy();
 			}
-		};
+		},
 
-		/**
-		 * Start the timer.
-		 */
-		this.start = function start() {
-			this.log('Starting timer.');
-			this.active = true;
-			this.reset();
-		};
+		init: function init(options) {
+			this.condition = options.condition || this.condition;
+			this.timeout = options.timeout * 60000 || this.timeout;
+			this.start();
+			log('Initialized.', this.timeout, this.condition);
+		}
 
-		/**
-		 * Stop the timer.
-		 */
-		this.stop = function stop() {
-			this.log('Stopping timer.');
-			this.active = false;
-			this.reset();
-		};
+	};
 
-		/**
-		 * Destroy the timer.
-		 */
-		this.destroy = function destroy() {
-			this.log('Destroying timer.');
-			this.stop();
-		};
-
-		/**
-		 * Initialize reloader and start timer.
-		 */
-		this.start();
-		this.log('Initialized');
-		window._CMLS.autoReloadReference = this;
-		return this;
-
+	var ReloaderArray = function() {};
+	ReloaderArray.prototype = [];
+	ReloaderArray.prototype._push = ReloaderArray.prototype.push;
+	ReloaderArray.prototype.push = function() {
+		for (var i = 0; i < arguments.length; i++) {
+			this._push(arguments[i]);
+		}
+		window._CMLS[nameSpace].init(this.slice(-1)[0]);
+		resetRequestArray();
 	};
 
 	function resetRequestArray() {
 		window._CMLS.autoReload = new ReloaderArray();
 	}
 
-	function process() {
-		var options = window._CMLS.autoReload.slice(-1)[0];
-		window._CMLS.autoReloadInstance = new Reloader(options);
-		resetRequestArray();
-	}
-
-	var ReloaderArray = function(){};
-	ReloaderArray.prototype = [];
-	ReloaderArray.prototype.originalPush = ReloaderArray.prototype.push;
-	ReloaderArray.prototype.push = function() {
-		for (var i = 0; i < arguments.length; i++) {
-			this.originalPush(arguments[i]);
-		}
-		process();
-	};
-
 	if (window._CMLS.autoReload && window._CMLS.autoReload.length) {
-		process();
+		window._CMLS[nameSpace].init(window._CMLS.autoReload.slice(-1)[0]);
 	}
 
 	resetRequestArray();
