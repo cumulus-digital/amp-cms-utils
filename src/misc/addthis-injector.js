@@ -46,6 +46,10 @@
 		},
 
 		buildLayer: function buildLayer() {
+			if (window.NO_ADDTHIS_HERE) {
+				log('NO_ADDTHIS_HERE found in window object, will not build.');
+				return;
+			}
 			if (window._CMLS.isHomepage()) {
 				log('Will not build layer on homepage.');
 				return;
