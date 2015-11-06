@@ -54,10 +54,10 @@
 		 */
 		stop: function stop(callback) {
 			log('Stopping timer.');
-			clearTimeout(this.timer);
-			this.timer = null;
-			if (this.boundToRenderEvent) {
-				this.unbindFromRenderEvent();
+			clearTimeout(window._CMLS[nameSpace].timer);
+			window._CMLS[nameSpace].timer = null;
+			if (window._CMLS[nameSpace].boundToRenderEvent) {
+				window._CMLS[nameSpace].unbindFromRenderEvent();
 			}
 			if (callback) {
 				callback();
@@ -70,24 +70,22 @@
 		 */
 		start: function start() {
 			// Do not start if we're already running
-			if (this.timer) {
+			if (window._CMLS[nameSpace].timer) {
 				return;
 			}
 
-			if ( ! this.checkCondition()) {
+			if ( ! window._CMLS[nameSpace].checkCondition()) {
 				log('Condition check failed on start.');
 				return;
 			}
 
-			var that = this;
-
 			log('Starting timer.');
-			this.timer = setTimeout(function() {
-				that.fire();
+			window._CMLS[nameSpace].timer = setTimeout(function() {
+				window._CMLS[nameSpace].fire();
 			}, timeout * 60000);
 
-			if ( ! this.boundToRenderEvent) {
-				this.bindToRenderEvent();
+			if ( ! window._CMLS[nameSpace].boundToRenderEvent) {
+				window._CMLS[nameSpace].bindToRenderEvent();
 			}
 		},
 
@@ -96,7 +94,7 @@
 		 * @return {void}
 		 */
 		restart: function restart() {
-			this.stop(this.start);
+			window._CMLS[nameSpace].stop(window._CMLS[nameSpace].start);
 		},
 
 		/**
@@ -106,14 +104,14 @@
 		fire: function fire() {
 			// Don't fire if we're on the homepage and
 			// auto-reloader is active.
-			if ( ! this.checkCondition()) {
+			if ( ! window._CMLS[nameSpace].checkCondition()) {
 				log('Autoreloader is active, will not refresh ads.');
-				this.stop();
+				window._CMLS[nameSpace].stop();
 				return;
 			}
 			
-			if ( ! this.boundToRenderEvent) {
-				this.bindToRenderEvent();
+			if ( ! window._CMLS[nameSpace].boundToRenderEvent) {
+				window._CMLS[nameSpace].bindToRenderEvent();
 			}
 
 			window.googletag.cmd.push(function() {
@@ -130,13 +128,12 @@
 		 */
 		bindToRenderEvent: function bindToRenderEvent() {
 			log('Binding to ad render event');
-			var that = this;
 			window.googletag.cmd.push(function() {
 				window.googletag.pubads().addEventListener(
 					'slotRenderEnded',
-					that.restart
+					window._CMLS[nameSpace].restart
 				);
-				that.boundToRenderEvent = true;
+				window._CMLS[nameSpace].boundToRenderEvent = true;
 			});
 		},
 
@@ -146,13 +143,12 @@
 		 */
 		unbindFromRenderEvent: function unbindFromRenderEvent() {
 			log('Unbinding from ad render event.');
-			var that = this;
 			window.googletag.cmd.push(function() {
 				window.googletag.pubads().removeEventListener(
 					'slotRenderEnded',
-					that.restart
+					window._CMLS[nameSpace].restart
 				);
-				that.boundToRenderEvent = false;
+				window._CMLS[nameSpace].boundToRenderEvent = false;
 			});
 		},
 
@@ -162,44 +158,44 @@
 		 */
 		init: function init() {
 			log('Initializing.');
-			var that = this;
 
 			window.googletag = window.googletag || {};
 			window.googletag.cmd = window.googletag.cmd || [];
 
 			// Initialize listeners for Triton Player
-			if (this.player.type === window._CMLS.const.PLAYER_TRITON) {
+			if (window._CMLS[nameSpace].player.type === window._CMLS.const.PLAYER_TRITON) {
 
 				window.addEventListener('td-player.stopped', function() {
-					that.stop();
+					window._CMLS[nameSpace].stop();
 				}, false);
+				
 				window.addEventListener('td-player.playing', function() {
-					that.start();
+					window._CMLS[nameSpace].start();
 				}, false);
 
 				// Clear timer when moving to another page
 				if (window.History && window.History.Adapter) {
 					window.History.Adapter.bind(window, 'statechange', function() {
 						log('Caught statechange.');
-						that.stop();
+						window._CMLS[nameSpace].stop();
 					});
 					window.History.Adapter.bind(window, 'pageChange', function() {
 						log('Caught pageChange.');
-						that.restart();
+						window._CMLS[nameSpace].restart();
 					});
 				}
 
 			}
 
 			// Initialize listeners for TuneGenie Player
-			if (this.player.type === window._CMLS.const.PLAYER_TUNEGENIE) {
+			if (window._CMLS[nameSpace].player.type === window._CMLS.const.PLAYER_TUNEGENIE) {
 				if (window.tgmp && window.TGMP_EVENTS) {
 					window.tgmp.addEventListener(window.TGMP_EVENTS.streamplaying, function(e) {
 						if (e === true) {
-							that.start();
+							window._CMLS[nameSpace].start();
 							return;
 						}
-						that.stop();
+						window._CMLS[nameSpace].stop();
 					});
 				}
 			}
