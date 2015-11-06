@@ -102,6 +102,10 @@
 				return;
 			}
 			
+			if ( ! this.boundToRenderEvent) {
+				this.bindToRenderEvent();
+			}
+
 			window.googletag.cmd.push(function() {
 				log('Refreshing ads.');
 				window.googletag.pubads().refresh();
