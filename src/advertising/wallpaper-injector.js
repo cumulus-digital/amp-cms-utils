@@ -381,7 +381,7 @@
 					'width: 100% !important;' +
 					'overflow: hidden;' +
 					'text-align: center;' +
-					'transition: opacity 0.4s, height 0.5s, background-color 0.3s;' +
+					'transition: opacity 0.4s, height 0.5s, background-color 0.3s; top 0.1s' +
 					'opacity: 0;' +
 				'}' +
 				'.' + nameSpace + '-container iframe {' +
