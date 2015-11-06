@@ -9,7 +9,6 @@
 // @codekit-append "advertising/teadsinjector.js"
 // @codekit-append "advertising/player-tracking-dfp-injection.js"
 // @codekit-append "advertising/auto-scroll-homepage-past-leaderboard.js"
-// @codekit-append "advertising/auto-refresh-ads.js"
 
 // Misc
 // @codekit-append "misc/addthis-injector.js"
