@@ -68,7 +68,7 @@
 		},
 	"\/src\/advertising\/auto-refresh-ads.js": {
 		"fileType": 64,
-		"ignore": 0,
+		"ignore": 1,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/src\/advertising\/auto-refresh-ads.js",
 		"outputAbbreviatedPath": "\/dist\/advertising\/auto-refresh-ads-min.js",
@@ -123,7 +123,7 @@
 		},
 	"\/src\/advertising\/wallpaper-injector.js": {
 		"fileType": 64,
-		"ignore": 0,
+		"ignore": 1,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/src\/advertising\/wallpaper-injector.js",
 		"outputAbbreviatedPath": "\/dist\/advertising\/wallpaper-injector-min.js",
