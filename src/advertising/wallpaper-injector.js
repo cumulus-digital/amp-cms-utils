@@ -70,7 +70,7 @@
 		refreshCache: function refreshCache() {
 			this.cache.dfpSlot = $(settings.dfpSlotNode);
 			this.cache.injectionNode = $(settings.injectionNode);
-			this.cache.stickNode = $(settings.stickNod);
+			this.cache.stickNode = $(settings.stickNode);
 			this.cache.stickAt = this.cache.stickNode.length ? this.cache.stickNode.offset().top : 0;
 			this.cache.contentNode = $(settings.contentNode);
 			this.cache.footerNode = $(settings.footerNode);
@@ -193,7 +193,7 @@
 			if (container.hasClass(nameSpace + '-fixed') && force !== true) {
 				return;
 			}
-			log('Setting wallpaper position to fixed.');
+			log('Setting wallpaper position to fixed.', this.cache.stickAt);
 			container
 				.addClass(nameSpace + '-fixed')
 				.css('top', this.cache.stickAt);
@@ -299,29 +299,27 @@
 					.prop('frameborder', '0')
 					.prop('width', '100%')
 					.prop('height', '100%')
+					.prop('src', 'about:blank')
 					.css({
 						'border': 0,
 						'verticalAlign': 'bottom'
 					})
-					.contents()
-						.html(
-							'<html>' +
-								'<head>' +
-									'<style>' +
-										'html,body { margin: 0; padding: 0; width: 100%; height: 100%; }' +
-										'a { display: block; text-decoration: none; width: 100%; height: 100%; background: url("' + slotImage.prop('src') + '") no-repeat top center; }' +
-									'</style>' +
-								'</head>' +
-								'<body></body>' +
-							'</html>'
-						)
-						.find('body')
-							.append(link);
+					.load(function() {
+						log('Injecting wallpaper into iframe.');
+						iframe.contents().find('body')
+							.append(link)
+							.append(
+								'<style>' +
+									'html,body { margin: 0; padding: 0; width: 100%; height: 100%; }' +
+									'a { display: block; text-decoration: none; width: 100%; height: 100%; background: url("' + slotImage.prop('src') + '") no-repeat top center; }' +
+								'</style>'
+							);
+					});
 
-				log('Injecting wallpaper into container.');
+				log('Injecting iframe into container.');
 				container
 					.css('backgroundColor', bgColor)
-					.append(iframe);
+					.append(iframe);				
 
 				if (slotImage.length) {
 					log('Initializing load watch for ad image.');
