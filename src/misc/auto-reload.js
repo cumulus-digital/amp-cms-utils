@@ -39,6 +39,11 @@
 		},
 
 		start: function start() {
+			if ( ! this.checkCondition()) {
+				log('Condition check failed, exiting.');
+				this.active = false;
+				return false;
+			}
 			log('Starting timer.');
 			this.active = true;
 			this.reset();
@@ -51,7 +56,7 @@
 		},
 
 		restart: function restart() {
-			if (this.active) {
+			if (this.active && this.checkCondition()) {
 				log('Restarting timer.', this.timeout);
 				var that = this;
 				clearTimeout(this.timer);
@@ -59,6 +64,8 @@
 					that.fire();
 					that.reset();
 				}, this.timeout);
+			} else {
+				this.active = false;
 			}
 		},
 
