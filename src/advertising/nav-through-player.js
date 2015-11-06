@@ -36,11 +36,11 @@
 					});
 		},
 
-		updateLink: function updateLink(link) {
+		updateLink: function updateLink(link, force) {
 			if ( ! window._CMLS[nameSpace].isPlayerActive) {
 				return;
 			}
-			if (link.hostname !== window.location.hostname) {
+			if (link.hostname !== window.location.hostname && ! force) {
 				return;
 			}
 

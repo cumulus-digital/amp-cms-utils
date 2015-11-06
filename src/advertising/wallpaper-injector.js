@@ -287,7 +287,7 @@
 
 				// If navThroughPlayer library is available, use it on our new link.
 				if (window._CMLS.navThroughPlayer && window._CMLS.navThroughPlayer.updateLink) {
-					window._CMLS.navThroughPlayer.updateLink(link);
+					window._CMLS.navThroughPlayer.updateLink(link, true);
 				}
 				
 				// Build our super iframe
