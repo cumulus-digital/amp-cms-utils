@@ -278,6 +278,7 @@
 			}
 
 			this.reset(function buildWallpaper() {
+				try {
 				log('Building new wallpaper.');
 
 				var link = $('<a />')
@@ -332,6 +333,9 @@
 						.prop('src', slotImage.prop('src'));
 				} else {
 					that.show();
+				}
+				} catch(e) {
+					log(e);
 				}
 			});
 		},
