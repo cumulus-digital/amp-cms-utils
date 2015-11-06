@@ -18,7 +18,11 @@
 	// Only inject once
 	if (window._CMLS[nameSpace]) {
 		log('Script loaded while already active, restarting timer.');
-		window._CMLS[nameSpace].restart();
+		if ( ! window._CMLS[nameSpace].checkCondition()) {
+			window._CMLS[nameSpace].stop();
+		} else {
+			window._CMLS[nameSpace].restart();
+		}
 		return;
 	}
 
@@ -32,7 +36,7 @@
 		 * active on this site.
 		 * @return {Boolean}
 		 */
-		checkConditions: function checkConditions() {
+		checkCondition: function checkCondition() {
 			if (
 				window._CMLS.isHomepage() &&
 				window._CMLS.autoReloader &&
@@ -66,7 +70,12 @@
 		 */
 		start: function start() {
 			// Do not start if we're already running
-			if (this.timer || this.active) {
+			if (this.timer) {
+				return;
+			}
+
+			if ( ! this.checkCondition()) {
+				log('Condition check failed on start.');
 				return;
 			}
 
@@ -97,7 +106,7 @@
 		fire: function fire() {
 			// Don't fire if we're on the homepage and
 			// auto-reloader is active.
-			if ( ! this.checkConditions()) {
+			if ( ! this.checkCondition()) {
 				log('Autoreloader is active, will not refresh ads.');
 				this.stop();
 				return;
@@ -171,7 +180,12 @@
 				// Clear timer when moving to another page
 				if (window.History && window.History.Adapter) {
 					window.History.Adapter.bind(window, 'statechange', function() {
+						log('Caught statechange.');
 						that.stop();
+					});
+					window.History.Adapter.bind(window, 'pageChange', function() {
+						log('Caught pageChange.');
+						that.restart();
 					});
 				}
 
@@ -195,7 +209,7 @@
 	};
 
 	// Don't initialize if conditions are bad.
-	if ( ! window._CMLS[nameSpace].checkConditions()) {
+	if ( ! window._CMLS[nameSpace].checkCondition()) {
 		log('Autoreloader is active on this page, exiting.');
 		return;
 	}
