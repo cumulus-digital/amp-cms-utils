@@ -10,11 +10,6 @@
 
 		player = window._CMLS.whichPlayer();
 
-	// Only run once
-	if (window._CMLS[nameSpace]) {
-		return;
-	}
-
 	function log() {
 		window._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
