@@ -10,6 +10,7 @@
 // @codekit-append "advertising/player-tracking-dfp-injection.js"
 // @codekit-append "advertising/auto-scroll-homepage-past-leaderboard.js"
 // @codekit-append "advertising/auto-refresh-ads.js"
+// @codekit-append "nav-through-player.js"
 // @codekit-append "advertising/wallpaper-injector.js"
 
 // Misc
