@@ -266,7 +266,7 @@
 				return;
 			}
 
-			log('Checking background color.');
+			log('Checking background color.', slotBgColor);
 			var bgColor = 'rgba(255,255,255,0)';
 			if (slotBgColor && slotBgColor.length < 1) {
 				log('Background color attempted, checking...');
