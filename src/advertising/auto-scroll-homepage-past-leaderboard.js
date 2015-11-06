@@ -23,7 +23,7 @@
 		};
 
 	// Only define once.
-	if (window._CMLS[nameSpace]) {
+	if (window._CMLS[nameSpace] || window._CMLS.DO_NOT_AUTO_SCROLL) {
 		return;
 	}
 
