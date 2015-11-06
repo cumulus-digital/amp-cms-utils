@@ -310,7 +310,7 @@
 							.append(link)
 							.append(
 								'<style>' +
-									'html,body { margin: 0; padding: 0; width: 100%; height: 100%; }' +
+									'html,body { background: transparent; margin: 0; padding: 0; width: 100%; height: 100%; }' +
 									'a { display: block; text-decoration: none; width: 100%; height: 100%; background: url("' + slotImage.prop('src') + '") no-repeat top center; }' +
 								'</style>'
 							);
@@ -407,6 +407,9 @@
 			if ( ! window.document.getElementById(nameSpace + 'Styles')) {
 				$('head').append(styleSheet);
 			}
+
+			// Process any existing wallpaper
+			this.process();
 
 		}
 
