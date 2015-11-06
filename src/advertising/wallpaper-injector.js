@@ -279,35 +279,48 @@
 
 			this.reset(function buildWallpaper() {
 				log('Building new wallpaper.');
+
+				var link = $('<a />')
+					.prop('href', slotLink.prop('href'))
+					.prop('target', slotLink.prop('target'));
+
+				// If navThroughPlayer library is available, use it on our new link.
+				if (window._CMLS.navThroughPlayer && window._CMLS.navThroughPlayer.updateLink) {
+					window._CMLS.navThroughPlayer.updateLink(link);
+				}
+				
+				// Build our super iframe
 				var iframe = $('<iframe />')
 					.prop('name', nameSpace + 'Iframe')
 					.prop('scrolling', 'no')
 					.prop('marginwidth', '0')
 					.prop('marginheight', '0')
 					.prop('frameborder', '0')
-					.prop('src', 'about:blank')
-					.prop('width', slotIframe.prop('width'))
-					.prop('height', slotIframe.prop('height'))
+					.prop('width', '100%')
+					.prop('height', '100%')
 					.css({
 						'border': 0,
 						'verticalAlign': 'bottom'
-					});
-				
+					})
+					.contents()
+						.html(
+							'<html>' +
+								'<head>' +
+									'<style>' +
+										'html,body { margin: 0; padding: 0; width: 100%; height: 100%; }' +
+										'a { display: block; text-decoration: none; width: 100%; height: 100%; background: url("' + slotImage.prop('src') + '") no-repeat top center; }' +
+									'</style>' +
+								'</head>' +
+								'<body></body>' +
+							'</html>'
+						)
+						.find('body')
+							.append(link);
+
 				log('Injecting wallpaper into container.');
 				container
 					.css('backgroundColor', bgColor)
 					.append(iframe);
-
-				iframe.contents()
-					.find('head')
-						.append('<style>html,body { margin: 0; padding: 0; }</style>')
-					.end()
-					.find('body')
-						.append(
-							'<a href="' + slotLink.prop('href') + '" target="' + slotLink.prop('target') +'">' +
-								'<img src="' + slotImage.prop('src') + '">' +
-							'</a>'
-						);
 
 				if (slotImage.length) {
 					log('Initializing load watch for ad image.');
@@ -370,9 +383,9 @@
 					'opacity: 0;' +
 				'}' +
 				'.' + nameSpace + '-container iframe {' +
-					'position: absolute;' +
-					'left: 50%;' +
-					'transform: translate(-50%, 0%);' +
+					//'position: absolute;' +
+					//'left: 50%;' +
+					//'transform: translate(-50%, 0%);' +
 				'}' +
 				'.' + nameSpace + '-open {' +
 					'height: 100% !important;' +
