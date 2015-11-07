@@ -29,7 +29,7 @@
 
 	var scriptName = 'WALLPAPER INJECTOR',
 		nameSpace = 'wallpaperInjector',
-		version = '0.3';
+		version = '0.4';
 
 	if (window._CMLS[nameSpace]) {
 		return;
@@ -360,7 +360,7 @@
 		window.googletag = window.googletag || {};
 		window.googletag.cmd = window.googletag.cmd || [];
 		window.googletag.cmd.push(function() {
-			window.googletag.pubads().addEventListener('slotRenderEnded', debounce(checkRenderEvent, 500, false));
+			window.googletag.pubads().addEventListener('slotRenderEnded', throttle(checkRenderEvent, 500));
 		});
 
 		var styleSheet = '<style id="' + nameSpace + 'Styles">' +
