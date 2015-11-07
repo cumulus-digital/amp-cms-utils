@@ -145,7 +145,7 @@
 		},
 	"\/src\/advertising\/wallpaper-injector.js": {
 		"fileType": 64,
-		"ignore": 1,
+		"ignore": 0,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/src\/advertising\/wallpaper-injector.js",
 		"outputAbbreviatedPath": "\/dist\/advertising\/wallpaper-injector-min.js",

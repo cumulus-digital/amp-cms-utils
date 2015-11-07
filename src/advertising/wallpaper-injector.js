@@ -95,11 +95,10 @@
 			}
 			log('Generating new wallpaper container.');
 			refreshCache();
-			var container = $('<div />')
-					.prop({
-						'id': nameSpace + 'Container',
-						'class': nameSpace + '-container'
-					});
+			var container = $('<div />', {
+				'id': nameSpace + 'Container',
+				'class': nameSpace + '-container'
+			});
 			cache.injectionNode.prepend(container);
 			cache.container = container;
 			raiseContentArea();
@@ -142,21 +141,24 @@
 		function _reset() {
 			var deferred = $.Deferred(),
 				container = getContainer(),
-				isOpen = container.hasClass(nameSpace + '-open');
+				isOpen = container.hasClass(nameSpace + '-open'),
+				transitionFired = false;
 
 			function finishRemoval() {
-				log('Removing wallpaper contents.');
-				container
-					.empty()
-					.css('top', '0');
+				transitionFired = true;
+
 				cache.obstructiveNode.show();
 				log('Clearing all event listeners.');
 				cache.window.off('.' + nameSpace);
-				container.off('.' + nameSpace);
+
+				log('Removing wallpaper container.');
+				container.off('.' + nameSpace).remove();
+				cache.container = null;
 
 				deferred.resolve();
 			}
 
+			log('RESET!');
 			container
 				.off(transitionEvent)
 				.removeData()
@@ -164,6 +166,8 @@
 				.css('backgroundColor', 'rgba(0,0,0,0)')
 				.removeClass(nameSpace + '-open')
 				.removeClass(nameSpace + '-fixed');
+
+			log('Container is closing.');
 
 			if (transitionEvent && isOpen) {
 				container.on(transitionEvent, function(e) {
@@ -173,10 +177,14 @@
 						finishRemoval();
 					}
 				});
-			} else {
-				finishRemoval();
 			}
+			setTimeout(function() {
+				if ( ! transitionFired) {
+					finishRemoval();
+				}
+			}, 800);
 
+			log('Returning our promise.');
 			return deferred.promise();
 		}
 		this.reset = _reset;
@@ -229,7 +237,7 @@
 					return;
 				}
 				toggleFixed(false);
-			}, 60));
+			}, 50));
 
 			cache.window.on('resize.' + nameSpace, debounce(function() {
 				refreshStickAtPosition();
@@ -277,8 +285,7 @@
 				.then(function() {
 					log ('Building the new wallpaper.');
 
-					var link = $('<a />')
-						.prop({
+					var link = $('<a />', {
 							'href': slotLink.prop('href'),
 							'target': slotLink.prop('target')
 						});
@@ -289,8 +296,7 @@
 					}
 
 					// Build the iframe
-					var iframe = $('<iframe />')
-						.prop({
+					var iframe = $('<iframe />', {
 							'name': nameSpace + 'Iframe',
 							'scrolling': 'no',
 							'marginWidth': '0',
@@ -312,6 +318,7 @@
 
 					iframe
 						.load(function() {
+							log('Injecting wallpaper into iframe.');
 							iframe.contents().find('body')
 								.append(iframeStyles, link);
 						})
@@ -335,8 +342,6 @@
 		}
 		this.process = _process;
 
-		log('Initializing.');
-
 		// Hook into ad render event to intercept new ads.
 		function checkRenderEvent(e) {
 			var pos = e.slot.getTargeting('pos');
@@ -357,10 +362,21 @@
 				return false;
 			}
 		}
+
+		function _unbindAllListeners() {
+			$(window).off('.' +nameSpace);
+		}
+		this.unbindAllListeners = _unbindAllListeners;
+
+		/*-------------------------------------------------*/
+		log('Initializing.');
+
 		window.googletag = window.googletag || {};
 		window.googletag.cmd = window.googletag.cmd || [];
 		window.googletag.cmd.push(function() {
-			window.googletag.pubads().addEventListener('slotRenderEnded', debounce(checkRenderEvent, 500));
+			window.googletag.pubads().addEventListener('slotRenderEnded', function(e) {
+				debounce(checkRenderEvent(e), 1000);
+			});
 		});
 
 		var styleSheet = '<style id="' + nameSpace + 'Styles">' +
@@ -374,7 +390,7 @@
 				'width: 100% !important;' +
 				'overflow: hidden;' +
 				'text-align: center;' +
-				'transition: opacity 0.5s, height 0.6s, background-color 0.3s; top 0.1s;' +
+				'transition: opacity 0.5s, height 0.6s, background-color 0.4s;' +
 				'opacity: 0;' +
 			'}' +
 			'.' + nameSpace + '-container iframe {' +
@@ -382,13 +398,15 @@
 				'height: 100%;' +
 				'width: 100%;' +
 			'}' +
+			'.' + nameSpace + '-container ~ .grid-container {' +
+				'transition: box-shadow 0.6s' +
+			'}' +
 			'.' + nameSpace + '-open {' +
 				'height: 100% !important;' +
 				'opacity: 1;' +
 			'}' +
 			'.' + nameSpace + '-open ~ .grid-container {' +
 				'box-shadow: 0 0 20px rgba(0,0,0,0.3);' +
-				'transition: box-shadow 0.5s' +
 			'}' +
 			'.' + nameSpace + '-fixed {' +
 				'position: fixed;' +
@@ -410,35 +428,9 @@
 			});
 		}
 
-		function _unbindAllListeners() {
-			window.googletag = window.googletag || {};
-			window.googletag.cmd = window.googletag.cmd || [];
-			window.googletag.cmd.push(function() {
-				window.googletag.pubads().removeEventListener('slotRenderEnded', checkRenderEvent);
-			});
-			$(window).off('.' +nameSpace);
-		}
-		this.unbindAllListeners = _unbindAllListeners;
-
 	}
 
 	settings.nameSpace = nameSpace;
 	window._CMLS[nameSpace] = new WallpaperInjector(settings);
-
-	// Hook into History events for Triton's player to kill myself.
-	if (
-		window._CMLS.whichPlayer().type === window._CMLS.const.PLAYER_TRITON &&
-		window.History && window.History.Adapter
-	) {
-		window.History.Adapter.bind(window, 'statechange', function() {
-			window._CMLS[nameSpace].reset();
-			window._CMLS[nameSpace].unbindAllListeners();
-			window._CMLS[nameSpace] = null;
-		});
-		window.History.Adapter.bind(window, 'pageChange', function() {
-			window._CMLS[nameSpace] = new WallpaperInjector(settings);
-		});
-	}
-
 
 }(jQuery, window));
