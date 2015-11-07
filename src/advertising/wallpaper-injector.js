@@ -178,6 +178,7 @@
 
 			return deferred.promise();
 		}
+		this.reset = _reset();
 
 		function isFixed() {
 			var container = getContainer();
