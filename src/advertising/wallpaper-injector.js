@@ -360,7 +360,7 @@
 		window.googletag = window.googletag || {};
 		window.googletag.cmd = window.googletag.cmd || [];
 		window.googletag.cmd.push(function() {
-			window.googletag.pubads().addEventListener('slotRenderEnded', throttle(checkRenderEvent, 500));
+			window.googletag.pubads().addEventListener('slotRenderEnded', debounce(checkRenderEvent, 500));
 		});
 
 		var styleSheet = '<style id="' + nameSpace + 'Styles">' +
