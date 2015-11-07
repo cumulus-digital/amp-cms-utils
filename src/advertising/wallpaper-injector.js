@@ -29,10 +29,10 @@
 
 	var scriptName = 'WALLPAPER INJECTOR',
 		nameSpace = 'wallpaperInjector',
-		version = '0.4';
+		version = '0.5';
 
 	if (window._CMLS[nameSpace]) {
-		return;
+		//return;
 	}
 
 	function log() {
@@ -64,6 +64,21 @@
 		}
 
 		var transitionEvent = determineTransitionEvent();
+
+		function checksum(s) {
+			var hash = 0,
+				strlen = s.length,
+				i, c;
+			if ( strlen === 0 ) {
+				return hash;
+			}
+			for ( i = 0; i < strlen; i++ ) {
+				c = s.charCodeAt( i );
+				hash = ((hash << 5) - hash) + c;
+				hash = hash & hash; // Convert to 32bit integer
+			}
+			return hash;
+		}
 
 		function refreshCache() {
 			cache.dfpSlot = $(settings.dfpSlotNode);
@@ -273,6 +288,17 @@
 				return;
 			}
 
+			// We get a simple "hash" of the image url and link so we don't try to
+			// replace the same background twice
+			var hash = checksum(slotLink.prop('href') + slotLink.prop('target') + slotImage.prop('src'));
+			log('Generated hash.', hash);
+
+			if (hash === container.data('hash')) {
+				log('Requested wallpaper is already set.');
+				return;
+			}
+
+
 			log('Getting background color.', slotBgColor);
 			var bgColor = 'rgba(255,255,255,0)',
 				bgColorCheck = slotBgColor.match(/(\#[A-Za-z0-9]+)/) || false;
@@ -307,6 +333,7 @@
 					log('Injecting iframe into container.');
 					container = getContainer();
 					container
+						.data('hash', hash)
 						.css('backgroundColor', bgColor)
 						.append(iframe);
 
