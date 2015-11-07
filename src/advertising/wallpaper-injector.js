@@ -295,8 +295,7 @@
 							'scrolling': 'no',
 							'marginWidth': '0',
 							'marginHeight': '0',
-							'frameborder': '0',
-							'src': 'about:blank'
+							'frameborder': '0'
 						});
 
 					log('Injecting iframe into container.');
@@ -311,16 +310,12 @@
 						'a{display:block;width:100%;height:100%;text-decoration:none;}' +
 					'</style>';
 
-					console.log(iframe.readyState);
-					if (iframe.contents()) {
-						iframe.contents().find('body')
-							.append(iframeStyles, link);
-					} else {
-						iframe.load(function() {
+					iframe
+						.load(function() {
 							iframe.contents().find('body')
 								.append(iframeStyles, link);
-						});
-					}
+						})
+						.prop('src', 'about:blank');
 
 					if (slotImage.length) {
 						log('Initializing preloader.');
@@ -335,7 +330,7 @@
 					}
 				});
 			} catch(e) {
-				log('WTF PEOPLE', e);
+				console.log('WTF PEOPLE', e);
 			}
 		}
 		this.process = _process;
