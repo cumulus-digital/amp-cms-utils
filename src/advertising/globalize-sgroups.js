@@ -12,7 +12,10 @@
 		window._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
 
-	window._CMLS = window._CMLS || {};
+	if (window._CMLS[nameSpace]) {
+		return;
+	}
+
 	window._CMLS[nameSpace] = {
 		cycles: 0,
 		timer: null,

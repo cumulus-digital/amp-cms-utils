@@ -6,6 +6,10 @@
 	
 	window._CMLS = window._CMLS || {};
 
+	if (window._CMLS.LOADED) {
+		return;
+	}
+
 	/**
 	 * Constants
 	 */
@@ -216,4 +220,7 @@
 		el.dispatchEvent(event);
 	};
 
+
+
+	window._CMLS.LOADED = true;
 }(window));

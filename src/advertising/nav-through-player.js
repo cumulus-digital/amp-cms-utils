@@ -14,6 +14,10 @@
 		window._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
 
+	if (window._CMLS[nameSpace]) {
+		return;
+	}
+
 	window._CMLS[nameSpace] = {
 		isPlayerActive: function isPlayerActive() {
 			if (player.type) {
