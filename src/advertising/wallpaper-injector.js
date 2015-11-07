@@ -346,12 +346,12 @@
 				if (e.isEmpty) {
 
 					log('Slot was empty, resetting wallpaper container.');
-					throttle(_reset, 1000)();
+					return debounce(_reset, 1000);
 
 				} else {
 
 					log('Slot contained an ad, processing wallpaper.');
-					throttle(_process, 1000)();
+					return debounce(_process, 1000);
 
 				}
 				return false;
