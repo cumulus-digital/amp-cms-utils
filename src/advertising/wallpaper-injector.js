@@ -1,8 +1,8 @@
 /**
- * Watches for wallpaper ad load, injects it behind content area.
+ * Injects ads loaded into wallpaper ad slot behind content area
  */
 (function ($, window, undefined) {
-
+	
 	var settings = {
 		// ID of wallpaper ad's slot div
 		dfpSlotNode: '#div-gpt-ad-1418849849333-16',
@@ -28,10 +28,9 @@
 	/*-----------------------------------------------------------------------------------------*/
 
 	var scriptName = 'WALLPAPER INJECTOR',
-		nameSpace = 'cmlsWallpaperInjector',
+		nameSpace = 'wallpaperInjector',
 		version = '0.3';
 
-	// Only run once
 	if (window._CMLS[nameSpace]) {
 		return;
 	}
@@ -40,384 +39,409 @@
 		window._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
 
-	/**
-	 * Discover transition events supported by the current browser
-	 * @return {string} Transition event name
-	 */
-	function determineTransitionEvents() {
-		var t;
-		var el = document.createElement('fakeelement');
-		var transitions = {
-			'transition': 'transitionend',
-			'OTransition': 'otransitionend',
-			'MozTransition': 'transitionend',
-			'WebkitTransition': 'webkittransitionend',
-			'msTransition': 'mstransitionend'
-		};
+	function WallpaperInjector(settings) {
+		var cache = {},
+			nameSpace = settings.nameSpace || 'wallpaperInjector',
+			throttle = window._CMLS.throttle,
+			debounce = window._CMLS.debounce;
 
-		for(t in transitions){
-			if( el.style[t] !== undefined ){
-				return transitions[t];
+		function determineTransitionEvent() {
+			var t;
+			var el = document.createElement('fakeelement');
+			var transitions = {
+				'transition': 'transitionend',
+				'OTransition': 'otransitionend',
+				'MozTransition': 'transitionend',
+				'WebkitTransition': 'webkittransitionend',
+				'msTransition': 'mstransitionend'
+			};
+
+			for(t in transitions){
+				if( el.style[t] !== undefined ){
+					return transitions[t];
+				}
 			}
 		}
-	}
-	settings.transitionEvent = determineTransitionEvents();
 
-	window._CMLS[nameSpace] = {
-		version: version,
-		cache: {},
+		var transitionEvent = determineTransitionEvent();
 
-		refreshCache: function refreshCache() {
-			this.cache.dfpSlot = $(settings.dfpSlotNode);
-			this.cache.injectionNode = $(settings.injectionNode);
-			this.cache.stickNode = $(settings.stickNode);
-			this.cache.stickAt = this.cache.stickNode.length ? this.cache.stickNode.offset().top : 0;
-			this.cache.contentNode = $(settings.contentNode);
-			this.cache.footerNode = $(settings.footerNode);
-			this.cache.obstructiveNode = $(settings.obstructiveNode);
-			this.cache.window = $(window);
-			this.cache.document = $(window.document);
-		},
+		function refreshCache() {
+			cache.dfpSlot = $(settings.dfpSlotNode);
+			cache.injectionNode = $(settings.injectionNode);
+			cache.stickNode = $(settings.stickNode);
+			cache.contentNode = $(settings.contentNode);
+			cache.footerNode = $(settings.footerNode);
+			cache.obstructiveNode = $(settings.obstructiveNode);
+			cache.window = $(window);
+			cache.document = $(window.document);
+			refreshStickAtPosition();
+			return cache;
+		}
 
-		refreshStickAtPosition: function refreshStickAtPosition() {
+		function refreshStickAtPosition() {
 			log('Refreshing stick position.');
-			this.cache.stickAt = this.cache.stickNode.length ? this.cache.stickNode.offset().top : 0;
-			return this.cache.stickAt;
-		},
+			cache.stickAt = cache.stickNode.length ? cache.stickNode.offset().top : 0;
+			return cache.stickAt;
+		}
 
-		getContainer: function getContainer() {
-			if (this.cache.container && this.cache.container.length) {
-				return this.cache.container;
+		function getContainer() {
+			if (cache.container && cache.container.length) {
+				return cache.container;
 			}
 			var existing = $('#' + nameSpace + 'Container');
 			if (existing.length) {
-				this.cache.container = existing;
-				return this.cache.container;
+				cache.container = existing;
+				return cache.container;
 			}
 			log('Generating new wallpaper container.');
-			var container = $('<div id="' + nameSpace + 'Container" class="' + nameSpace + '-container" />');
-			this.cache.injectionNode.prepend(container);
-			this.cache.container = container;
-			this.raiseContentArea();
-			return this.cache.container;
-		},
+			var container = $('<div />')
+					.prop({
+						'id': nameSpace + 'Container',
+						'class': nameSpace + '-container'
+					});
+			cache.injectionNode.prepend(container);
+			cache.container = container;
+			raiseContentArea();
+			return cache.container;
+		}
 
-		raiseContentArea: function raiseContentArea() {
-			var container = this.getContainer();
-			var originalStyles = {
-				content: this.cache.contentNode.css(['position', 'zIndex']),
-				footer: this.cache.footerNode.css(['position', 'zIndex'])
-			};
-			if (originalStyles.content.position.toLowerCase() === 'static') {
+		function raiseContentArea() {
+			var container = getContainer(),
+				originalStyles = {
+					content: cache.contentNode.css(['position', 'zIndex']),
+					footer: cache.footerNode.css(['position', 'zIndex'])
+				};
+			if (originalStyles.content.position === 'static') {
 				log('Setting content area position to relative.');
-				this.cache.contentNode.css('position', 'relative');
+				cache.contentNode.css('position', 'relative');
 			}
-			if (
-				originalStyles.content.zIndex.toLowerCase() === 'auto' ||
-				originalStyles.content.zIndex <= container.css('zIndex')
-			) {
+			if (originalStyles.content.zIndex === 'auto' || originalStyles.content.zIndex <= container.css('zIndex')) {
 				log('Raising content area above wallpaper container.');
-				this.cache.contentNode.css('zIndex', container.css('zIndex') + 1);
+				cache.contentNode.css('zIndex', container.css('zIndex') + 1);
 			}
-			if (originalStyles.footer.position.toLowerCase() === 'static') {
+			if (originalStyles.footer.position === 'static') {
 				log('Setting footer area position to relative.');
-				this.cache.footerNode.css('position', 'relative');
+				cache.footerNode.css('position', 'relative');
 			}
-			this.cache.contentNode.data('originalStyles', originalStyles.content);
-			this.cache.footerNode.data('originalStyles', originalStyles.footer);
+			cache.contentNode.data('originalStyles', originalStyles.content);
+			cache.footerNode.data('originalStyles', originalStyles.footer);
 			log('Content area has been raised.');
-		},
+		}
 
-		show: function show() {
+		function show() {
 			log('Displaying wallpaper.');
-			var container = this.getContainer();
+			var container = getContainer();
 			container
-				.off(settings.transitionEvent)
+				.off(transitionEvent)
 				.addClass(nameSpace + '-open');
-			this.cache.obstructiveNode.hide();
-			this.startTrackingScroll();
-		},
+			cache.obstructiveNode.hide();
+			startTrackingScroll();
+		}
 
-		reset: function reset(callback) {
-			var container = this.getContainer();
-			log('Removing wallpaper.');
+		function _reset() {
+			var deferred = $.Deferred(),
+				container = getContainer(),
+				isOpen = container.hasClass(nameSpace + '-open');
 
-			var that = this;
-
-			// Wrapping the last bit of cleanup so we can
-			// execute at transition end if available.
-			function callbackWrapper() {
+			function finishRemoval() {
 				log('Removing wallpaper contents.');
 				container
 					.empty()
 					.css('top', '0');
-				that.cache.obstructiveNode.show();
+				cache.obstructiveNode.show();
+				log('Clearing all event listeners.');
+				cache.window.off('.' + nameSpace);
+				container.off('.' + nameSpace);
 
-				log('Clearing event listeners.');
-				that.cache.window.off('.' + nameSpace);
-				that.cache.document.off('.' + nameSpace);
-
-				if (typeof callback === 'function') {
-					log('Firing reset callback.');
-					callback();
-				}
+				deferred.resolve();
 			}
 
-			var isOpen = container.hasClass(nameSpace + '-open');
-
 			container
-				.off(settings.transitionEvent)
+				.off(transitionEvent)
 				.removeData()
 				.removeProp('data')
 				.css('backgroundColor', 'rgba(0,0,0,0)')
 				.removeClass(nameSpace + '-open')
 				.removeClass(nameSpace + '-fixed');
 
-			if (settings.transitionEvent && isOpen) {
-				log('Setting transition watch.');
-				container.on(settings.transitionEvent, function(e) {
-					log('Transition complete.', e.originalEvent.propertyName);
+			if (transitionEvent && isOpen) {
+				container.on(transitionEvent, function(e) {
 					// Assume opacity takes longest
 					if (e.originalEvent.propertyName === 'opacity') {
-						e.stopImmediatePropagation();
-						callbackWrapper();
+						log('Transition complete.');
+						finishRemoval();
 					}
 				});
 			} else {
-				callbackWrapper();
+				finishRemoval();
 			}
-		},
 
-		setFixed: function setFixed(force) {
-			var container = this.getContainer();
-			if (container.hasClass(nameSpace + '-fixed') && force !== true) {
-				return;
+			return deferred.promise();
+		}
+
+		function isFixed() {
+			var container = getContainer();
+			return container.hasClass(nameSpace + '-fixed');
+		}
+
+		function toggleFixed(fix) {
+			var container = getContainer();
+			if (isFixed() && fix === false) {
+				log('Unfixing wallpaper position.');
+				container
+					.removeClass(nameSpace + '-fixed')
+					.css('top', '0');
 			}
-			log('Setting wallpaper position to fixed.', this.cache.stickAt);
-			container
-				.addClass(nameSpace + '-fixed')
-				.css('top', this.cache.stickAt);
-		},
-
-		unsetFixed: function unsetFixed() {
-			var container = this.getContainer();
-			if ( ! container.hasClass(nameSpace + '-fixed')) {
-				return;
+			if ( ! isFixed() && fix === true) {
+				log('Fixing wallpaper position.');
+				refreshStickAtPosition();
+				container
+					.addClass(nameSpace + '-fixed')
+					.css('top', cache.stickAt);
 			}
-			log('Unfixing wallpaper position.');
-			container
-				.removeClass(nameSpace + '-fixed')
-				.css('top', '0');
-		},
+		}
 
-		hasPassedStickPosition: function hasPassedStickPosition() {
-			var scrollTop = this.cache.window.scrollTop(),
-				offset = this.cache.injectionNode.length ? this.cache.injectionNode.offset().top : 0;
-			if (offset < scrollTop + this.cache.stickAt) {
-				return true;
-			}
-			return false;
-		},
-
-		startTrackingScroll: function startTrackingScroll() {
+		function startTrackingScroll() {
 			log('Initializing scroll tracking.');
-			var that = this;
 
-			this.refreshStickAtPosition();
-
-			if (this.hasPassedStickPosition()) {
-				this.setFixed(true);
-			} else {
-				this.unsetFixed();
+			function hasPassedStickPosition() {
+				var scrollTop = cache.window.scrollTop(),
+					offset = cache.injectionNode.length ? cache.injectionNode.offset().top : 0;
+				if (offset < scrollTop + cache.stickAt) {
+					return true;
+				}
+				return false;
 			}
 
-			this.cache.window.on('scroll.' + nameSpace, window._CMLS.throttle(function() {
-				if (that.hasPassedStickPosition()) {
-					that.setFixed();
+			refreshStickAtPosition();
+
+			if (hasPassedStickPosition()) {
+				toggleFixed(true);
+			} else {
+				toggleFixed(false);
+			}
+
+			cache.window.on('scroll.' + nameSpace, throttle(function() {
+				if (hasPassedStickPosition()) {
+					toggleFixed(true);
 					return;
 				}
-				that.unsetFixed();
+				toggleFixed(false);
 			}, 60));
 
-			this.cache.window.on('resize.' + nameSpace, window._CMLS.debounce(function() {
-				that.refreshStickAtPosition();
+			cache.window.on('resize.' + nameSpace, debounce(function() {
+				refreshStickAtPosition();
 			}, 500));
 
 			log('Scroll tracking enabled.');
-		},
+		}
 
-		process: function process() {
-			log('Processing wallpaper request.');
-			this.refreshCache();
-			var container = this.getContainer(),
-				that = this;
+		function _process() {
+			try{
+			if ($(settings.contentNode).height() < 200) {
+				log('Content node is not ready, retrying.');
+				setTimeout(function() {
+					_process();
+				}, 500);
+				return;
+			}
 
-			log('Retrieving data from ad slot.');
-			var slotIframe = this.cache.dfpSlot.find('iframe'),
+			refreshCache();
+			log('Processing wallpaper slot.');
+
+			var container = getContainer(),
+				slotIframe = cache.dfpSlot.find('iframe'),
 				slotDiv = slotIframe.contents().find('#google_image_div,body').first(),
 				slotLink = slotDiv.find('a:first'),
-				slotImage = slotLink.find('img.img_ad:first,img').first(),
+				slotImage = slotLink.find('img.img_ad:first,img:first').first(),
 				slotBgColor = slotImage.prop('alt');
 
 			log('Checking image.');
 			if ( ! slotImage.length) {
-				log('No image found in ad slot!');
-				this.reset();
+				log('No image found in ad slot! Resetting.');
+				_reset();
 				return;
 			}
 
-			log('Checking background color.', slotBgColor);
-			var bgColor = 'rgba(255,255,255,0)';
-			if (slotBgColor && slotBgColor.length > 1) {
-				log('Background color attempted, checking...');
-				var bgColorCheck = slotBgColor.match(/(\#[A-Za-z0-9]+)/);
-				if (bgColorCheck && bgColorCheck.length > 1) {
-					log('Using background color.', bgColorCheck[1]);
-					bgColor = bgColorCheck[1];
-				}
+			log('Getting background color.', slotBgColor);
+			var bgColor = 'rgba(255,255,255,0)',
+				bgColorCheck = slotBgColor.match(/(\#[A-Za-z0-9]+)/) || false;
+			if (bgColorCheck && bgColorCheck.length > 1) {
+				bgColor = bgColorCheck[1];
 			}
+			log('Using background color.', bgColor);
 
-			this.reset(function buildWallpaper() {
-				try {
-				log('Building new wallpaper.');
+			_reset()
+				.then(function() {
+					log ('Building the new wallpaper.');
 
-				var link = $('<a />')
-					.prop('href', slotLink.prop('href'))
-					.prop('target', slotLink.prop('target'));
+					var link = $('<a />')
+						.prop({
+							'href': slotLink.prop('href'),
+							'target': slotLink.prop('target')
+						});
 
-				// If navThroughPlayer library is available, use it on our new link.
-				if (window._CMLS.navThroughPlayer && window._CMLS.navThroughPlayer.updateLink) {
-					window._CMLS.navThroughPlayer.updateLink(link, true);
-				}
-				
-				// Build our super iframe
-				var iframe = $('<iframe />')
-					.prop('name', nameSpace + 'Iframe')
-					.prop('scrolling', 'no')
-					.prop('marginwidth', '0')
-					.prop('marginheight', '0')
-					.prop('frameborder', '0')
-					.prop('width', '100%')
-					.prop('height', '100%')
-					.prop('src', 'about:blank')
-					.css({
-						'border': 0,
-						'verticalAlign': 'bottom'
-					})
-					.load(function() {
-						log('Injecting wallpaper into iframe.');
+					// If navThroughPlayer library is available, use it
+					if (window._CMLS.navThroughPlayer) {
+						window._CMLS.navThroughPlayer.updateLink(link, true);
+					}
+
+					// Build the iframe
+					var iframe = $('<iframe />')
+						.prop({
+							'name': nameSpace + 'Iframe',
+							'scrolling': 'no',
+							'marginWidth': '0',
+							'marginHeight': '0',
+							'frameborder': '0',
+							'src': 'about:blank'
+						});
+
+					log('Injecting iframe into container.');
+					container = getContainer();
+					container
+						.css('backgroundColor', bgColor)
+						.append(iframe);
+
+					var iframeStyles = '<style>' +
+						'html,body{background:transparent;margin:0;padding:0;width:100%;height:100%;}' +
+						'body{background:url("' + slotImage.prop('src') +'") no-repeat top center;}' +
+						'a{display:block;width:100%;height:100%;text-decoration:none;}' +
+					'</style>';
+
+					console.log(iframe.readyState);
+					if (iframe.contents()) {
 						iframe.contents().find('body')
-							.append(link)
-							.append(
-								'<style>' +
-									'html,body { background: transparent; margin: 0; padding: 0; width: 100%; height: 100%; }' +
-									'a { display: block; text-decoration: none; width: 100%; height: 100%; background: url("' + slotImage.prop('src') + '") no-repeat top center; }' +
-								'</style>'
-							);
-					});
+							.append(iframeStyles, link);
+					} else {
+						iframe.load(function() {
+							iframe.contents().find('body')
+								.append(iframeStyles, link);
+						});
+					}
 
-				log('Injecting iframe into container.');
-				container
-					.css('backgroundColor', bgColor)
-					.append(iframe);				
+					if (slotImage.length) {
+						log('Initializing preloader.');
+						$('<img />')
+							.bind('load', function() {
+								show();
+								$(this).remove();
+							})
+							.prop('src', slotImage.prop('src'));
+					} else {
+						show();
+					}
+				});
+			} catch(e) {
+				log('WTF PEOPLE', e);
+			}
+		}
+		this.process = _process;
 
-				if (slotImage.length) {
-					log('Initializing load watch for ad image.');
-					$('<img/>')
-						.bind('load', function() {
-							that.show();
-							$(this).remove();
-						})
-						.prop('src', slotImage.prop('src'));
+		log('Initializing.');
+
+		// Hook into ad render event to intercept new ads.
+		function checkRenderEvent(e) {
+			var pos = e.slot.getTargeting('pos');
+			if (pos.indexOf('wallpaper-ad') > -1) {
+
+				log('Caught render event for wallpaper-ad', e.slot.getSlotElementId());
+				if (e.isEmpty) {
+
+					log('Slot was empty, resetting wallpaper container.');
+					throttle(_reset, 1000)();
+
 				} else {
-					that.show();
+
+					log('Slot contained an ad, processing wallpaper.');
+					throttle(_process, 1000)();
+
 				}
-				} catch(e) {
-					log(e);
-				}
+				return false;
+			}
+		}
+		window.googletag = window.googletag || {};
+		window.googletag.cmd = window.googletag.cmd || [];
+		window.googletag.cmd.push(function() {
+			window.googletag.pubads().addEventListener('slotRenderEnded', checkRenderEvent);
+		});
+
+		var styleSheet = '<style id="' + nameSpace + 'Styles">' +
+			'.' + nameSpace + '-container {' +
+				'display: block !important;' +
+				'position: absolute;' +
+				'z-index: 0;' +
+				'top: 0;' +
+				'left: 0;' +
+				'height: 0 !important;' +
+				'width: 100% !important;' +
+				'overflow: hidden;' +
+				'text-align: center;' +
+				'transition: opacity 0.5s, height 0.6s, background-color 0.3s; top 0.1s;' +
+				'opacity: 0;' +
+			'}' +
+			'.' + nameSpace + '-container iframe {' +
+				'border: 0;' +
+				'height: 100%;' +
+				'width: 100%;' +
+			'}' +
+			'.' + nameSpace + '-open {' +
+				'height: 100% !important;' +
+				'opacity: 1;' +
+			'}' +
+			'.' + nameSpace + '-open ~ .grid-container {' +
+				'box-shadow: 0 0 20px rgba(0,0,0,0.3);' +
+				'transition: box-shadow 0.5s' +
+			'}' +
+			'.' + nameSpace + '-fixed {' +
+				'position: fixed;' +
+			'}' + 
+			settings.dfpSlotNode + ' {' +
+				'display: none !important;' +
+			'}' +
+		'</style>';
+		if ( ! window.document.getElementById(nameSpace + 'Styles')) {
+			$('head').append(styleSheet);
+		}
+
+		// Process any wallpapers that exist at loadtime.
+		if (window.document.readyState === 'complete' || window.document.readyState === 'loaded') {
+			_process();
+		} else {
+			$(function() {
+				_process();
 			});
-		},
+		}
 
-		init: function init() {
-			log('Initializing');
-
-			this.refreshCache();
-
-			var that = this;
-
-			// Hook into ad render event to intercept requests
+		function _unbindAllListeners() {
 			window.googletag = window.googletag || {};
 			window.googletag.cmd = window.googletag.cmd || [];
 			window.googletag.cmd.push(function() {
-				window.googletag.pubads().addEventListener('slotRenderEnded', function(e) {
-					var pos = e.slot.getTargeting('pos');
-					if (pos.indexOf('wallpaper-ad') > -1) {
-
-						log('Caught render event for wallpaper-ad', e.slot.getSlotElementId());
-						if (e.isEmpty) {
-
-							log('Slot was empty, resetting wallpaper container.');
-							that.reset();
-
-						} else {
-
-							log('Slot contained an ad, processing wallpaper.', that);
-							that.process();
-
-						}
-						return false;
-					}
-				});
+				window.googletag.pubads().removeEventListener('slotRenderEnded', checkRenderEvent);
 			});
-
-			var styleSheet = '<style id="' + nameSpace + 'Styles">' +
-				'.' + nameSpace + '-container {' +
-					'display: block !important;' +
-					'position: absolute;' +
-					'z-index: 0;' +
-					'top: 0;' +
-					'left: 0;' +
-					'height: 0 !important;' +
-					'width: 100% !important;' +
-					'overflow: hidden;' +
-					'text-align: center;' +
-					'transition: opacity 0.4s, height 0.5s, background-color 0.3s; top 0.1s' +
-					'opacity: 0;' +
-				'}' +
-				'.' + nameSpace + '-container iframe {' +
-					//'position: absolute;' +
-					//'left: 50%;' +
-					//'transform: translate(-50%, 0%);' +
-				'}' +
-				'.' + nameSpace + '-open {' +
-					'height: 100% !important;' +
-					'opacity: 1;' +
-				'}' +
-				'.' + nameSpace + '-open ~ .grid-container {' +
-					'box-shadow: 0 0 20px rgba(0,0,0,0.3);' +
-					'transition: box-shadow 0.5s' +
-				'}' +
-				'.' + nameSpace + '-fixed {' +
-					'position: fixed;' +
-				'}' + 
-				settings.dfpSlotNode + ' {' +
-					'display: none !important;' +
-				'}' +
-			'</style>';
-			if ( ! window.document.getElementById(nameSpace + 'Styles')) {
-				$('head').append(styleSheet);
-			}
-
-			// Process any existing wallpaper
-			this.process();
-
+			$(window).off('.' +nameSpace);
 		}
+		this.unbindAllListeners = _unbindAllListeners;
 
-	};
+	}
 
-	$(function() {
-		window._CMLS[nameSpace].init();
-	});
+	settings.nameSpace = nameSpace;
+	window._CMLS[nameSpace] = new WallpaperInjector(settings);
+
+	// Hook into History events for Triton's player to kill myself.
+	if (
+		window._CMLS.whichPlayer().type === window._CMLS.const.PLAYER_TRITON &&
+		window.History && window.History.Adapter
+	) {
+		window.History.Adapter.bind(window, 'statechange', function() {
+			window._CMLS[nameSpace].reset();
+			window._CMLS[nameSpace].unbindAllListeners();
+			window._CMLS[nameSpace] = null;
+		});
+		window.History.Adapter.bind(window, 'pageChange', function() {
+			window._CMLS[nameSpace] = new WallpaperInjector(settings);
+		});
+	}
 
 
 }(jQuery, window));
