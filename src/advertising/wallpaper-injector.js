@@ -94,6 +94,7 @@
 				return cache.container;
 			}
 			log('Generating new wallpaper container.');
+			refreshCache();
 			var container = $('<div />')
 					.prop({
 						'id': nameSpace + 'Container',
