@@ -346,12 +346,12 @@
 				if (e.isEmpty) {
 
 					log('Slot was empty, resetting wallpaper container.');
-					return debounce(_reset, 1000);
+					_reset();
 
 				} else {
 
 					log('Slot contained an ad, processing wallpaper.');
-					return debounce(_process, 1000);
+					_process();
 
 				}
 				return false;
@@ -360,7 +360,7 @@
 		window.googletag = window.googletag || {};
 		window.googletag.cmd = window.googletag.cmd || [];
 		window.googletag.cmd.push(function() {
-			window.googletag.pubads().addEventListener('slotRenderEnded', checkRenderEvent);
+			window.googletag.pubads().addEventListener('slotRenderEnded', debounce(checkRenderEvent, 500, false));
 		});
 
 		var styleSheet = '<style id="' + nameSpace + 'Styles">' +
