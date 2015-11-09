@@ -113,11 +113,7 @@
 		this.refreshCache = _refreshCache;
 
 		function insertTeadsScript() {
-			if (window.document.getElementById('cmlsTeadsTag')) {
-				window.document.getElementById('cmlsTeadsTag').parentNode.removeChild(
-					window.document.getElementById('cmlsTeadsTag')
-				);
-			}
+			$('#cmlsTeadsTag').remove();
 			(function(d){
 				var js, s = d.getElementsByTagName('script')[0];
 				js = d.createElement('script'); js.async = true;
@@ -191,7 +187,7 @@
 	) {
 		log('Binding refreshCache to pageChange event.');
 		window.History.Adapter.bind(window, 'pageChange', function() {
-			$(window._CMLS[nameSpace].refreshCache);
+			setTimeout(window._CMLS[nameSpace].refreshCache, 2000);
 		});
 	}
 
