@@ -68,8 +68,7 @@
 				pid: PID,
 				slot: '.post .entry-content p',
 				filter: function() {
-					var body = window.document.getElementsByTagName('body')[0];
-					return body.className.indexOf('single-feed_posts') > -1;
+					return window.document.body.className.indexOf('single-feed_posts') > -1;
 				},
 				format: 'inread',
 				before: false,
