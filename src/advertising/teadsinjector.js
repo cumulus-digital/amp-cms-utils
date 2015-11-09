@@ -30,7 +30,14 @@
 		function _process(options) {
 			if (options.format && options.pid) {
 				log('Received request for ' + options.format + ' with PID ' + options.pid);
-				_injector[options.format](options.pid);
+				switch(options.format.toLowerCase()) {
+					case 'inread':
+						inread(options.pid);
+						break;
+					case 'inboard':
+						inboard(options.pid);
+						break;
+				}
 			} else {
 				log('Invalid request. No pid or format given.', options);
 			}
@@ -63,7 +70,7 @@
 
 			return { w: width, h: height };
 		}
-		
+
 		function inboard(pid) {
 			var windowSize = getWindowSize();
 			inject({
