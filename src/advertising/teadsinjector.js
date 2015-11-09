@@ -99,9 +99,14 @@
 
 		function _refreshCache() {
 			log('Refreshing cache, re-inserting PID requests.');
-			for (var i in cache) {
-				if (cache.hasOwnProperty(i)) {
-					inject(cache[i]);
+			for (var j in cache) {
+				if (cache.hasOwnProperty(j)) {
+					for (var i = 0; i < window._ttf.length; i++) {
+						if (window._ttf[i].pid === cache[j].pid) {
+							window._ttf.splice(i,1);
+						}
+					}
+					inject(cache[j]);
 				}
 			}
 		}
