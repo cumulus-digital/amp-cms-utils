@@ -106,6 +106,7 @@
 							window._ttf.splice(i,1);
 						}
 					}
+					cache[j].launched = false;
 					inject(cache[j]);
 				}
 			}
@@ -187,7 +188,7 @@
 	) {
 		log('Binding refreshCache to pageChange event.');
 		window.History.Adapter.bind(window, 'pageChange', function() {
-			setTimeout(window._CMLS[nameSpace].refreshCache, 2000);
+			$(window._CMLS[nameSpace].refreshCache);
 		});
 	}
 
