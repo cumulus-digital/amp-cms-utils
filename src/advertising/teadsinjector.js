@@ -191,7 +191,7 @@
 	) {
 		log('Binding refreshCache to pageChange event.');
 		window.History.Adapter.bind(window, 'pageChange', function() {
-			$(window).load(window._CMLS[nameSpace].refreshCache);
+			$(window._CMLS[nameSpace].refreshCache);
 		});
 	}
 
