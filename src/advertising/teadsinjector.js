@@ -66,10 +66,10 @@
 
 			window._CMLS[nameSpace].inject({
 				pid: PID,
-				slot: '.loop .post .entry-content p',
+				slot: '.post .entry-content p',
 				filter: function() {
 					var body = window.document.getElementsByTagName('body')[0];
-					return body.className.indexOf('single-post') > -1;
+					return body.className.indexOf('single-feed_posts') > -1;
 				},
 				format: 'inread',
 				before: false,
