@@ -24,8 +24,7 @@
 	}
 
 	function TeadsInjector() {
-		var cache = {},
-			_injector = this;
+		var cache = {};
 
 		function _process(options) {
 			if (options.format && options.pid) {
@@ -44,7 +43,6 @@
 		}
 		this.process = _process;
 
-		/* jshint ignore:start */
 		function getWindowSize() {
 			var width = 1000, height = 1000;
 
@@ -98,7 +96,6 @@
 				css: 'padding-bottom: 10px !important;'
 			});
 		}
-		/* jshint ignore:end */
 
 		function _refreshCache() {
 			log('Refreshing cache, re-inserting PID requests.');
@@ -178,8 +175,10 @@
 	window._CMLS[nameSpace] = new TeadsInjector();
 
 	// listen for pageChange events
+	var playerType = window._CMLS.whichPlayer();
 	if (
-		window._CMLS.whichPlayer() === window._CMLS.const.PLAYER_TRITON &&
+		playerType && playerType.type &&
+		playerType.type === window._CMLS.const.PLAYER_TRITON &&
 		window.History && window.History.Adapter
 	) {
 		log('Binding refreshCache to pageChange event.');
