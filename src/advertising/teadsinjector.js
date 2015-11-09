@@ -113,15 +113,18 @@
 		this.refreshCache = _refreshCache;
 
 		function insertTeadsScript() {
-			if ( ! window.document.getElementById('cmlsTeadsTag')) {
-				(function(d){
-					var js, s = d.getElementsByTagName('script')[0];
-					js = d.createElement('script'); js.async = true;
-					js.id = 'cmlsTeadsTag';
-					js.src = "http://cdn.teads.tv/js/all-v1.js";
-					s.parentNode.insertBefore(js, s);
-				})(window.document);
+			if (window.document.getElementById('cmlsTeadsTag')) {
+				window.document.getElementById('cmlsTeadsTag').parentNode.removeChild(
+					window.document.getElementById('cmlsTeadsTag')
+				);
 			}
+			(function(d){
+				var js, s = d.getElementsByTagName('script')[0];
+				js = d.createElement('script'); js.async = true;
+				js.id = 'cmlsTeadsTag';
+				js.src = "http://cdn.teads.tv/js/all-v1.js";
+				s.parentNode.insertBefore(js, s);
+			})(window.document);
 		}
 
 		function inject(options) {
@@ -188,7 +191,7 @@
 	) {
 		log('Binding refreshCache to pageChange event.');
 		window.History.Adapter.bind(window, 'pageChange', function() {
-			$(window._CMLS[nameSpace].refreshCache);
+			$(window).load(window._CMLS[nameSpace])
 		});
 	}
 
