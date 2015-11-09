@@ -66,7 +66,7 @@
 
 			window._CMLS[nameSpace].inject({
 				pid: PID,
-				slot: '.post .entry-content p',
+				slot: '.wrapper-content .column-1 .entry-content p',
 				filter: function() {
 					return window.document.body.className.indexOf('single-feed_posts') > -1;
 				},
