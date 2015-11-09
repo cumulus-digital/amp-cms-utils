@@ -108,7 +108,7 @@
 		this.refreshCache = _refreshCache;
 
 		function insertTeadsScript() {
-			if ( ! window.document.getElementById('teadsInjector')) {
+			if ( ! window.document.getElementById('cmlsTeadsTag')) {
 				(function(d){
 					var js, s = d.getElementsByTagName('script')[0];
 					js = d.createElement('script'); js.async = true;
@@ -133,7 +133,7 @@
 			options.BTF = options.BTF || false;
 			options.css = options.css || 'margin: auto !important;';
 
-			log('Injecting');
+			log('Injecting', options);
 			window._ttf = window._ttf || [];
 			window._ttf.push(options);
 
