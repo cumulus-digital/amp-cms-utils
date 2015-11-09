@@ -8,7 +8,7 @@
  * 		format: 'inboard'
  * 	});
  */
-(function(window, undefined) {
+(function($, window, undefined) {
 	
 	var scriptName = 'TEADS INJECTOR',
 		nameSpace = 'teadsInjector',
@@ -188,8 +188,8 @@
 	) {
 		log('Binding refreshCache to pageChange event.');
 		window.History.Adapter.bind(window, 'pageChange', function() {
-			setTimeout(window._CMLS[nameSpace].refreshCache, 700);
+			$(window._CMLS[nameSpace].refreshCache);
 		});
 	}
 
-}(window));
+}(jQuery, window));
