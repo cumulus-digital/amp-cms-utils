@@ -56,9 +56,9 @@
 
 		var header = ['%c[' + name + ']', 'background: #' + background + '; color: #' + complement];
 
-		message = message.unshift.apply(message, header);
+		header = header.push.apply(header, message);
 
-		console.groupCollapsed.apply(console, message);
+		console.groupCollapsed.apply(console, header);
 		console.log(ts);
 		console.groupEnd();
 	};
