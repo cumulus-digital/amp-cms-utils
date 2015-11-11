@@ -53,7 +53,7 @@
 		var ts = (new Date());
 		ts = ts.toISOString() ? ts.toISOString() : ts.toUTCString();
 
-		message = [].concat(['%c[' + name + ']', 'background: #' + background + '; color: #' + complement], message);
+		message = ['%c[' + name + ']', 'background: #' + background + '; color: #' + complement].concat(message);
 		
 		console.groupCollapsed.apply(console, message);
 		console.log(ts);
