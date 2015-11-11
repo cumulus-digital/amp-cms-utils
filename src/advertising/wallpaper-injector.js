@@ -99,7 +99,7 @@
 			return cache.stickAt;
 		}
 
-		function getContainer() {
+		function getContainer(doNotBuild) {
 			if (cache.container && cache.container.length) {
 				return cache.container;
 			}
@@ -107,6 +107,9 @@
 			if (existing.length) {
 				cache.container = existing;
 				return cache.container;
+			}
+			if (doNotBuild === true) {
+				return false;
 			}
 			log('Generating new wallpaper container.');
 			refreshCache();
@@ -155,7 +158,7 @@
 
 		function _reset() {
 			var deferred = $.Deferred(),
-				container = getContainer(),
+				container = getContainer(true),
 				isOpen = container.hasClass(nameSpace + '-open'),
 				transitionFired = false;
 
@@ -174,30 +177,33 @@
 			}
 
 			log('RESET!');
-			container
-				.off(transitionEvent)
-				.removeData()
-				.removeProp('data')
-				.css('backgroundColor', 'rgba(0,0,0,0)')
-				.removeClass(nameSpace + '-open')
-				.removeClass(nameSpace + '-fixed');
 
-			log('Container is closing.');
+			if (container && container.length) {
+				container
+					.off(transitionEvent)
+					.removeData()
+					.removeProp('data')
+					.css('backgroundColor', 'rgba(0,0,0,0)')
+					.removeClass(nameSpace + '-open')
+					.removeClass(nameSpace + '-fixed');
 
-			if (transitionEvent && isOpen) {
-				container.on(transitionEvent, function(e) {
-					// Assume opacity takes longest
-					if (e.originalEvent.propertyName === 'opacity') {
-						log('Transition complete.');
+				log('Container is closing.');
+
+				if (transitionEvent && isOpen) {
+					container.on(transitionEvent, function(e) {
+						// Assume opacity takes longest
+						if (e.originalEvent.propertyName === 'opacity') {
+							log('Transition complete.');
+							finishRemoval();
+						}
+					});
+				}
+				setTimeout(function() {
+					if ( ! transitionFired) {
 						finishRemoval();
 					}
-				});
+				}, 800);
 			}
-			setTimeout(function() {
-				if ( ! transitionFired) {
-					finishRemoval();
-				}
-			}, 800);
 
 			log('Returning our promise.');
 			return deferred.promise();
