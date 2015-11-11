@@ -205,6 +205,8 @@
 						finishRemoval();
 					}
 				}, 800);
+			} else {
+				finishRemoval();
 			}
 
 			log('Returning our promise.');
