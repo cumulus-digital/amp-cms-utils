@@ -99,7 +99,7 @@
 			});
 
 			// Update any existing ads on the page
-			$('iframe[id^="google_ads_iframe"],#cmlsWallpaperInjectorContainer iframe').load(function() {
+			$('iframe[id^="google_ads_iframe"],#cmlsWallpaperInjectorContainer iframe').each(function() {
 				window._CMLS[nameSpace].updateIframeLinks(this);
 			});
 
