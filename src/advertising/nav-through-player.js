@@ -20,6 +20,7 @@
 
 	window._CMLS[nameSpace] = {
 		isPlayerActive: function isPlayerActive() {
+			player = window._CMLS.whichPlayer();
 			if (player.type) {
 				return true;
 			}
