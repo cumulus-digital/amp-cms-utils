@@ -53,7 +53,7 @@
 		var ts = (new Date());
 		ts = ts.toISOString() ? ts.toISOString() : ts.toUTCString();
 
-		message = [].concat(['%c[' + name + ']', 'background: #' + background + '; color: #' + complement], message, ts);
+		message.unshift('%c[' + name + ']').unshift('background: #' + background + '; color: #' + complement).push('ts');
 		
 		console.log.apply(console, message);
 	};
