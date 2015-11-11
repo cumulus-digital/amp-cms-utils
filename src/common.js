@@ -31,8 +31,8 @@
 		window._CMLS.loggerNamesToColors = window._CMLS.loggerNamesToColors || {};
 
 		var background, complement,
-			name = arguments[0],
-			message = Array.prototype.slice.call(arguments,1);
+			message = [].slice.call(arguments),
+			name = message.shift();
 
 		// Use cached colors for provided name, if possible.
 		if (window._CMLS.loggerNamesToColors[name]) {
