@@ -170,7 +170,9 @@
 				cache.window.off('.' + nameSpace);
 
 				log('Removing wallpaper container.');
-				container.off('.' + nameSpace).remove();
+				if (container && container.length) {
+					container.off('.' + nameSpace).remove();
+				}
 				cache.container = null;
 
 				deferred.resolve();
