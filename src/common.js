@@ -55,10 +55,8 @@
 
 		var header = ['%c[' + name + ']', 'background: #' + background + '; color: #' + complement];
 
-		header.push.apply(header, message);
-
-		console.groupCollapsed.apply(console, header);
-		console.log('sub item test');
+		console.groupCollapsed.apply(console, [header, message]);
+		console.log(ts);
 		console.groupEnd();
 	};
 
