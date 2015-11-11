@@ -40,7 +40,7 @@
 			complement = window._CMLS.loggerNamesToColors[name].complement;
 		} else {
 			// Calculate a random color and its complement
-			background = (function(h){return '000000'.substr(0,7-h.length)+h;})((~~(Math.random()*(1<<24))).toString(16));
+			background = ("000000" + Math.floor(Math.random()*16777215).toString(16)).slice(-6);
 			complement = parseInt(background, 16) >= 0xbbbbbb ? '000000' : 'FFFFFF';
 			//("000000" + (0xFFFFFF ^ parseInt(background, 16)).toString(16)).slice(-6);
 
