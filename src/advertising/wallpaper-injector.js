@@ -159,7 +159,7 @@
 		function _reset() {
 			var deferred = $.Deferred(),
 				container = getContainer(true),
-				isOpen = container.hasClass(nameSpace + '-open'),
+				isOpen = (container && container.length) ? container.hasClass(nameSpace + '-open') : false,
 				transitionFired = false;
 
 			function finishRemoval() {
