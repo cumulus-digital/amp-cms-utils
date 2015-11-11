@@ -24,7 +24,7 @@
 	 * @return {[type]} [description]
 	 */
 	window._CMLS.logger = function cmlsLogger() {
-		if ( ! (window._CMLS && window._CMLS.debug) || ! (typeof console === 'object' && console.debug)) {
+		if ( ! (window._CMLS && window._CMLS.debug) || ! (typeof console === 'object' && console.groupCollapsed)) {
 			return false;
 		}
 
@@ -52,10 +52,12 @@
 
 		var ts = (new Date());
 		ts = ts.toISOString() ? ts.toISOString() : ts.toUTCString();
-				
-		message = [].concat(['%c[' + name + ']', 'background: #' + background + '; color: #' + complement, ts], message);
+
+		message = [].concat(['%c[' + name + ']', 'background: #' + background + '; color: #' + complement], message);
 		
-		console.debug.apply(console, message);
+		console.groupCollapsed.apply(console, message);
+		console.log.apply(console, ts);
+		console.groupEnd.apply(console);
 	};
 
 	/**
