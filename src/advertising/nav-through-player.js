@@ -106,7 +106,7 @@
 	};
 
 	$(function() {
-		window._CMLS[nameSpace].init();
+		setTimeout(window._CMLS[nameSpace].init, 1000);
 	});
 
 }(jQuery, window));
