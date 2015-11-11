@@ -102,6 +102,11 @@
 			$('iframe[id^="google_ads_iframe"],#cmlsWallpaperInjectorContainer iframe').each(function() {
 				window._CMLS[nameSpace].updateIframeLinks(this);
 			});
+			$(window).load(function() {
+				$('iframe[id^="google_ads_iframe"],#cmlsWallpaperInjectorContainer iframe').each(function() {
+					window._CMLS[nameSpace].updateIframeLinks(this);
+				});
+			});
 
 			log('Initialized.');
 		}
