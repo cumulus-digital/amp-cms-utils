@@ -170,9 +170,6 @@
 	 * @return {object} Player type and position
 	 */
 	window._CMLS.whichPlayer = function() {
-		if (window._CMLS.whichPlayerCache) {
-			return window._CMLS.whichPlayerCache;
-		}
 		var discovered = {
 			type: null,
 			position: null,
