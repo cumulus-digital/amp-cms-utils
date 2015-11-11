@@ -111,6 +111,7 @@
 	// Continuously check until we reach a limit or a player becomes available.
 	var check_count = 0;
 	function checkForPlayer() {
+		log('Checking for player...', check_count);
 		if (window._CMLS[nameSpace].isPlayerActive()) {
 			window._CMLS[nameSpace].init();
 			return;
