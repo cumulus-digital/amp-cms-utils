@@ -169,8 +169,8 @@
 				log('Clearing all event listeners.');
 				cache.window.off('.' + nameSpace);
 
-				log('Removing wallpaper container.');
 				if (container && container.length) {
+					log('Removing wallpaper container.');
 					container.off('.' + nameSpace).remove();
 				}
 				cache.container = null;
