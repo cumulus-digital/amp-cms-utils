@@ -107,8 +107,20 @@
 		}
 	};
 
-	$(function() {
-		setTimeout(window._CMLS[nameSpace].init, 1000);
-	});
+	// Player may or may not be available at any load event we can hook to.
+	// Continuously check until we reach a limit or a player becomes available.
+	var check_count = 0;
+	function checkForPlayer() {
+		if (window._CMLS[nameSpace].isPlayerActive()) {
+			window._CMLS[nameSpace].init();
+			return;
+		}
+		if (check_count > 20) {
+			return;
+		}
+		setTimeout(checkForPlayer, 1000);
+		check_count++;
+	}
+	checkForPlayer();
 
 }(jQuery, window));
