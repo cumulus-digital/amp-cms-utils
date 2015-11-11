@@ -59,6 +59,7 @@
 
 		console.groupCollapsed.apply(console, message);
 		console.log('TIMESTAMP:', ts);
+		console.trace();
 		console.groupEnd();
 	};
 
