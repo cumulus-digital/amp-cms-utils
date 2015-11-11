@@ -33,10 +33,10 @@
 			}
 
 			var $iframe = iframe.jquery ? iframe : $(iframe);
-			log('Updating links in slot.', $iframe.prop('id'));
 			$iframe.contents()
 				.find('a[target="_self"],a[target="_top"],a[target="_parent"]')
 					.each(function() {
+						log('Updating links in slot.', $iframe.prop('id'));
 						window._CMLS[nameSpace].updateLink(this);
 					});
 		},
