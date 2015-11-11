@@ -31,8 +31,8 @@
 		window._CMLS.loggerNamesToColors = window._CMLS.loggerNamesToColors || {};
 
 		var background, complement,
-			message = [].slice.call(arguments),
-			name = message.shift();
+			name = arguments[0],
+			message = [].slice.call(arguments[1]);
 
 		// Use cached colors for provided name, if possible.
 		if (window._CMLS.loggerNamesToColors[name]) {
@@ -55,10 +55,10 @@
 
 		var header = ['%c[' + name + ']', 'background: #' + background + '; color: #' + complement];
 
-		message.unshift(header);
+		message = header.concat(message);
 
 		console.groupCollapsed.apply(console, message);
-		console.log(ts);
+		console.log('TIMESTAMP:', ts);
 		console.groupEnd();
 	};
 
