@@ -33,6 +33,7 @@
 		var background, complement,
 			name = arguments[0],
 			message = Array.prototype.slice.call(arguments,1);
+			console.log(message);
 
 		// Use cached colors for provided name, if possible.
 		if (window._CMLS.loggerNamesToColors[name]) {
@@ -53,8 +54,10 @@
 		var ts = (new Date());
 		ts = ts.toISOString() ? ts.toISOString() : ts.toUTCString();
 
-		message = ['%c[' + name + ']', 'background: #' + background + '; color: #' + complement].concat(message);
-		
+		var header = ['%c[' + name + ']', 'background: #' + background + '; color: #' + complement];
+
+		message = message.unshift.apply(message, header);
+
 		console.groupCollapsed.apply(console, message);
 		console.log(ts);
 		console.groupEnd();
