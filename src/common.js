@@ -55,7 +55,7 @@
 
 		message = [].concat(['%c[' + name + ']', 'background: #' + background + '; color: #' + complement], message);
 		
-		console.groupCollapsed(message);
+		console.groupCollapsed.apply(console, message);
 		console.log(ts);
 		console.groupEnd();
 	};
