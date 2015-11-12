@@ -79,7 +79,7 @@
 				},
 				format: 'inboard',
 				before: true,
-				css: 'margin: auto !important; padding-top: 5px; padding-bottom: 5px; max-width: 1000px',
+				css: 'margin: auto !important; padding-top: 5px; padding-bottom: 5px; max-width: 1020px',
 				size: { w: windowSize.w }
 			});
 		}
