@@ -44,7 +44,7 @@
 		this.process = _process;
 
 		function getWindowSize() {
-			var width = 1000, height = 1000;
+			var width = 1020, height = 1000;
 
 			if (typeof window.innerWidth === 'number') {
 				width = window.innerWidth;
@@ -54,8 +54,8 @@
 				width = document.body.clientWidth;
 			}
 			// No need for teads to get bigger than this
-			if (width > 1000) {
-				width = 1000;
+			if (width > 1020) {
+				width = 1020;
 			}
 
 			if (typeof(window.innerHeight) === 'number') {
