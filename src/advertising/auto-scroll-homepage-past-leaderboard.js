@@ -86,10 +86,10 @@
 					newPos = adOffset.top + this.cache.leaderboard.height();
 				if (this.playerOnTop()) {
 					newPos = adOffset.top - this.cache.player.height() + this.cache.leaderboard.height();
-					log('Player is on top, scrollTo position is ' + newPos);
+					log('Player is on top, scrollTo position is ' + newPos, adOffset.top, this.cache.player.height(), this.cache.leaderboard.height());
 					return newPos;
 				}
-				log('Player is on bottom, scrollTo position is ' + newPos);
+				log('Player is on bottom, scrollTo position is ' + newPos, adOffset.top, this.cache.leaderboard.height());
 				return newPos;
 			}
 			return 0;
