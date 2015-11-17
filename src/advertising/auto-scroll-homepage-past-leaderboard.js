@@ -18,7 +18,10 @@
 			timeout: 0.15,
 
 			// Leaderboard selector
-			leaderboardSelector: '.wrapper-header div[id^="div-gpt-ad"]:first'
+			leaderboardSelector: '.wrapper-header div[id^="div-gpt-ad"]:first',
+
+			// Leaderboard height
+			leaderboardHeight: 90
 
 		};
 
@@ -83,9 +86,9 @@
 		generateScrollToPosition: function generateScrollToPosition() {
 			if (this.cache.leaderboard) {
 				var adOffset = this.cache.leaderboard.offset(),
-					newPos = adOffset.top + this.cache.leaderboard.height();
+					newPos = adOffset.top + settings.leaderboardHeight;
 				if (this.playerOnTop()) {
-					newPos = adOffset.top - this.cache.player.height() + this.cache.leaderboard.height();
+					newPos = adOffset.top - this.cache.player.height() + settings.leaderboardHeight;
 					log('Player is on top, scrollTo position is ' + newPos, adOffset.top, this.cache.player.height(), this.cache.leaderboard.height());
 					return newPos;
 				}
