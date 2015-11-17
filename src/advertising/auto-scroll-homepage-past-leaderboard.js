@@ -87,6 +87,10 @@
 			if (this.cache.leaderboard) {
 				var adOffset = this.cache.leaderboard.offset(),
 					newPos = adOffset.top + settings.leaderboardHeight;
+				if (adOffset > settings.leaderboardHeight + 20) {
+					log('Ad offset is greater than leaderboard height settings, assuming returned ad is incorrect.');
+					return settings.leaderboardHeight + 10;
+				}
 				if (this.playerOnTop()) {
 					newPos = adOffset.top - this.cache.player.height() + settings.leaderboardHeight;
 					log('Player is on top, scrollTo position is ' + newPos, adOffset.top, this.cache.player.height(), this.cache.leaderboard.height());
