@@ -82,11 +82,15 @@
 		 */
 		generateScrollToPosition: function generateScrollToPosition() {
 			if (this.cache.leaderboard) {
-				var adOffset = this.cache.leaderboard.offset();
+				var adOffset = this.cache.leaderboard.offset(),
+					newPos = adOffset.top + this.cache.leaderboard.height();
 				if (this.playerOnTop()) {
-					return adOffset.top - this.cache.player.height() + this.cache.leaderboard.height();
+					newPos = adOffset.top - this.cache.player.height() + this.cache.leaderboard.height();
+					log('Player is on top, scrollTo position is ' + newPos);
+					return newPos;
 				}
-				return adOffset.top + this.cache.leaderboard.height();
+				log('Player is on bottom, scrollTo position is ' + newPos);
+				return newPos;
 			}
 			return 0;
 		},
@@ -145,6 +149,7 @@
 				this.stopTimer();
 			}
 
+			log('Conditions are good to scroll.');
 			$('html,body').animate(
 				{ scrollTop: that.generateScrollToPosition() },
 				{
