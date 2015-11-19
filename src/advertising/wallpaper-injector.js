@@ -329,7 +329,7 @@
 
 					// If navThroughPlayer library is available, use it
 					if (window._CMLS.navThroughPlayer) {
-						window._CMLS.navThroughPlayer.updateLink(link, true);
+						window._CMLS.navThroughPlayer.updateLink(link);
 					}
 
 					// Build the iframe
