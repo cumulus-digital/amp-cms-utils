@@ -42,7 +42,7 @@
 		},
 
 		updateLink: function updateLink(link, force) {
-			if ( ! window._CMLS[nameSpace].isPlayerActive) {
+			if ( ! window._CMLS[nameSpace].isPlayerActive || ! link) {
 				return;
 			}
 
