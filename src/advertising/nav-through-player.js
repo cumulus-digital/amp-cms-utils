@@ -45,14 +45,23 @@
 			if ( ! window._CMLS[nameSpace].isPlayerActive) {
 				return;
 			}
-			if (link.hostname !== window.location.hostname && ! force) {
+
+			var $link = link.jquery ? link : $(link),
+				l = window.document.createElement('a');
+				l.href = $link.prop('href');
+			
+			if (
+				l.href.indexOf('/') === 0 || 
+				(l.hostname !== window.location.hostname && ! force)
+			) {
+				l = null;
 				return;
 			}
 
-			var $link = link.jquery ? link : $(link);
 			$link
 				.off('.' + nameSpace)
 				.on('click.' + nameSpace, window._CMLS[nameSpace].clickThrough);
+			l = null;
 		},
 
 		clickThrough: function clickThrough(e) {
