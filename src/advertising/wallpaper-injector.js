@@ -301,7 +301,7 @@
 
 			// We get a simple "hash" of the image url and link so we don't try to
 			// replace the same background twice
-			var hash = checksum(slotLink.prop('href') + slotLink.prop('target') + slotImage.prop('src'));
+			var hash = checksum((slotLink.length ? slotLink.prop('href') + slotLink.prop('target') : '') + slotImage.prop('src'));
 			log('Generated hash.', hash);
 
 			if (hash === container.data('hash')) {
@@ -322,14 +322,17 @@
 				.then(function() {
 					log ('Building the new wallpaper.');
 
-					var link = $('<a />', {
-							'href': slotLink.prop('href'),
-							'target': slotLink.prop('target')
-						});
+					var link = '';
+					if (slotLink.length) {
+						link = $('<a />', {
+								'href': slotLink.prop('href'),
+								'target': slotLink.prop('target')
+							});
 
-					// If navThroughPlayer library is available, use it
-					if (window._CMLS.navThroughPlayer) {
-						window._CMLS.navThroughPlayer.updateLink(link);
+						// If navThroughPlayer library is available, use it
+						if (window._CMLS.navThroughPlayer) {
+							window._CMLS.navThroughPlayer.updateLink(link[0]);
+						}
 					}
 
 					// Build the iframe
