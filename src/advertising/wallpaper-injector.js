@@ -287,7 +287,7 @@
 			var slotIframe = cache.dfpSlot.find('iframe'),
 				slotDiv = slotIframe.contents().find('#google_image_div,body').first(),
 				slotLink = slotDiv.find('a:first'),
-				slotImage = slotLink.find('img.img_ad:first,img:first').first(),
+				slotImage = slotDiv.find('img.img_ad:first,img:first').first(),
 				slotBgColor = slotImage.prop('alt');
 
 			log('Checking image.');
