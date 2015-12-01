@@ -75,7 +75,7 @@
 				pid: pid,
 				slot: '.wrapper-content',
 				filter: function() {
-					return window.document.body.className.indexOf('home') > -1;
+					return window.document.body.className.indexOf('home') > -1 || window._CMLS.forceTeadsInBoard === true;
 				},
 				format: 'inboard',
 				before: true,
