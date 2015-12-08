@@ -88,7 +88,10 @@
 			'.' + settings.classPrefix + '-inner { box-sizing: border-box; max-width: 1020px; margin: 0 auto; }' +
 			'.' + settings.classPrefix + '-before { float: left; font-weight: bold; margin-right: .5em; }' +
 			'.' + settings.classPrefix + '-text { overflow: hidden; }' +
-			'.' + settings.classPrefix + '-inner a { text-decoration: underline !important; color: inherit; }';
+			'.' + settings.classPrefix + '-inner a { text-decoration: underline !important; color: inherit; }' +
+			'@media (max-width: 500px) {' +
+				'.' + settings.classPrefix +'-before { float: none; margin-bottom: .25em; }' +
+			'}';
 
 		var template = '<div class="' + settings.classPrefix + '-container"><div class="' + settings.classPrefix + '-inner">{{BEFORE}}<div class="' + settings.classPrefix + '-text">{{TEXT}}</div></div></div>';
 
