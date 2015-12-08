@@ -2,7 +2,21 @@
  * Breaking News Banner
  * Injects a breaking news banner above or below the masthead with specified options.
  *
- * USAGE:
+ * SIMPLE USAGE:
+ * <script>
+ * parent._CMLSBreakingNews = parent._CMLSBreakingNews || [];
+ * parent._CMLSBreakingNews.push('Text to display in bar', 'http://example.com');
+ * </script>
+ *
+ * ADVANCED USAGE:
+ * <script>
+ * parent._CMLSBreakingNews = parent._CMLSBreakingNews || [];
+ * parent._CMLSBreakingNews.push({
+ * 	position: 'below',
+ * 	beforeText: 'Not So Breaking News:',
+ * 	text: 'This is a more advanced usage which allows more options. It <a href="http://example.com" target="_blank">supports HTML</a>.'
+ * });
+ * </script>
  */
 (function($, window, undefined) {
 	var _CMLS = window._CMLS || {};
@@ -19,6 +33,9 @@
 		} else {
 			settings = defaults;
 			settings.text = options;
+		}
+
+		if ( ! settings.link && link) {
 			settings.link = link;
 		}
 
@@ -58,4 +75,16 @@
 
 		$(injectionPoint).before(template);
 	};
+
+	var BNInjector = function() {};
+	BNInjector.prototype = [];
+	BNInjector.prototype.push = function() {
+		_CMLS.breakingNews.apply(null, arguments);
+	};
+
+	if (window._CMLSBreakingNews && window._CMLSBreakingNews.length) {
+		window._CMLSBreakingNews.forEach(_CMLS.breakingNews);
+	}
+	window._CMLSBreakingNews = new BNInjector();
+
 }(jQuery, window));
