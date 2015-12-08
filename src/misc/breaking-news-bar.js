@@ -115,7 +115,7 @@
 			color: settings.color
 		});
 
-		template.addClass(settings.additionalClass);
+		template.addClass(settings.additionalClass).prop('id', 'CMLS' + nameSpace + '-' + Math.floor((Math.random() * 10000000)));
 
 		if ( ! $('#cmlsBreakingNewsStyles').length) {
 			$('head').append("<style id=\"cmlsBreakingNewsStyles\">/* CMLS Breaking News Bar styles */\n" + stylesheet + '</style>');
