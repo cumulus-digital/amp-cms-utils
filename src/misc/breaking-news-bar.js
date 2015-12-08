@@ -140,8 +140,8 @@
 		}
 
 		// Disable auto-scroll if active
-		if (window._CMLS.cmlsAutoScrollPastLeaderboard && settings.position === 'above') {
-			window._CMLS.cmlsAutoScrollPastLeaderboard.disabled = true;
+		if (settings.position === 'above') {
+			window.DO_NOT_AUTO_SCROLL = true;
 		}
 	};
 
