@@ -123,7 +123,7 @@
 		 * @return {String|Boolean} True if conditions are good, error string otherwise.
 		 */
 		conditionsGood: function conditionsGood() {
-			if (this.disabled) {
+			if (this.disabled || window.DO_NOT_AUTO_SCROLL) {
 				return 'Auto-scroll is disabled for this site.';
 			}
 
