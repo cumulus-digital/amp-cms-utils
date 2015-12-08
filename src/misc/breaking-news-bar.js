@@ -4,20 +4,23 @@
  *
  * SIMPLE USAGE:
  * <script>
- * parent._CMLSBreakingNews = parent._CMLSBreakingNews || [];
- * parent._CMLSBreakingNews.push(['Text to display in bar', 'http://example.com']);
+ * window._CMLSBreakingNews = window._CMLSBreakingNews || [];
+ * window._CMLSBreakingNews.push(['Text to display in bar', 'http://example.com']);
  * </script>
  *
  * ADVANCED USAGE:
  * <script>
- * parent._CMLSBreakingNews = parent._CMLSBreakingNews || [];
- * parent._CMLSBreakingNews.push({
+ * window._CMLSBreakingNews = window._CMLSBreakingNews || [];
+ * window._CMLSBreakingNews.push({
  * 	position: 'below',
  * 	background: '#349',
  * 	beforeText: 'Not So Breaking News:',
  * 	text: 'This is a more advanced usage which allows more options. It <a href="http://example.com" target="_blank">supports HTML</a>.'
  * });
  * </script>
+ *
+ * NOTE: If calling this from inside an ad, YOU MUST replace every instance of window._CMLSBreakingNews
+ * in the example code with parent._CMLSBreakingNews
  */
 (function($, window, undefined) {
 
@@ -45,9 +48,10 @@
 			classPrefix: 'cmlsBreakingNews',
 			additionalClass: '',
 			position: 'above',
-			link: null,
+			link: '',
+			target: '_top',
 			beforeText: 'Breaking News:',
-			text: null,
+			text: '',
 			background: '#900',
 			color: '#fff'
 		}, settings, injectionPoint = '.wrapper-header';
@@ -98,7 +102,7 @@
 		if (settings.link && settings.link.length) {
 			var linkEl = $('<a></a>').prop({
 				href: settings.link,
-				target: "_blank"
+				target: settings.target
 			});
 			template.wrapInner(linkEl);
 		}
@@ -108,15 +112,25 @@
 			color: settings.color
 		});
 
+		template.addClass(settings.additionalClass);
+
 		if ( ! $('#cmlsBreakingNewsStyles').length) {
 			$('head').append("<style id=\"cmlsBreakingNewsStyles\">/* CMLS Breaking News Bar styles */\n" + stylesheet + '</style>');
 		}
 		if (settings.position === 'below') {
 			$(injectionPoint).after(template);
-			return;
+		} else {
+			$(injectionPoint).before(template);
 		}
 
-		$(injectionPoint).before(template);
+		// If navThroughPlayer library is available, use it.
+		if (_CMLS.navThroughPlayer) {
+			log('Applying navThroughPlayer to bar links.');
+			template.find('a:not([href]),a[target="_self"],a[target="_top"],a[target="_parent"]').each(function() {
+				log('Applying navThroughPlayer to a link.', this.href);
+				_CMLS.navThroughPlayer.updateLink($(this));
+			});
+		}
 	};
 
 	var BNInjector = function() {};
