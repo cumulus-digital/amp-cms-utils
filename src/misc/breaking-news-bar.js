@@ -79,7 +79,11 @@
 	var BNInjector = function() {};
 	BNInjector.prototype = [];
 	BNInjector.prototype.push = function() {
-		_CMLS.breakingNews.apply(null, arguments);
+		if (arguments.length && typeof arguments[0] === "object") {
+			_CMLS.breakingNews.apply(null, arguments);
+		} else if (arguments.length > 1) {
+			_CMLS.breakingNews(arguments[0], arguments[1]);
+		}
 	};
 
 	if (window._CMLSBreakingNews && window._CMLSBreakingNews.length) {
