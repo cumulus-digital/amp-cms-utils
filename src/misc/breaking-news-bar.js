@@ -138,6 +138,11 @@
 				_CMLS.navThroughPlayer.updateLink($(this));
 			});
 		}
+
+		// Disable auto-scroll if active
+		if (window._CMLS.cmlsAutoScrollPastLeaderboard && settings.position === 'above') {
+			window._CMLS.cmlsAutoScrollPastLeaderboard.disabled = true;
+		}
 	};
 
 	var BNInjector = function() {};
