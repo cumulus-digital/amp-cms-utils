@@ -40,7 +40,7 @@
 		}
 
 		var stylesheet = '' +
-			'.cmlsBreakingNews-container { display: block; position: relative; float: none; z-index: 10; padding: 1em; color: #fff; background: #900; box-shadow: 0 0 10px rgba(0,0,0,0.6); font-size: 14px; text-decoration: none; outline: 0 }' +
+			'.cmlsBreakingNews-container { display: block; position: relative; float: none; z-index: 10; padding: 1em; color: #fff; background: #900; box-shadow: 0 0 10px rgba(0,0,0,0.4); font-size: 14px; text-decoration: none; outline: 0 }' +
 			'.cmlsBreakingNews-container[href] { cursor: pointer; }' +
 			'.cmlsBreakingNews-container:hover { color: #fff !important; }' +
 			'.cmlsBreakingNews-inner { max-width: 1020px; margin: 0 auto; }' +
