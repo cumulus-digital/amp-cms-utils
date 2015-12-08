@@ -57,7 +57,6 @@
 		template = $(template.replace('{{TEXT}}', settings.text));
 
 		if (settings.link && settings.link.length) {
-			console.log('Setting bar link.');
 			var newTemplate = $('<a class="cmlsBreakingNews-container"></a>').append(template.html()).prop({
 				href: settings.link,
 				target: "_blank"
