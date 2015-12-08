@@ -78,10 +78,9 @@
 		log('Settings:', settings);
 
 		var stylesheet = '' +
-			'.' + settings.classPrefix + '-container { display: block; box-sizing: border-box; position: relative; float: none; overflow: hidden; z-index: 10; padding: 1em; color: ' + settings.color + '; background: ' + settings.background + '; box-shadow: 0 0 10px rgba(0,0,0,0.4); font-size: 14px; line-height: 1.2; text-decoration: none; outline: 0 }' +
-			'.' + settings.classPrefix + '-container[href] { cursor: pointer; }' +
-			'.' + settings.classPrefix + '-container[href]:hover .' + settings.classPrefix + '-before { text-decoration: underline; }' +
-			'.' + settings.classPrefix + '-container:hover { color: ' + settings.color + ' !important; }' +
+			'.' + settings.classPrefix + '-container { display: block; box-sizing: border-box; position: relative; float: none; overflow: hidden; z-index: 10; padding: 1em; color: #fff; background: #900; box-shadow: 0 0 10px rgba(0,0,0,0.4); font-size: 14px; line-height: 1.2; text-decoration: none; outline: 0 }' +
+			'.' + settings.classPrefix + '-container > a { display: block; color: inherit !important; cursor: pointer; padding: 1em; margin: -1em; }' +
+			'.' + settings.classPrefix + '-container > a:hover .' + settings.classPrefix + '-before { text-decoration: underline; }' +
 			'.' + settings.classPrefix + '-inner { box-sizing: border-box; max-width: 1020px; margin: 0 auto; }' +
 			'.' + settings.classPrefix + '-before { float: left; font-weight: bold; margin-right: .5em; }' +
 			'.' + settings.classPrefix + '-text { overflow: hidden; }' +
@@ -97,15 +96,21 @@
 		template = $(template.replace('{{TEXT}}', settings.text));
 
 		if (settings.link && settings.link.length) {
-			var newTemplate = $('<a class="' + settings.classPrefix + '-container"></a>').append(template.html()).prop({
+			var linkEl = $('<a></a>').prop({
 				href: settings.link,
 				target: "_blank"
 			});
-			template = newTemplate;
+			template.wrapInner(linkEl);
 		}
 
-		$('#cmlsBreakingNewsStyles').remove();
-		$('head').append("<style id=\"cmlsBreakingNewsStyles\">/* CMLS Breaking News Bar styles */\n" + stylesheet + '</style>');
+		template.css({
+			background: settings.background,
+			color: settings.color
+		});
+
+		if ( ! $('#cmlsBreakingNewsStyles').length) {
+			$('head').append("<style id=\"cmlsBreakingNewsStyles\">/* CMLS Breaking News Bar styles */\n" + stylesheet + '</style>');
+		}
 		if (settings.position === 'below') {
 			$(injectionPoint).after(template);
 			return;
