@@ -56,6 +56,10 @@
 			color: '#fff'
 		}, settings, injectionPoint = '.wrapper-header';
 
+		if ( ! $(injectionPoint).length) {
+			return;
+		}
+
 		if (typeof options === "object" && ! Array.isArray(options)) {
 			settings = $.extend({}, defaults, options);
 			log('Advanced mode!');
