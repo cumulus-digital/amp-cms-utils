@@ -4,10 +4,10 @@
 (function(window, undefined) {
 	var scriptName = 'AUTO REFRESH ADS',
 		nameSpace = 'autoRefreshAds',
-		version = '0.3',
+		version = '0.3';
 
 		// Time before refreshing ads, in minutes
-		timeout = 8;
+		window._CMLS.autoRefreshAdsTimer = window._CMLS.autoRefreshAdsTimer || 8;
 
 	// Only run once.
 	if (window._CMLS[nameSpace]) {
@@ -54,7 +54,7 @@
 			var that = this;
 			this.timer = setTimeout(function() {
 				that.fire();
-			}, timeout * 60000);
+			}, window._CMLS.autoRefreshAdsTimer * 60000);
 
 			return this;
 		},
