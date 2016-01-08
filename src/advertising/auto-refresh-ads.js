@@ -7,6 +7,8 @@
 		version = '0.3';
 
 		// Time before refreshing ads, in minutes
+window._CMLS = window._CMLS || {};
+window._CMLS.autoRefreshAdsTimer = 4;
 		window._CMLS.autoRefreshAdsTimer = window._CMLS.autoRefreshAdsTimer || 8;
 
 	// Only run once.
@@ -50,7 +52,7 @@
 				return;
 			}
 
-			log('Starting timer.');
+			log('Starting timer at ' + window._CMLS.autoRefreshAdsTimer + ' minutes.');
 			var that = this;
 			this.timer = setTimeout(function() {
 				that.fire();
@@ -126,6 +128,7 @@
 			}
 
 			log('Listeners set, waiting for player event.');
+			log('Timer initialized at ' + window._CMLS.autoRefreshAdsTimer + ' minutes.');
 		}
 	};
 
