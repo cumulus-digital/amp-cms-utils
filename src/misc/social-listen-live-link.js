@@ -28,9 +28,11 @@
 		$('.social-icons img[title="Listen Live"]').parent('a').click(function(e){
 			if (window.tgmp) {
 				e.preventDefault();
+				log('Playing stream...');
 				window.tgmp.playStream();
 			}
 		});
+		log('Social Listen Live button activated.');
 	});
 
 }(jQuery, window));
