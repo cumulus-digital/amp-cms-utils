@@ -183,17 +183,17 @@
 			position: null,
 		};
 		if (window.tgmp) {
-			window._CMLS.logger('COMMON', 'Found TuneGenie player.');
+			window._CMLS.logger('COMMON', ['Found TuneGenie player.']);
 			discovered.type = window._CMLS.const.PLAYER_TUNEGENIE;
 			if (window.tgmp.options.position && window.tgmp.options.position.toLowerCase() === 'bottom') {
-				window._CMLS.logger('COMMON', 'TuneGenie player is on the bottom.');
+				window._CMLS.logger('COMMON', ['TuneGenie player is on the bottom.']);
 				discovered.position = window._CMLS.const.PLAYER_POSITION_BOTTOM;
 			} else if (window.tgmp.options.position && window.tgmp.options.position.toLowerCase() === 'top') {
-				window._CMLS.logger('COMMON', 'TuneGenie player is on the top.');
+				window._CMLS.logger('COMMON', ['TuneGenie player is on the top.']);
 				discovered.position = window._CMLS.const.PLAYER_POSITION_TOP;
 			}
 		} else if (window.TDPW) {
-			window._CMLS.logger('COMMON', 'Found Triton player, assuming it\'s on top.');
+			window._CMLS.logger('COMMON', ['Found Triton player, assuming it\'s on top.']);
 			discovered.type = window._CMLS.const.PLAYER_TRITON;
 			discovered.position = window._CMLS.const.PLAYER_POSITION_TOP;
 		}
@@ -229,7 +229,7 @@
 		el.dispatchEvent(event);
 	};
 
-	window._CMLS.logger("COMMON", "LIBRARY LOADED!\n                           .__                \n  ____  __ __  _____  __ __|  |  __ __  ______\n_/ ___\\|  |  \\/     \\|  |  \\  | |  |  \\/  ___/\n\\  \\___|  |  /  Y Y  \\  |  /  |_|  |  /\___ \\ \n \\___  >____/|__|_|  /____/|____/____//____  >\n     \\/            \\/                      \\/ \n");
+	window._CMLS.logger("COMMON", ["LIBRARY LOADED!\n                           .__                \n  ____  __ __  _____  __ __|  |  __ __  ______\n_/ ___\\|  |  \\/     \\|  |  \\  | |  |  \\/  ___/\n\\  \\___|  |  /  Y Y  \\  |  /  |_|  |  /\___ \\ \n \\___  >____/|__|_|  /____/|____/____//____  >\n     \\/            \\/                      \\/ \n"]);
 	window._CMLS.LOADED = true;
 
 }(window));
