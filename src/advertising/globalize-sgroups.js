@@ -21,9 +21,22 @@
 		timer: null,
 
 		globalize: function globalize() {
-			if ( ! (window.googletag.pubads().G && window.googletag.pubads().G['cms-sgroup'])) {
+			var sgroup_container;
+			try {
+				if ( ! window.googletag || ! window.googletag.pubads()) {
+					throw { message: 'Googletag not yet ready.' };
+				}
+				var dfp_props = window.googletag.pubads();
+				for (var z in dfp_props) {
+					if ( ! dfp_props[z].hasOwnProperty('cms-sgroup')) {
+						continue;
+					}
+					sgroup_container = dfp_props[z]['cms-sgroup'];
+					break;
+				}
+			} catch (e) {
 				if (window._CMLS[nameSpace].cycles > 10) {
-					log('Could not retrieve cms-sgroup in a reasonable time, aborting.');
+					log('TERMINATING. Could not retrieve cms-sgroup in a reasonable time, aborting.');
 					return;
 				}
 				log('Googletag not ready, waiting to retry...');
@@ -38,7 +51,7 @@
 
 			log('Globalizing cms-sgroup');
 			window._CMLS.cGroups = window._CMLS.cGroups || [];
-			window._CMLS.cGroups = window.googletag.pubads().G['cms-sgroup'];
+			window._CMLS.cGroups = sgroup_container;
 
 			var events = ['cms-sgroup'].concat(window._CMLS.cGroups);
 
