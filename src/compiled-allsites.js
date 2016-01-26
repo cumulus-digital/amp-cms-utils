@@ -4,6 +4,8 @@
 
 // @codekit-append "common.js"
 
+window._CMLS.logger("COMMON", "                            __              \n.----.--.--.--------.--.--.|  |.--.--.-----.\n|  __|  |  |        |  |  ||  ||  |  |__ --|\n|____|_____|__|__|__|_____||__||_____|_____|\n                                            \nCOMMON LIBRARY LOADED!");
+
 // Advertising libraries
 // @codekit-append "advertising/globalize-sgroups.js"
 // @codekit-append "advertising/teadsinjector.js"
