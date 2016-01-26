@@ -229,7 +229,7 @@
 		el.dispatchEvent(event);
 	};
 
-	window._CMLS.logger("COMMON", "\n                            __              \n.----.--.--.--------.--.--.|  |.--.--.-----.\n|  __|  |  |        |  |  ||  ||  |  |__ --|\n|____|_____|__|__|__|_____||__||_____|_____|\n                                            \nCOMMON LIBRARY LOADED!");
-
+	window._CMLS.logger("COMMON", "\n                                                       _ _                            \n . - - - - . - - . - - . - - - - - - - - . - - . - - |     | - - . - - . - - - - - . \n |     _ _ |     |     |                 |     |     |     |     |     | _ _   - - | \n | _ _ _ _ | _ _ _ _ _ | _ _ | _ _ | _ _ | _ _ _ _ _ | _ _ | _ _ _ _ _ | _ _ _ _ _ | \n");
 	window._CMLS.LOADED = true;
+
 }(window));
