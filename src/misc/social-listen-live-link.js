@@ -25,7 +25,14 @@
 	}
 
 	$(function(){
-		$('.social-icons img[title="Listen Live!!"],.social-icons-container img[title="Listen Live!!"').parent('a').click(function(e){
+		var button = $('.social-icons img[title="Listen Live!!"],.social-icons-container img[title="Listen Live!!"]').parent('a');
+
+		if ( ! button.length) {
+			log('Could not locate Listen Live button in social icons.');
+			return;
+		}
+
+		button.click(function(e){
 			if (window.tgmp) {
 				e.preventDefault();
 				log('Playing stream...');
