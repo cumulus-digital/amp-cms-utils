@@ -10,13 +10,14 @@
 
 	window._CMLS = window._CMLS || {};
 
-	// Only run once.
-	if (window._CMLS[nameSpace]) {
-		return;
-	}
-
 	function log() {
 		window._CMLS.logger(scriptName + ' v' + version, arguments);
+	}
+
+	// Only run once.
+	if (window._CMLS[nameSpace]) {
+		log('Already loaded, exiting.');
+		return;
 	}
 
 	if ( ! window.tgmp) {
@@ -37,6 +38,8 @@
 				e.preventDefault();
 				log('Playing stream...');
 				window.tgmp.playStream();
+			} else {
+				log('TuneGenie player not enabled.');
 			}
 		});
 		log('Social Listen Live button activated.');
