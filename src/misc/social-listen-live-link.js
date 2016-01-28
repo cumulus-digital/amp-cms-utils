@@ -14,6 +14,8 @@
 		window._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
 
+	log('Starting...');
+
 	// Only run once.
 	if (window._CMLS[nameSpace]) {
 		log('Already loaded, exiting.');
@@ -26,6 +28,7 @@
 	}
 
 	$(function(){
+		log('Locating Listen Live button.');
 		var button = $('.social-icons img[title="Listen Live!!"],.social-icons-container img[title="Listen Live!!"]').parent('a');
 
 		if ( ! button.length) {
@@ -44,5 +47,8 @@
 		});
 		log('Social Listen Live button activated.');
 	});
+
+	window._CMLS[nameSpace] = version;
+	log('Initialized.');
 
 }(jQuery, window));

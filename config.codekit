@@ -231,6 +231,17 @@
 		"outputStyle": 2,
 		"syntaxCheckerStyle": 1
 		},
+	"\/src\/smartbanner\/smartbanner.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/src\/smartbanner\/smartbanner.js",
+		"outputAbbreviatedPath": "\/dist\/smartbanner\/smartbanner-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 2,
+		"syntaxCheckerStyle": 1
+		},
 	"\/src\/smartbanner\/smartbanner.styl": {
 		"createSourceMap": 1,
 		"debugStyle": 0,
