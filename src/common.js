@@ -4,7 +4,11 @@
 /*jshint bitwise: false*/
 (function(window, undefined) {
 	
-	window._CMLS = window._CMLS || {};
+	if (window.self !== window.top) {
+		window._CMLS = {};
+	} else {
+		window._CMLS = window._CMLS || {};
+	}
 
 	if (window._CMLS.LOADED) {
 		return;
