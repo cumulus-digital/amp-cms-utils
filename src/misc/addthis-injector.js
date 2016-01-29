@@ -2,11 +2,10 @@
  * Loads AddThis and handles re-initialization when pages are loaded
  * through Triton's player.
  */
-(function(window, undefined) {
-
+;(function(window, undefined) {
 	var scriptName = 'ADDTHIS INJECTOR',
 		nameSpace = 'addThisInjector',
-		version = '0.4',
+		version = '0.5',
 
 		// AddThis PubId to use
 		addThisPubId = 'ra-55dc79597bae383e';
@@ -15,10 +14,39 @@
 		window._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
 
-	// Don't overwrite someone else's addthis
 	if (window.addthis) {
-		log('AddThis already loaded by page.');
+		log('AddThis already loaded by local page.');
 		return;
+	}
+
+	if (window.parent !== window.top) {
+		log('Not top window, destroying AddThis in parent window');
+		if (window.parent.addthis) {
+			// destroy parent layer
+			window.parent._CMLS[nameSpace].destroyLayer();
+			window.parent._CMLS[nameSpace] = undefined;
+
+			// clear all addthis variables
+			window.parent.addthis = 
+			window.parent.addthis_config = 
+			window.parent.addthis_share = 
+			window.parent._adr =
+			window.parent._atc =
+			window.parent._atd =
+			window.parent._ate =
+			window.parent._atr =
+			window.parent._atw = undefined;
+
+			// Remove all addthis script tags from parent window
+			var scr = window.parent.querySelectorAll('script[src*="addthis"');
+			if (scr && scr.length) {
+				for (var i in scr) {
+					if (scr[i].parentNode) {
+						scr[i].parentNode.removeChild(scr[i]);
+					}
+				}
+			}
+		}
 	}
 
 	window._CMLS[nameSpace] = {
