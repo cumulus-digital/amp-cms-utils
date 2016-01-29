@@ -19,7 +19,7 @@
 		return;
 	}
 
-	if (window.parent !== window.top) {
+	if (window.self !== window.top) {
 		log('Not top window, destroying AddThis in parent window');
 		if (window.parent.addthis) {
 			// destroy parent layer
