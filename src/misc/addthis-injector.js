@@ -47,6 +47,8 @@
 				}
 			}
 		}
+	} else {
+		log('Loaded in top window.');
 	}
 
 	window._CMLS[nameSpace] = {
