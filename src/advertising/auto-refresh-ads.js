@@ -21,7 +21,7 @@
 	}
 
 	function log() {
-		window._CMLS.logger(scriptName + ' v' + version, arguments);
+		window._CMLS.log(scriptName + ' v' + version, arguments);
 	}
 
 	// Initialize googletag variables
