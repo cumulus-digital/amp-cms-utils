@@ -99,6 +99,7 @@
 			log('Initialized.');
 		});
 
+		log('Passed to googletag init.');
 	}
 
 	/**
