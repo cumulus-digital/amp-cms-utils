@@ -1,81 +1,88 @@
 /**
- * Receives Teads PIDs and injects Teads' scripting,
- * re-injects PIDs on pages loaded through Triton's player.
+ * Received Teads PIDs and injects Teads' scripting.
  *
- * Local usage:
- * 	window._teadsinjector.push({
- * 		pid: '1234',
- * 		format: 'inboard'
- * 	});
+ * local usage:
+ * window._teadsinjector.push({
+ *   pidd: '1234',
+ *   format: 'inboard'
+ * });
  */
-(function($, window, undefined) {
-	
+;(function(window, undefined){
+
 	var scriptName = 'TEADS INJECTOR',
 		nameSpace = 'teadsInjector',
-		version = '0.7';
+		version = '0.8',
+		_CMLS = window._CMLS || {};
 
-	// Only define once.
-	if (window._CMLS[nameSpace] || window.teads) {
+	if (_CMLS[nameSpace] || window.self.teads){
 		return;
 	}
 
 	function log() {
-		window._CMLS.logger(scriptName + ' v' + version, arguments);
+		_CMLS.log(scriptName + ' v' + version, arguments);
 	}
 
-	function TeadsInjector() {
-		var cache = {};
+	function TeadsInjector(){
+		var that = this,
+			cache = {},
+			TeadsArray = function() {};
 
-		function _process(options) {
-			if (options.format && options.pid) {
-				log('Received request for ' + options.format + ' with PID ' + options.pid);
-				switch(options.format.toLowerCase()) {
+		/**
+		 * Process a request for Teads
+		 * @param  {Object} requests  Must contain format and pid keys
+		 * @return {void}
+		 */
+		this.process = function(requests) {
+			// Convert to array if necessary
+			if (! (requests.push && requests.pop)) {
+				requests = [requests];
+			}
+			requests.forEach(function(req){
+				if ( ! req.format || ! req.pid) {
+					log('Invalid request.', req);
+					return;
+				}
+				log('Received request', 'format: ' + req.format, 'PID: ' + req.pid);
+				switch(req.format.toLowerCase()) {
 					case 'inread':
-						inread(options.pid);
+						inread(req.pid);
 						break;
 					case 'inboard':
-						inboard(options.pid);
+						inboard(req.pid);
 						break;
 				}
-			} else {
-				log('Invalid request. No pid or format given.', options);
-			}
-		}
-		this.process = _process;
+			});
+		};
 
+		/**
+		 * Discover the window size, with a maximum width of 1020px
+		 * @return {Object} w: width, h: height
+		 */
 		function getWindowSize() {
-			var width = 1020, height = 1000;
+			var maxW = 1020,
+				dE = document.documentElement || { clientWidth: 0, clientHeight: 0 },
+				w = Math.max(dE.clientWidth, window.innerWidth || 0),
+				h = Math.max(dE.clientHeight, window.innerHeight || 0);
 
-			if (typeof window.innerWidth === 'number') {
-				width = window.innerWidth;
-			} else if (document.documentElement && document.documentElement.clientWidth) {
-				width = document.documentElement.clientWidth;
-			} else if (document.body && document.body.clientWidth) {
-				width = document.body.clientWidth;
-			}
-			// No need for teads to get bigger than this
-			if (width > 1020) {
-				width = 1020;
+			if (w > maxW) {
+				w = maxW;
 			}
 
-			if (typeof(window.innerHeight) === 'number') {
-				height = window.innerHeight;
-			} else if (document.documentElement && document.documentElement.clientHeight) {
-				height = document.documentElement.clientHeight;
-			} else if (document.body && document.body.clientHeight) {
-				height = document.body.clientHeight;
-			}
-
-			return { w: width, h: height };
+			return { w: w, h: h };
 		}
 
+		/**
+		 * Instructs injector to render an inboard ad
+		 * @param  {Number} pid Teads PID
+		 * @return {void}
+		 */
 		function inboard(pid) {
 			var windowSize = getWindowSize();
 			inject({
 				pid: pid,
 				slot: '.wrapper-content',
-				filter: function() {
-					return window.document.body.className.indexOf('home') > -1 || window._CMLS.forceTeadsInBoard === true;
+				filter: function(){
+					return window.document.body.className.indexOf('home') > -1 || _CMLS.forceTeadsInBoard === true;
 				},
 				format: 'inboard',
 				before: true,
@@ -84,11 +91,16 @@
 			});
 		}
 
+		/**
+		 * Instructs injector to render an inread ad
+		 * @param  {Number} pid Teads PID
+		 * @return {void}
+		 */
 		function inread(pid) {
 			inject({
 				pid: pid,
 				slot: '.wrapper-content .column-1 .entry-content p',
-				filter: function() {
+				filter: function(){
 					return window.document.body.className.indexOf('single-feed_posts') > -1;
 				},
 				format: 'inread',
@@ -97,99 +109,105 @@
 			});
 		}
 
-		function _refreshCache() {
-			log('Refreshing cache, re-inserting PID requests.');
-			for (var j in cache) {
-				if (cache.hasOwnProperty(j)) {
-					for (var i = 0; i < window._ttf.length; i++) {
-						if (window._ttf[i].pid === cache[j].pid) {
-							window._ttf.splice(i,1);
-						}
+		/**
+		 * Removes any cached requests from existing _ttf requests
+		 * @return {void}
+		 */
+		function refreshCache() {
+			log('Refreshing cache, reinserting PID requests.');
+			cache.forEach(function(c) {
+				// remove cached pids from ttf
+				for (var i = 0; i < window.self._ttf.length; i++) {
+					if (window.self._ttf[i].pid === c.pid) {
+						window.self._ttf[i].splice(i,1);
 					}
-					cache[j].launched = false;
-					inject(cache[j]);
+				}
+				c.launched = false;
+				inject(c);
+			});
+		}
+
+		/**
+		 * Remove any existing teads scripting and inject teads' @description
+		 * @return {void}
+		 */
+		function insertTeadsScript() {
+			window.self._ttf = undefined;
+			window.parent._ttf = undefined;
+			var existing = [
+				window.self.document.getElementById('cmlsTeadsScript'),
+				window.parent.document.getElementById('cmlsTeadsScript')
+			];
+			for(var i = 0; i < existing.length; i++) {
+				if (existing[i]) {
+					existing[i].parentNode.removeChild(existing[i]);
 				}
 			}
-		}
-		this.refreshCache = _refreshCache;
-
-		function insertTeadsScript() {
-			$('#cmlsTeadsTag').remove();
 			(function(d){
 				var js, s = d.getElementsByTagName('script')[0];
 				js = d.createElement('script'); js.async = true;
-				js.id = 'cmlsTeadsTag';
+				js.id = 'cmlsTeadsScript';
 				js.src = "http://cdn.teads.tv/js/all-v1.js";
 				s.parentNode.insertBefore(js, s);
-			})(window.document);
+			})(window.self.document);
 		}
 
+		/**
+		 * Handles injection of teads options
+		 * @param  {Object} options Teads ad parameters
+		 * @return {void}
+		 */
 		function inject(options) {
-			if ( ! options.pid || ! options.slot || ! options.format) {
-				log('Invalid request. No pid, slot, or format given.', options);
-				return false;
+			if ( ! options || ! options.pid || ! options.slot || ! options.format) {
+				log('Invalid request.', options);
+				return;
 			}
 
 			options.components = options.components || { skip: { delay: 0 }};
 			options.lang = options.lang || 'en';
-			options.filter = options.filter || function() { return true; }; 
+			options.filter = options.filter || function() { return true; };
 			options.minSlot = options.minSlot || 0;
 			options.before = options.before || false;
 			options.BTF = options.BTF || false;
 			options.css = options.css || 'margin: auto !important;';
 
-			log('Injecting', options);
-			window._ttf = window._ttf || [];
-			window._ttf.push(options);
+			log('Injecting!', options);
+			window.self._ttf = window.self._ttf || [];
+			window.self._ttf.push(options);
 
 			insertTeadsScript();
 
 			cache[options.pid] = options;
 		}
 
+		// Handle any existing requests
+		that.process(window.self._teadsinjector);
 
-		// Setting up!
-		
-		// Create a fake array to overload push
-		var TeadsArray = function() {};
+		// Handle future requests
 		TeadsArray.prototype = [];
-		TeadsArray.prototype.push = function() {
-			for (var i = 0; i < arguments.length; i++) {
-				if (arguments[i].format && arguments[i].pid) {
-					_process(
-						arguments[i].format,
-						arguments[i].pid
-					);
-				}
-			}
+		TeadsArray.prototype.push = function(){
+			var args = [].prototype.slice.call(arguments);
+			that.process(args);
 		};
+		window.self._teadsinjector = new TeadsArray();
 
-		// Handle any existing requests before we were loaded
-		if (window._teadsinjector && window._teadsinjector.length) {
-			for (var i = 0; i < window._teadsinjector.length; i++) {
-				_process(window._teadsinjector[i]);
-			}
+		// With Triton's player, listen for pageChange events and reinject
+		var player = _CMLS.whichPlayer();
+		if (
+			player && player.type &&
+			player.type === _CMLS.const.PLAYER_TRITON &&
+			window.History && window.History.Adapter
+		) {
+			log('Binding to pageChange event.');
+			window.History.Adapter.bind(window, 'pageChange', function(){
+				window.document.addEventListener("DOMContentLoaded", function(){
+					refreshCache();
+				});
+			});
 		}
-
-		window._teadsinjector = new TeadsArray();
-
-		log('Listening for future requests.');
-
 	}
 
-	window._CMLS[nameSpace] = new TeadsInjector();
+	_CMLS[nameSpace] = new TeadsInjector();
 
-	// listen for pageChange events
-	var playerType = window._CMLS.whichPlayer();
-	if (
-		playerType && playerType.type &&
-		playerType.type === window._CMLS.const.PLAYER_TRITON &&
-		window.History && window.History.Adapter
-	) {
-		log('Binding refreshCache to pageChange event.');
-		window.History.Adapter.bind(window, 'pageChange', function() {
-			$(window._CMLS[nameSpace].refreshCache);
-		});
-	}
 
-}(jQuery, window));
+}(window));
