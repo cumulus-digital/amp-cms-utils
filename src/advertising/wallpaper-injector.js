@@ -201,7 +201,6 @@
 			function hasPassedStickPosition() {
 				var scrollTop = cache.window.scrollTop(),
 					offset = cache.injectionNode.length ? cache.injectionNode.offset().top : 0;
-				refreshStickAtPosition();
 				if (offset < scrollTop + cache.stickAt) {
 					return true;
 				}

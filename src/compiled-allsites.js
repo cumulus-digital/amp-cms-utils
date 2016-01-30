@@ -17,7 +17,7 @@
 // @codekit-prepend "advertising/triton-player-dfp-injector.js"
 // @codekit-prepend "advertising/nav-through-player.js"
 // @codekit-prepend "advertising/teadsinjector.js"
-// @codekit-prepend "advertising/wallpaper-injector.js"
+// codekit-prepend "advertising/wallpaper-injector.js"
 
 // codekit-prepend "advertising/auto-scroll-homepage-past-leaderboard.js"
 
