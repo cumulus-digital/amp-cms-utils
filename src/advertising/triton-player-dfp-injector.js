@@ -72,6 +72,8 @@
 				}
 			}
 		);
+
+		log('Initialized.');
 	}
 
 	_CMLS[nameSpace] = new TritonPlayerDFPInjector();
