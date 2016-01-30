@@ -1,57 +1,43 @@
 /**
- * Searches ad contents for local links that would interrupt the player,
- * and alters them to load through the player.  Supports TG and Triton.
+ * Searches ad contents for local links that would normally interrupt the player
+ * and alters them to load through the player instead.
  */
-(function($, window, undefined) {
-
+;(function($, window, undefined){
+	
 	var scriptName = "NAV THROUGH PLAYER",
 		nameSpace = "navThroughPlayer",
-		version = "0.1",
-
-		player = window._CMLS.whichPlayer();
+		version = "0.2",
+		_CMLS = window._CMLS,
+		player = _CMLS.whichPlayer();
 
 	function log() {
-		window._CMLS.logger(scriptName + ' v' + version, arguments);
+		_CMLS.log(scriptName + ' v' + version, arguments);
 	}
 
-	if (window._CMLS[nameSpace]) {
+	if (_CMLS[nameSpace]) {
 		return;
 	}
 
-	window._CMLS[nameSpace] = {
-		isPlayerActive: function isPlayerActive() {
-			player = window._CMLS.whichPlayer();
-			if (player.type) {
-				return true;
-			}
-			return false;
-		},
+	function NavThroughPlayer(){
+		var that = this;
 
-		updateIframeLinks: function updateIframeLinks(iframe) {
-			if ( ! window._CMLS[nameSpace].isPlayerActive) {
-				return;
-			}
-
+		this.updateIframe = function(iframe){
 			var $iframe = iframe.jquery ? iframe : $(iframe);
 			$iframe.contents()
-				.find('a[target="_self"],a[target="_top"],a[target="_parent"]')
-					.each(function() {
-						log('Updating links in slot.', $iframe.prop('id'));
-						window._CMLS[nameSpace].updateLink(this);
+				.find('a[target="_self"], a[target="_top"], a[target="_parent"]')
+					.each(function(){
+						that.updateLink(this);
 					});
-		},
+		};
 
-		updateLink: function updateLink(link, force) {
-			if ( ! window._CMLS[nameSpace].isPlayerActive || ! link) {
-				return;
-			}
-
+		this.updateLink = function(link, force){
 			var $link = link.jquery ? link : $(link),
 				l = window.document.createElement('a');
-				l.href = $link.prop('href');
-			
+
+			l.href = $link.prop('href');
+
 			if (
-				l.href.indexOf('/') === 0 || 
+				l.href.indexOf('/') === 0 ||
 				(l.hostname !== window.location.hostname && ! force)
 			) {
 				l = null;
@@ -60,77 +46,70 @@
 
 			$link
 				.off('.' + nameSpace)
-				.on('click.' + nameSpace, window._CMLS[nameSpace].clickThrough);
+				.on('click.' + nameSpace, that.clickThrough);
 			l = null;
-		},
+		};
 
-		clickThrough: function clickThrough(e) {
-			if (e && window._CMLS[nameSpace].isPlayerActive()) {
-				e.preventDefault();
+		this.clickThrough = function(e){
+			log('Intercepting click.');
+			if ( ! e.currentTarget || e.currentTarget.href) {
+				log('Could not get href from target.');
+				return;
+			}
+
+			var url = e.currentTarget.href;
+			
+			if (player.type === _CMLS.const.PLAYER_TRITON && window.History) {
+				log('Navigating through Triton player.', url);
+				window.History.pushState(null,null,url);
+			} else if (player.type === _CMLS.const.PLAYER_TUNEGENIE && window.tgmp) {
+				log('Navigating through TuneGenie player.', url);
+				window.tgmp.updateLocation(url);
 			} else {
 				return;
 			}
-			log('Intercepting click.');
-			window._CMLS[nameSpace].navigate(e.currentTarget.href);
-		},
+			e.preventDefault();
+		};
 
-		navigate: function navigate(url) {
-			// Triton player
-			if (player.type === window._CMLS.const.PLAYER_TRITON && window.History) {
-				log('Navigating through Triton player.', url);
-				window.History.pushState(null,null,url);
-			}
-			// TuneGenie player
-			if (player.type === window._CMLS.const.PLAYER_TUNEGENIE && window.top.tgmp) {
-				log('Navigating through TuneGenie player.', url);
-				window.top.tgmp.updateLocation(url);
-			}			
-		},
-
-		init: function init() {
-			if ( ! window._CMLS[nameSpace].isPlayerActive()) {
-				log('No player is active, exiting.');
-				return;
-			}
-			log('Initializing.');
-
-			// Hook into DFP render event to update new ads
-			window.googletag = window.googletag || {};
-			window.googletag.cmd = window.googletag.cmd || [];
-			window.googletag.cmd.push(function() {
-				window.googletag.pubads().addEventListener('slotRenderEnded', function(e) {
-					if (e && e.slot) {
-						var id = e.slot.getSlotElementId(),
-							iframe = window.document.getElementById(id);
-						window._CMLS[nameSpace].updateIframeLinks(iframe);
-					}
-				});
+		// When googletag is ready, start checking and updating iframes.
+		window.googletag = window.googletag || {};
+		window.googletag.cmd = window.googletag.cmd || [];
+		window.googletag.cmd.push(function(){
+			// Update existing iframes
+			$(window).load(function(){
+				$('iframe[id^="google_ads_iframe"], #cmlsWallpaperInjectorContainer iframe').each(function(){
+					that.updateIframe(this);
+				});				
 			});
 
-			// Update any existing ads on the page
-			$('iframe[id^="google_ads_iframe"],#cmlsWallpaperInjectorContainer iframe').each(function() {
-				window._CMLS[nameSpace].updateIframeLinks(this);
-			});
-			$(window).load(function() {
-				$('iframe[id^="google_ads_iframe"],#cmlsWallpaperInjectorContainer iframe').each(function() {
-					window._CMLS[nameSpace].updateIframeLinks(this);
-				});
+			// Update future iframes
+			window.googletag.pubads.addEventListener('slotRenderEnded', function(e){
+				if (e && e.slot) {
+					var id = e.slot.getSlotElementId(),
+						iframe = window.document.getElementById(id);
+					that.updateIframe(iframe);
+				}
 			});
 
 			log('Initialized.');
-		}
-	};
+		});
 
-	// Player may or may not be available at any load event we can hook to.
-	// Continuously check until we reach a limit or a player becomes available.
+	}
+
+	/**
+	 * Player may or may not be available at any given load event, so we need
+	 * to continously check before instantiating.
+	 */
 	var check_count = 0;
 	function checkForPlayer() {
-		log('Checking for player...', check_count);
-		if (window._CMLS[nameSpace].isPlayerActive()) {
-			window._CMLS[nameSpace].init();
+		log('Checking for player, try:', check_count);
+		player = _CMLS.whichPlayer();
+		if (player.type) {
+			_CMLS[nameSpace] = new NavThroughPlayer();
 			return;
 		}
 		if (check_count > 20) {
+			log('Limit reached, ejecting.');
 			return;
 		}
 		setTimeout(checkForPlayer, 1000);
