@@ -71,6 +71,8 @@
 			e.preventDefault();
 		};
 
+		log('Initializing.');
+
 		// When googletag is ready, start checking and updating iframes.
 		window.googletag = window.googletag || {};
 		window.googletag.cmd = window.googletag.cmd || [];
