@@ -95,53 +95,31 @@
 
 		log('Initializing.');
 
-		// Initialize listeners for Triton player
-		if (player.type === _CMLS.const.PLAYER_TRITON) {
+		// Initialize listeners for players
+		window.addEventListener(
+			'cmls-player.stopped',
+			function(){
+				that.stop();
+			},
+			false
+		);
+		window.addEventListener(
+			'cmls-player.playing',
+			function(){
+				that.start();
+			},
+			false		);
 
-			// Start/stop timer with stream
-			window.addEventListener(
-				'td-player.stopped',
-				function(){
-					that.stop();
-				},
-				false
-			);
-			window.addEventListener(
-				'td-player.playing',
-				function(){
+		// Restart the timer if history changes
+		// Restart the timer if history changes
+		if (window.History && window.History.Adapter) {
+			window.History.Adapter.bind(
+				window,
+				'pageChange',
+				function() {
 					that.start();
-				},
-				false
+				}
 			);
-
-			// Restart the timer if history changes
-			if (window.History && window.History.Adapter) {
-				window.History.Adapter.bind(
-					window,
-					'pageChange',
-					function() {
-						that.start();
-					}
-				);
-			}
-		}
-
-		// Initialize listeners for TuneGenie player
-		if (player.type === _CMLS.const.PLAYER_TUNEGENIE) {
-			if (window.tgmp && window.TGMP_EVENTS) {
-				// TGMP fires the same event on start and stop, with only a boolean
-				// to determine the state.
-				window.tgmp.addEventListener(
-					window.TGMP_EVENTS.streamplaying,
-					function(e) {
-						if (e === true) {
-							that.start();
-							return;
-						}
-						that.stop();
-					}
-				);
-			}
 		}
 
 	}

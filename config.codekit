@@ -165,6 +165,17 @@
 		"outputStyle": 2,
 		"syntaxCheckerStyle": 1
 		},
+	"\/src\/common\/player-watch.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/src\/common\/player-watch.js",
+		"outputAbbreviatedPath": "\/dist\/common\/player-watch-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 2,
+		"syntaxCheckerStyle": 1
+		},
 	"\/src\/common\/player.js": {
 		"fileType": 64,
 		"ignore": 1,
@@ -193,17 +204,6 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/src\/common\/throttle.js",
 		"outputAbbreviatedPath": "\/dist\/common\/throttle-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 2,
-		"syntaxCheckerStyle": 1
-		},
-	"\/src\/common\/triton-player-watch.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/src\/common\/triton-player-watch.js",
-		"outputAbbreviatedPath": "\/dist\/common\/triton-player-watch-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 2,

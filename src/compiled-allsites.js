@@ -10,7 +10,7 @@
 // @codekit-prepend "common/debounce.js"
 // @codekit-prepend "common/sgroups.js"
 // @codekit-prepend "common/player.js"
-// @codekit-prepend "common/triton-player-watch.js"
+// @codekit-prepend "common/player-watch.js"
 
 // Advertising libraries
 // @codekit-prepend "advertising/auto-refresh-ads.js"

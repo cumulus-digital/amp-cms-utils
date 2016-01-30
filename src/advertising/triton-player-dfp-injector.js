@@ -39,7 +39,7 @@
 
 		// Set event listeners
 		window.addEventListener(
-			'td-player.playing',
+			'cmls-player.playing',
 			function(){
 				log('Player is streaming.');
 				that.setDFPCriteria('td-player-state', 'PLAYING');
@@ -47,7 +47,7 @@
 			false
 		);
 		window.addEventListener(
-			'td-player.stopped',
+			'cmls-player.stopped',
 			function(){
 				log('Player has stopped.');
 				that.setDFPCriteria('td-player-state', 'STOPPED');
@@ -55,7 +55,7 @@
 			false
 		);
 		window.addEventListener(
-			'td-player.trackchange',
+			'cmls-player.trackchange',
 			function(data){
 				log('Track has changed.', data);
 				if (data.artist) {

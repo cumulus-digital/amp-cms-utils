@@ -16,11 +16,42 @@
 		return false;
 	}
 
-	// Only operate on Triton's player.
-	var player = _CMLS.whichPlayer();
-	if (player.type !== _CMLS.const.PLAYER_TRITON) {
-		log('Triton player not enabled.');
-		return false;
+	function PlayerEventEmitter(){
+		this.trackChange = function(data){
+			log('Track has changed.', data);
+			_CMLS.triggerEvent(window, 'cmls-player.trackchange', data);
+		};
+
+		this.playing = function(){
+			log('Player is streaming.');
+			_CMLS.triggerEvent(window, 'cmls-player.playing');
+		};
+
+		this.stopped = function(){
+			log('Player is stopped.');
+			_CMLS.triggerEvent(window, 'cmls-player.stopped');
+		};
+	}
+
+	function TuneGeniePlayerWatch(){
+		var emitter = new PlayerEventEmitter();
+
+		window.tgmp.addEventListener(
+			window.tgmp.TGMP_EVENTS.nowplaying,
+			function(data){
+				emitter.trackChange(data);
+			}
+		);
+		window.tgmp.addEventListener(
+			window.tgmp.TGMP_EVENTS.streamplaying,
+			function(state){
+				if (state === true) {
+					emitter.playing();
+				} else {
+					emitter.stopped();
+				}
+			}
+		);
 	}
 
 	function TritonPlayerWatch(){
@@ -31,6 +62,7 @@
 				PLAYING: 1,
 				STOPPED: 0
 			},
+			emitter = new PlayerEventEmitter(),
 			that = this;
 
 		/**
@@ -85,12 +117,10 @@
 			}
 			switch(state) {
 				case STATE.PLAYING:
-					log('Player is streaming.');
-					_CMLS.triggerEvent(window, 'td-player.playing');
+					emitter.playing();
 					break;
 				default:
-					log('Player is stopped.');
-					_CMLS.triggerEvent(window, 'td-player.stopped');
+					emitter.stopped();
 			}
 			cache.state = state;
 		};
@@ -113,9 +143,8 @@
 		 * @return {void}
 		 */
 		this.trackHasChanged = function(data){
-			log('Song has changed!', data);
 			cache.trackId = data.id;
-			_CMLS.triggerEvent(window, 'td-player.trackchange', data);
+			emitter.trackChange(data);
 		};
 
 		/**
@@ -150,6 +179,14 @@
 		return this;
 	}
 
-	window._CMLS[nameSpace] = new TritonPlayerWatch();
+	// Initialize player tracker for player type
+	var player = _CMLS.whichPlayer();
+	if (player.type === _CMLS.const.PLAYER_TRITON) {
+		_CMLS[nameSpace] = new TritonPlayerWatch();
+		log('Triton player tracker enabled.');
+	}
+	if (player.type === _CMLS.const.PLAYER_TUNEGENIE) {
+		_CMLS[nameSpace] = new TuneGeniePlayerWatch();
+	}
 
 }(window));
