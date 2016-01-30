@@ -160,7 +160,7 @@
 		}
 		for (var i in _CMLS.sGroups) {
 			if (/Format\s+(.*Talk.*|Sports)/.test(_CMLS.sGroups[i])) {
-				log('Initializing.');
+				log('Format is good.');
 				_CMLS[nameSpace] = new AutoRefreshAds();
 				initialized = true;
 			}
