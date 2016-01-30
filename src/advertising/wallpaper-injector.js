@@ -404,6 +404,7 @@
 		window.googletag.cmd = window.googletag.cmd || [];
 		window.googletag.cmd.push(function(){
 			window.googletag.pubads().addEventListener('slotRendereEnded', function(e){
+				log('Caught render event.');
 				debounce(checkRenderEvent(e), 1000);
 			});
 		});
