@@ -78,6 +78,9 @@
 		window.googletag.cmd = window.googletag.cmd || [];
 		window.googletag.cmd.push(function(){
 			// Update existing iframes
+			$('iframe[id^="google_ads_iframe"], #cmlsWallpaperInjectorContainer iframe').each(function(){
+				that.updateIframe(this);
+			});
 			$(window).load(function(){
 				$('iframe[id^="google_ads_iframe"], #cmlsWallpaperInjectorContainer iframe').each(function(){
 					that.updateIframe(this);
@@ -107,6 +110,7 @@
 		log('Checking for player, try:', check_count);
 		player = _CMLS.whichPlayer();
 		if (player.type) {
+			log('Player found.');
 			_CMLS[nameSpace] = new NavThroughPlayer();
 			return;
 		}
