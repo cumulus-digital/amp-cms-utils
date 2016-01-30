@@ -44,6 +44,8 @@
 				return;
 			}
 
+			log('Binding to link with href:', l.href);
+
 			$link
 				.off('.' + nameSpace)
 				.on('click.' + nameSpace, that.clickThrough);
