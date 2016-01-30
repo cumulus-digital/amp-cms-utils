@@ -77,6 +77,8 @@
 		window.googletag = window.googletag || {};
 		window.googletag.cmd = window.googletag.cmd || [];
 		window.googletag.cmd.push(function(){
+			log('Googletag init begun.');
+			
 			// Update existing iframes
 			$('iframe[id^="google_ads_iframe"], #cmlsWallpaperInjectorContainer iframe').each(function(){
 				that.updateIframe(this);
