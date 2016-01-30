@@ -211,6 +211,8 @@
 				});
 			});
 		}
+
+		log('Initialized.');
 	}
 
 	_CMLS[nameSpace] = new TeadsInjector();
