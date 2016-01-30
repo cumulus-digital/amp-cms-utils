@@ -8,6 +8,7 @@
 // @codekit-prepend "common/events.js"
 // @codekit-prepend "common/throttle.js"
 // @codekit-prepend "common/debounce.js"
+// @codekit-prepend "common/sgroups.js"
 // @codekit-prepend "common/player.js"
 
 // Advertising libraries
