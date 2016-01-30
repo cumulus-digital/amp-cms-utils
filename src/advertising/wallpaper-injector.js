@@ -47,8 +47,8 @@
 		var cache = {},
 			throttle = _CMLS.throttle,
 			debounce = _CMLS.debounce,
-			css = '<style id="' + nameSpace + '">' +
-				'.%NAMESPACE%-container {' +
+			css = '<style id="' + nameSpace + 'Styles">' +
+				'.' + nameSpace + '-container {' +
 					'display: block;' +
 					'position: absolute;' +
 					'z-index: 0;' +
