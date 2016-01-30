@@ -47,7 +47,7 @@
 		var cache = {},
 			throttle = _CMLS.throttle,
 			debounce = _CMLS.debounce,
-			css = '<style id="%%NAMESPACE%%Styles">' +
+			css = '<style id="' + nameSpace + '">' +
 				'.%NAMESPACE%-container {' +
 					'display: block;' +
 					'position: absolute;' +
@@ -61,32 +61,32 @@
 					'transition: opacity 0.5s, height 0.6s, background-color 0.4s;' +
 					'opacity: 0;' +
 				'}' +
-				'.%NAMESPACE%-container iframe {' +
+				'.' + nameSpace + '-container iframe {' +
 					'border: 0;' +
 					'height: 100%;' +
 					'width: 100%;' +
 				'}' +
-				'.%NAMESPACE%-container ~ .grid-container {' +
+				'.' + nameSpace + '-container ~ .grid-container {' +
 					'transition: box-shadow 0.6s' +
 				'}' +
-				'.%NAMESPACE%-open {' +
+				'.' + nameSpace + '-open {' +
 					'height: 100%;' +
 					'opacity: 1;' +
 				'}' +
-				'.%NAMESPACE%-open ~ .grid-container {' +
+				'.' + nameSpace + '-open ~ .grid-container {' +
 					'box-shadow: 0 0 20px rgba(0,0,0,0.3);' +
 				'}' +
-				'.%NAMESPACE%-fixed {' +
+				'.' + nameSpace + '-fixed {' +
 					'position: fixed;' +
 				'}' + 
-				'.%NAMESPACE%-raiser {' +
+				'.' + nameSpace + '-raiser {' +
 					'position: relative !important;' +
 					'z-index: 5 !important;' +
 				'}' +
-				'%DFPSLOTNODE% {' +
+				settings.dfpSlotNode + ' {' +
 					'display: none;' +
 				'}' +
-			'</style>'.replace(/%NAMESPACE%/g, nameSpace).replace(/%DFPSLOTNODE%/g, settings.dfpSlotNode);
+			'</style>';
 
 		$(css).appendTo('head');
 
