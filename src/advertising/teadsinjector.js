@@ -33,8 +33,12 @@
 		 * @return {void}
 		 */
 		this.process = function(requests) {
+			if ( ! requests) {
+				log('Request was empty.', requests);
+				return;
+			}
 			// Convert to array if necessary
-			if (! (requests.push && requests.pop)) {
+			if ( ! (requests.push && requests.pop)) {
 				requests = [requests];
 			}
 			requests.forEach(function(req){
