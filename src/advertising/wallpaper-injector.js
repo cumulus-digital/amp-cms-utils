@@ -399,7 +399,6 @@
 			}
 		}
 
-
 		// Check for new wallpapers on slot render
 		window.googletag = window.googletag || {};
 		window.googletag.cmd = window.googletag.cmd || [];
@@ -421,6 +420,6 @@
 	}
 
 	settings.nameSpace = nameSpace;
-	_CMLS[nameSpace] = new WallpaperInjector();
+	_CMLS[nameSpace] = new WallpaperInjector(settings);
 
 }(jQuery, window));
