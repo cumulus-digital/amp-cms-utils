@@ -77,17 +77,6 @@
 		"outputStyle": 2,
 		"syntaxCheckerStyle": 1
 		},
-	"\/src\/advertising\/player-tracking-dfp-injection.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 1,
-		"inputAbbreviatedPath": "\/src\/advertising\/player-tracking-dfp-injection.js",
-		"outputAbbreviatedPath": "\/dist\/advertising\/player-tracking-dfp-injection-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 2,
-		"syntaxCheckerStyle": 1
-		},
 	"\/src\/advertising\/teadsinjector.js": {
 		"fileType": 64,
 		"ignore": 1,
