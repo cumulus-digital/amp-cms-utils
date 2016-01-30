@@ -21,6 +21,11 @@
 	function NavThroughPlayer(){
 		var that = this;
 
+		/**
+		 * Search a given iframe for local links and send them to be updated
+		 * @param  {HTMLElement} iframe
+		 * @return {void}
+		 */
 		this.updateIframe = function(iframe){
 			var $iframe = iframe.jquery ? iframe : $(iframe);
 			$iframe.contents()
@@ -30,6 +35,12 @@
 					});
 		};
 
+		/**
+		 * Check link and assign a click handler if not previously bound
+		 * @param  {HTMLElement} link
+		 * @param  {Boolean}     force Force handler to bind regardless
+		 * @return {void} 
+		 */
 		this.updateLink = function(link, force){
 			var $link = link.jquery ? link : $(link),
 				l = window.document.createElement('a');
@@ -57,6 +68,11 @@
 			l = null;
 		};
 
+		/**
+		 * Handle click event on a bound ad link
+		 * @param  {Event} e
+		 * @return {void}
+		 */
 		this.clickThrough = function(e){
 			log('Intercepting click.');
 			if ( ! e.currentTarget || e.currentTarget.href) {
