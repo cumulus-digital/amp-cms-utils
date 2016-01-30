@@ -9,7 +9,7 @@
 		_CMLS = window._CMLS;
 
 	function log() {
-		window._CMLS.logger(scriptName + ' v' + version, arguments);
+		window._CMLS.log(scriptName + ' v' + version, arguments);
 	}
 
 	if (_CMLS[nameSpace]) {
