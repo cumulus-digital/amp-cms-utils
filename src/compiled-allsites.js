@@ -14,6 +14,7 @@
 
 // Advertising libraries
 // @codekit-prepend "advertising/auto-refresh-ads.js"
+// @codekit-prepend "advertising/triton-player-dfp-injector.js"
 // codekit-prepend "advertising/globalize-sgroups.js"
 // codekit-prepend "advertising/teadsinjector.js"
 // codekit-prepend "advertising/player-tracking-dfp-injection.js"
