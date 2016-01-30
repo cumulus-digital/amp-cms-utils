@@ -413,9 +413,7 @@
 		if (window.self.document.readyState === 'complete' || window.self.document.readyState === 'loaded') {
 			processWallpaper();
 		} else {
-			window.document.addEventListener("DOMContentLoaded", function(){
-				processWallpaper();
-			});
+			$(processWallpaper());
 		}
 
 		log('Initialized');
