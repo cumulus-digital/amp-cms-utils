@@ -44,11 +44,16 @@
 				return;
 			}
 
+			if ($link.data('cmls-bound')) {
+				return;
+			}
+
 			log('Binding to link with href:', l.href);
 
 			$link
 				.off('.' + nameSpace)
-				.on('click.' + nameSpace, that.clickThrough);
+				.on('click.' + nameSpace, that.clickThrough)
+				.data('cmls-bound', 1);
 			l = null;
 		};
 
