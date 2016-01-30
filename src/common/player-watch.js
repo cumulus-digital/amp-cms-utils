@@ -187,6 +187,7 @@
 	}
 	if (player.type === _CMLS.const.PLAYER_TUNEGENIE) {
 		_CMLS[nameSpace] = new TuneGeniePlayerWatch();
+		log('TuneGenie player tracker enabled.');
 	}
 
 }(window));
