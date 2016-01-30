@@ -185,7 +185,9 @@
 		}
 
 		// Handle any existing requests
-		that.process(window.self._teadsinjector);
+		if (window.self._teadsinjector && window.self._teadsinjector.length) {
+			that.process(window.self._teadsinjector);
+		}
 
 		// Handle future requests
 		TeadsArray.prototype = [];
