@@ -3,8 +3,8 @@
  */
 
 // Inits and common utilities
-// @codekit-append "common/init.js"
-// @codekit-append "common/log.js"
+// @codekit-prepend "common/init.js"
+// @codekit-prepend "common/log.js"
 // @codekit-append "common/events.js"
 // @codekit-append "common/throttle.js"
 // @codekit-append "common/debounce.js"
