@@ -29,4 +29,4 @@
 // codekit-prepend "misc/breaking-news-bar.js"
 // codekit-prepend "misc/social-listen-live-link.js"
 
-window._CMLS.log("COMMON", ["LIBRARIES LOADED!\n                           .__                \n  ____  __ __  _____  __ __|  |  __ __  ______\n_/ ___\\|  |  \\/     \\|  |  \\  | |  |  \\/  ___/\n\\  \\___|  |  /  Y Y  \\  |  /  |_|  |  /\___ \\ \n \\___  >____/|__|_|  /____/|____/____//____  >\n     \\/            \\/                      \\/ \n"]);
+window._CMLS.log("COMMON", ["LIBRARIES LOADED!\n                           .__\n  ____  __ __  _____  __ __|  |  __ __  ______\n_/    \\|  |  \\/     \\|  |  \\  | |  |  \\/  ___/\n\\   ---|  |  /  Y Y  \\  |  /  |_|  |  /___ \\\n \\___  >____/|__|_|  /____/|____/____//____  >\n     \\/            \\/                      \\/\n"]);
