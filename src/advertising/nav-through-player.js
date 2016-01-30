@@ -77,8 +77,7 @@
 		window.googletag = window.googletag || {};
 		window.googletag.cmd = window.googletag.cmd || [];
 		window.googletag.cmd.push(function(){
-			log('Googletag init begun.');
-			
+
 			// Update existing iframes
 			$('iframe[id^="google_ads_iframe"], #cmlsWallpaperInjectorContainer iframe').each(function(){
 				that.updateIframe(this);
@@ -90,7 +89,7 @@
 			});
 
 			// Update future iframes
-			window.googletag.pubads.addEventListener('slotRenderEnded', function(e){
+			window.googletag.pubads().addEventListener('slotRenderEnded', function(e){
 				if (e && e.slot) {
 					var id = e.slot.getSlotElementId(),
 						iframe = window.document.getElementById(id);
@@ -101,7 +100,6 @@
 			log('Initialized.');
 		});
 
-		log('Passed to googletag init.');
 	}
 
 	/**
