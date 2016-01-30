@@ -30,8 +30,7 @@
 
 	// Instantiate ourselves
 	function AutoRefreshAds() {
-		var player = _CMLS.whichPlayer(),
-			timer = null,
+		var timer = null,
 			that = this;
 
 		this.timeout = _CMLS.autoRefreshAdsTimer || defaultTimeout;

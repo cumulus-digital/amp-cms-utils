@@ -37,13 +37,13 @@
 		var emitter = new PlayerEventEmitter();
 
 		window.tgmp.addEventListener(
-			window.tgmp.TGMP_EVENTS.nowplaying,
+			window.TGMP_EVENTS.nowplaying,
 			function(data){
 				emitter.trackChange(data);
 			}
 		);
 		window.tgmp.addEventListener(
-			window.tgmp.TGMP_EVENTS.streamplaying,
+			window.TGMP_EVENTS.streamplaying,
 			function(state){
 				if (state === true) {
 					emitter.playing();
