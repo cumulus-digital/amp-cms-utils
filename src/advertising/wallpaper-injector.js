@@ -417,6 +417,8 @@
 			});
 		}
 
+		log('Initialized');
+
 	}
 
 	settings.nameSpace = nameSpace;
