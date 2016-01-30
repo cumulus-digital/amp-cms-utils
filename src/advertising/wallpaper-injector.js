@@ -156,8 +156,8 @@
 		 * @return {Number} Pixel position
 		 */
 		function refreshStickAtPosition() {
-			log('Refreshing sticky position.');
 			cache.stickAt = cache.stickNode.length ? cache.stickNode.offset().top : 0;
+			log('Refreshing sticky position.', cache.stickAt);
 			return cache.stickAt;
 		}
 
