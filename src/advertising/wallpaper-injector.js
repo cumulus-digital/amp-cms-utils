@@ -101,8 +101,8 @@
 			cache.contentNode = $(settings.contentNode);
 			cache.footerNode = $(settings.footerNode);
 			cache.obstructiveNode = $(settings.obstructiveNode);
-			cache.window = $(window);
-			cache.document = $(window.document);
+			cache.window = $(window.self);
+			cache.document = $(window.self.document);
 			refreshStickAtPosition();
 			return cache;
 		}
@@ -178,12 +178,12 @@
 		function toggleFixed(forceFix) {
 			var container = getWallpaperContainer(),
 				fixed = isFixed();
-			if (fixed || forceFix === false) {
+			if (fixed && forceFix === false) {
 				log('Unfixing wallpaper position.');
 				container.css('top', '0')
 					.removeClass(nameSpace + '-fixed');
 			}
-			if ( ! fixed || forceFix === true) {
+			if ( ! fixed && forceFix === true) {
 				log('Fixing wallpaper position');
 				refreshStickAtPosition();
 				container.css('top', cache.stickAt)
@@ -236,7 +236,7 @@
 			log('Displaying wallpaper.');
 			var container = getWallpaperContainer();
 			container.addClass(nameSpace + '-open');
-			cache.obstructiveNode.hide();
+			cache.obstructiveNode.hide(300);
 			startTrackingScroll();
 		}
 
@@ -422,4 +422,4 @@
 	settings.nameSpace = nameSpace;
 	_CMLS[nameSpace] = new WallpaperInjector(settings);
 
-}(jQuery, window));
+}(window.self.jQuery, window));
