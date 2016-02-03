@@ -1,125 +1,140 @@
 /**
- * When enabled, reloads homepage on a timer without interrupting stream.
+ * When requested, reloads a site on a timer without interrupting the stream
  */
-(function(window, undefined) {
-
-	var scriptName = 'AUTO-RELOADER',
+;(function(window, undefined){
+	
+	var scriptName = 'AUTO-RELOAD PAGE',
 		nameSpace = 'autoReloader',
-		version = '0.7';
+		version = '0.8',
+		_CMLS = window._CMLS || {};
 
-	// Only define once
-	if (window._CMLS[nameSpace]) {
+	if (_CMLS[nameSpace] || window.self.teads){
 		return;
 	}
 
 	function log() {
-		window._CMLS.logger(scriptName + ' v' + version, arguments);
+		_CMLS.log(scriptName + ' v' + version, arguments);
 	}
 
-	window._CMLS[nameSpace] = {
-		condition: 'body.home',
-		timeout: 480000,
-		active: false,
-		timer: null,
-		player: window._CMLS.whichPlayer(),
+	function AutoReloader(options) {
+		var settings = {
+			condition: options && options.condition ? options.condition : 'body.home',
+			timeout: options && options.timeout ? options.timeout*60000 : 400000
+		};
+
+		var active = false,
+			timer,
+			player = _CMLS.whichPlayer(),
+			that = this;
 
 		/**
-		 * Checks if condition selector exists
+		 * Check if CSS condition for reloading is good
 		 * @return {Boolean}
 		 */
-		checkCondition: function checkCondition() {
-			return window.document.querySelector(this.condition) ? true : false;
-		},
+		function checkCondition() {
+			return window.self.document.querySelector(settings.condition);
+		}
 
-		reset: function reset() {
-			log('Resetting.');
-			clearTimeout(this.timer);
-			this.timer = null;
-			this.restart();
-		},
+		/**
+		 * Reset the timer
+		 * @return {void}
+		 */
+		this.reset = function(){
+			log('Resetting timer.');
+			clearTimeout(timer);
+			timer = null;
+			that.restart();
+		};
 
-		start: function start() {
-			if ( ! this.checkCondition()) {
-				log('Condition check failed, exiting.');
-				this.active = false;
-				return false;
-			}
-			log('Starting timer.');
-			this.active = true;
-			this.reset();
-		},
-
-		stop: function stop() {
+		/**
+		 * Stop the timer
+		 * @return {void}
+		 */
+		this.stop = function(){
 			log('Stopping timer.');
-			this.active = false;
-			this.reset();
-		},
+			active = false;
+			clearTimeout(timer);
+			timer = null;
+		};
 
-		restart: function restart() {
-			if (this.active && this.checkCondition()) {
-				log('Restarting timer.', this.timeout);
-				var that = this;
-				clearTimeout(this.timer);
-				this.timer = setTimeout(function() {
+		/**
+		 * Start the timer after a condition check
+		 * @return {void}
+		 */
+		this.start = function(){
+			if ( ! checkCondition()) {
+				log('Condition check failed, will not start timer.');
+				active = false;
+				that.stop();
+				return;
+			}
+			log('Starting countdown at ' + (settings.timeout / 60000) + ' minutes.');
+			active = true;
+			that.restart();
+		};
+
+		/**
+		 * If active and condition is good, restart the timer.
+		 * @return {void}
+		 */
+		this.restart = function(){
+			if (active && checkCondition()) {
+				clearTimeout(timer);
+				timer = setTimeout(function(){
 					that.fire();
 					that.reset();
-				}, this.timeout);
+				}, settings.timeout);
 			} else {
-				this.active = false;
+				active = false;
 			}
-		},
+		};
 
-		destroy: function destroy() {
+		this.destroy = function(){
 			log('Destroying timer.');
-			this.stop();
-		},
+			that.stop();
+			that = null;
+		};
 
-		fire: function fire() {
-			if (this.checkCondition()) {
+		/**
+		 * Check conditions and fire a reload event depending on the installed player
+		 * @return {void}
+		 */
+		this.fire = function(){
+			if (active && checkCondition()) {
 				log('Reloading the page.');
-				if (this.player.type === window._CMLS.const.PLAYER_TRITON) {
+				if (player.type === _CMLS.const.PLAYER_TRITON && window.History && window.History.Adapter) {
 					window.History.Adapter.trigger(window, 'statechange');
 					return;
 				}
-				if (this.player.type === window._CMLS.const.PLAYER_TUNEGENIE) {
-					window.tgmp.updateLocation(window.location.href);
+				if (player.type === _CMLS.const.PLAYER_TUNEGENIE) {
+					window.tgmp.updateLocation(window.self.location.href);
 					return;
 				}
 				window.location.reload();
 			} else {
-				log('Condition not met, self-destructing.');
+				log('Fired after conditions changed, self-destructing.');
 				this.destroy();
 			}
-		},
+		};
 
-		init: function init(options) {
-			this.condition = options.condition || this.condition;
-			this.timeout = options.timeout * 60000 || this.timeout;
-			this.start();
-			log('Initialized.', this.timeout, this.condition);
-		}
+		log('Initialized.', settings);
+		this.start();
 
-	};
-
-	var ReloaderArray = function() {};
-	ReloaderArray.prototype = [];
-	ReloaderArray.prototype._push = ReloaderArray.prototype.push;
-	ReloaderArray.prototype.push = function() {
-		for (var i = 0; i < arguments.length; i++) {
-			this._push(arguments[i]);
-		}
-		window._CMLS[nameSpace].init(this.slice(-1)[0]);
-		resetRequestArray();
-	};
-
-	function resetRequestArray() {
-		window._CMLS.autoReload = new ReloaderArray();
 	}
 
+	// Handle any existing requests
 	if (window._CMLS.autoReload && window._CMLS.autoReload.length) {
-		window._CMLS[nameSpace].init(window._CMLS.autoReload.slice(-1)[0]);
+		window._CMLS.autoReload.forEach(function(options){
+			return new AutoReloader(options);
+		});
 	}
 
-	resetRequestArray();
+	// Handle future requests
+	var ReloaderArray = function(){};
+	ReloaderArray.prototype = [];
+	ReloaderArray.prototype.push = function(options){
+		return new AutoReloader(options);
+	};
+	window._CMLS.autoReload = new ReloaderArray();
 
 }(window));

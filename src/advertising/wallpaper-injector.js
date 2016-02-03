@@ -280,7 +280,6 @@
 			}
 
 			refreshCache();
-			log('Processing wallpaper request.');
 
 				// Get ad iframe
 			var slotIframe = cache.dfpSlot.find('iframe'),
@@ -293,19 +292,19 @@
 				// Get requested background color from image alt attribute
 				slotBgColor = slotImage.prop('alt');
 
+			log('Processing wallpaper request.', slotDiv, slotLink, slotImage, slotBgColor);
+			if ( ! slotDiv.length || ( ! slotLink.length || ! slotImage.length)) {
+				log('No wallpaper requested or request is empty, resetting.');
+				resetWallpaper();
+				return;
+			}
+
 			var container = getWallpaperContainer();
 			if (
 				slotLink.prop('href') === container.data('slotlink') &&
 				slotImage.prop('src') === container.data('slotimage')
 			) {
 				log('Requested wallpaper is already set.');
-				return;
-			}
-
-			log('Checking image.');
-			if ( ! slotImage.length) {
-				log('No image found in ad slot, resetting.');
-				resetWallpaper();
 				return;
 			}
 

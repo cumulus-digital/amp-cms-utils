@@ -22,7 +22,7 @@
 // codekit-prepend "advertising/auto-scroll-homepage-past-leaderboard.js"
 
 // Misc
-// codekit-prepend "misc/auto-reload.js"
+// @codekit-prepend "misc/auto-reload.js"
 // codekit-prepend "misc/addthis-injector.js"
 // codekit-prepend "misc/breaking-news-bar.js"
 // codekit-prepend "misc/social-listen-live-link.js"
