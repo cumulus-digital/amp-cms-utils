@@ -35,6 +35,7 @@
 				}
 
 				// Attempt to fetch the site's DFP properties and ad unit paths
+				log('Discovering local site ad path.');
 				var adPath = null;
 				try {
 					var props = Object.getOwnPropertyNames(window.googletag.pubads().$);
@@ -50,6 +51,7 @@
 					log('Failed to retrieve DFP properties.', e);
 					return;
 				}
+				log('Ad path found, defining new slot.', adPath);
 
 				window.googletag.defineSlot(
 					adPath,
@@ -125,6 +127,8 @@
 						'<sc'+'ript>googletag.cmd.push(function() { googletag.display("CMLSPlayerSponsorship")});</sc'+'ript>' +
 					'</div>'
 				);
+
+				log('Slot initialized.');
 
 			});
 		});
