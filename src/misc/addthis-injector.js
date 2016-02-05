@@ -23,8 +23,9 @@
 		log('Not top window, destroying AddThis in parent window');
 		if (window.parent.addthis) {
 			// destroy parent layer
-			window.parent._CMLS[nameSpace].destroyLayer();
-			window.parent._CMLS[nameSpace] = undefined;
+			if (window._CMLS[nameSpace]) {
+				window._CMLS[nameSpace].destroyLayer();
+			}
 
 			/*
 			// clear all addthis variables
