@@ -77,7 +77,8 @@
 						'}' +
 						'#CMLSPlayerSponsorship.cmls-player-triton {' +
 							'left: 50%;' +
-							'transform: translate(20px, 0);' +
+							'top: 5px;' +
+							'transform: translate(30px, 0);' +
 						'}' +
 						'#CMLSPlayerSponsorship.cmls-player-pos-bottom {' +
 							'bottom: 10px;' +
@@ -110,17 +111,17 @@
 						'<sc'+'ript>googletag.cmd.push(function() { googletag.display("CMLSPlayerSponsorship")});</sc'+'ript>' +
 					'</div>'
 				), player = _CMLS.whichPlayer();
-				if (player.type === _CMLS.const.PLAYER_TRITON) {
-					sponsorContainer.addClass('cmls-player-triton');
-				}
-				if (player.type === _CMLS.const.PLAYER_TUNEGENIE) {
-					sponsorContainer.addClass('cmls-player-tg');
-				}
 				if (player.position === _CMLS.const.PLAYER_POSITION_TOP) {
 					sponsorContainer.addClass('cmls-player-pos-top');
 				}
 				if (player.position === _CMLS.const.PLAYER_POSITION_BOTTOM) {
 					sponsorContainer.addClass('cmls-player-pos-bottom');
+				}
+				if (player.type === _CMLS.const.PLAYER_TRITON) {
+					sponsorContainer.addClass('cmls-player-triton');
+				}
+				if (player.type === _CMLS.const.PLAYER_TUNEGENIE) {
+					sponsorContainer.addClass('cmls-player-tg');
 				}
 				$('body').append(sponsorContainer);
 
