@@ -73,7 +73,7 @@
 						'}' +
 						'#CMLSPlayerSponsorship.cmls-player-tg {' +
 							'left: 50%;' +
-							'transform: translate(-510px, 0);' +
+							'transform: translate(-520px, 0);' +
 						'}' +
 						'#CMLSPlayerSponsorship.cmls-player-triton {' +
 							'left: 50%;' +
