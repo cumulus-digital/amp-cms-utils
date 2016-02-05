@@ -14,7 +14,7 @@
 		window._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
 
-	if (window.addthis) {
+	if (window.addthis && window.addthis_config && window.addthis_config.pubid && window.addthis_config.pubid !== addThisPubId) {
 		log('AddThis already loaded by local page.');
 		return;
 	}
@@ -26,6 +26,7 @@
 			window.parent._CMLS[nameSpace].destroyLayer();
 			window.parent._CMLS[nameSpace] = undefined;
 
+			/*
 			// clear all addthis variables
 			window.parent.addthis = 
 			window.parent.addthis_config = 
@@ -46,6 +47,7 @@
 					}
 				}
 			}
+			*/
 		}
 	} else {
 		log('Loaded in top window.');
@@ -58,6 +60,11 @@
 
 			window.addthis_config = window.addthis_config || {};
 			window.addthis_config.pubid = addThisPubId;
+
+			if (window.self !== window.top && window.addthis) {
+				log('Not top window, assuming already injected.');
+				return;
+			}
 
 			var scr = window.document.createElement('script');
 			scr.onload = function() {
