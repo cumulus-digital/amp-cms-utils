@@ -25,9 +25,9 @@
 	}
 
 	function init(){
-		window.top.googletag = window.top.googletag || {};
-		window.top.googletag.cmd = window.top.googletag.cmd || [];
-		window.top.googletag.cmd.push(function(){
+		var gt = window.top.googletag || {};
+		gt.cmd = gt.cmd || [];
+		gt.cmd.push(function(){
 			$(function(){
 				// Eject if our tag already exists.
 				if ($('#CMLSPlayerSponsorship').length) {
@@ -39,8 +39,8 @@
 				log('Discovering local site ad path.');
 				var adPath = null;
 				try {
-					var props = Object.getOwnPropertyNames(window.top.googletag.pubads().$);
-					var slotProps = window.top.googletag.pubads().$[props[0]];
+					var props = Object.getOwnPropertyNames(gt.pubads().$);
+					var slotProps = gt.pubads().$[props[0]];
 					for (var z in slotProps) {
 						if (slotProps[z].indexOf('/6717/') > -1) {
 							adPath = slotProps[z];
@@ -54,11 +54,16 @@
 				}
 				log('Ad path found, defining new slot.', adPath);
 
-				window.top.googletag.defineSlot(
+				var slot = gt.defineSlot(
 					adPath,
 					[[120,60]],
 					'CMLSPlayerSponsorship'
-				).addService(window.top.googletag.pubads()).setCollapseEmptyDiv(true).setTargeting('pos', 'playersponsorlogo');
+				);
+				if (slot) {
+					slot.addService(gt.pubads())
+						.setCollapseEmptyDiv(true)
+						.setTargeting('pos', 'playersponsorlogo');
+				}
 
 				// Append ad container styles
 				$('body').append(
