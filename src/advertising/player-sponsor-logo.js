@@ -122,11 +122,7 @@
 				if (player.position === _CMLS.const.PLAYER_POSITION_BOTTOM) {
 					sponsorContainer.addClass('cmls-player-pos-bottom');
 				}
-				$('body').append(
-					'<div id="CMLSPlayerSponsorship">' +
-						'<sc'+'ript>googletag.cmd.push(function() { googletag.display("CMLSPlayerSponsorship")});</sc'+'ript>' +
-					'</div>'
-				);
+				$('body').append(sponsorContainer);
 
 				log('Slot initialized.');
 
