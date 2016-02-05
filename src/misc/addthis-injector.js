@@ -38,7 +38,7 @@
 			window.parent._atw = undefined;
 
 			// Remove all addthis script tags from parent window
-			var scr = window.parent.querySelectorAll('script[src*="addthis"');
+			var scr = window.parent.document.querySelectorAll('script[src*="addthis"');
 			if (scr && scr.length) {
 				for (var i in scr) {
 					if (scr[i].parentNode) {
