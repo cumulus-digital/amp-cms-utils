@@ -77,7 +77,6 @@
 						'}' +
 						'#CMLSPlayerSponsorship.cmls-player-triton {' +
 							'left: 50%;' +
-							'top: 5px;' +
 							'transform: translate(30px, 0);' +
 						'}' +
 						'#CMLSPlayerSponsorship.cmls-player-pos-bottom {' +
@@ -85,6 +84,9 @@
 						'}' +
 						'#CMLSPlayerSponsorship.cmls-player-pos-top {' +
 							'top: 10px;' +
+						'}' +
+						'#CMLSPlayerSponsorship.cmls-player-triton.cmls-player-pos-top {' +
+							'top: 5px;' +
 						'}' +
 						'@media (max-width: 75rem) {' +
 							'#CMLSPlayerSponsorship.cmls-player-tg {' +
