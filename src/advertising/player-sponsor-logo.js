@@ -58,10 +58,7 @@
 					adPath,
 					[[120,60]],
 					'CMLSPlayerSponsorship'
-				)
-					.addService(window.top.googletag.pubads())
-					.setCollapseEmptyDiv(true)
-					.setTargeting('pos', 'playersponsorlogo');
+				).addService(window.top.googletag.pubads()).setCollapseEmptyDiv(true).setTargeting('pos', 'playersponsorlogo');
 
 				// Append ad container styles
 				$('body').append(
