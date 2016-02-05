@@ -41,7 +41,7 @@
 					var props = Object.getOwnPropertyNames(window.googletag.pubads().$);
 					var slotProps = window.googletag.pubads().$[props[0]];
 					for (var z in slotProps) {
-						if (slotProps[z].indexOf('/6717/')) {
+						if (slotProps[z].indexOf('/6717/') > -1) {
 							adPath = slotProps[z];
 							break;
 						}
