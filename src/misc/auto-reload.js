@@ -52,7 +52,7 @@
 			log('Starting countdown, reloading at ' + settings.reload_at);
 
 			clearInterval(timer);
-			setInterval(that.tick, 2000);
+			setInterval(that.tick, 10000);
 		};
 
 		this.stop = function(){
@@ -64,7 +64,7 @@
 		};
 
 		this.tick = function(){
-			log(getNewTimestamp(0), settings.reload_at);
+			log(getNewTimestamp(0), settings.reload_at, getNewTimestamp(0).getTime() > settings.reload_at.getTime());
 			if (getNewTimestamp(0).getTime() > settings.reload_at.getTime()) {
 				that.stop();
 				that.fire();
