@@ -1,27 +1,27 @@
 ;(function(window, undefined){
-
+	
 	var scriptName = 'AUTO-RELOAD PAGE',
 		nameSpace = 'autoReloader',
 		version = '0.9';
-
-	try {
-		window._CMLS[nameSpace].stop();
-		window.top._CMLS[nameSpace].stop();
-	} catch(e) {}
-
 
 	function log() {
 		window._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
 
+	try {
+		window._CMLS[nameSpace].stop();
+		window.top._CMLS[nameSpace].stop();
+	} catch(e){}
+
 	function AutoReloader(){
 		var defaults = {
 			condition: 'body.home',
-			reload_at: null
+			timeout: 8
 		};
 
 		var settings = defaults,
-			timer,
+			interval,
+			reload_at,
 			player = window._CMLS.whichPlayer(),
 			that = this;
 
@@ -32,7 +32,7 @@
 			return window.document.querySelector(settings.condition);
 		}
 
-		function getNewTimestamp(offset) {
+		function getDateWithOffset(offset) {
 			return new Date(Date.now() + offset);
 		}
 
@@ -43,53 +43,52 @@
 
 			settings = {
 				condition: options.condition || defaults.condition,
-				reload_at: options && options.timeout ? getNewTimestamp(options.timeout*60000) : getNewTimestamp(400000)
+				timeout: options.timeout || defaults.timeout
 			};
 
 			if ( ! checkCondition()) {
 				log('Condition check failed at start.');
-				that.stop();
 				return;
 			}
 
-			log('Starting countdown, reloading at ' + settings.reload_at);
+			reload_at = getDateWithOffset(settings.timeout*60000);
 
-			clearInterval(timer);
-			timer = setInterval(that.tick, 10000);
+			log('Starting countdown, reloading at ' + reload_at);
+
+			interval = setInterval(that.tick, 10000);
 		};
 
-		this.stop = function(){
-			if (timer) {
+		this.stop = function() {
+			if (interval) {
 				log('Stopping timer.');
-				clearInterval(timer);
-				timer = null;
+				clearInterval(interval);
+				interval = null;
 			}
 		};
 
-		this.tick = function(){
-			log(getNewTimestamp(0), settings.reload_at, getNewTimestamp(0).getTime() > settings.reload_at.getTime());
-			if (getNewTimestamp(0).getTime() > settings.reload_at.getTime()) {
-				that.stop();
+		this.tick = function() {
+			if (Date.now() > reload_at.getTime()) {
 				that.fire();
 			}
 		};
 
-		this.fire = function(){
-			that.stop();
-			if (checkCondition()) {
-				log('Reloading page.');
-				if (player.type === window._CMLS.const.PLAYER_TRITON && window.History && window.History.Adapter) {
-					window.History.Adapter.trigger(window, 'statechange');
-					return;
-				}
-				if (player.type === window._CMLS.const.PLAYER_TUNEGENIE) {
-					window.tgmp.updateLocation(window.self.location.href);
-					return;
-				}
-				window.location.reload();
-			} else {
-				log('Condition check failed, will not reload and timer is stopped.');
+		this.fire = function() {
+			if ( ! checkCondition()) {
+				log('Condition check failed before firing, timer stopped.');
+				that.stop();
+				return;
 			}
+
+			log('Reloading page.');
+			if (player.type === window._CMLS.const.PLAYER_TRITON && window.History && window.History.Adapter) {
+				window.History.Adapter.trigger(window, 'statechange');
+				return;
+			}
+			if (player.type === window._CMLS.const.PLAYER_TUNEGENIE) {
+				window.tgmp.updateLocation(window.self.location.href);
+				return;
+			}
+			window.location.reload();
 		};
 	}
 
