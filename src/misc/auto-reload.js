@@ -31,6 +31,7 @@
 		}
 
 		this.start = function(options) {
+			log('Starting with options:', options);
 			that.stop();
 			settings = {
 				condition: options && options.condition ? options.condition : defaults.condition,
@@ -42,7 +43,7 @@
 				that.stop();
 				return;
 			}
-			log('Starting countdown at ' + (settings.timeout / 60000) + ' minutes.');
+			log('Starting countdown at ' + (settings.timeout / 60000) + ' minutes.', settings);
 			active = true;
 			clearTimeout(timer);
 			timer = setTimeout(function(){
@@ -80,6 +81,7 @@
 
 	// Handle any existing requests
 	if (window._CMLS.autoReload && window._CMLS.autoReload.length) {
+		log('Loaded with request.');
 		_CMLS[nameSpace].start(_CMLS.autoReload[_CMLS.autoReload.length]);
 	}
 
