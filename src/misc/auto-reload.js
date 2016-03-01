@@ -11,7 +11,7 @@
 	} catch(e) {}
 
 	function log() {
-		_CMLS.log(scriptName + ' v' + version, arguments);
+		_CMLS.logger(scriptName + ' v' + version, arguments);
 	}
 
 	function AutoReloader(){
