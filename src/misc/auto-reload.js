@@ -5,7 +5,7 @@
 		version = '0.9';
 
 	function log() {
-		window._CMLS.logger(scriptName + ' v' + version, arguments);
+		window.top._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
 
 	try {
@@ -93,6 +93,7 @@
 	}
 
 	window.top._CMLS[nameSpace] = new AutoReloader();
+	log('Initialized.');
 
 	// Handle existing requests
 	if (window._CMLS.autoReload && window._CMLS.autoReload.length) {
