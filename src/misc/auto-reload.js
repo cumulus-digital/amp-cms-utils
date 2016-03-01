@@ -8,9 +8,9 @@
 		window._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
 
-	try {
-		window._CMLS.autoReload.stop();
-	} catch(e){}
+	if (window._CMLS.autoReload) {
+		return;
+	}
 
 	function AutoReloader(){
 		var defaults = {
@@ -97,8 +97,6 @@
 		};
 	}
 
-	log('Initialized.');
-
 	// Handle existing requests
 	var freshOptions;
 	if (window._CMLS.autoReload && window._CMLS.autoReload.length) {
@@ -107,6 +105,9 @@
 	}
 
 	window._CMLS.autoReload = new AutoReloader();
+
+	log('Initialized.');
+
 	if (freshOptions) {
 		window._CMLS.autoReload.push(freshOptions);
 	}
