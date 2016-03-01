@@ -42,7 +42,7 @@
 					var props = Object.getOwnPropertyNames(gt.pubads());
 					level1loop:
 					for (var z in props) {
-						if (props[z].isArray() && props[z].length) {
+						if (props[z].constructor && props[z].constructor === Array && props[z].length) {
 							var slotProps = Object.getOwnPropertyNames(props[z][0]);
 							level2loop:
 							for (var x in slotProps) {
