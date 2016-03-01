@@ -61,10 +61,10 @@
 
 		message = header.concat(message);
 
-		console.groupCollapsed.apply(console, message);
-		console.log('TIMESTAMP:', ts);
-		console.trace();
-		console.groupEnd();
+		window.top.console.groupCollapsed.apply(console, message);
+		window.top.console.log('TIMESTAMP:', ts);
+		window.top.console.trace();
+		window.top.console.groupEnd();
 	};
 
 	/**
