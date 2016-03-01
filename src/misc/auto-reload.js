@@ -29,7 +29,8 @@
 		 * @return {Boolean}
 		 */
 		checkCondition: function checkCondition() {
-			return window.document.querySelector(this.condition) ? true : false;
+			//return window.document.querySelector(this.condition) ? true : false;
+			return (window.location.pathname === '/' && /[\?&]?p=/i.test(window.location.search) === false);
 		},
 
 		reset: function reset() {
