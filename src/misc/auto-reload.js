@@ -73,9 +73,10 @@
 		};
 
 		this.fire = function() {
+			that.stop();
+
 			if ( ! checkCondition()) {
 				log('Condition check failed before firing, timer stopped.');
-				that.stop();
 				return;
 			}
 
