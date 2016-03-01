@@ -93,7 +93,7 @@
 	}
 
 	window.top._CMLS[nameSpace] = new AutoReloader();
-	log('Initialized.');
+	log('Initialized.', window.self._CMLS.autoReload, window.top._CMLS.autoReload, window.page_frame._CMLS.autoRelaod);
 
 	// Handle existing requests
 	if (window.self._CMLS.autoReload && window.self._CMLS.autoReload.length) {
