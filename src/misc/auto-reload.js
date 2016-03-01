@@ -64,8 +64,8 @@
 		};
 
 		this.tick = function(){
-			log(getNewTimestamp(), settings.reload_at);
-			if (getNewTimestamp().getTime() > settings.reload_at.getTime()) {
+			log(getNewTimestamp(0), settings.reload_at);
+			if (getNewTimestamp(0).getTime() > settings.reload_at.getTime()) {
 				that.stop();
 				that.fire();
 			}
