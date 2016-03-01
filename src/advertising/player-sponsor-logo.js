@@ -39,23 +39,20 @@
 				log('Discovering local site ad path.');
 				var adPath = null;
 				try {
-					var pa = window.googletag.pubads();
+					var pa = gt.pubads();
 					var props = Object.getOwnPropertyNames(pa);
-					adPath = null;
 					for (var z in props) {
 						var paprops = pa[props[z]];
-						if (paprops.constructor && paprops.constructor === Array && paprops.length) {
-							var slotProps = Object.getOwnPropertyNames(paprops[0]);
-							for (var x in slotProps) {
-								var paslotprops = paprops[0][slotProps[x]];
-								if (paslotprops.indexOf('/6717/') > -1) {
-									adPath = paslotprops;
+						if (paprops.constructor && paprops.constructor === Array) {
+							for (var x in paprops[0]) {
+								if (paprops[0][x] && paprops[0][x].constructor === String && paprops[0][x].indexOf('/6717/') > -1) {
+									adPath = paprops[0][x];
 									break;
 								}
 							}
-							if (adPath) {
-								break;
-							}
+						}
+						if (adPath) {
+							break;
 						}
 					}
 					if (adPath === null) { throw { message: 'Could not retrieve ad unit path.' }; }
