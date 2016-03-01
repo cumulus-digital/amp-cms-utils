@@ -26,7 +26,10 @@
 			that = this;
 
 		function checkCondition(){
-			return window.self.document.querySelector(settings.condition);
+			if (player.type === window._CMLS.const.PLAYER_TUNEGENIE && window.page_frame) {
+				return window.page_frame.document.querySelector(settings.condition);
+			}
+			return window.document.querySelector(settings.condition);
 		}
 
 		function getNewTimestamp(offset) {
@@ -56,8 +59,8 @@
 		};
 
 		this.stop = function(){
-			log('Stopping timer.');
 			if (timer) {
+				log('Stopping timer.');
 				clearInterval(timer);
 				timer = null;
 			}
@@ -72,6 +75,7 @@
 		};
 
 		this.fire = function(){
+			that.stop();
 			if (checkCondition()) {
 				log('Reloading page.');
 				if (player.type === window._CMLS.const.PLAYER_TRITON && window.History && window.History.Adapter) {
@@ -84,8 +88,7 @@
 				}
 				window.location.reload();
 			} else {
-				log('Condition check failed, stopping timer.');
-				that.stop();
+				log('Condition check failed, will not reload and timer is stopped.');
 			}
 		};
 	}
