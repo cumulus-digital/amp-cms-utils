@@ -1,15 +1,15 @@
 ;(function(window, undefined){
 	
 	var scriptName = 'AUTO-RELOAD PAGE',
-		nameSpace = 'autoReloader',
+		//nameSpace = 'autoReload',
 		version = '0.9';
 
 	function log() {
-		window.top._CMLS.logger(scriptName + ' v' + version, arguments);
+		window._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
 
 	try {
-		window.top._CMLS[nameSpace].stop();
+		window._CMLS.autoReload.stop();
 	} catch(e){}
 
 	function AutoReloader(){
@@ -85,29 +85,30 @@
 				return;
 			}
 			if (player.type === window._CMLS.const.PLAYER_TUNEGENIE) {
-				window.tgmp.updateLocation(window.self.location.href);
+				window.tgmp.updateLocation(window.location.href);
 				return;
 			}
 			window.location.reload();
 		};
+
+		this.push = function(options) {
+			log('Received request.', options);
+			that.start(options);
+		};
 	}
 
-	window.top._CMLS[nameSpace] = new AutoReloader();
-	log('Initialized.', window.self._CMLS.autoReload, window.top._CMLS.autoReload, window.page_frame ? window.page_frame._CMLS.autoRelaod : false);
+	log('Initialized.');
 
 	// Handle existing requests
-	if (window.self._CMLS.autoReload && window.self._CMLS.autoReload.length) {
-		log('Loaded with request.', window.self._CMLS.autoReload);
-		window.top._CMLS[nameSpace].start(window.self._CMLS.autoReload[window.self._CMLS.autoReload.length-1]);
+	var freshOptions;
+	if (window._CMLS.autoReload && window._CMLS.autoReload.length) {
+		log('Loaded with request.', window._CMLS.autoReload);
+		freshOptions = window._CMLS.autoReload[window._CMLS.autoReload.length-1];
 	}
 
-	// Handle future requests
-	var ReloaderArray = function(){};
-	ReloaderArray.prototype = [];
-	ReloaderArray.prototype.push = function(options){
-		log('Received request.', options);
-		window.top._CMLS[nameSpace].start(options);
-	};
-	window.self._CMLS.autoReload = new ReloaderArray();
+	window._CMLS.autoReload = new AutoReloader();
+	if (freshOptions) {
+		window._CMLS.autoReload.push(freshOptions);
+	}
 
-}(window));
+}(window.top));
