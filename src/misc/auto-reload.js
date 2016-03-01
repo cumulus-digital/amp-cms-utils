@@ -96,9 +96,9 @@
 	log('Initialized.');
 
 	// Handle existing requests
-	if (window._CMLS.autoReload && window._CMLS.autoReload.length) {
-		log('Loaded with request.', window._CMLS.autoReload);
-		window.top._CMLS[nameSpace].start(window._CMLS.autoReload[window._CMLS.autoReload.length-1]);
+	if (window.self._CMLS.autoReload && window.self._CMLS.autoReload.length) {
+		log('Loaded with request.', window.self._CMLS.autoReload);
+		window.top._CMLS[nameSpace].start(window.self._CMLS.autoReload[window.self._CMLS.autoReload.length-1]);
 	}
 
 	// Handle future requests
@@ -107,6 +107,6 @@
 	ReloaderArray.prototype.push = function(options){
 		window.top._CMLS[nameSpace].start(options);
 	};
-	window._CMLS.autoReload = new ReloaderArray();
+	window.self._CMLS.autoReload = new ReloaderArray();
 
 }(window));
