@@ -8,10 +8,6 @@
 		window._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
 
-	if (window._CMLS.autoReload) {
-		return;
-	}
-
 	function AutoReloader(){
 		var defaults = {
 			condition: 'body.home',
@@ -99,12 +95,14 @@
 
 	// Handle existing requests
 	var freshOptions;
-	if (window._CMLS.autoReload && window._CMLS.autoReload.length) {
+	if (window._CMLS.autoReload && window._CMLS.autoReload.constructor === Array && window._CMLS.autoReload.length) {
 		log('Loaded with request.', window._CMLS.autoReload);
 		freshOptions = window._CMLS.autoReload[window._CMLS.autoReload.length-1];
 	}
 
-	window._CMLS.autoReload = new AutoReloader();
+	if ( ! window._CMLS.autoReload || window._CMLS.autoReload.constructor === Array) {
+		window._CMLS.autoReload = new AutoReloader();
+	}
 
 	log('Initialized.');
 
