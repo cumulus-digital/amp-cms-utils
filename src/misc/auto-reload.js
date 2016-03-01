@@ -105,6 +105,7 @@
 	var ReloaderArray = function(){};
 	ReloaderArray.prototype = [];
 	ReloaderArray.prototype.push = function(options){
+		log('Received request.', options);
 		window.top._CMLS[nameSpace].start(options);
 	};
 	window.self._CMLS.autoReload = new ReloaderArray();
