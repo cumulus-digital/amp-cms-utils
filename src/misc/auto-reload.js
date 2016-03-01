@@ -2,95 +2,105 @@
 
 	var scriptName = 'AUTO-RELOAD PAGE',
 		nameSpace = 'autoReloader',
-		version = '0.8',
-		_CMLS = window._CMLS || {};
+		version = '0.9';
 
 	try {
-		_CMLS[nameSpace].stop();
+		window._CMLS[nameSpace].stop();
 		window.top._CMLS[nameSpace].stop();
 	} catch(e) {}
 
+
 	function log() {
-		_CMLS.logger(scriptName + ' v' + version, arguments);
+		window._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
 
 	function AutoReloader(){
 		var defaults = {
 			condition: 'body.home',
-			timeout: 400000
+			reload_at: null
 		};
 
-		var active = false,
-			settings = defaults,
+		var settings = defaults,
 			timer,
-			player = _CMLS.whichPlayer(),
+			player = window._CMLS.whichPlayer(),
 			that = this;
 
 		function checkCondition(){
 			return window.self.document.querySelector(settings.condition);
 		}
 
+		function getNewTimestamp(offset) {
+			return new Date(Date.now() + offset);
+		}
+
 		this.start = function(options) {
-			log('Starting with options:', options);
+			log('Starting timer.', options);
+
 			that.stop();
+
 			settings = {
-				condition: options && options.condition ? options.condition : defaults.condition,
-				timeout: options && options.timeout ? options.timeout*60000 : defaults.timeout
+				condition: options.condition || defaults.condition,
+				reload_at: options && options.timeout ? getNewTimestamp(options.timeout*60000) : getNewTimestamp(400000)
 			};
+
 			if ( ! checkCondition()) {
-				log('Condition check failed, will not start.');
-				active = false;
+				log('Condition check failed at start.');
 				that.stop();
 				return;
 			}
-			log('Starting countdown at ' + (settings.timeout / 60000) + ' minutes.', settings);
-			active = true;
-			clearTimeout(timer);
-			timer = setTimeout(function(){
-				that.fire();
-			}, settings.timeout);
+
+			log('Starting countdown, reloading at ' + settings.reload_at);
+
+			clearInterval(timer);
+			setInterval(that.tick, 2000);
 		};
 
 		this.stop = function(){
 			log('Stopping timer.');
-			active = false;
-			clearTimeout(timer);
+			clearInterval(timer);
 			timer = null;
 		};
 
-		this.fire = function() {
+		this.tick = function(){
+			if (getNewTimestamp() > settings.reload_at) {
+				that.stop();
+				that.fire();
+			}
+		};
+
+		this.fire = function(){
 			if (checkCondition()) {
-				log('Reloading the page.');
-				if (player.type === _CMLS.const.PLAYER_TRITON && window.History && window.History.Adapter) {
+				log('Reloading page.');
+				if (player.type === window._CMLS.const.PLAYER_TRITON && window.History && window.History.Adapter) {
 					window.History.Adapter.trigger(window, 'statechange');
 					return;
 				}
-				if (player.type === _CMLS.const.PLAYER_TUNEGENIE) {
+				if (player.type === window._CMLS.const.PLAYER_TUNEGENIE) {
 					window.tgmp.updateLocation(window.self.location.href);
 					return;
 				}
 				window.location.reload();
 			} else {
-				log('Fired after conditions changed, stopping timer without reload.');
-				this.stop();
+				log('Condition check failed, stopping timer.');
+				that.stop();
 			}
 		};
 	}
 
-	_CMLS[nameSpace] = new AutoReloader();
+	window._CMLS[nameSpace] = new AutoReloader();
 
-	// Handle any existing requests
+	// Handle existing requests
 	if (window._CMLS.autoReload && window._CMLS.autoReload.length) {
 		log('Loaded with request.', window._CMLS.autoReload);
-		_CMLS[nameSpace].start(window._CMLS.autoReload[window._CMLS.autoReload.length-1]);
+		window._CMLS[nameSpace].start(window._CMLS.autoReload[window._CMLS.autoReload.length-1]);
 	}
 
 	// Handle future requests
 	var ReloaderArray = function(){};
 	ReloaderArray.prototype = [];
 	ReloaderArray.prototype.push = function(options){
-		_CMLS[nameSpace].start(options);
+		window._CMLS[nameSpace].start(options);
 	};
 	window._CMLS.autoReload = new ReloaderArray();
 
-}(window.self));
+}(window));
