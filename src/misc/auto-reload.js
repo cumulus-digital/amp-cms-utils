@@ -57,12 +57,15 @@
 
 		this.stop = function(){
 			log('Stopping timer.');
-			clearInterval(timer);
-			timer = null;
+			if (timer) {
+				clearInterval(timer);
+				timer = null;
+			}
 		};
 
 		this.tick = function(){
-			if (getNewTimestamp() > settings.reload_at) {
+			log(getNewTimestamp(), settings.reload_at);
+			if (getNewTimestamp().getTime() > settings.reload_at.getTime()) {
 				that.stop();
 				that.fire();
 			}
