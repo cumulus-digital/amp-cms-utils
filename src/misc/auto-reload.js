@@ -82,7 +82,7 @@
 	// Handle any existing requests
 	if (window._CMLS.autoReload && window._CMLS.autoReload.length) {
 		log('Loaded with request.', window._CMLS.autoReload);
-		_CMLS[nameSpace].start(window._CMLS.autoReload[window._CMLS.autoReload.length]);
+		_CMLS[nameSpace].start(window._CMLS.autoReload[window._CMLS.autoReload.length-1]);
 	}
 
 	// Handle future requests
