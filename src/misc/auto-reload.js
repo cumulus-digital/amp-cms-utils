@@ -9,7 +9,6 @@
 	}
 
 	try {
-		window._CMLS[nameSpace].stop();
 		window.top._CMLS[nameSpace].stop();
 	} catch(e){}
 
@@ -93,19 +92,19 @@
 		};
 	}
 
-	window._CMLS[nameSpace] = new AutoReloader();
+	window.top._CMLS[nameSpace] = new AutoReloader();
 
 	// Handle existing requests
 	if (window._CMLS.autoReload && window._CMLS.autoReload.length) {
 		log('Loaded with request.', window._CMLS.autoReload);
-		window._CMLS[nameSpace].start(window._CMLS.autoReload[window._CMLS.autoReload.length-1]);
+		window.top._CMLS[nameSpace].start(window._CMLS.autoReload[window._CMLS.autoReload.length-1]);
 	}
 
 	// Handle future requests
 	var ReloaderArray = function(){};
 	ReloaderArray.prototype = [];
 	ReloaderArray.prototype.push = function(options){
-		window._CMLS[nameSpace].start(options);
+		window.top._CMLS[nameSpace].start(options);
 	};
 	window._CMLS.autoReload = new ReloaderArray();
 
