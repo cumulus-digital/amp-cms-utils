@@ -55,7 +55,7 @@
 			log('Starting countdown, reloading at ' + settings.reload_at);
 
 			clearInterval(timer);
-			setInterval(that.tick, 10000);
+			timer = setInterval(that.tick, 10000);
 		};
 
 		this.stop = function(){
