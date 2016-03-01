@@ -7,13 +7,14 @@
 		nameSpace = 'autoReloader',
 		version = '0.7';
 
-	// Only define once
-	if (window._CMLS[nameSpace]) {
-		return;
-	}
-
 	function log() {
 		window._CMLS.logger(scriptName + ' v' + version, arguments);
+	}
+
+	// Only define once
+	if (window._CMLS[nameSpace]) {
+		log('Already active!');
+		return;
 	}
 
 	window._CMLS[nameSpace] = {
@@ -86,6 +87,7 @@
 					return;
 				}
 				window.location.reload();
+				this.restart();
 			} else {
 				log('Condition not met, self-destructing.');
 				this.destroy();
@@ -122,4 +124,4 @@
 
 	resetRequestArray();
 
-}(window));
+}(window.top === window.self ? window : window.top));
