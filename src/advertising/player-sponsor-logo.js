@@ -39,17 +39,22 @@
 				log('Discovering local site ad path.');
 				var adPath = null;
 				try {
-					var props = Object.getOwnPropertyNames(gt.pubads());
-					level1loop:
+					var pa = window.googletag.pubads();
+					var props = Object.getOwnPropertyNames(pa);
+					adPath = null;
 					for (var z in props) {
-						if (props[z].constructor && props[z].constructor === Array && props[z].length) {
-							var slotProps = Object.getOwnPropertyNames(props[z][0]);
-							level2loop:
+						var paprops = pa[props[z]];
+						if (paprops.constructor && paprops.constructor === Array && paprops.length) {
+							var slotProps = Object.getOwnPropertyNames(paprops[0]);
 							for (var x in slotProps) {
-								if (slotProps[x].indexOf('/6717/') > -1) {
-									adPath = slotProps[x];
-									break level1loop;
+								var paslotprops = paprops[0][slotProps[x]];
+								if (paslotprops.indexOf('/6717/') > -1) {
+									adPath = paslotprops;
+									break;
 								}
+							}
+							if (adPath) {
+								break;
 							}
 						}
 					}
