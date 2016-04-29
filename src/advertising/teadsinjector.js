@@ -217,4 +217,6 @@
 		});
 	}
 
+	log('Initialized.');
+
 }(jQuery, window));
