@@ -2,7 +2,7 @@
 
 	var scriptName = 'ADDTHIS INJECTOR',
 		nameSpace = 'addThisInjector',
-		version = '0.6.7',
+		version = '0.6.8',
 
 		// AddThis PubId to use
 		addThisPubId = 'ra-55dc79597bae383e';
@@ -16,6 +16,7 @@
 		return;
 	}
 
+	/*
 	var addthis_properties = [
 		'addthis',
 		'addthis_close',
@@ -36,6 +37,7 @@
 		'_atr',
 		'_atw'
 	];
+	*/
 
 	if (window.self !== window.top) {
 		log('Not top window.');
@@ -57,7 +59,6 @@
 			if (window.top.addthisLayerReference) {
 				log('Instructing addthis to destroy itself.');
 				window.top.addthisLayerReference.destroy();
-				delete window.top.addthisLayerReference;
 				$('.addthis-smartlayers').remove();
 			} else {
 				log('No addthis object in top window.');
