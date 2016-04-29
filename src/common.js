@@ -211,8 +211,11 @@
 	 * execute after page load.
 	 * @return {Boolean}
 	 */
-	window._CMLS.isHomepage = function() {
-		return window.location.pathname === '/' && /[\?&]?p=/i.test(window.location.search) === false;
+	window._CMLS.isHomepage = function(w) {
+		if ( ! w) {
+			w = window;
+		}
+		return w.location.pathname === '/' && /[\?&]?p=/i.test(w.location.search) === false;
 	};
 
 	/**

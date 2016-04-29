@@ -189,7 +189,7 @@
 		},
 	"\/src\/misc\/addthis-hider.js": {
 		"fileType": 64,
-		"ignore": 1,
+		"ignore": 0,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/src\/misc\/addthis-hider.js",
 		"outputAbbreviatedPath": "\/dist\/misc\/addthis-hider-min.js",
