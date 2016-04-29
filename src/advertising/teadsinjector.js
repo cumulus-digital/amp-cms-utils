@@ -75,7 +75,11 @@
 				pid: pid,
 				slot: '.wrapper-content',
 				filter: function() {
-					return window.document.body.className.indexOf('home') > -1 || window._CMLS.forceTeadsInBoard === true;
+					if (window.self.document.body.className.indexOf('home') > -1 || window._CMLS.forceTeadsInBoard === true) {
+						log('On homepage.');
+						return true;
+					}
+					return false;
 				},
 				format: 'inboard',
 				before: true,
@@ -89,7 +93,11 @@
 				pid: pid,
 				slot: '.wrapper-content .column-1 .entry-content p',
 				filter: function() {
-					return window.document.body.className.indexOf('single-feed_posts') > -1;
+					if (window.self.document.body.className.indexOf('single-feed_posts') > -1) {
+						log('On a post page.');
+						return true;
+					}
+					return false;
 				},
 				format: 'inread',
 				before: false,
