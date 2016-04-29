@@ -2,7 +2,7 @@
  * Loads AddThis and handles re-initialization when pages are loaded
  * through Triton's player.
  */
-;(function(window, undefined) {
+;(function($, window, undefined) {
 	var scriptName = 'ADDTHIS INJECTOR',
 		nameSpace = 'addThisInjector',
 		version = '0.5',
@@ -116,6 +116,7 @@
 			if (window.addthis && window._CMLS[nameSpace].active) {
 				window.addthis.layers(function(layer) {
 					layer.destroy();
+					$('.addthis-smartlayers').remove();
 					window._CMLS[nameSpace].active = false;
 				});
 			}
@@ -139,4 +140,4 @@
 
 	window._CMLS[nameSpace].init();
 
-}(window));
+}(jQuery, window));

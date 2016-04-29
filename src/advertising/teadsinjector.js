@@ -177,6 +177,21 @@
 
 	}
 
+	// Removes teads from the top window
+	if (window.top === window.self) {
+		window.top._CMLS.teadsRemover = function(){
+			$('script[src^="http://cdn.teads"],iframe[src*="sync.teads.tv"],style[id^="tt-"]').remove();
+			if (window.top.teads) {
+				window.top.teads = null;
+			}
+		};
+	} else {
+		if (window.top._CMLS.teadsRemover) {
+			window.top._CMLS.teadsRemover();
+		}
+	}
+
+
 	window._CMLS[nameSpace] = new TeadsInjector();
 
 	// listen for pageChange events
