@@ -79,6 +79,7 @@
 						log('On homepage.');
 						return true;
 					}
+					log('Not on homepage.');
 					return false;
 				},
 				format: 'inboard',
@@ -97,6 +98,7 @@
 						log('On a post page.');
 						return true;
 					}
+					log('Not on a post page.');
 					return false;
 				},
 				format: 'inread',
