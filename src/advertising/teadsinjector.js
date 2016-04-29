@@ -2,7 +2,7 @@
 
 	var scriptName = 'TEADS INJECTOR',
 		nameSpace = 'teadsInjector',
-		version = '0.7.13';
+		version = '0.7.12';
 
 	function log() {
 		if (window.top._CMLS) {
@@ -54,16 +54,6 @@
 			}
 		};
 
-		function getWindow(){
-			if (window.self !== window.top && window.tgmp) {
-				log('Found ourselves in TGMP page_frame');
-				var iframe = window.document.querySelector('iframe#page_frame');
-				var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-				return iframeDoc;
-			}
-			return window.self.document;
-		}
-
 		function _process(options){
 			try {
 				if ( ! options || ! options.pid || ! options.format) {
@@ -73,11 +63,8 @@
 				var requestOptions = $.extend({}, teadsOptions[options.format.toLowerCase()], options);
 				
 				log('Injecting', requestOptions);
-
-				var w = getWindow().parentWindow;
-
-				w._ttf = w._ttf || [];
-				w._ttf.push(requestOptions);
+				window.self._ttf = window.self._ttf || [];
+				window.self._ttf.push(requestOptions);
 
 				$('#cmlsTeadsTag').remove();
 				(function(d){
@@ -86,7 +73,7 @@
 					js.id = 'cmlsTeadsTag';
 					js.src = "http://cdn.teads.tv/js/all-v1.js";
 					s.parentNode.insertBefore(js, s);
-				})(w.document);
+				})(window.self.document);
 
 			} catch(e){
 				log('Failed to process.', e);
