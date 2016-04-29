@@ -61,7 +61,7 @@
 
 		message = header.concat(message);
 
-		window.top.console.groupCollapsed.apply(console, message);
+		window.top.console.groupCollapsed.apply(window.top.console, message);
 		window.top.console.log('TIMESTAMP:', ts);
 		window.top.console.trace();
 		window.top.console.groupEnd();
