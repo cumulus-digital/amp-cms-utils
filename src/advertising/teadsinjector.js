@@ -38,13 +38,9 @@
 
 		// Handle any existing requests that came before library loaded
 		if (window.self._teadsinjector && window.self._teadsinjector.length) {
-			for (var i = 0; i < arguments.length; i++) {
-				if (arguments[i].format && arguments[i].pid) {
-					$(_process(
-						arguments[i].format,
-						arguments[i].pid
-					));
-				}
+			log('Found existing requests, processing.', window.self._teadsinjector);
+			for (var i = 0; i < window.self._teadsinjector.length; i++) {
+				_process(window.self._teadsinjector[i]);
 			}
 		}
 
