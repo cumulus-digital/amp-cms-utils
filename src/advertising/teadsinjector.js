@@ -15,7 +15,7 @@
 		version = '0.7';
 
 	// Only define once.
-	if (window._CMLS[nameSpace] || window.teads) {
+	if (window._CMLS[nameSpace]) {
 		return;
 	}
 
