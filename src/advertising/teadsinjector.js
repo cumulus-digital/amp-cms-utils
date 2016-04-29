@@ -2,7 +2,7 @@
 
 	var scriptName = 'TEADS INJECTOR',
 		nameSpace = 'teadsInjector',
-		version = '0.7.5';
+		version = '0.7.6';
 
 	function log() {
 		if (window.top._CMLS) {
@@ -110,20 +110,26 @@
 
 	// Remove any existing teads junk
 	if (window.teads) {
-		window.teads = undefined;
-	}
-	if (window.top.teads) {
-		window.top.teads = undefined;
+		delete window.teads;
 	}
 	if (window._ttf) {
-		window._ttf = undefined;
-	}
-	if (window.top._ttf) {
-		window.top._ttf = undefined;
+		delete window._ttf;
 	}
 	if (window.top === window.self){
 		window.top._CMLS.teadsRemover = function(){
-			$('script[src^="http://cdn.teads"],iframe[src*="sync.teads.tv"],style[id^="tt-"]').remove();
+			$('#cmlsTeadsTag,script[src^="http://cdn.teads"],iframe[src*="sync.teads.tv"],style[id^="tt-"]').remove();
+			if (window.top._teadsinjector) {
+				delete window.top._teadsinjector;
+			}
+			if (window.top._CMLS[nameSpace]) {
+				delete window.top._CMLS[nameSpace];
+			}
+			if (window.top.teads) {
+				delete window.top.teads;
+			}
+			if (window.top._ttf) {
+				delete window.top._ttf;
+			}
 		};
 	} else {
 		window.top._CMLS.teadsRemover();
