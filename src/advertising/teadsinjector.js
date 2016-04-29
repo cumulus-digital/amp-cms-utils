@@ -1,3 +1,13 @@
+/**
+ * Receives Teads PIDs and injects Teads' scripting,
+ * re-injects PIDs on pages loaded through Triton's player.
+ *
+ * Local usage:
+ * 	window._teadsinjector.push({
+ * 		pid: '1234',
+ * 		format: 'inboard'
+ * 	});
+ */
 (function($, window, undefined){
 
 	var scriptName = 'TEADS INJECTOR',
