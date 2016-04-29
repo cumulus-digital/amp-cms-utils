@@ -2,7 +2,7 @@
 
 	var scriptName = 'TEADS INJECTOR',
 		nameSpace = 'teadsInjector',
-		version = '0.7.11';
+		version = '0.7.13';
 
 	function log() {
 		if (window.top._CMLS) {
@@ -14,15 +14,7 @@
 
 		var teadsOptions = {
 			inboard: {
-				slot: function(){
-					if (window.tgmp && window.self !== window.top) {
-						log('Found ourselves in TGMP page_frame');
-						var iframe = window.document.querySelector('iframe#page_frame');
-						var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
-						return iframeDoc.querySelector('.wrapper-content');
-					}
-					return '.wrapper-content';
-				},
+				slot: '.wrapper-content',
 				filter: function() {
 					if (window.self.document.body.className.indexOf('home') > -1 || window._CMLS.forceTeadsInBoard === true) {
 						log('On homepage.');
@@ -62,6 +54,16 @@
 			}
 		};
 
+		function getWindow(){
+			if (window.self !== window.top && window.tgmp) {
+				log('Found ourselves in TGMP page_frame');
+				var iframe = window.document.querySelector('iframe#page_frame');
+				var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+				return iframeDoc;
+			}
+			return window.self.document;
+		}
+
 		function _process(options){
 			try {
 				if ( ! options || ! options.pid || ! options.format) {
@@ -71,8 +73,11 @@
 				var requestOptions = $.extend({}, teadsOptions[options.format.toLowerCase()], options);
 				
 				log('Injecting', requestOptions);
-				window.self._ttf = window.self._ttf || [];
-				window.self._ttf.push(requestOptions);
+
+				var w = getWindow().parentWindow;
+
+				w._ttf = w._ttf || [];
+				w._ttf.push(requestOptions);
 
 				$('#cmlsTeadsTag').remove();
 				(function(d){
@@ -81,7 +86,7 @@
 					js.id = 'cmlsTeadsTag';
 					js.src = "http://cdn.teads.tv/js/all-v1.js";
 					s.parentNode.insertBefore(js, s);
-				})(window.self.document);
+				})(w.document);
 
 			} catch(e){
 				log('Failed to process.', e);
