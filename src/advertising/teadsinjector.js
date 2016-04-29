@@ -168,10 +168,10 @@
 		TeadsArray.prototype.push = function() {
 			for (var i = 0; i < arguments.length; i++) {
 				if (arguments[i].format && arguments[i].pid) {
-					_process(
+					$(_process(
 						arguments[i].format,
 						arguments[i].pid
-					);
+					));
 				}
 			}
 		};
