@@ -2,7 +2,7 @@
 
 	var scriptName = 'TEADS INJECTOR',
 		nameSpace = 'teadsInjector',
-		version = '0.7.12';
+		version = '0.7.13';
 
 	function log() {
 		if (window.top._CMLS) {
@@ -16,7 +16,7 @@
 			inboard: {
 				slot: '.wrapper-content',
 				filter: function() {
-					if (window.self.document.body.className.indexOf('home') > -1 || window._CMLS.forceTeadsInBoard === true) {
+					if (window.document.body.className.indexOf('home') > -1 || window._CMLS.forceTeadsInBoard === true) {
 						log('On homepage.');
 						return true;
 					}
@@ -36,7 +36,7 @@
 			inread: {
 				slot: '.wrapper-content .column-1 .entry-content p',
 				filter: function() {
-					if (window.self.document.body.className.indexOf('single-feed_posts') > -1) {
+					if (window.document.body.className.indexOf('single-feed_posts') > -1) {
 						log('On a post page.');
 						return true;
 					}
@@ -63,8 +63,8 @@
 				var requestOptions = $.extend({}, teadsOptions[options.format.toLowerCase()], options);
 				
 				log('Injecting', requestOptions);
-				window.self._ttf = window.self._ttf || [];
-				window.self._ttf.push(requestOptions);
+				window._ttf = window._ttf || [];
+				window._ttf.push(requestOptions);
 
 				$('#cmlsTeadsTag').remove();
 				(function(d){
@@ -73,7 +73,7 @@
 					js.id = 'cmlsTeadsTag';
 					js.src = "http://cdn.teads.tv/js/all-v1.js";
 					s.parentNode.insertBefore(js, s);
-				})(window.self.document);
+				})(window.document);
 
 			} catch(e){
 				log('Failed to process.', e);
@@ -97,27 +97,32 @@
 		};
 
 		// Handle any existing requests that came before library loaded
-		if (window.self._teadsinjector && window.self._teadsinjector.length) {
-			log('Found existing requests, processing.', window.self._teadsinjector);
-			for (var i = 0; i < window.self._teadsinjector.length; i++) {
-				_process(window.self._teadsinjector[i]);
+		if (window._teadsinjector && window._teadsinjector.length) {
+			log('Found existing requests, processing.', window._teadsinjector);
+			for (var i = 0; i < window._teadsinjector.length; i++) {
+				_process(window._teadsinjector[i]);
 			}
 		}
 
 		// Reassign our fake array for future requests
-		window.self._teadsinjector = new TeadsArray();
+		window._teadsinjector = new TeadsArray();
 		log('Listening for future requests.');
 
 	}
 
 	// Remove any existing teads junk
+	Object.keys(window.top).forEach(function(key){
+		if (key.indexOf('teads') > -1) {
+			delete window.top[key];
+		}
+	});
 	if (window.teads) {
 		delete window.teads;
 	}
 	if (window._ttf) {
 		delete window._ttf;
 	}
-	if (window.top === window.self){
+	if (window.top === window){
 		window.top._CMLS.teadsRemover = function(){
 			log('Removing Teads from top frame.');
 			$('#cmlsTeadsTag,script[src^="http://cdn.teads"],iframe[src*="sync.teads.tv"],style[id^="tt-"]').remove();
@@ -139,9 +144,9 @@
 	}
 
 	// Start our injector
-	window.self._CMLS = window.self._CMLS || {};
-	window.self._CMLS[nameSpace] = new TeadsInjector();
+	window._CMLS = window._CMLS || {};
+	window._CMLS[nameSpace] = new TeadsInjector();
 
 	log('Initialized.');
 
-}(jQuery, window));
+}(jQuery, window.self));
