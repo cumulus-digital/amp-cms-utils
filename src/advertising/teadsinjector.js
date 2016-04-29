@@ -2,7 +2,7 @@
 
 	var scriptName = 'TEADS INJECTOR',
 		nameSpace = 'teadsInjector',
-		version = '0.7.9';
+		version = '0.7.10';
 
 	function log() {
 		if (window.top._CMLS) {
@@ -14,7 +14,14 @@
 
 		var teadsOptions = {
 			inboard: {
-				slot: '.wrapper-content,iframe[name="page_frame"] .wrapper-content',
+				slot: function(){
+					if (window.tgmp && window.self !== window.top) {
+						var iframe = window.document.querySelector('iframe#page_frame');
+						var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+						return iframeDoc.querySelector('.wrapper-content');
+					}
+					return '.wrapper-content';
+				},
 				filter: function() {
 					if (window.self.document.body.className.indexOf('home') > -1 || window._CMLS.forceTeadsInBoard === true) {
 						log('On homepage.');
