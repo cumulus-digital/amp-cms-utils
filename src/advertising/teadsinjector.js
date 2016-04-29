@@ -12,7 +12,7 @@
 	
 	var scriptName = 'TEADS INJECTOR',
 		nameSpace = 'teadsInjector',
-		version = '0.7';
+		version = '0.7.1';
 
 	// Only define once.
 	if (window._CMLS[nameSpace]) {
@@ -113,9 +113,9 @@
 			log('Refreshing cache, re-inserting PID requests.');
 			for (var j in cache) {
 				if (cache.hasOwnProperty(j)) {
-					for (var i = 0; i < window._ttf.length; i++) {
-						if (window._ttf[i].pid === cache[j].pid) {
-							window._ttf.splice(i,1);
+					for (var i = 0; i < window.self._ttf.length; i++) {
+						if (window.self._ttf[i].pid === cache[j].pid) {
+							window.self._ttf.splice(i,1);
 						}
 					}
 					cache[j].launched = false;
@@ -133,7 +133,7 @@
 				js.id = 'cmlsTeadsTag';
 				js.src = "http://cdn.teads.tv/js/all-v1.js";
 				s.parentNode.insertBefore(js, s);
-			})(window.document);
+			})(window.self.document);
 		}
 
 		function inject(options) {
@@ -151,8 +151,8 @@
 			options.css = options.css || 'margin: auto !important;';
 
 			log('Injecting', options);
-			window._ttf = window._ttf || [];
-			window._ttf.push(options);
+			window.self._ttf = window.self._ttf || [];
+			window.self._ttf.push(options);
 
 			insertTeadsScript();
 
