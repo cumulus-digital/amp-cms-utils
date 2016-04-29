@@ -2,7 +2,7 @@
 
 	var scriptName = 'ADDTHIS INJECTOR',
 		nameSpace = 'addThisInjector',
-		version = '0.6.2',
+		version = '0.6.3',
 
 		// AddThis PubId to use
 		addThisPubId = 'ra-55dc79597bae383e';
@@ -18,8 +18,17 @@
 
 	var addthis_properties = [
 		'addthis',
+		'addthis_close',
+		'addthis_conf',
 		'addthis_config',
+		'addthis_exclude',
+		'addthis_open',
+		'addthis_options',
+		'addthis_options_default',
+		'addthis_options_rank',
+		'addthis_sendto',
 		'addthis_share',
+		'addthis_use_personalization',
 		'_adr',
 		'_atc',
 		'_atd',
@@ -54,6 +63,8 @@
 						} catch(e) { log(e); }
 					}
 				});
+			} else {
+				log('No addthis object in top window.');
 			}
 		};
 	}
