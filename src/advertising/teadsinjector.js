@@ -31,7 +31,7 @@
 				format: 'inboard',
 				before: true,
 				css: 'margin: auto !important; padding-top: 5px; padding-bottom: 5px; max-width: 1020px',
-				size: { w: 970 },
+				size: { w: 1020 },
 				components: { skip: { delay: 0 }},
 				lang: 'en',
 				minSlot: 0,
@@ -67,7 +67,7 @@
 				
 				log('Injecting', requestOptions);
 				window._ttf = window._ttf || [];
-				window._ttf.push(options);
+				window._ttf.push(requestOptions);
 
 				$('#cmlsTeadsTag').remove();
 				(function(d){
