@@ -2,7 +2,7 @@
 
 	var scriptName = 'TEADS INJECTOR',
 		nameSpace = 'teadsInjector',
-		version = '0.7.10';
+		version = '0.7.11';
 
 	function log() {
 		if (window.top._CMLS) {
@@ -16,6 +16,7 @@
 			inboard: {
 				slot: function(){
 					if (window.tgmp && window.self !== window.top) {
+						log('Found ourselves in TGMP page_frame');
 						var iframe = window.document.querySelector('iframe#page_frame');
 						var iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
 						return iframeDoc.querySelector('.wrapper-content');
