@@ -2,7 +2,7 @@
 
 	var scriptName = 'TEADS INJECTOR',
 		nameSpace = 'teadsInjector',
-		version = '0.7.3';
+		version = '0.7.4';
 
 	// Only define once.
 	if (window._CMLS[nameSpace]) {
@@ -17,9 +17,72 @@
 
 	function TeadsInjector(){
 
+		var teadsOptions = {
+			inboard: {
+				slot: '.wrapper-content',
+				filter: function() {
+					if (window.self.document.body.className.indexOf('home') > -1 || window._CMLS.forceTeadsInBoard === true) {
+						log('On homepage.');
+						return true;
+					}
+					log('Not on homepage.');
+					return false;
+				},
+				format: 'inboard',
+				before: true,
+				css: 'margin: auto !important; padding-top: 5px; padding-bottom: 5px; max-width: 1020px',
+				size: { w: 970 },
+				components: { skip: { delay: 0 }},
+				lang: 'en',
+				minSlot: 0,
+				BTF: false,
+			},
+			inread: {
+				slot: '.wrapper-content .column-1 .entry-content p',
+				filter: function() {
+					if (window.self.document.body.className.indexOf('single-feed_posts') > -1) {
+						log('On a post page.');
+						return true;
+					}
+					log('Not on a post page.');
+					return false;
+				},
+				format: 'inread',
+				before: false,
+				css: 'padding-bottom: 10px !important;',
+				components: { skip: { delay: 0 }},
+				lang: 'en',
+				minSlot: 0,
+				BTF: false
+			}
+		};
+
 		function _process(options){
-			log(options);
+			try {
+				if ( ! options || ! options.pid || ! options.format) {
+					throw {message: 'Invalid request, no PID or format given.', data: options};
+				}
+				log('Received request for ' + options.format + ' with PID ' + options.pid, options);
+				var requestOptions = $.extend({}, teadsOptions[options.format.toLowerCase()], options);
+				
+				log('Injecting', requestOptions);
+				window._ttf = window._ttf || [];
+				window._ttf.push(options);
+
+				$('#cmlsTeadsTag').remove();
+				(function(d){
+					var js, s = d.getElementsByTagName('script')[0];
+					js = d.createElement('script'); js.async = true;
+					js.id = 'cmlsTeadsTag';
+					js.src = "http://cdn.teads.tv/js/all-v1.js";
+					s.parentNode.insertBefore(js, s);
+				})(window.self.document);
+
+			} catch(e){
+				log('Failed to process.', e);
+			}
 		}
+		this.process = _process;
 
 
 		// Create a fake array to overload push function
