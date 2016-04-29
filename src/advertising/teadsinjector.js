@@ -4,11 +4,6 @@
 		nameSpace = 'teadsInjector',
 		version = '0.7.4';
 
-	// Only define once.
-	if (window._CMLS[nameSpace]) {
-		return;
-	}
-
 	function log() {
 		if (window.top._CMLS) {
 			window.top._CMLS.logger(scriptName + ' v' + version, arguments);
@@ -66,8 +61,8 @@
 				var requestOptions = $.extend({}, teadsOptions[options.format.toLowerCase()], options);
 				
 				log('Injecting', requestOptions);
-				window._ttf = window._ttf || [];
-				window._ttf.push(requestOptions);
+				window.self._ttf = window.self._ttf || [];
+				window.self._ttf.push(requestOptions);
 
 				$('#cmlsTeadsTag').remove();
 				(function(d){
