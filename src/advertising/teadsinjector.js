@@ -20,7 +20,9 @@
 	}
 
 	function log() {
-		window._CMLS.logger(scriptName + ' v' + version, arguments);
+		if (window.top._CMLS) {
+			window.top._CMLS.logger(scriptName + ' v' + version, arguments);
+		}
 	}
 
 	function TeadsInjector() {
