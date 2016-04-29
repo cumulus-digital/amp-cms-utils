@@ -2,7 +2,7 @@
 
 	var scriptName = 'ADDTHIS INJECTOR',
 		nameSpace = 'addThisInjector',
-		version = '0.6.3',
+		version = '0.6.5',
 
 		// AddThis PubId to use
 		addThisPubId = 'ra-55dc79597bae383e';
@@ -52,17 +52,16 @@
 		window.top.addthisDestroyer = function(){
 			log('Removing addthis from top window.');
 			$('script[src*="addthis"]').remove();
-			if (window.top.addthis) {
-				window.top.addthis.layers(function(layer){
-					log('Destroying addthis layer in top window.');
-					layer.destroy();
-					$('.addthis-smartlayers').remove();
-					for(var i in addthis_properties) {
-						try {
-							delete window.top[addthis_properties[i]];
-						} catch(e) { log(e); }
-					}
-				});
+			if (window.top.addthisLayerReference) {
+				log('Instructing addthis to destroy itself.');
+				window.top.addthisLayerReference.destroy();
+				delete window.top.addthisLayerReference;
+				$('.addthis-smartlayers').remove();
+				for(var i in addthis_properties) {
+					try {
+						delete window.top[addthis_properties[i]];
+					} catch(e) { log(e); }
+				}
 			} else {
 				log('No addthis object in top window.');
 			}
@@ -102,8 +101,9 @@
 					'offset': { 'bottom': '100px' },
 					'services' : 'facebook,twitter,tumblr,email,more'
 				}
-			}, function() {
+			}, function(layer) {
 				window.self.addthis.layers.refresh();
+				window.top.addthisLayerReference = layer;
 				log('Layer built.');
 			});
 		} else {
