@@ -11,7 +11,7 @@
 	window._CMLS.autoRefreshAdsTimer = window._CMLS.autoRefreshAdsTimer || 4;
 
 	function log() {
-		window._CMLS.logger(scriptName + ' v' + version, arguments);
+		window.top._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
 
 	window._CMLS[nameSpace] = {
