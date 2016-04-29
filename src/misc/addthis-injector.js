@@ -59,7 +59,7 @@
 		return;
 	}
 
-	if (window.top._CMLS.isHomepage()) {
+	if (window.top._CMLS.isHomepage(window.self)) {
 		log('Will not build on homepage, exiting.');
 		return;
 	}
