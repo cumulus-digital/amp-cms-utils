@@ -4,50 +4,42 @@
 (function(window, undefined) {
 	var scriptName = 'AUTO REFRESH ADS',
 		nameSpace = 'autoRefreshAds',
-		version = '0.3';
+		version = '0.4.0';
 
-		// Time before refreshing ads, in minutes
-window._CMLS = window._CMLS || {};
-window._CMLS.autoRefreshAdsTimer = 4;
-		window._CMLS.autoRefreshAdsTimer = window._CMLS.autoRefreshAdsTimer || 8;
-
-	// Only run once.
-	if (window._CMLS[nameSpace]) {
-		return;
-	}
+	// Time before refreshing ads, in minutes
+	window._CMLS = window._CMLS || {};
+	window._CMLS.autoRefreshAdsTimer = window._CMLS.autoRefreshAdsTimer || 4;
 
 	function log() {
 		window._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
 
 	window._CMLS[nameSpace] = {
-		player: window._CMLS.whichPlayer(),
+		player: window.top._CMLS.whichPlayer(),
 		timer: null,
 		boundToRenderEvent: false,
 
-		checkConditions: function checkConditions() {
+		checkConditions: function checkConditions(){
 			if (
-				window._CMLS.isHomepage() &&
+				window.top._CMLS.isHomepage(window) &&
 				window._CMLS.autoReloader &&
 				window._CMLS.autoReloader.active
-			) {
-				log('Autoreloader is active, conditions fail.');
+			){
+				log('Autoreloader is active but conditions fail.');
 				return false;
 			}
 
 			return true;
 		},
 
-		stop: function stop() {
+		stop: function stop(){
 			log('Stopping timer.');
 			clearTimeout(this.timer);
-			this.timer = null;
 			return this;
 		},
 
-		start: function start() {
+		start: function start(){
 			this.stop();
-
 			if ( ! this.checkConditions()) {
 				return;
 			}
@@ -61,7 +53,7 @@ window._CMLS.autoRefreshAdsTimer = 4;
 			return this;
 		},
 
-		fire: function fire() {
+		fire: function fire(){
 			if ( ! this.checkConditions()) {
 				return;
 			}
@@ -74,8 +66,10 @@ window._CMLS.autoRefreshAdsTimer = 4;
 			});
 		},
 
-		init: function init() {
+		init: function init(){
 			log('Initializing.');
+
+			var that = this;
 
 			window.googletag = window.googletag || {};
 			window.googletag.cmd = window.googletag.cmd || [];
@@ -86,14 +80,14 @@ window._CMLS.autoRefreshAdsTimer = 4;
 				window.addEventListener(
 					'td-player.stopped',
 					function() {
-						window._CMLS[nameSpace].stop();
+						that.stop();
 					},
 					false
 				);
 				window.addEventListener(
 					'td-player.playing',
 					function() {
-						window._CMLS[nameSpace].start();
+						that.start();
 					},
 					false
 				);
@@ -104,7 +98,7 @@ window._CMLS.autoRefreshAdsTimer = 4;
 						window,
 						'pageChange',
 						function() {
-							window._CMLS[nameSpace].start();
+							that.start();
 						}
 					);
 				}
@@ -112,16 +106,16 @@ window._CMLS.autoRefreshAdsTimer = 4;
 			}
 
 			// Initialize listeners for TuneGenie Player
-			if (this.player.type === window._CMLS.const.PLAYER_TUNEGENIE) {
+			if (this.player.type === window.top._CMLS.const.PLAYER_TUNEGENIE) {
 				if (window.tgmp && window.TGMP_EVENTS) {
 					window.tgmp.addEventListener(
 						window.TGMP_EVENTS.streamplaying,
 						function(e) {
 							if (e === true) {
-								window._CMLS[nameSpace].start();
+								that.start();
 								return;
 							}
-							window._CMLS[nameSpace].stop();
+							that.stop();
 						}
 					);
 				}
@@ -134,13 +128,13 @@ window._CMLS.autoRefreshAdsTimer = 4;
 
 	var initialized = false;
 	function initTest() {
-		if ( ! window._CMLS.cGroups) {
+		if ( ! window.top._CMLS.cGroups) {
 			log('Init test called without cGroups available, exiting.');
 			return;
 		}
-		for (var i = 0; i < window._CMLS.cGroups.length; i++) {
+		for (var i = 0; i < window.top._CMLS.cGroups.length; i++) {
 			if (
-				/Format\s+(NewsTalk|Talk|Sports|Christian Talk)/i.test(window._CMLS.cGroups[i])
+				/Format\s+(NewsTalk|Talk|Sports|Christian Talk)/i.test(window.top._CMLS.cGroups[i])
 			) {
 				log('Running initialization.');
 				window._CMLS[nameSpace].init();
@@ -155,4 +149,4 @@ window._CMLS.autoRefreshAdsTimer = 4;
 		}
 	}, false);
 
-}(window));
+}(window.self));
