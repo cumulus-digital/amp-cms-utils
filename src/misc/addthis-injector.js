@@ -1,143 +1,99 @@
-/**
- * Loads AddThis and handles re-initialization when pages are loaded
- * through Triton's player.
- */
-;(function($, window, undefined) {
+;(function($, window, undefined){
+
 	var scriptName = 'ADDTHIS INJECTOR',
 		nameSpace = 'addThisInjector',
-		version = '0.5',
+		version = '0.6',
 
 		// AddThis PubId to use
 		addThisPubId = 'ra-55dc79597bae383e';
 
 	function log() {
-		window._CMLS.logger(scriptName + ' v' + version, arguments);
+		window.top._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
 
-	if (window.addthis && window.addthis_config && window.addthis_config.pubid && window.addthis_config.pubid !== addThisPubId) {
+	if (window.self.addthis && window.self.addthis_config && window.self.addthis_config.pubid && window.self.addthis_config.pubid !== addThisPubId) {
 		log('AddThis already loaded by local page.');
 		return;
 	}
 
+	var addthis_properties = [
+		'addthis',
+		'addthis_config',
+		'addthis_share',
+		'_adr',
+		'_atc',
+		'_atd',
+		'_ate',
+		'_atr',
+		'_atw'
+	];
+
 	if (window.self !== window.top) {
-		log('Not top window, destroying AddThis in parent window');
-		if (window.parent.addthis) {
-			// destroy parent layer
-			if (window._CMLS[nameSpace]) {
-				window._CMLS[nameSpace].destroyLayer();
-			}
-
-			/*
-			// clear all addthis variables
-			window.parent.addthis = 
-			window.parent.addthis_config = 
-			window.parent.addthis_share = 
-			window.parent._adr =
-			window.parent._atc =
-			window.parent._atd =
-			window.parent._ate =
-			window.parent._atr =
-			window.parent._atw = undefined;
-
-			// Remove all addthis script tags from parent window
-			var scr = window.parent.document.querySelectorAll('script[src*="addthis"');
-			if (scr && scr.length) {
-				for (var i in scr) {
-					if (scr[i].parentNode) {
-						scr[i].parentNode.removeChild(scr[i]);
-					}
-				}
-			}
-			*/
+		log('Not top window.');
+		if (window.top.addthisDestroyer){
+			window.top.addthisDestroyer();
+		}
+		for(var i in addthis_properties) {
+			try {
+				delete window.self[addthis_properties[i]];
+				delete window.top[addthis_properties[i]];
+				delete window[addthis_properties[i]];
+			} catch(e) {}
 		}
 	} else {
 		log('Loaded in top window.');
-	}
-
-	window._CMLS[nameSpace] = {
-
-		inject: function inject() {
-			log('Injecting.');
-
-			window.addthis_config = window.addthis_config || {};
-			window.addthis_config.pubid = addThisPubId;
-
-			if (window.self !== window.top && window.addthis) {
-				log('Not top window, assuming already injected.');
-				return;
-			}
-
-			var scr = window.document.createElement('script');
-			scr.onload = function() {
-				if ( ! window._CMLS[nameSpace].active) {
-					window._CMLS[nameSpace].buildLayer();
-					return;
-				}
-				log('Already active.');
-			};
-			scr.src = '//s7.addthis.com/js/300/addthis_widget.js#async=1';
-			scr.id = nameSpace + 'Script';
-			scr.async = false;
-			window.document.head.appendChild(scr);
-
-			log('Injected.');
-		},
-
-		buildLayer: function buildLayer() {
-			if (window.NO_ADDTHIS_HERE) {
-				log('NO_ADDTHIS_HERE found in window object, will not build.');
-				return;
-			}
-			if (window._CMLS.isHomepage()) {
-				log('Will not build layer on homepage.');
-				return;
-			}
-			log('Building layer.');
-			if (window.addthis && window.addthis.layers) {
-				window.addthis.layers({
-					'share': {
-						'position': 'left',
-						'offset': { 'bottom': '100px' },
-						'services' : 'facebook,twitter,tumblr,email,more'
-					}
-				}, function(layer) {
-					window._CMLS[nameSpace].layer = layer;
-					window.addthis.layers.refresh();
-					log('Layer built.');
-				});
-				window._CMLS[nameSpace].active = true;
-			} else {
-				log('AddThis not available!');
-			}
-		},
-
-		destroyLayer: function destroyLayer() {
-			log('Destroying layer.');
-			if (window.addthis && window._CMLS[nameSpace].active) {
-				window.addthis.layers(function(layer) {
+		window.top.addthisDestroyer = function(){
+			$('script[src*="addthis"]').remove();
+			if (window.top.addthis) {
+				window.top.addthis.layers(function(layer){
+					log('Destroying addthis layer in top window.');
 					layer.destroy();
 					$('.addthis-smartlayers').remove();
-					window._CMLS[nameSpace].active = false;
 				});
 			}
-		},
+		};
+	}
 
-		init: function init() {
-			log('Initializing.');
+	if (window.self.NO_ADDTHIS_HERE) {
+		log('NO_ADDTHIS_HERE found, will not build.');
+		return;
+	}
 
-			// Reset on navigation with Triton player.
-			if (window.History && window.History.Adapter) {
-				window.History.Adapter.bind(window, 'statechange', window._CMLS[nameSpace].destroyLayer);
-				window.History.Adapter.bind(window, 'pageChange', window._CMLS[nameSpace].buildLayer);
-			}
+	if (window.top._CMLS.isHomepage()) {
+		log('Will not build on homepage, exiting.');
+		return;
+	}
 
-			this.inject();
+	window.self.addthis_config = window.self.addthis_config || {};
+	window.self.addthis_config.pubid = addThisPubId;
 
-			log('Initialized!');
-		}
-
+	var scr = window.self.document.createElement('script');
+	scr.onload = function(){
+		buildLayer();
 	};
+	scr.src = '//s7.addthis.com/js/300/addthis_widget.js#async=1';
+	scr.id = nameSpace + '-script';
+	scr.async = true;
+	window.self.document.head.appendChild(scr);
 
-	window._CMLS[nameSpace].init();
+	log('Injected.');
+
+	function buildLayer(){
+		log('Building layer.');
+		if (window.self.addthis && window.self.addthis.layers) {
+			window.self.addthis.layers({
+				'share': {
+					'position': 'left',
+					'offset': { 'bottom': '100px' },
+					'services' : 'facebook,twitter,tumblr,email,more'
+				}
+			}, function() {
+				window.self.addthis.layers.refresh();
+				log('Layer built.');
+			});
+		} else {
+			log('Addthis not available!');
+		}
+	}
 
 }(jQuery, window));
