@@ -2,7 +2,7 @@
 
 	var scriptName = 'ADDTHIS INJECTOR',
 		nameSpace = 'addThisInjector',
-		version = '0.6.6',
+		version = '0.6.7',
 
 		// AddThis PubId to use
 		addThisPubId = 'ra-55dc79597bae383e';
@@ -42,11 +42,13 @@
 		if (window.top.addthisDestroyer){
 			window.top.addthisDestroyer();
 		}
+		/*
 		for(var i in addthis_properties) {
 			try {
 				delete window.self[addthis_properties[i]];
 			} catch(e) { log(e); }
 		}
+		*/
 	} else {
 		log('Loaded in top window.');
 		window.top.addthisDestroyer = function(){
@@ -56,6 +58,7 @@
 				log('Instructing addthis to destroy itself.');
 				window.top.addthisLayerReference.destroy();
 				delete window.top.addthisLayerReference;
+				$('.addthis-smartlayers').remove();
 			} else {
 				log('No addthis object in top window.');
 			}
@@ -75,6 +78,7 @@
 	window.self.addthis_config = window.self.addthis_config || {};
 	window.self.addthis_config.pubid = addThisPubId;
 
+	log('Building addthis script.');
 	var scr = window.self.document.createElement('script');
 	scr.onload = function(){
 		buildLayer();
