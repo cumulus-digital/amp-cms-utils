@@ -2,7 +2,7 @@
 
 	var scriptName = 'TEADS INJECTOR',
 		nameSpace = 'teadsInjector',
-		version = '0.7.7';
+		version = '0.7.8';
 
 	function log() {
 		if (window.top._CMLS) {
@@ -14,7 +14,7 @@
 
 		var teadsOptions = {
 			inboard: {
-				slot: '.wrapper-content',
+				slot: 'body',
 				filter: function() {
 					if (window.self.document.body.className.indexOf('home') > -1 || window._CMLS.forceTeadsInBoard === true) {
 						log('On homepage.');
