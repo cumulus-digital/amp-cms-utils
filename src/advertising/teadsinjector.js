@@ -14,7 +14,7 @@
 
 		var teadsOptions = {
 			inboard: {
-				slot: '.wrapper-content',
+				slot: '.wrapper-content,iframe#page_frame',
 				filter: function() {
 					if (window.document.body.className.indexOf('home') > -1 || window._CMLS.forceTeadsInBoard === true) {
 						log('On homepage.');
@@ -111,11 +111,6 @@
 	}
 
 	// Remove any existing teads junk
-	Object.keys(window.top).forEach(function(key){
-		if (key.indexOf('teads') > -1) {
-			delete window.top[key];
-		}
-	});
 	if (window.teads) {
 		delete window.teads;
 	}
@@ -126,17 +121,13 @@
 		window.top._CMLS.teadsRemover = function(){
 			log('Removing Teads from top frame.');
 			$('#cmlsTeadsTag,script[src^="http://cdn.teads"],iframe[src*="sync.teads.tv"],style[id^="tt-"]').remove();
-			if (window.top._teadsinjector) {
-				delete window.top._teadsinjector;
-			}
+			Object.keys(window.top).forEach(function(key){
+				if (key.indexOf('teads') > -1 || key.indexOf('_ttf') > -1) {
+					delete window.top[key];
+				}
+			});
 			if (window.top._CMLS[nameSpace]) {
 				delete window.top._CMLS[nameSpace];
-			}
-			if (window.top.teads) {
-				delete window.top.teads;
-			}
-			if (window.top._ttf) {
-				delete window.top._ttf;
 			}
 		};
 	} else {
