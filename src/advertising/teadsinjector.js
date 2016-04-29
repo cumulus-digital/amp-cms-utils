@@ -2,7 +2,7 @@
 
 	var scriptName = 'TEADS INJECTOR',
 		nameSpace = 'teadsInjector',
-		version = '0.7.6';
+		version = '0.7.7';
 
 	function log() {
 		if (window.top._CMLS) {
@@ -27,6 +27,7 @@
 				before: true,
 				css: 'margin: auto !important; padding-top: 5px; padding-bottom: 5px; max-width: 1020px',
 				size: { w: 1020 },
+				launched: false,
 				components: { skip: { delay: 0 }},
 				lang: 'en',
 				minSlot: 0,
@@ -45,6 +46,7 @@
 				format: 'inread',
 				before: false,
 				css: 'padding-bottom: 10px !important;',
+				launched: false,
 				components: { skip: { delay: 0 }},
 				lang: 'en',
 				minSlot: 0,
@@ -117,6 +119,7 @@
 	}
 	if (window.top === window.self){
 		window.top._CMLS.teadsRemover = function(){
+			log('Removing Teads from top frame.');
 			$('#cmlsTeadsTag,script[src^="http://cdn.teads"],iframe[src*="sync.teads.tv"],style[id^="tt-"]').remove();
 			if (window.top._teadsinjector) {
 				delete window.top._teadsinjector;
