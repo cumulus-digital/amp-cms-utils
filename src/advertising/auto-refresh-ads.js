@@ -2,7 +2,7 @@
 
 	var scriptName = 'AUTO REFRESH ADS',
 		nameSpace = 'autoRefreshAds',
-		version = '0.4.9';
+		version = '0.4.10';
 
 	var w = window,
 		wt = window.top,
@@ -93,7 +93,7 @@
 		function resetFireTime(){
 			fireTime = new Date(new Date().getTime() + w._CMLS.autoRefreshAdsTimer*60000);
 		}
-		this.resetFireTime();
+		this.resetFireTime = resetFireTime;
 
 		function checkTGToggle(e){
 			if (e === true) {
