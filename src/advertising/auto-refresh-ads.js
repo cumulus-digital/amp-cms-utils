@@ -2,7 +2,7 @@
 
 	var scriptName = 'AUTO REFRESH ADS',
 		nameSpace = 'autoRefreshAds',
-		version = '0.4.5';
+		version = '0.4.6';
 
 	var w = window,
 		wt = window.top,
@@ -65,7 +65,7 @@
 			}
 
 			fireTime = new Date(new Date().getTime() + w._CMLS.autoRefreshAdsTimer*60000);
-			log('Starting timer, will fire at ' + fireTime.toDateString());
+			log('Starting timer, will fire at ' + fireTime.toLocaleString());
 			checkTimer();
 		}
 		this.start = start;
