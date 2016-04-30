@@ -2,7 +2,7 @@
 
 	var scriptName = 'AUTO REFRESH ADS',
 		nameSpace = 'autoRefreshAds',
-		version = '0.4.6';
+		version = '0.4.7';
 
 	var w = window,
 		wt = window.top,
@@ -15,7 +15,7 @@
 		wt._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
 
-	var AutoRefresher = function(){
+	var AutoRefresher = function(fireEarly){
 		var player = wt._CMLS.whichPlayer(),
 			timer = null,
 			that = this;
@@ -57,14 +57,14 @@
 		}
 		this.stop = stop;
 
-		function start(){
+		function start(fireEarly){
 			stop();
 
 			if ( ! checkConditions()){
 				return;
 			}
 
-			fireTime = new Date(new Date().getTime() + w._CMLS.autoRefreshAdsTimer*60000);
+			fireTime = fireEarly ? fireEarly : new Date(new Date().getTime() + w._CMLS.autoRefreshAdsTimer*60000);
 			log('Starting timer, will fire at ' + fireTime.toLocaleString());
 			checkTimer();
 		}
@@ -83,6 +83,11 @@
 				that.start();
 			});
 		}
+
+		function getFireTime(){
+			return fireTime;
+		}
+		this.getFireTime = getFireTime;
 
 		log('Initializing.');
 
@@ -134,6 +139,11 @@
 
 		log('Listeners set.');
 
+		if (fireEarly) {
+			log('Found an existing timer in top window, continuing original timer.');
+			start(fireEarly);
+		}
+
 	};
 
 	var initialized = false;
@@ -151,7 +161,13 @@
 				/Format\s+(NewsTalk|Talk|Sports|Christian Talk)/i.test(w._CMLS.cGroups[i])
 			) {
 				log('Valid cGroup found, initializing timer.');
-				ws._CMLS[nameSpace] = new AutoRefresher();
+				if (wt._CMLS[nameSpace]) {
+					var fireEarly = wt._CMLS[nameSpace].getFireTime();
+					wt._CMLS[nameSpace].stop();
+					ws._CMLS[nameSpace] = new AutoRefresher(fireEarly);
+				} else {
+					ws._CMLS[nameSpace] = new AutoRefresher();
+				}
 				initialized = true;
 			}
 		}
