@@ -2,115 +2,47 @@
 
 	var scriptName = 'ADDTHIS INJECTOR',
 		nameSpace = 'addThisInjector',
-		version = '0.6.10',
+		version = '0.6.11',
 
 		// AddThis PubId to use
 		addThisPubId = 'ra-55dc79597bae383e';
 
+	var w = window,
+		wt = w.top,
+		ws = w.self;
+
 	function log() {
-		window.top._CMLS.logger(scriptName + ' v' + version, arguments);
+		wt._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
 
-	if (window.self.addthis && window.self.addthis_config && window.self.addthis_config.pubid && window.self.addthis_config.pubid !== addThisPubId) {
-		log('AddThis already loaded by local page.');
+	if (wt.addthis) {
+		$(function(){
+			wt.addthis.update('share', 'url', ws.location.href);
+			wt.addthis_share.url = ws.location.href;
+
+			wt.addthis.update('share', 'title', ws.title);
+			wt.addthis_share.title = ws.title;
+
+			var desc = $('meta[property="og:description"]').attr('content');
+			wt.addthis.update('share', 'description', desc);
+			wt.addthis_share.description = desc;
+
+			wt.addthis.init();
+		});
 		return;
 	}
-
-	/*
-	var addthis_properties = [
-		'addthis',
-		'addthis_close',
-		'addthis_conf',
-		'addthis_config',
-		'addthis_exclude',
-		'addthis_open',
-		'addthis_options',
-		'addthis_options_default',
-		'addthis_options_rank',
-		'addthis_sendto',
-		'addthis_share',
-		'addthis_use_personalization',
-		'_adr',
-		'_atc',
-		'_atd',
-		'_ate',
-		'_atr',
-		'_atw'
-	];
-	*/
-
-	if (window.self !== window.top) {
-		log('Not top window.');
-		if (window.top.addthisDestroyer){
-			window.top.addthisDestroyer();
-		}
-		/*
-		for(var i in addthis_properties) {
-			try {
-				delete window.self[addthis_properties[i]];
-			} catch(e) { log(e); }
-		}
-		*/
-	} else {
-		log('Loaded in top window.');
-		window.top.addthisDestroyer = function(){
-			log('Removing addthis from top window.');
-			$('script[src*="addthis"]').remove();
-			if (window.top.addthisLayerReference) {
-				log('Instructing addthis to destroy itself.');
-				try{
-					window.top.addthisLayerReference.destroy();
-				} catch(e) {}
-				delete window.top.addthisLayerReference;
-				$('.addthis-smartlayers').remove();
-			} else {
-				log('No addthis object in top window.');
-			}
-		};
-	}
-
-	if (window.self.NO_ADDTHIS_HERE) {
-		log('NO_ADDTHIS_HERE found, will not build.');
-		return;
-	}
-
-	if (window.top._CMLS.isHomepage(window.self)) {
-		log('Will not build on homepage, exiting.');
-		return;
-	}
-
-	window.self.addthis_config = window.self.addthis_config || {};
-	window.self.addthis_config.pubid = addThisPubId;
 
 	log('Building addthis script.');
-	var scr = window.self.document.createElement('script');
-	scr.onload = function(){
-		buildLayer();
-	};
+	wt.addthis_config = wt.addthis_config || {};
+	wt.addthis_config.pubid = addThisPubId;
+	var scr = wt.document.createElement('script');
 	scr.src = '//s7.addthis.com/js/300/addthis_widget.js#async=1';
 	scr.id = nameSpace + '-script';
 	scr.async = true;
-	window.self.document.head.appendChild(scr);
+	wt.document.head.appendChild(scr);
 
-	log('Injected.');
-
-	function buildLayer(){
-		log('Building layer.');
-		if (window.self.addthis && window.self.addthis.layers) {
-			window.self.addthis.layers({
-				'share': {
-					'position': 'left',
-					'offset': { 'bottom': '100px' },
-					'services' : 'facebook,twitter,tumblr,email,more'
-				}
-			}, function(layer) {
-				window.self.addthis.layers.refresh();
-				window.top.addthisLayerReference = layer;
-				log('Layer built.');
-			});
-		} else {
-			log('Addthis not available!');
-		}
-	}
+	$(function(){
+		wt.addthis.init();
+	});
 
 }(jQuery, window));
