@@ -2,7 +2,7 @@
 
 	var scriptName = 'AUTO REFRESH ADS',
 		nameSpace = 'autoRefreshAds',
-		version = '0.4.8';
+		version = '0.4.9';
 
 	var w = window,
 		wt = window.top,
@@ -47,12 +47,13 @@
 				fire();
 				return;
 			}
-			timer = setTimeout(checkTimer, 200);
+			timer = setTimeout(checkTimer, 5000);
 		}
 
 		function stop(){
 			log('Stopping timer.');
 			clearTimeout(timer);
+			timer = null;
 			fireTime = null;
 		}
 		this.stop = stop;
@@ -88,6 +89,11 @@
 			return fireTime;
 		}
 		this.getFireTime = getFireTime;
+
+		function resetFireTime(){
+			fireTime = new Date(new Date().getTime() + w._CMLS.autoRefreshAdsTimer*60000);
+		}
+		this.resetFireTime();
 
 		function checkTGToggle(e){
 			if (e === true) {
@@ -126,15 +132,13 @@
 			);
 
 			// Restart timer if history changes
-			/* bugged, needs to check if player is playing
 			if (w.History && w.History.Adapter) {
 				w.History.Adapater.bind(
 					w,
 					'pageChange',
-					start
+					resetFireTime
 				);
 			}
-			*/
 		
 			log('Triton Player listeners set.');
 		}
@@ -175,12 +179,10 @@
 			) {
 				log('Valid cGroup found, initializing timer.');
 				if (wt._CMLS[nameSpace]) {
-					var fireEarly = wt._CMLS[nameSpace].getFireTime();
 					wt._CMLS[nameSpace].destroy();
-					ws._CMLS[nameSpace] = new AutoRefresher(fireEarly);
-				} else {
-					ws._CMLS[nameSpace] = new AutoRefresher();
+					delete wt._CMLS[nameSpace];
 				}
+				ws._CMLS[nameSpace] = new AutoRefresher();
 				initialized = true;
 			}
 		}
