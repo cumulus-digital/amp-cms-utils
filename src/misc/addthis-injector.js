@@ -2,7 +2,7 @@
 
 	var scriptName = 'ADDTHIS INJECTOR',
 		nameSpace = 'addThisInjector',
-		version = '0.6.11',
+		version = '0.6.12',
 
 		// AddThis PubId to use
 		addThisPubId = 'ra-55dc79597bae383e';
@@ -15,7 +15,20 @@
 		wt._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
 
+	function injectAddThis(){
+		log('Building addthis script.');
+		wt.addthis_config = wt.addthis_config || {};
+		wt.addthis_config.pubid = addThisPubId;
+		var scr = wt.document.createElement('script');
+		scr.src = '//s7.addthis.com/js/300/addthis_widget.js#async=1';
+		scr.id = nameSpace + '-script';
+		wt.document.head.appendChild(scr);
+	}
+
 	if (wt.addthis) {
+		if ( ! wt.document.querySelector('#' + nameSpace + '-script')) {
+			injectAddThis();
+		}
 		$(function(){
 			wt.addthis.update('share', 'url', ws.location.href);
 			wt.addthis_share.url = ws.location.href;
@@ -31,15 +44,6 @@
 		});
 		return;
 	}
-
-	log('Building addthis script.');
-	wt.addthis_config = wt.addthis_config || {};
-	wt.addthis_config.pubid = addThisPubId;
-	var scr = wt.document.createElement('script');
-	scr.src = '//s7.addthis.com/js/300/addthis_widget.js#async=1';
-	scr.id = nameSpace + '-script';
-	scr.async = true;
-	wt.document.head.appendChild(scr);
 
 	$(function(){
 		wt.addthis.init();
