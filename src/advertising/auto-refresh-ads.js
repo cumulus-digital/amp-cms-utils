@@ -2,7 +2,7 @@
 
 	var scriptName = 'AUTO REFRESH ADS',
 		nameSpace = 'autoRefreshAds',
-		version = '0.4.10';
+		version = '0.4.11';
 
 	var w = window,
 		wt = window.top,
@@ -21,6 +21,16 @@
 			that = this;
 
 		var fireTime = null;
+
+		function getWindow(){
+			if (w.tgmp) {
+				var iframe = wt.document.querySelector('iframe#page_frame');
+				if (iframe && iframe.contentWindow) {
+					return iframe.contentWindow;
+				}
+			}
+			return w;
+		}
 
 		function checkConditions(){
 			if (
@@ -78,9 +88,10 @@
 				return;
 			}
 
-			ws.googletag.cmd.push(function(){
+			var windowContext = getWindow();
+			windowContext.googletag.cmd.push(function(){
 				log('Refreshing page ads.');
-				ws.googletag.pubads().refresh();
+				windowContext.googletag.pubads().refresh();
 				that.start();
 			});
 		}
@@ -107,25 +118,21 @@
 
 		function destroy(){
 			stop();
-			w.removeEventListener('td-player.playing', start);
-			w.removeEventListener('td-player.stopped', stop);
-			w.removeEventListener(w.TGMP_EVENTS.streamplaying, checkTGToggle);
+			wt.removeEventListener('td-player.playing', start);
+			wt.removeEventListener('td-player.stopped', stop);
 		}
 		this.destroy = destroy;
 
 		log('Initializing.');
 
-		ws.googletag = ws.googletag || {};
-		ws.googletag.cmd = ws.googletag.cmd || [];
-
 		// Initialize for Triton player
 		if (player.type === wt._CMLS.const.PLAYER_TRITON) {
-			w.addEventListener(
+			wt.addEventListener(
 				'td-player.playing',
 				start,
 				false
 			);
-			w.addEventListener(
+			wt.addEventListener(
 				'td-player.stopped',
 				stop,
 				false
@@ -145,9 +152,9 @@
 
 		// Initialize TuneGenie player
 		if (player.type === wt._CMLS.const.PLAYER_TUNEGENIE) {
-			if (w.tgmp && w.TGMP_EVENTS) {
-				w.tgmp.addEventListener(
-					w.TGMP_EVENTS.streamplaying,
+			if (wt.tgmp && wt.TGMP_EVENTS) {
+				wt.tgmp.addEventListener(
+					wt.TGMP_EVENTS.streamplaying,
 					checkTGToggle
 				);
 				log('TG Player listener set.');
@@ -157,11 +164,17 @@
 		log('Listeners set.');
 
 		if (fireEarly) {
-			log('Found an existing timer in top window, continuing original timer.');
+			log('Initialized with a time to fire, using it.');
 			start(fireEarly);
 		}
 
 	};
+
+	if (wt._CMLS[nameSpace]) {
+		wt._CMLS[nameSpace].destroy();
+		wt._CMLS[nameSpace] = new AutoRefresher();
+		return;
+	}
 
 	var initialized = false;
 	function initTest(){
@@ -178,11 +191,7 @@
 				/Format\s+(NewsTalk|Talk|Sports|Christian Talk)/i.test(w._CMLS.cGroups[i])
 			) {
 				log('Valid cGroup found, initializing timer.');
-				if (wt._CMLS[nameSpace]) {
-					wt._CMLS[nameSpace].destroy();
-					delete wt._CMLS[nameSpace];
-				}
-				ws._CMLS[nameSpace] = new AutoRefresher();
+				wt._CMLS[nameSpace] = new AutoRefresher();
 				initialized = true;
 			}
 		}
