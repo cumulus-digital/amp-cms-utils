@@ -2,7 +2,7 @@
 
 	var scriptName = 'AUTO REFRESH ADS',
 		nameSpace = 'autoRefreshAds',
-		version = '0.4.3';
+		version = '0.4.4';
 
 	var w = window,
 		wt = window.top,
@@ -119,9 +119,11 @@
 					w.TGMP_EVENTS.streamPlaying,
 					function(e){
 						if (e === true) {
+							log('TG Player playing!');
 							start();
 							return;
 						}
+						log('TG Player stopped.');
 						stop();
 					}
 				);
