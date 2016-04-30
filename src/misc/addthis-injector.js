@@ -22,7 +22,7 @@
 		var scr = wt.document.createElement('script');
 		scr.setAttribute('src', '//s7.addthis.com/js/300/addthis_widget.js#pubid=' + addThisPubId);
 		scr.setAttribute('id', nameSpace + '-script');
-		wt.document.head.appendChild(scr);
+		wt.document.body.appendChild(scr);
 	}
 
 	if (wt.addthis) {
