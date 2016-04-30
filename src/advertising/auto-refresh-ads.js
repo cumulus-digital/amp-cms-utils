@@ -110,6 +110,7 @@
 					start
 				);
 			}
+			log('Triton Player listeners set.');
 		}
 
 		// Initialize TuneGenie player
@@ -127,6 +128,7 @@
 						stop();
 					}
 				);
+				log('TG Player listener set.');
 			}
 		}
 
