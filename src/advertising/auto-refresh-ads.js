@@ -2,7 +2,7 @@
 
 	var scriptName = 'AUTO REFRESH ADS',
 		nameSpace = 'autoRefreshAds',
-		version = '0.4.11';
+		version = '0.4.12';
 
 	var w = window,
 		wt = window.top,
@@ -18,9 +18,10 @@
 	var AutoRefresher = function(fireEarly){
 		var player = wt._CMLS.whichPlayer(),
 			timer = null,
+			fireTime = null;
 			that = this;
 
-		var fireTime = null;
+		this.on = false;
 
 		function getWindow(){
 			if (w.tgmp) {
@@ -65,6 +66,7 @@
 			clearTimeout(timer);
 			timer = null;
 			fireTime = null;
+			this.on = false;
 		}
 		this.stop = stop;
 
@@ -78,6 +80,7 @@
 			fireTime = fireEarly ? fireEarly : new Date(new Date().getTime() + w._CMLS.autoRefreshAdsTimer*60000);
 			log('Starting timer, will fire at ' + fireTime.toLocaleString());
 			checkTimer();
+			this.on = true;
 		}
 		this.start = start;
 
@@ -172,7 +175,11 @@
 
 	if (wt._CMLS[nameSpace]) {
 		wt._CMLS[nameSpace].destroy();
-		wt._CMLS[nameSpace] = new AutoRefresher();
+		var tempHolder = new AutoRefresher();
+		if (wt._CMLS[nameSpace].on) {
+			tempHolder.start();
+		}
+		wt._CMLS[nameSpace] = tempHolder;
 		return;
 	}
 
