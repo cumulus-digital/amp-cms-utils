@@ -2,7 +2,7 @@
 
 	var scriptName = 'AUTO REFRESH ADS',
 		nameSpace = 'autoRefreshAds',
-		version = '0.4.13';
+		version = '0.4.14';
 
 	var w = window,
 		wt = window.top,
@@ -10,6 +10,13 @@
 
 	// Time before refreshing ads, in minutes
 	w._CMLS.autoRefreshAdsTimer = ws._CMLS.autoRefreshAdsTimer || 4;
+
+	if (wt._CMLS[nameSpace]) {
+		if (wt._CMLS[nameSpace].checkState()) {
+			wt._CMLS[nameSpace].start();
+		}
+		return;
+	}
 
 	function log() {
 		wt._CMLS.logger(scriptName + ' v' + version, arguments);
@@ -175,16 +182,6 @@
 		}
 
 	};
-
-	if (wt._CMLS[nameSpace]) {
-		wt._CMLS[nameSpace].destroy();
-		var tempHolder = new AutoRefresher();
-		if (wt._CMLS[nameSpace].checkState()) {
-			tempHolder.start();
-		}
-		wt._CMLS[nameSpace] = tempHolder;
-		return;
-	}
 
 	var initialized = false;
 	function initTest(){
