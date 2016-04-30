@@ -2,7 +2,7 @@
 
 	var scriptName = 'AUTO REFRESH ADS',
 		nameSpace = 'autoRefreshAds',
-		version = '0.4.4';
+		version = '0.4.5';
 
 	var w = window,
 		wt = window.top,
@@ -117,7 +117,7 @@
 		if (player.type === wt._CMLS.const.PLAYER_TUNEGENIE) {
 			if (w.tgmp && w.TGMP_EVENTS) {
 				w.tgmp.addEventListener(
-					w.TGMP_EVENTS.streamPlaying,
+					w.TGMP_EVENTS.streamplaying,
 					function(e){
 						if (e === true) {
 							log('TG Player playing!');
