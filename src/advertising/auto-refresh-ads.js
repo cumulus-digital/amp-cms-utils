@@ -2,7 +2,7 @@
 
 	var scriptName = 'AUTO REFRESH ADS',
 		nameSpace = 'autoRefreshAds',
-		version = '0.4.7';
+		version = '0.4.8';
 
 	var w = window,
 		wt = window.top,
@@ -89,6 +89,24 @@
 		}
 		this.getFireTime = getFireTime;
 
+		function checkTGToggle(e){
+			if (e === true) {
+				log('TG Player playing!');
+				start();
+				return;
+			}
+			log('TG Player stopped.');
+			stop();
+		}
+
+		function destroy(){
+			stop();
+			w.removeEventListener('td-player.playing', start);
+			w.removeEventListener('td-player.stopped', stop);
+			w.removeEventListener(w.TGMP_EVENTS.streamplaying, checkTGToggle);
+		}
+		this.destroy = destroy;
+
 		log('Initializing.');
 
 		ws.googletag = ws.googletag || {};
@@ -108,6 +126,7 @@
 			);
 
 			// Restart timer if history changes
+			/* bugged, needs to check if player is playing
 			if (w.History && w.History.Adapter) {
 				w.History.Adapater.bind(
 					w,
@@ -115,6 +134,8 @@
 					start
 				);
 			}
+			*/
+		
 			log('Triton Player listeners set.');
 		}
 
@@ -123,15 +144,7 @@
 			if (w.tgmp && w.TGMP_EVENTS) {
 				w.tgmp.addEventListener(
 					w.TGMP_EVENTS.streamplaying,
-					function(e){
-						if (e === true) {
-							log('TG Player playing!');
-							start();
-							return;
-						}
-						log('TG Player stopped.');
-						stop();
-					}
+					checkTGToggle
 				);
 				log('TG Player listener set.');
 			}
@@ -163,7 +176,7 @@
 				log('Valid cGroup found, initializing timer.');
 				if (wt._CMLS[nameSpace]) {
 					var fireEarly = wt._CMLS[nameSpace].getFireTime();
-					wt._CMLS[nameSpace].stop();
+					wt._CMLS[nameSpace].destroy();
 					ws._CMLS[nameSpace] = new AutoRefresher(fireEarly);
 				} else {
 					ws._CMLS[nameSpace] = new AutoRefresher();
