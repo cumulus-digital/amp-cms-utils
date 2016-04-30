@@ -2,7 +2,7 @@
 
 	var scriptName = 'AUTO REFRESH ADS',
 		nameSpace = 'autoRefreshAds',
-		version = '0.4.14';
+		version = '0.4.15';
 
 	var w = window,
 		wt = window.top,
@@ -70,6 +70,7 @@
 		function checkState(){
 			return on;
 		}
+		this.checkState = checkState;
 
 		function stop(){
 			log('Stopping timer.');
