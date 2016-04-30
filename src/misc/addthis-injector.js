@@ -45,6 +45,7 @@
 		return;
 	}
 
+	injectAddThis();
 	$(function(){
 		wt.addthis.init();
 	});
