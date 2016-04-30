@@ -2,7 +2,7 @@
 
 	var scriptName = 'ADDTHIS INJECTOR',
 		nameSpace = 'addThisInjector',
-		version = '0.6.14',
+		version = '0.6.15',
 
 		// AddThis PubId to use
 		addThisPubId = 'ra-55dc79597bae383e';
@@ -26,9 +26,6 @@
 	}
 
 	if (wt.addthis) {
-		if ( ! wt.document.querySelector('#' + nameSpace + '-script')) {
-			injectAddThis();
-		}
 		$(function(){
 			wt.addthis.update('share', 'url', ws.location.href);
 			wt.addthis_share.url = ws.location.href;
@@ -40,14 +37,13 @@
 			wt.addthis.update('share', 'description', desc);
 			wt.addthis_share.description = desc;
 
-			wt.addthis.init();
+			if ( ! wt.document.querySelector('#' + nameSpace + '-script')) {
+				injectAddThis();
+			}
 		});
 		return;
 	}
 
 	injectAddThis();
-	$(function(){
-		wt.addthis.init();
-	});
 
 }(jQuery, window));
