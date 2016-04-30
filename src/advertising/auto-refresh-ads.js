@@ -2,7 +2,7 @@
 
 	var scriptName = 'AUTO REFRESH ADS',
 		nameSpace = 'autoRefreshAds',
-		version = '0.4.2';
+		version = '0.4.3';
 
 	var w = window,
 		wt = window.top,
@@ -134,10 +134,11 @@
 
 	var initialized = false;
 	function initTest(){
+		log('InitTest called.');
 		if (initialized) {
 			return;
 		}
-		if ( w._CMLS.cGroups) {
+		if ( ! w._CMLS.cGroups) {
 			log('Init test called without cGroups available, exiting.');
 			return;
 		}
@@ -152,14 +153,17 @@
 		}
 	}
 	initTest();
-	w.addEventListener(
-		'cms-sgroup',
-		function(){
-			if ( ! initialized) {
-				initTest();
-			}
-		},
-		false
-	);
+	if ( ! initialized) {
+		w.addEventListener(
+			'cms-sgroup',
+			function(){
+				if ( ! initialized) {
+					initTest();
+				}
+			},
+			false
+		);
+		log('Waiting for cGroups');
+	}
 
 }(window));
