@@ -2,7 +2,7 @@
 
 	var scriptName = 'ADDTHIS INJECTOR',
 		nameSpace = 'addThisInjector',
-		version = '0.6.16',
+		version = '0.6.17',
 
 		// AddThis PubId to use
 		addThisPubId = 'ra-55dc79597bae383e';
@@ -45,6 +45,7 @@
 			window.top.addthisDestroyer();
 		}
 		$(window).unload(function(){
+			log('Removing AddThis layers.');
 			$('.addthis-smartlayers').remove();
 		});
 		/*
