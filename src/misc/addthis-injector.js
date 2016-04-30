@@ -2,7 +2,7 @@
 
 	var scriptName = 'ADDTHIS INJECTOR',
 		nameSpace = 'addThisInjector',
-		version = '0.6.12',
+		version = '0.6.13',
 
 		// AddThis PubId to use
 		addThisPubId = 'ra-55dc79597bae383e';
@@ -20,8 +20,8 @@
 		wt.addthis_config = wt.addthis_config || {};
 		wt.addthis_config.pubid = addThisPubId;
 		var scr = wt.document.createElement('script');
-		scr.src = '//s7.addthis.com/js/300/addthis_widget.js#async=1';
-		scr.id = nameSpace + '-script';
+		scr.setAttribute('src', '//s7.addthis.com/js/300/addthis_widget.js#pubid=' + addThisPubId);
+		scr.setAttribute(nameSpace + '-script');
 		wt.document.head.appendChild(scr);
 	}
 
