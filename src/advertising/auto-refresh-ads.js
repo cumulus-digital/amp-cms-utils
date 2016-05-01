@@ -25,8 +25,8 @@
 	var AutoRefresher = function(fireEarly){
 		var player = wt._CMLS.whichPlayer(),
 			timer = null,
-			fireTime = null;
-			on = false;
+			fireTime = null,
+			on = false,
 			that = this;
 
 		function getWindow(){
