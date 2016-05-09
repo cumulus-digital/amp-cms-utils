@@ -41,6 +41,7 @@
 
 	function WallpaperInjector(settings) {
 		var cache = {},
+			processTimer,
 			nameSpace = settings.nameSpace || 'wallpaperInjector',
 			throttle = window._CMLS.throttle,
 			debounce = window._CMLS.debounce;
@@ -274,7 +275,16 @@
 		function _process() {
 			try{
 			if ($(settings.contentNode).height() < 200) {
-				log('Content node is not ready, retrying.');
+				if (processTimer === undefined) {
+					processTimer = 10;
+				}
+				if (processTimer === 0) {
+					log('Timed out waiting for content node.');
+					processTimer = undefined;
+					return;
+				}
+				processTimer--;
+				log('Content node is not ready, retrying.', processTimer);
 				setTimeout(function() {
 					_process();
 				}, 500);
