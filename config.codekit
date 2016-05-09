@@ -90,8 +90,8 @@
 		},
 	"\/src\/advertising\/auto-scroll-homepage-past-leaderboard.js": {
 		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
+		"ignore": 1,
+		"ignoreWasSetByUser": 1,
 		"inputAbbreviatedPath": "\/src\/advertising\/auto-scroll-homepage-past-leaderboard.js",
 		"outputAbbreviatedPath": "\/dist\/advertising\/auto-scroll-homepage-past-leaderboard-min.js",
 		"outputPathIsOutsideProject": 0,
@@ -189,8 +189,8 @@
 		},
 	"\/src\/misc\/addthis-hider.js": {
 		"fileType": 64,
-		"ignore": 0,
-		"ignoreWasSetByUser": 0,
+		"ignore": 1,
+		"ignoreWasSetByUser": 1,
 		"inputAbbreviatedPath": "\/src\/misc\/addthis-hider.js",
 		"outputAbbreviatedPath": "\/dist\/misc\/addthis-hider-min.js",
 		"outputPathIsOutsideProject": 0,
