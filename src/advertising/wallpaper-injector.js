@@ -276,7 +276,7 @@
 			try{
 			if ($(settings.contentNode).height() < 200) {
 				if (processTimer === undefined) {
-					processTimer = 10;
+					processTimer = 20;
 				}
 				if (processTimer === 0) {
 					log('Timed out waiting for content node.');
