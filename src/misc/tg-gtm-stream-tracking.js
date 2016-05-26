@@ -23,6 +23,7 @@
 
 	function fireEvent(ev) {
 		try {
+			log('Event fired: ' + ev);
 			sharedContainerDataLayer.push({'event': ev});
 			corpDataLayer.push({'event': ev});
 		} catch(e){}
