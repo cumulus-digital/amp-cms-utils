@@ -31,4 +31,6 @@
 		}
 	});
 
+	log('Initialized.');
+
 }(jQuery, window));
