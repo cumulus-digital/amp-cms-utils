@@ -231,23 +231,23 @@
 		"outputStyle": 2,
 		"syntaxCheckerStyle": 1
 		},
+	"\/src\/misc\/gtm-stream-tracking.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/src\/misc\/gtm-stream-tracking.js",
+		"outputAbbreviatedPath": "\/dist\/misc\/gtm-stream-tracking-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 2,
+		"syntaxCheckerStyle": 1
+		},
 	"\/src\/misc\/social-listen-live-link.js": {
 		"fileType": 64,
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/src\/misc\/social-listen-live-link.js",
 		"outputAbbreviatedPath": "\/dist\/misc\/social-listen-live-link-min.js",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 2,
-		"syntaxCheckerStyle": 1
-		},
-	"\/src\/misc\/tg-gtm-stream-tracking.js": {
-		"fileType": 64,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/src\/misc\/tg-gtm-stream-tracking.js",
-		"outputAbbreviatedPath": "\/dist\/misc\/tg-gtm-stream-tracking-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 2,
