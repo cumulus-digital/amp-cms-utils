@@ -1,7 +1,7 @@
 /**
  * Listens for and logs player events from the embedded site player to GTM
  */
-/* globals TGMP_EVENTS, corpDataLayer, sharedContainerDataLayer */
+/* globals corpDataLayer, sharedContainerDataLayer */
 ;(function($, window, undefined){
 
 	var scriptName = 'GTM STREAM TRACKING',
@@ -29,7 +29,7 @@
 		} catch(e){}
 	}
 
-	window.top.tgmp.addEventListener(TGMP_EVENTS.streamplaying, function(e){
+	window.top.tgmp.addEventListener(window.top.TGMP_EVENTS.streamplaying, function(e){
 		if (e === true) {
 			log('Stream started.');
 			fireEvent('siteplayer-stream-playing');
