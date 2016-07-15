@@ -141,6 +141,7 @@
 			if (originalStyles.footer.position === 'static') {
 				log('Setting footer area position to relative.');
 				cache.footerNode.css('position', 'relative');
+				cache.footerNode.css('zIndex', container.css('zIndex') + 2);
 			}
 			cache.contentNode.data('originalStyles', originalStyles.content);
 			cache.footerNode.data('originalStyles', originalStyles.footer);
