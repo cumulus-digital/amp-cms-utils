@@ -127,6 +127,7 @@
 	if (window._ttf) {
 		delete window._ttf;
 	}
+	/*
 	if (window.top === window){
 		window.top._CMLS.teadsRemover = function(){
 			log('Removing Teads from top frame.');
@@ -143,6 +144,7 @@
 	} else {
 		window.top._CMLS.teadsRemover();
 	}
+	*/
 
 	// Start our injector
 	window._CMLS = window._CMLS || {};
