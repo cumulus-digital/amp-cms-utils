@@ -121,13 +121,13 @@
 	}
 
 	// Remove any existing teads junk
+	/*
 	if (window.teads) {
 		delete window.teads;
 	}
 	if (window._ttf) {
 		delete window._ttf;
 	}
-	/*
 	if (window.top === window){
 		window.top._CMLS.teadsRemover = function(){
 			log('Removing Teads from top frame.');
