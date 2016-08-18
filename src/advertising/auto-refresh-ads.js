@@ -8,6 +8,11 @@
 		wt = window.top,
 		ws = window.self;
 
+
+	if (w._CMLS.DISABLE_AUTO_REFRESH_ADS || ws._CMLS.DISABLE_AUTO_REFRESH_ADS || wt._CMLS.DISABLE_AUTO_REFRESH_ADS) {
+		return;
+	}
+
 	// Time before refreshing ads, in minutes
 	w._CMLS.autoRefreshAdsTimer = ws._CMLS.autoRefreshAdsTimer || 4;
 
