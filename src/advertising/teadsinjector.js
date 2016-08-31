@@ -73,7 +73,8 @@
 				if ( ! options || ! options.pid || ! options.format) {
 					throw {message: 'Invalid request, no PID or format given.', data: options};
 				}
-				log('Received request for ' + options.format.toUpperCase() + ' with PID ' + options.pid, options);
+				log('Received request for ' + options.format.toUpperCase() + ' with PID ' + options.pid, options, teadsOptions[options.format.toLowerCase()]);
+
 				var requestOptions = $.extend({}, teadsOptions[options.format.toLowerCase()], options);
 
 				log('Injecting', requestOptions);
