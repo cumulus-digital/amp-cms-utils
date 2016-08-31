@@ -34,7 +34,8 @@
 		var teadsOptions = {
 			inboard: {
 				slot: function(){
-					return window.document.querySelector('.wrapper-content');
+					var s = window.document.querySelectorAll('.wrapper-content');
+					return s[0] || false;
 				},
 				filter: function(){
 					if (isHomepage() || window._CMLS.forceTeadsInBoard === true) {
