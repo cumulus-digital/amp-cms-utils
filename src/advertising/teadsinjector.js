@@ -24,7 +24,9 @@
 
 		var teadsOptions = {
 			inboard: {
-				slot: '.wrapper-content',
+				slot: function(){
+					return '.wrapper-content';
+				},
 				filter: function() {
 					if (window.document.body.className.indexOf('home') > -1 || window._CMLS.forceTeadsInBoard === true) {
 						log('On homepage.');
@@ -44,18 +46,22 @@
 				BTF: false,
 			},
 			inread: {
-				slot: '.wrapper-content .column-1 .entry-content p',
+				slot: function(){
+					var s = window.document.querySelectorAll('.wrapper-content .column-1 .entry-content > p');
+					s = s[2] || s[s.length];
+					return s;
+				},
 				filter: function() {
-					if (window.document.body.className.indexOf('single-feed_posts') > -1) {
-						log('On a post page.');
-						return true;
+					if (window.document.body.className.indexOf('home') > -1 || window._CMLS.forceTeadsInBoard === true) {
+						log('On Homepage.');
+						return false;
 					}
-					log('Not on a post page.');
-					return false;
+					log('Not on Homepage.');
+					return true;
 				},
 				format: 'inread',
 				before: false,
-				css: 'padding-bottom: 10px !important;',
+				css: 'margin: 10px auto !important; max-width: 90% !important;',
 				launched: false,
 				components: { skip: { delay: 0 }},
 				lang: 'en',
@@ -73,6 +79,9 @@
 				var requestOptions = $.extend({}, teadsOptions[options.format.toLowerCase()], options);
 				
 				log('Injecting', requestOptions);
+				if (typeof requestOptions.slot === "function") {
+					requestOptions.slot = requestOptions.slot();
+				}
 				window._ttf = window._ttf || [];
 				window._ttf.push(requestOptions);
 
@@ -121,7 +130,6 @@
 	}
 
 	// Remove any existing teads junk
-	/*
 	if (window.teads) {
 		delete window.teads;
 	}
@@ -144,7 +152,6 @@
 	} else {
 		window.top._CMLS.teadsRemover();
 	}
-	*/
 
 	// Start our injector
 	window._CMLS = window._CMLS || {};
