@@ -12,12 +12,21 @@
 
 	var scriptName = 'TEADS INJECTOR',
 		nameSpace = 'teadsInjector',
-		version = '0.7.14';
+		version = '0.7.16';
 
 	function log() {
 		if (window.top._CMLS) {
 			window.top._CMLS.logger(scriptName + ' v' + version, arguments);
 		}
+	}
+
+	function isHomepage(){
+		if (window.document.querySelector('body.home')) {
+			log('On Homepage.');
+			return true;
+		}
+		log('Not on Homepage.');
+		return false;
 	}
 
 	function TeadsInjector(){
@@ -27,41 +36,30 @@
 				slot: function(){
 					return window.document.querySelector('.wrapper-content');
 				},
-				filter: function() {
-					if (window.document.body.className.indexOf('home') > -1 || window._CMLS.forceTeadsInBoard === true) {
-						log('On homepage.');
+				filter: function(){
+					if (isHomepage() || window._CMLS.forceTeadsInBoard === true) {
 						return true;
 					}
-					log('Not on homepage.');
 					return false;
 				},
 				format: 'inboard',
 				before: true,
-				css: 'margin: auto !important; padding-top: 5px; padding-bottom: 5px; max-width: 1020px',
+				css: 'margin: auto !important; padding-top: 5px; padding-bottom: 5px; max-width: 1020px;',
 				size: { w: 1020 },
 				launched: false,
 				components: { skip: { delay: 0 }},
 				lang: 'en',
 				minSlot: 0,
-				BTF: false,
+				BTF: false
 			},
 			inread: {
 				slot: function(){
 					var s = window.document.querySelectorAll('.wrapper-content .column-1 .entry-content > p');
-					s = s[2] || s[s.length];
-					return s;
+					return s[2] || s[s.length];
 				},
-				filter: function() {
-					if (window.document.body.className.indexOf('home') > -1 || window._CMLS.forceTeadsInBoard === true) {
-						log('On Homepage.');
-						return false;
-					}
-					log('Not on Homepage.');
-					return true;
-				},
-				format: 'inread',
+				filter: ( ! isHomepage()),
 				before: false,
-				css: 'margin: 10px auto !important; max-width: 90% !important;',
+				css: 'margin: 10px auto !important; max-width: 90%;',
 				launched: false,
 				components: { skip: { delay: 0 }},
 				lang: 'en',
@@ -75,31 +73,32 @@
 				if ( ! options || ! options.pid || ! options.format) {
 					throw {message: 'Invalid request, no PID or format given.', data: options};
 				}
-				log('Received request for ' + options.format + ' with PID ' + options.pid, options);
+				log('Received request for ' + options.format.toUpperCase() + ' with PID ' + options.pid, options);
 				var requestOptions = $.extend({}, teadsOptions[options.format.toLowerCase()], options);
-				
+
 				log('Injecting', requestOptions);
+
 				if (typeof requestOptions.slot === "function") {
 					requestOptions.slot = requestOptions.slot();
 				}
+
 				window._ttf = window._ttf || [];
 				window._ttf.push(requestOptions);
 
-				$('#cmlsTeadsTag').remove();
-				(function(d){
-					var js, s = d.getElementsByTagName('script')[0];
-					js = d.createElement('script'); js.async = true;
-					js.id = 'cmlsTeadsTag';
-					js.src = "http://cdn.teads.tv/js/all-v1.js";
-					s.parentNode.insertBefore(js, s);
+				$('script[src*="teads.tv"],iframe[src*="teads.tv"]').remove();
+				(function (d) {
+				        var js, s = d.getElementsByTagName('script')[0];
+				        js = d.createElement('script');
+				        js.async = true;
+				        js.id = 'cmlsTeadsTag';
+				        js.src = '//cdn.teads.tv/media/format.js';
+				        s.parentNode.insertBefore(js, s);
 				})(window.document);
-
-			} catch(e){
-				log('Failed to process.', e);
-			}
+			} catch (e) { log('Failed', e); }
 		}
 		this.process = _process;
 
+		log('Initializing _teadsinjector array handlers.');
 
 		// Create a fake array to overload push function
 		var TeadsArray = function(){};
@@ -129,29 +128,7 @@
 
 	}
 
-	// Remove any existing teads junk
-	if (window.teads) {
-		delete window.teads;
-	}
-	if (window._ttf) {
-		delete window._ttf;
-	}
-	if (window.top === window){
-		window.top._CMLS.teadsRemover = function(){
-			log('Removing Teads from top frame.');
-			$('#cmlsTeadsTag,script[src^="http://cdn.teads"],iframe[src*="sync.teads.tv"],style[id^="tt-"]').remove();
-			Object.keys(window.top).forEach(function(key){
-				if (key.indexOf('teads') > -1 || key.indexOf('_ttf') > -1) {
-					delete window.top[key];
-				}
-			});
-			if (window.top._CMLS[nameSpace]) {
-				delete window.top._CMLS[nameSpace];
-			}
-		};
-	} else {
-		window.top._CMLS.teadsRemover();
-	}
+	$('script[src*="teads.tv"],iframe[src*="teads.tv"]').remove();
 
 	// Start our injector
 	window._CMLS = window._CMLS || {};
