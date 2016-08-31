@@ -25,7 +25,7 @@
 		var teadsOptions = {
 			inboard: {
 				slot: function(){
-					return '.wrapper-content';
+					return window.document.querySelector('.wrapper-content');
 				},
 				filter: function() {
 					if (window.document.body.className.indexOf('home') > -1 || window._CMLS.forceTeadsInBoard === true) {
