@@ -89,7 +89,7 @@
 	log('Building addthis script.');
 	var scr = window.self.document.createElement('script');
 	scr.onload = function(){
-		buildLayer();
+		//buildLayer();
 	};
 	scr.src = '//s7.addthis.com/js/300/addthis_widget.js#async=1';
 	scr.id = nameSpace + '-script';
