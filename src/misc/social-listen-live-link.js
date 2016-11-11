@@ -34,7 +34,7 @@
 		}
 
 		log('Storing TGMP default configuration.');
-		window.tgmp_default_brand = "" + window.tgmp.options.brand;
+		window.tgmp_default_brand = window.tgmp_default_brand || "" + window.tgmp.options.brand;
 
 		log('Locating Listen Live button.');
 		var button = $('.social-icons img[title="Listen Live!!"],.social-icons-container img[title="Listen Live!!"]').parent('a');
