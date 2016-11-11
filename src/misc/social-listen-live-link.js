@@ -24,11 +24,6 @@
 	}
 	*/
 
-	if ( ! window.tgmp) {
-		log('TuneGenie player not enabled, exiting.');
-		return;
-	}
-
 	$(function(){
 		if ( ! window.top.tgmp) {
 			log('TuneGenie player not enabled.');
