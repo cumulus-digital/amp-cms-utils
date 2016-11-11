@@ -28,7 +28,7 @@
 	}
 
 	$(function(){
-		if ( ! window.tgmp) {
+		if ( ! window.top.tgmp) {
 			log('TuneGenie player not enabled.');
 			return;
 		}
