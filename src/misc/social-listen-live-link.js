@@ -17,10 +17,12 @@
 	log('Starting...');
 
 	// Only run once.
+	/*
 	if (window._CMLS[nameSpace]) {
 		log('Already loaded, exiting.');
 		return;
 	}
+	*/
 
 	if ( ! window.tgmp) {
 		log('TuneGenie player not enabled, exiting.');
