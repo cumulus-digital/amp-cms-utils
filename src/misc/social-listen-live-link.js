@@ -28,6 +28,14 @@
 	}
 
 	$(function(){
+		if ( ! window.tgmp) {
+			log('TuneGenie player not enabled.');
+			return;
+		}
+
+		log('Storing TGMP default configuration.');
+		window.tgmp_default_options = window.tgmp.options;
+
 		log('Locating Listen Live button.');
 		var button = $('.social-icons img[title="Listen Live!!"],.social-icons-container img[title="Listen Live!!"]').parent('a');
 
@@ -37,13 +45,12 @@
 		}
 
 		button.click(function(e){
-			if (window.tgmp) {
-				e.preventDefault();
-				log('Playing stream...');
-				window.tgmp.playStream();
-			} else {
-				log('TuneGenie player not enabled.');
+			e.preventDefault();
+			log('Playing stream...');
+			if (window.tgmp.options.brand !== window.tgmp_default_options.brand) {
+				window.tgmp.update({ brand: window.tgmp_default_options.brand });
 			}
+			window.tgmp.playStream();
 		});
 		log('Social Listen Live button activated.');
 	});
