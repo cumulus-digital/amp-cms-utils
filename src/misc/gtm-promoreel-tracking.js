@@ -27,7 +27,7 @@
 			var $this = $(this),
 				url = $this.attr('data-href');
 			if ( ! url || url.length < 1) {
-				url = $this.attr('onclick').replace(/window\.open\(\'([^\']+).*/, '$1');
+				url = $this.attr('onclick').replace(/window\.open=\(\'([^\']+).*/, "$1").replace(/window\.location=\'([^\']+).*/, "$1");
 			}
 			fireEvent('promoreel-click', url);
 		});
