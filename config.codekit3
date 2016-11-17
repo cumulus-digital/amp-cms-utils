@@ -241,6 +241,15 @@
 		"sC": 1,
 		"tS": 0
 		},
+	"\/src\/misc\/gtm-promoreel-tracking.js": {
+		"ft": 64,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "\/dist\/misc\/gtm-promoreel-tracking-min.js",
+		"oF": 1,
+		"sC": 1,
+		"tS": 0
+		},
 	"\/src\/misc\/gtm-stream-tracking.js": {
 		"ft": 64,
 		"mi": 1,

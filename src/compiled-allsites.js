@@ -20,3 +20,4 @@
 // @codekit-append "misc/breaking-news-bar.js"
 // @codekit-append "misc/social-listen-live-link.js"
 // @codekit-append "misc/gtm-stream-tracking.js"
+// @codekit-append "misc/gtm-promoreel-tracking.js"
