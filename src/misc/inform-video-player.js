@@ -21,7 +21,7 @@
 
 	// Make sure we're on a post
 	if (
-		window.document.body.className.indexOf('single-feed_posts') < 0 ||
+		window.document.body.className.indexOf('single-feed_posts') < 0 &&
 		window.document.body.className.indexOf('single-post') < 0
 	) {
 		log('Not a post, ejecting.');
