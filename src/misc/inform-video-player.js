@@ -144,7 +144,7 @@
 	$('script#informbase').remove();
 
 	// Inject new inform base script
-	$('<script type="text/javascript" src="//launch.newsinc.com/js/embed.js"></scr' + 'ipt>').appendTo('head');
+	$('<script type="text/javascript" id="informbase" src="//launch.newsinc.com/js/embed.js"></scr' + 'ipt>').appendTo('head');
 
 	// Start the injector
 	window._CMLS = window._CMLS || {};
