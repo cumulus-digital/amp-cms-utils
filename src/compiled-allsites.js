@@ -15,9 +15,10 @@
 // @codekit-append "advertising/player-sponsor-logo.js"
 
 // Misc
+// @codekit-append "misc/gtm-stream-tracking.js"
+// @codekit-append "misc/gtm-promoreel-tracking.js"
 // @codekit-append "misc/auto-reload.js"
 // @codekit-append "misc/addthis-injector.js"
 // @codekit-append "misc/breaking-news-bar.js"
 // @codekit-append "misc/social-listen-live-link.js"
-// @codekit-append "misc/gtm-stream-tracking.js"
-// @codekit-append "misc/gtm-promoreel-tracking.js"
+// @codekit-append "misc/inform-video-player.js"
