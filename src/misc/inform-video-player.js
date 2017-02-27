@@ -83,11 +83,13 @@
 			var pTags = $('article#post-' + postId + ' .entry-content > p:not(.read-more-full-link)');
 			if (pTags.length) {
 				if (pTags.length > 1) {
+					log('Injecting top embed.');
 					pTags.first().after(getTemplate(id, 'inform-pp-top'));
 				} else {
 					log('Not enough p tags to inject top embed.');
 				}
 				if (pTags.length > 3) {
+					log('Injecting bottom embed.');
 					pTags.last().before(getTemplate(id, 'inform-pp-bottom'));
 				} else {
 					log('Not enough p tags to inject bottom embed.');
