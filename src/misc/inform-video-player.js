@@ -19,9 +19,12 @@
 		}
 	}
 
-	// Make sure we're on a feed post
-	if (window.document.body.className.indexOf('single-feed_posts') < 0) {
-		log('Not a feed post, ejecting.');
+	// Make sure we're on a post
+	if (
+		window.document.body.className.indexOf('single-feed_posts') < 0 ||
+		window.document.body.className.indexOf('single-post') < 0
+	) {
+		log('Not a post, ejecting.');
 		return false;
 	}
 
@@ -77,13 +80,17 @@
 				return false;
 			}
 			// Retrieve P tags in article
-			var pTags = $('article#post-' + postId + ' p:not(.read-more-full-link)');
+			var pTags = $('article#post-' + postId + ' .entry-content > p:not(.read-more-full-link)');
 			if (pTags.length) {
 				if (pTags.length > 1) {
 					pTags.first().after(getTemplate(id, 'inform-pp-top'));
+				} else {
+					log('Not enough p tags to inject top embed.');
 				}
 				if (pTags.length > 3) {
 					pTags.last().before(getTemplate(id, 'inform-pp-bottom'));
+				} else {
+					log('Not enough p tags to inject bottom embed.');
 				}
 				return true;
 			}
