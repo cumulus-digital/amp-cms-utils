@@ -87,6 +87,7 @@
 				'article#post-' + postId + ' .entry-content > *:not(.themify_builder_content > p:not(.read-more-full-link):not(:has(img))'
 			);
 			if (pTags.length) {
+				log('Found ' + pTags.length + ' p tags.');
 				if (pTags.length > 1) {
 					log('Injecting top embed.');
 					pTags.first().after(getTemplate(id, 'inform-pp-top'));
@@ -101,6 +102,7 @@
 				}
 				return true;
 			}
+			log('No valid p tags found in post.');
 		}
 
 		/**
