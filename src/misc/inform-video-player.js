@@ -69,7 +69,7 @@
 		 * @param id int Inform DPID
 		 * @return boolean
 		 */
-		function inject(id){
+		function injectInform(id){
 			log('Inject called', id);
 			if ( ! id) {
 				log('Inject called without DPID.');
@@ -110,10 +110,18 @@
 				}
 				log('Received request to inject Inform embed with ID ' + options.id);
 
-				inject(options.id);
+				injectInform(options.id);
 			} catch(e) { log('Failed', e); }
 		}
 		this.process = _process;
+
+		// Handle any existing requests that came before library loaded
+		if (window._informinjector && window._informinjector.length) {
+			log('Found existing requests, processing.', window._informinjector);
+			for (var i = 0; i < window._informinjector.length; i++) {
+				_process(window._informinjector[i]);
+			}
+		}
 
 		log('Initializing InformInjector array handler.');
 
@@ -126,14 +134,6 @@
 				}
 			}
 		};
-
-		// Handle any existing requests that came before library loaded
-		if (window._informinjector && window._informinjector.length) {
-			log('Found existing requests, processing.', window._informinjector);
-			for (var i = 0; i < window._informinjector.length; i++) {
-				_process(window._informinjector[i]);
-			}
-		}
 
 		// Reassign our fake array for future requests
 		window._informinjector = new InformArray();
