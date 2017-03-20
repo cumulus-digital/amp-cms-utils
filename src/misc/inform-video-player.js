@@ -70,6 +70,7 @@
 		 * @return boolean
 		 */
 		function inject(id){
+			log('Inject called', id);
 			if ( ! id) {
 				log('Inject called without DPID.');
 				return false;
