@@ -82,7 +82,10 @@
 			}
 			log('Post ID retrieved', postId);
 			// Retrieve P tags in article
-			var pTags = $('article#post-' + postId + ' .entry-content > p:not(.read-more-full-link):not(:has(img))');
+			var pTags = $(
+				'article#post-' + postId + ' .entry-content > p:not(.read-more-full-link):not(:has(img)),' +
+				'article#post-' + postId + ' .entry-content > *:not(.themify_builder_content > p:not(.read-more-full-link):not(:has(img))'
+			);
 			if (pTags.length) {
 				if (pTags.length > 1) {
 					log('Injecting top embed.');
