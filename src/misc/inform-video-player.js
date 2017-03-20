@@ -80,6 +80,7 @@
 				log('Could not retrieve post ID while injecting', id);
 				return false;
 			}
+			log('Post ID retrieved', postId);
 			// Retrieve P tags in article
 			var pTags = $('article#post-' + postId + ' .entry-content > p:not(.read-more-full-link):not(:has(img))');
 			if (pTags.length) {
