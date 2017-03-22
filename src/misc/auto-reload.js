@@ -50,6 +50,10 @@
 
 			log('Starting countdown, reloading at ' + reload_at);
 
+			if (window._CMLS.autoReload) {
+				window._CMLS.autoReload.active = true;
+			}
+
 			interval = setInterval(that.tick, 10000);
 		};
 
@@ -58,6 +62,9 @@
 				log('Stopping timer.');
 				clearInterval(interval);
 				interval = null;
+				if (window._CMLS.autoReload) {
+					window._CMLS.autoReload.active = false;
+				}
 			}
 		};
 

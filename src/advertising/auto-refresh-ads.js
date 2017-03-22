@@ -46,11 +46,11 @@
 
 		function checkConditions(){
 			if (
-				wt._CMLS.isHomepage(ws) &&
-				wt._CMLS.autoReloader &&
-				wt._CMLS.autoReloader.active
+				//wt._CMLS.isHomepage(ws) &&
+				wt._CMLS.autoReload &&
+				wt._CMLS.autoReload.active
 			) {
-				log('Autoreloader is active but conditions fail.');
+				log('AutoReloadPage is active, so we will not additionally refresh page ads.');
 				return false;
 			}
 
