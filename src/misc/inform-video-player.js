@@ -84,7 +84,7 @@
 			// Retrieve P tags in article
 			var pTags = $(
 				'article#post-' + postId + ' .entry-content > p:not(:has(img)):not(.read-more-full-link),' +
-				'article#post-' + postId + ' .entry-content > *:not(.themify_builder_content > p:not(:has(img)):not(.read-more-full-link)'
+				'article#post-' + postId + ' .entry-content > *:not(.themify_builder_content) p:not(:has(img)):not(.read-more-full-link)'
 			);
 			if (pTags.length) {
 				log('Found ' + pTags.length + ' p tags.');
