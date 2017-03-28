@@ -98,6 +98,7 @@
 
 	log('Injected.');
 
+	/*
 	function buildLayer(){
 		log('Building layer.');
 		if (window.self.addthis && window.self.addthis.layers) {
@@ -116,5 +117,7 @@
 			log('Addthis not available!');
 		}
 	}
+	*/
+	
 
 }(jQuery, window));
