@@ -11,7 +11,7 @@
 (function($, window, undefined){
 	var scriptName = 'INFORM INJECTOR',
 		nameSpace = 'informInjector',
-		version = '0.1';
+		version = '0.2';
 
 	function log() {
 		if (window.top._CMLS && window.top._CMLS.logger) {
@@ -88,14 +88,17 @@
 			);
 			if (pTags.length) {
 				log('Found ' + pTags.length + ' p tags.');
-				if (pTags.length > 1) {
-					log('Injecting top embed.');
+				if (pTags.length > 4) {
+					log('Injectng top embed after 5th p tag');
+					pTags.eq(4).after(getTemplate(id, 'inform-pp-top'));
+				} else if (pTags.length > 1) {
+					log('Injecting top embed after 1st p tag.');
 					pTags.first().after(getTemplate(id, 'inform-pp-top'));
 				} else {
 					log('Not enough p tags to inject top embed.');
 				}
-				if (pTags.length > 3) {
-					log('Injecting bottom embed.');
+				if (pTags.length > 8) {
+					log('Injecting bottom embed after last p tag.');
 					pTags.last().before(getTemplate(id, 'inform-pp-bottom'));
 				} else {
 					log('Not enough p tags to inject bottom embed.');
