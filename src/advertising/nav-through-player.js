@@ -33,6 +33,19 @@
 			}
 
 			var $iframe = iframe.jquery ? iframe : $(iframe);
+			
+			// make sure we can access this iframe
+			if (
+				iframe.getAttribute('src') &&
+				(
+					iframe.getAttribute('src').indexOf(window.location.hostname) < 0 ||
+					iframe.getAttribute('src').indexOf('/safeframe/') > 0
+				)
+			) {
+				log('Ad iframe is in a safeframe, cannot update.', iframe);
+				return;
+			}
+			
 			try {
 				$iframe.contents()
 					.find('a[target="_self"],a[target="_top"],a[target="_parent"]')
