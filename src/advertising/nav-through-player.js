@@ -33,12 +33,16 @@
 			}
 
 			var $iframe = iframe.jquery ? iframe : $(iframe);
-			$iframe.contents()
-				.find('a[target="_self"],a[target="_top"],a[target="_parent"]')
-					.each(function() {
-						log('Updating links in slot.', $iframe.prop('id'));
-						window._CMLS[nameSpace].updateLink(this);
-					});
+			try {
+				$iframe.contents()
+					.find('a[target="_self"],a[target="_top"],a[target="_parent"]')
+						.each(function() {
+							log('Updating links in slot.', $iframe.prop('id'));
+							window._CMLS[nameSpace].updateLink(this);
+						});
+			} catch(e) {
+				log('Could not update links in given iframe', iframe, e);
+			}
 		},
 
 		updateLink: function updateLink(link, force) {
