@@ -102,13 +102,15 @@
 
 	// Handle existing requests
 	var freshOptions;
-	if (window._CMLS && window._CMLS.autoReload && window._CMLS.autoReload.constructor === Array && window._CMLS.autoReload.length) {
-		log('Loaded with request.', window._CMLS.autoReload);
-		freshOptions = window._CMLS.autoReload[window._CMLS.autoReload.length-1];
-	}
+	if (window._CMLS) {
+		if (window._CMLS.autoReload && window._CMLS.autoReload.constructor === Array && window._CMLS.autoReload.length) {
+			log('Loaded with request.', window._CMLS.autoReload);
+			freshOptions = window._CMLS.autoReload[window._CMLS.autoReload.length-1];
+		}
 
-	if ( ! window._CMLS.autoReload || window._CMLS.autoReload.constructor === Array) {
-		window._CMLS.autoReload = new AutoReloader();
+		if ( ! window._CMLS.autoReload || window._CMLS.autoReload.constructor === Array) {
+			window._CMLS.autoReload = new AutoReloader();
+		}
 	}
 
 	log('Initialized.');
