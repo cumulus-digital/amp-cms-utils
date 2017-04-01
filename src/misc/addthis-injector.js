@@ -80,7 +80,11 @@
 		return;
 	}
 
-	if (window.top._CMLS.isHomepage(window.self)) {
+	if (
+		window.top._CMLS &&
+		window.top._CMLS.hasOwnProperty('isHomepage') &&
+		window.top._CMLS.isHomepage(window.self)
+	) {
 		log('Will not build on homepage, exiting.');
 		return;
 	}
