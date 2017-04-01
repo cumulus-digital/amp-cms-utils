@@ -5,7 +5,9 @@
 		version = '0.9';
 
 	function log() {
-		window._CMLS.logger(scriptName + ' v' + version, arguments);
+		if (window._CMLS && window._CMLS.logger) {
+			window._CMLS.logger(scriptName + ' v' + version, arguments);
+		}
 	}
 
 	function AutoReloader(){
