@@ -15,7 +15,7 @@
 		version = '0.7.16';
 
 	function log() {
-		if (window.top._CMLS) {
+		if (window.top._CMLS && window.top._CMLS.logger) {
 			window.top._CMLS.logger(scriptName + ' v' + version, arguments);
 		}
 	}

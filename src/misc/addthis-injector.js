@@ -8,7 +8,9 @@
 		addThisPubId = 'ra-55dc79597bae383e';
 
 	function log() {
-		window.top._CMLS.logger(scriptName + ' v' + version, arguments);
+		if (window.top._CMLS && window.top._CMLS.logger) {
+			window.top._CMLS.logger(scriptName + ' v' + version, arguments);
+		}
 	}
 
 	if (window.self.addthis && window.self.addthis_config && window.self.addthis_config.pubid && window.self.addthis_config.pubid !== addThisPubId) {
