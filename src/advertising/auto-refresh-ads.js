@@ -24,7 +24,9 @@
 	}
 
 	function log() {
-		wt._CMLS.logger(scriptName + ' v' + version, arguments);
+		if(wt._CMLS && wt._CMLS.hasOwnProperty('logger')) {
+			wt._CMLS.logger(scriptName + ' v' + version, arguments);
+		}
 	}
 
 	var AutoRefresher = function(fireEarly){
