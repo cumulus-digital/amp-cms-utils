@@ -102,7 +102,7 @@
 
 	// Handle existing requests
 	var freshOptions;
-	if (window._CMLS.autoReload && window._CMLS.autoReload.constructor === Array && window._CMLS.autoReload.length) {
+	if (window._CMLS && window._CMLS.autoReload && window._CMLS.autoReload.constructor === Array && window._CMLS.autoReload.length) {
 		log('Loaded with request.', window._CMLS.autoReload);
 		freshOptions = window._CMLS.autoReload[window._CMLS.autoReload.length-1];
 	}
