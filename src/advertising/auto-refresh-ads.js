@@ -16,7 +16,7 @@
 	// Time before refreshing ads, in minutes
 	w._CMLS.autoRefreshAdsTimer = ws._CMLS.autoRefreshAdsTimer || 4;
 
-	if (wt._CMLS[nameSpace]) {
+	if (wt._CMLS && wt._CMLS.hasOwnProperty(nameSpace)) {
 		if (wt._CMLS[nameSpace].checkState()) {
 			wt._CMLS[nameSpace].start();
 		}
