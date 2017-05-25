@@ -7,7 +7,7 @@
 		"uuidString": "173E6D12-95D9-4A11-ABB8-3CAD58B1B762"
 		}
 	],
-"creatorBuild": "25704",
+"creatorBuild": "25813",
 "files": {
 	"\/dist\/advertising\/auto-refresh-ads-min.js": {
 		"ft": 64,
@@ -1277,6 +1277,10 @@
 			"active": 0,
 			"optionString": ""
 			},
+		"no-prototype-builtins": {
+			"active": 0,
+			"optionString": ""
+			},
 		"no-redeclare": {
 			"active": 1,
 			"optionString": "{'builtinGlobals': false}"
@@ -2101,14 +2105,6 @@
 		"orderOutput": 0,
 		"outputStyle": 1
 		},
-	"languageDefaultsJSX": {
-		"autoOutputAction": 0,
-		"autoOutputPathFilenamePattern": "*.js",
-		"autoOutputPathRelativePath": "",
-		"autoOutputPathReplace1": "jsx",
-		"autoOutputPathReplace2": "js",
-		"autoOutputPathStyle": 0
-		},
 	"languageDefaultsKIT": {
 		"autoOutputAction": 0,
 		"autoOutputPathFilenamePattern": "*.html",
@@ -2171,7 +2167,7 @@
 		"autoOutputPathReplace1": "",
 		"autoOutputPathReplace2": "",
 		"autoOutputPathStyle": 0,
-		"enableLossy": 1,
+		"optimizerType": 1,
 		"quality": 100
 		},
 	"languageDefaultsPUG": {
