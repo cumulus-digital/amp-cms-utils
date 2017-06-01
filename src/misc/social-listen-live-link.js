@@ -34,11 +34,15 @@
 		window.top.tgmp_default_brand = window.top.tgmp_default_brand || "" + window.top.tgmp.options.brand;
 
 		log('Locating Listen Live button.');
-		var button = $('.social-icons img[title="Listen Live!!"]:parent,.social-icons-container img[title="Listen Live!!"]:parent,.nav-listenlive img');
+		var button = $('.social-icons img[title="Listen Live!!"],.social-icons-container img[title="Listen Live!!"],.nav-listenlive img');
 
 		if ( ! button.length) {
 			log('Could not locate Listen Live button in social icons.');
 			return;
+		}
+		
+		if (button.parent().is('a')) {
+			button = button.parent();
 		}
 
 		button.click(function(e){
