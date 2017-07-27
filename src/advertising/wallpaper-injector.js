@@ -365,7 +365,7 @@
 					var iframeStyles = '<style>' +
 						'html,body{background:transparent;margin:0;padding:0;width:100%;height:100%;}' +
 						'body{background:url("' + slotImage.prop('src') +'") no-repeat top center;}' +
-						(slotImage.prop('alt').indexOf('contain') ? 'body{background-size:100%}' : '') +
+						(slotImage.prop('alt').indexOf('contain') > -1 ? 'body{background-size:100%}' : '') +
 						'a{display:block;width:100%;height:100%;text-decoration:none;}' +
 					'</style>';
 
