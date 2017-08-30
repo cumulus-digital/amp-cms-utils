@@ -126,6 +126,9 @@
 		}
 		if (settings.position === 'below') {
 			$(injectionPoint).after(template);
+			$('.takeover-left,.takeover-right,.skyscraper-left,.skyscraper-right').css({
+				marginBottom: '-' + template.height()
+			});
 		} else {
 			$(injectionPoint).before(template);
 		}

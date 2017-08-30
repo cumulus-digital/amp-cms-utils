@@ -7,10 +7,11 @@
 		"uuidString": "173E6D12-95D9-4A11-ABB8-3CAD58B1B762"
 		}
 	],
-"creatorBuild": "25849",
+"creatorBuild": "25900",
 "files": {
 	"\/dist\/advertising\/auto-refresh-ads-min.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/advertising\/auto-refresh-ads-min-min.js",
@@ -26,6 +27,7 @@
 		},
 	"\/dist\/advertising\/nav-through-player-min.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/advertising\/nav-through-player-min-min.js",
@@ -41,6 +43,7 @@
 		},
 	"\/dist\/advertising\/wallpaper-injector-min.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/advertising\/wallpaper-injector-min-min.js",
@@ -56,6 +59,7 @@
 		},
 	"\/dist\/compiled-allsites-min.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/compiled-allsites-min-min.js",
@@ -71,6 +75,7 @@
 		},
 	"\/dist\/smartbanner\/injector-min.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/smartbanner\/injector-min-min.js",
@@ -86,6 +91,7 @@
 		},
 	"\/dist\/smartbanner\/smartbanner-min.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/smartbanner\/smartbanner-min-min.js",
@@ -117,6 +123,7 @@
 		},
 	"\/src\/advertising\/auto-refresh-ads.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/advertising\/auto-refresh-ads-min.js",
@@ -126,6 +133,7 @@
 		},
 	"\/src\/advertising\/auto-scroll-homepage-past-leaderboard.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/advertising\/auto-scroll-homepage-past-leaderboard-min.js",
@@ -135,6 +143,7 @@
 		},
 	"\/src\/advertising\/globalize-sgroups.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/advertising\/globalize-sgroups-min.js",
@@ -144,6 +153,7 @@
 		},
 	"\/src\/advertising\/nav-through-player.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/advertising\/nav-through-player-min.js",
@@ -153,6 +163,7 @@
 		},
 	"\/src\/advertising\/player-sponsor-logo.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/advertising\/player-sponsor-logo-min.js",
@@ -162,6 +173,7 @@
 		},
 	"\/src\/advertising\/player-tracking-dfp-injection.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/advertising\/player-tracking-dfp-injection-min.js",
@@ -171,6 +183,7 @@
 		},
 	"\/src\/advertising\/teadsinjector.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/advertising\/teadsinjector-min.js",
@@ -180,6 +193,7 @@
 		},
 	"\/src\/advertising\/wallpaper-injector.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/advertising\/wallpaper-injector-min.js",
@@ -189,6 +203,7 @@
 		},
 	"\/src\/common.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/common-min.js",
@@ -198,6 +213,7 @@
 		},
 	"\/src\/compiled-allsites.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 0,
 		"oAP": "\/dist\/compiled-allsites-min.js",
@@ -207,6 +223,7 @@
 		},
 	"\/src\/misc\/addthis-hider.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/misc\/addthis-hider-min.js",
@@ -216,6 +233,7 @@
 		},
 	"\/src\/misc\/addthis-injector.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/misc\/addthis-injector-min.js",
@@ -225,6 +243,7 @@
 		},
 	"\/src\/misc\/auto-reload.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/misc\/auto-reload-min.js",
@@ -234,6 +253,7 @@
 		},
 	"\/src\/misc\/breaking-news-bar.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/misc\/breaking-news-bar-min.js",
@@ -243,6 +263,7 @@
 		},
 	"\/src\/misc\/gtm-promoreel-tracking.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/misc\/gtm-promoreel-tracking-min.js",
@@ -252,6 +273,7 @@
 		},
 	"\/src\/misc\/gtm-stream-tracking.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/misc\/gtm-stream-tracking-min.js",
@@ -261,6 +283,7 @@
 		},
 	"\/src\/misc\/inform-video-player.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/misc\/inform-video-player-min.js",
@@ -270,6 +293,7 @@
 		},
 	"\/src\/misc\/social-listen-live-link.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/misc\/social-listen-live-link-min.js",
@@ -279,6 +303,7 @@
 		},
 	"\/src\/smartbanner\/injector.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 0,
 		"oAP": "\/dist\/smartbanner\/injector-min.js",
@@ -288,6 +313,7 @@
 		},
 	"\/src\/smartbanner\/smartbanner.js": {
 		"ft": 64,
+		"ma": 1,
 		"mi": 1,
 		"oA": 0,
 		"oAP": "\/dist\/smartbanner\/smartbanner-min.js",
@@ -721,6 +747,10 @@
 			"active": 0,
 			"optionString": "{'setWithoutGet': true, 'getWithoutSet': false}"
 			},
+		"array-bracket-newline": {
+			"active": 0,
+			"optionString": "{'multiline': true, 'minItems': null}"
+			},
 		"array-bracket-spacing": {
 			"active": 0,
 			"optionString": "'never', {'singleValue': false, 'objectsInArrays': false, 'arraysInArrays': false}"
@@ -728,6 +758,10 @@
 		"array-callback-return": {
 			"active": 0,
 			"optionString": ""
+			},
+		"array-element-newline": {
+			"active": 0,
+			"optionString": "'always'"
 			},
 		"arrow-body-style": {
 			"active": 0,
@@ -825,6 +859,10 @@
 			"active": 0,
 			"optionString": "'always', {'null': 'always'}"
 			},
+		"for-direction": {
+			"active": 0,
+			"optionString": ""
+			},
 		"func-call-spacing": {
 			"active": 0,
 			"optionString": "'never'"
@@ -844,6 +882,10 @@
 		"generator-star-spacing": {
 			"active": 0,
 			"optionString": "{'before': true, 'after': false}"
+			},
+		"getter-return": {
+			"active": 0,
+			"optionString": "{'allowImplicit': false}"
 			},
 		"global-require": {
 			"active": 0,
@@ -972,6 +1014,10 @@
 		"no-bitwise": {
 			"active": 0,
 			"optionString": "{'allow': ['~'], 'int32Hint': true}"
+			},
+		"no-buffer-constructor": {
+			"active": 0,
+			"optionString": ""
 			},
 		"no-caller": {
 			"active": 0,
@@ -1517,6 +1563,10 @@
 			"active": 0,
 			"optionString": "{'blocks': 'always', 'switches': 'always', 'classes': 'always'}"
 			},
+		"padding-line-between-statements": {
+			"active": 0,
+			"optionString": "{blankLine: 'always', prev:'*', next:'return'}"
+			},
 		"prefer-arrow-callback": {
 			"active": 0,
 			"optionString": ""
@@ -1585,6 +1635,10 @@
 			"active": 0,
 			"optionString": "{'before': false, 'after': true}"
 			},
+		"semi-style": {
+			"active": 0,
+			"optionString": "'last'"
+			},
 		"sort-imports": {
 			"active": 0,
 			"optionString": "{'ignoreCase': false, 'ignoreMemberSort': true, 'memberSyntaxSortOrder': ['none', 'all', 'multiple', 'single']}"
@@ -1624,6 +1678,10 @@
 		"strict": {
 			"active": 0,
 			"optionString": "'safe'"
+			},
+		"switch-colon-spacing": {
+			"active": 0,
+			"optionString": "{'after': true, 'before': false}"
 			},
 		"symbol-description": {
 			"active": 0,
@@ -2257,6 +2315,7 @@
 	"previewPathAddition": "",
 	"skippedFoldersString": "log, _logs, logs, _cache, cache, \/storage\/framework\/sessions, node_modules",
 	"sourceFolderName": "source",
+	"susyVersion": 3,
 	"uglifyDefinesString": "",
 	"uglifyFlags2": {
 		"ascii-only": {
