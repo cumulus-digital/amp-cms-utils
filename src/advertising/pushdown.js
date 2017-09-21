@@ -124,6 +124,9 @@
 						.on('mouseover', function(){
 							$video.prop('muted', false);
 						})
+						.on('mouseout', function(){
+							$video.prop('muted', true);
+						})
 						.on('canplaythrough', function(){
 							$slotDiv.slideDown('fast', function(){
 								$video[0].play();
