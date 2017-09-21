@@ -4,7 +4,7 @@
 ;(function(jQuery, window, undefined) {
 	
 	var scriptName = 'Pushdown Ad',
-		version = '0.3',
+		version = '0.4',
 		elementId = 'dfp-pushdown';
 
 	function log() {
