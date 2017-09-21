@@ -22,8 +22,13 @@
 						window._CMLS.debounce :
 						function(callback){ callback(); };
 
-	jQuery = jQuery.noConflict();
-	$ = function(selector,context) {
+	/* jshint ignore:start */
+	/*jsl:ignore* /
+	/*ignore jslint start*/
+
+	// Override context of jQuery
+	var jQuery = jQuery.noConflict();
+	var $ = function(selector,context) {
 		return new jQuery.fn.init(selector, context||window.document);
 	};
 	$.fn = $.prototype = jQuery.fn;
@@ -33,6 +38,10 @@
 	* https://github.com/gnarf37/jquery-requestAnimationFrame
 	 * Copyright (c) 2016 Corey Frang; Licensed MIT */
 	!function(a){"function"==typeof define&&define.amd?define(["jquery"],a):a(jQuery)}(function(a){function b(){c&&(window.requestAnimationFrame(b),a.fx.tick())}if(Number(a.fn.jquery.split(".")[0])>=3)return void(window.console&&window.console.warn&&window.console.warn("The jquery.requestanimationframe plugin is not needed in jQuery 3.0 or newer as they handle it natively."));var c;window.requestAnimationFrame&&(a.fx.timer=function(d){d()&&a.timers.push(d)&&!c&&(c=!0,b())},a.fx.stop=function(){c=!1})});
+
+	/*ignore jslint end*/
+	/*jsl:end */
+	/* jshint ignore:end */
 
 	// Eject if our tag already exists
 	if (window.document.getElementById(elementId)) {
@@ -45,7 +54,7 @@
 
 	googletag.cmd.push(function(){
 
-		var $slotDiv, $timerDiv, $closeBox, $styles, $script, $placement, slotTimer;
+		var $slotDiv, $timerDiv, $closeBox, $styles, $scripts, $placement;
 
 		// Make sure we can find a place for our pushdown ad
 		$placement = $('.wrapper-content:first');
@@ -87,20 +96,29 @@
 				$adContainer = $slotDiv.find('iframe:first');
 			if ($adContainer.length) {
 				log('Got ad iframe.');
-				var $img = $adContainer.contents().find('.img_ad');
+				var $img = $adContainer.contents().find('.img_ad'),
+					$video = $adContainer.contentes().find('video');
 				if ($img.length) {
-					log('Maxing ad image responsive.');
+					log('Making ad image responsive.');
 					$img.css({ width: '100%', height: 'auto' });
 					var altTest = $img.prop('alt') ? $img.prop('alt').match(/timeout=(\d+)/i) : [];
 					if (altTest.length > 1) {
 						timeout = altTest[1] * 1000;
 					}
+					log('Setting hide timer', timeout);
+					$timerDiv.css('width', '0%').animate({width: '100%'}, timeout, 'linear', hideAd);
+				}
+				if ($video.length) {
+					log('Video detected!');
+					$video
+						.prop('controls', false)
+						.prop('playsinline', true)
+						.prop('autoplay', true)
+						.on('ended', hideAd);
 				}
 			}
 
 			$slotDiv.slideDown('fast');
-			log('Setting hide timer', timeout);
-			$timerDiv.css('width', '0%').animate({width: '100%'}, timeout, 'linear', hideAd);
 		}
 
 		function hideAd() {
