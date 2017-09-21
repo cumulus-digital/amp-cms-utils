@@ -97,7 +97,7 @@
 			if ($adContainer.length) {
 				log('Got ad iframe.');
 				var $img = $adContainer.contents().find('.img_ad'),
-					$video = $adContainer.contentes().find('video');
+					$video = $adContainer.contents().find('video');
 				if ($img.length) {
 					log('Making ad image responsive.');
 					$img.css({ width: '100%', height: 'auto' });
