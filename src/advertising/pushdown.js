@@ -107,18 +107,35 @@
 					}
 					log('Setting hide timer', timeout);
 					$timerDiv.css('width', '0%').animate({width: '100%'}, timeout, 'linear', hideAd);
+					$slotDiv.slideDown('fast');
 				}
 				if ($video.length) {
 					log('Video detected!');
+					// check if video can even be played...
+					if (!$video[0].canPlayType || !$video[0].canPlayType('video/mp4').replace(/no/, '')) {
+						log ('This browser cannot play mp4 video! exiting.');
+						return false;
+					}
 					$video
 						.prop('controls', false)
+						.prop('muted', true)
 						.prop('playsinline', true)
-						.prop('autoplay', true)
+						.prop('autoplay', false)
+						.on('mouseover', function(){
+							$video.prop('muted', false);
+						})
+						.on('canplaythrough', function(){
+							$slotDiv.slideDown('fast', function(){
+								$video[0].play();
+							});
+						})
+						.on('playing', function(){
+							log('Setting the hide timer', this.duration * 1000);
+							$timerDiv.css('width', '0%').animate({width: '100%'}, this.duration * 1000, 'linear');
+						})
 						.on('ended', hideAd);
 				}
 			}
-
-			$slotDiv.slideDown('fast');
 		}
 
 		function hideAd() {
