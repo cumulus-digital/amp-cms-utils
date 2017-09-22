@@ -99,7 +99,7 @@
 				var $img = $adContainer.contents().find('.img_ad'),
 					$video = $adContainer.contents().find('video');
 				if ($img.length) {
-					log('Making ad image responsive.');
+					log('Ad contains an image');
 					$img.css({ width: '100%', height: 'auto' });
 					var altTest = $img.prop('alt') ? $img.prop('alt').match(/timeout=(\d+)/i) : [];
 					if (altTest.length > 1) {
@@ -109,6 +109,7 @@
 					$timerDiv.css('width', '0%').animate({width: '100%'}, timeout, 'linear', hideAd);
 					$slotDiv.slideDown('fast');
 				}
+
 				if ($video.length) {
 					log('Video detected!');
 					// check if video can even be played...
@@ -138,7 +139,12 @@
 						})
 						.on('ended', hideAd);
 				}
+
+				return;
 			}
+
+			log('Could not get ad iframe!');
+
 		}
 
 		function hideAd() {
