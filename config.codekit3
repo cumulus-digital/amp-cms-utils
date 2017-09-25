@@ -197,13 +197,23 @@
 		"sC": 1,
 		"tS": 0
 		},
+	"\/src\/advertising\/pushdown-vast.js": {
+		"ft": 64,
+		"ma": 1,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "\/dist\/advertising\/pushdown-vast-min.js",
+		"oF": 1,
+		"sC": 1,
+		"tS": 0
+		},
 	"\/src\/advertising\/pushdown.js": {
 		"ft": 64,
 		"ma": 1,
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/advertising\/pushdown-min.js",
-		"oF": 0,
+		"oF": 1,
 		"sC": 1,
 		"tS": 0
 		},
