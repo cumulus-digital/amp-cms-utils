@@ -176,7 +176,7 @@
 				#' + elementId + '-close { \
 					color: white; \
 					font-family: sans !important; \
-					text-shadow: .25em .25em .25em black; \
+					text-shadow: .05em .05em .25em black; \
 					mix-blend-mode: exclusion; \
 					cursor: pointer; \
 					position: absolute; \
