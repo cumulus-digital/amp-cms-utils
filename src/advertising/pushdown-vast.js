@@ -129,7 +129,8 @@
 			log('Failed to retrieve DFP properties.', e);
 			return false;
 		}
-		log('Ad path found, defining new slot.', adPath);
+		adPath = adPath + '/pushdown';
+		log('Ad path found, defining new slot with "/pushdown" level.', adPath);
 
 		// Create our ad container
 		var pushdownContainer = doc.createElement('div');
