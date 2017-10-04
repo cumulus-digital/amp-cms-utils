@@ -20,6 +20,12 @@
 		}
 	}
 
+	var isMobile = window.matchMedia("only screen and (max-width: 760px)");
+	if (isMobile.matches) {
+		log('Mobile browser detected, ejecting.');
+		return false;
+	}
+
 	function isHomepage(){
 		if (window.document.querySelector('body.home')) {
 			log('On Homepage.');
