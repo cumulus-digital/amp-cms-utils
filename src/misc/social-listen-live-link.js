@@ -32,6 +32,7 @@
 
 		log('Storing TGMP default configuration.');
 		window.top.tgmp_default_brand = window.top.tgmp_default_brand || "" + window.top.tgmp.options.brand;
+		window.top.tgmp_default_theme = window.top_tgmp_default_theme || window.top.tgmp.options.theme;
 
 		log('Locating Listen Live button.');
 		var button = $('.social-icons img[title="Listen Live!!"],.social-icons-container img[title="Listen Live!!"],.nav-listenlive img');
@@ -49,7 +50,7 @@
 			e.preventDefault();
 			log('Playing stream...');
 			if (window.top.tgmp_default_brand && window.top.tgmp.options.brand !== window.top.tgmp_default_brand) {
-				window.top.tgmp.update({ brand: window.top.tgmp_default_brand, autostart: true });
+				window.top.tgmp.update({ brand: window.top.tgmp_default_brand, thene: window.top.tgmp_default_theme, autostart: true });
 				return;
 			}
 			window.top.tgmp.playStream();
