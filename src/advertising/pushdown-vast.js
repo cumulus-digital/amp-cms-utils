@@ -254,6 +254,7 @@
 		$timerDiv.on('cmls.start', function(e, duration, callback) {
 			log('Timer display started with duration', duration);
 			$timerDiv.trigger('cmls.reset', function() {
+				log('Animating timerDiv');
 				$timerDiv.animate(
 					{ width: '100%' },
 					duration,
@@ -263,11 +264,13 @@
 			});
 		});
 		$timerDiv.on('cmls.reset', function(e, callback) {
+			log('Resetting timerDiv to 0');
 			$timerDiv
 				.stop()
 				.clearQueue()
 				.css('width', 0);
 			if (callback) {
+				log('Callback from cmls.reset firing.');
 				callback();
 			}
 		});
@@ -322,9 +325,10 @@
 
 			log('Triggering ad display with timeout', timeout);			
 			$pushdownContainer.trigger('cmls.display', function() {
-				$timerDiv.trigger('cmls.start', timeout, function() {
+				$timerDiv.trigger('cmls.start', [timeout, function() {
+					log('Triggering ad removal.');
 					$pushdownContainer.trigger('cmls.hide');
-				});
+				}]);
 			});
 
 			return true;
