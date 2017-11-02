@@ -50,7 +50,7 @@
 			e.preventDefault();
 			log('Playing stream...');
 			if (window.top.tgmp_default_brand && window.top.tgmp.options.brand !== window.top.tgmp_default_brand) {
-				window.top.tgmp.update({ brand: window.top.tgmp_default_brand, thene: window.top.tgmp_default_theme, autostart: true });
+				window.top.tgmp.update({ brand: window.top.tgmp_default_brand, theme: window.top.tgmp_default_theme, autostart: true });
 				return;
 			}
 			window.top.tgmp.playStream();
