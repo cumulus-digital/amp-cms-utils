@@ -312,11 +312,13 @@
 			}
 
 			// Make image responsive
+			log('Making image responsive.');
 			$img.css({ width: '100%', height: 'auto' });
 
 			// Detect an override for timeout
+			log('Checking for timeout override');
 			var altTest = $img.prop('alt').match(/timeout=(\d+)/i);
-			var timeout = altTest.length ? altTest[1] * 1000 : defaultTimeout * 1000;
+			var timeout = altTest && altTest.length > 1 ? altTest[1] * 1000 : defaultTimeout * 1000;
 
 			log('Triggering ad display with timeout', timeout);			
 			$pushdownContainer.trigger('cmls.display', function() {
