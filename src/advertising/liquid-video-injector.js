@@ -24,7 +24,7 @@
 
 	var scriptName = 'LIQUID INJECTOR',
 		//nameSpace = 'liquidInjector',
-		version = '0.1';
+		version = '0.2';
 
 	function log() {
 		if (window.top._CMLS && window.top._CMLS.logger) {
