@@ -108,7 +108,7 @@
 			});
 			var vpaidLoader = vpaidFrame.contentWindow.document.createElement('script');
 			vpaidLoader.setAttribute('async','async');
-			vpaidLoader.src = 'https://ad.lkqd.net/vpaid/formats.js?pid=9&sid=597557';
+			vpaidLoader.src = 'https://ad.lkqd.net/vpaid/formats.js?pid=' + options.pid + '&sid=' + options.sid;
 			vpaidFrame.contentWindow.document.body.appendChild(vpaidLoader);
 		};
 		vpaidFrame.onload = vpaidFrameLoaded;
@@ -123,16 +123,14 @@
 
 	log('Initialized, use CMLSinjectLiquidAd.push({ pid: #, sid: # }) to inject.');
 
-	$(function(){
-		// Process existing requests
-		if (window.CMLSinjectLiquidAd && window.CMLSinjectLiquidAd.length) {
-			for(var i = 0; i < window.CMLSinjectLiquidAd.length; i++) {
-				processLiquid(window.CMLSinjectLiquidAd[i]);
-			}
+	// Process existing requests
+	if (window.CMLSinjectLiquidAd && window.CMLSinjectLiquidAd.length) {
+		for(var i = 0; i < window.CMLSinjectLiquidAd.length; i++) {
+			processLiquid(window.CMLSinjectLiquidAd[i]);
 		}
+	}
 
-		window.CMLSinjectLiquidAd = new LiquidInjectorArray();
-		log('Listening for future requests.');
-	});
+	window.CMLSinjectLiquidAd = new LiquidInjectorArray();
+	log('Listening for future requests.');
 
 }(jQuery, window));
