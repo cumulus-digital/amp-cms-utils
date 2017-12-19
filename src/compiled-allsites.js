@@ -8,6 +8,7 @@
 // @codekit-append "advertising/globalize-sgroups.js"
 // @codekit-append "advertising/teadsinjector.js"
 // @codekit-append "advertising/pushdown-vast.js"
+// @codekit-append "advertising/liquid-video-injector.js"
 // @codekit-append "advertising/player-tracking-dfp-injection.js"
 // codekit-append "advertising/auto-scroll-homepage-past-leaderboard.js"
 // @codekit-append "advertising/auto-refresh-ads.js"
