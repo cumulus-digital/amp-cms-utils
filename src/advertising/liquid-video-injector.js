@@ -34,7 +34,7 @@
 
 	log('Initializing Liquid Video Injector');
 	function processLiquid(options) {
-		log('Received request!');
+		log('Received request!', options);
 
 		if (!options.hasOwnProperty('playerContainerId')) {
 			options.playerContainerId = 'liquidPlayerContainer';
@@ -89,7 +89,7 @@
 			lkqdVPAID.subscribe(function() { lkqdVPAID.resumeAd(); }, 'AdViewable');
 		}
 
-		var vpaidFrame = document.createElement('iframe');
+		var vpaidFrame = window.document.createElement('iframe');
 		vpaidFrame.id = lkqdSettings.lkqdId;
 		vpaidFrame.name = lkqdSettings.lkqdId;
 		vpaidFrame.style.display = 'none';
@@ -107,7 +107,7 @@
 		};
 		vpaidFrame.onload = vpaidFrameLoaded;
 		vpaidFrame.onerror = vpaidFrameLoaded;
-		document.documentElement.appendChild(vpaidFrame);
+		window.document.documentElement.appendChild(vpaidFrame);
 
 	}
 
