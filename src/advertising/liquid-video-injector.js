@@ -40,6 +40,12 @@
 			options.playerContainerId = 'liquidPlayerContainer';
 		}
 
+		// Remove any existing placement
+		var placement = $('#' + options.playerContainerId);
+		if (placement.length) {
+			placement.remove();
+		}
+
 		// Create placement
 		var article = $('.wrapper-content > .grid-container > .row-1 > .column-1 article:first'),
 			ps = article.find('p');
@@ -111,6 +117,8 @@
 
 	}
 
+	log('Initialized, use CMLSinjectLiquidAd.push({ pid: #, sid: # }) to inject.');
+
 	// Process existing requests
 	if (window.CMLSinjectLiquidAd && window.CMLSinjectLiquidAd.length) {
 		for(var i = 0; i < window.CMLSinjectLiquidAd.length; i++) {
@@ -122,6 +130,5 @@
 	window.CMLSinjectLiquidAd.prototype = [];
 	window.CMLSinjectLiquidAd.prototype.push = processLiquid;
 
-	log('Initialized, use CMLSinjectLiquidAd.push({ pid: #, sid: # }) to inject.');
 
 }(jQuery, window));
