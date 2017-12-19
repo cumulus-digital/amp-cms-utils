@@ -34,6 +34,8 @@
 
 	log('Initializing Liquid Video Injector');
 	window.CMLSinjectLiquidAd = function(options) {
+		log('Received request!');
+
 		if (!options.hasOwnProperty('playerContainerId')) {
 			options.playerContainerId = 'liquidPlayerContainer';
 		}
@@ -52,6 +54,8 @@
 
 		p.after('<div id="' + options.playerContainerId + '" style="margin-bottom: 1em"></div>');
 
+		log('Placement div injected, running Liquid code');
+		
 		// LIQUID CODE FOLLOWS
 		var lkqdSettings = {
 			pid: options.pid,
