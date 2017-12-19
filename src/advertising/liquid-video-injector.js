@@ -117,20 +117,22 @@
 
 	}
 
-	log('Initialized, use CMLSinjectLiquidAd.push({ pid: #, sid: # }) to inject.');
-
-	// Process existing requests
-	if (window.CMLSinjectLiquidAd && window.CMLSinjectLiquidAd.length) {
-		for(var i = 0; i < window.CMLSinjectLiquidAd.length; i++) {
-			processLiquid(window.CMLSinjectLiquidAd[i]);
-		}
-	}
-
 	var LiquidInjectorArray = function(){};
 	LiquidInjectorArray.prototype = [];
 	LiquidInjectorArray.prototype.push = processLiquid;
 
-	window.CMLSinjectLiquidAd = new LiquidInjectorArray();
-	log('Listening for future requests.');
+	log('Initialized, use CMLSinjectLiquidAd.push({ pid: #, sid: # }) to inject.');
+
+	$(function(){
+		// Process existing requests
+		if (window.CMLSinjectLiquidAd && window.CMLSinjectLiquidAd.length) {
+			for(var i = 0; i < window.CMLSinjectLiquidAd.length; i++) {
+				processLiquid(window.CMLSinjectLiquidAd[i]);
+			}
+		}
+
+		window.CMLSinjectLiquidAd = new LiquidInjectorArray();
+		log('Listening for future requests.');
+	});
 
 }(jQuery, window));
