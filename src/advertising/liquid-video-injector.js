@@ -32,6 +32,7 @@
 		}
 	}
 
+	log('Initializing Liquid Video Injector');
 	window.CMLSinjectLiquidAd = function(options) {
 		if (!options.hasOwnProperty('playerContainerId')) {
 			options.playerContainerId = 'liquidPlayerContainer';
@@ -105,5 +106,6 @@
 		document.documentElement.appendChild(vpaidFrame);
 
 	};
+	log('Initialized, use CMLSinjectLiquidAd({ pid: #, sid: # }) to inject.');
 
 }(jQuery, window));
