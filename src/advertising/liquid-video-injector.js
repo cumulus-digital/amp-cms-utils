@@ -126,9 +126,11 @@
 		}
 	}
 
-	window.CMLSinjectLiquidAd = function(){};
-	window.CMLSinjectLiquidAd.prototype = [];
-	window.CMLSinjectLiquidAd.prototype.push = processLiquid;
+	var LiquidInjectorArray = function(){};
+	LiquidInjectorArray.prototype = [];
+	LiquidInjectorArray.prototype.push = processLiquid;
 
+	window.CMLSinjectLiquidAd = new LiquidInjectorArray();
+	log('Listening for future requests.');
 
 }(jQuery, window));
