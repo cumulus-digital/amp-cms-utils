@@ -33,7 +33,7 @@
 	}
 
 	log('Initializing Liquid Video Injector');
-	window.CMLSinjectLiquidAd = function(options) {
+	function processLiquid(options) {
 		log('Received request!');
 
 		if (!options.hasOwnProperty('playerContainerId')) {
@@ -55,7 +55,7 @@
 		p.after('<div id="' + options.playerContainerId + '" style="margin-bottom: 1em"></div>');
 
 		log('Placement div injected, running Liquid code');
-		
+
 		// LIQUID CODE FOLLOWS
 		var lkqdSettings = {
 			pid: options.pid,
@@ -109,7 +109,19 @@
 		vpaidFrame.onerror = vpaidFrameLoaded;
 		document.documentElement.appendChild(vpaidFrame);
 
-	};
-	log('Initialized, use CMLSinjectLiquidAd({ pid: #, sid: # }) to inject.');
+	}
+
+	// Process existing requests
+	if (window.CMLSinjectLiquidAd && window.CMLSinjectLiquidAd.length) {
+		for(var i = 0; i < window.CMLSinjectLiquidAd.length; i++) {
+			processLiquid(window.CMLSinjectLiquidAd[i]);
+		}
+	}
+
+	window.CMLSinjectLiquidAd = function(){};
+	window.CMLSinjectLiquidAd.prototype = [];
+	window.CMLSinjectLiquidAd.prototype.push = processLiquid;
+
+	log('Initialized, use CMLSinjectLiquidAd.push({ pid: #, sid: # }) to inject.');
 
 }(jQuery, window));
