@@ -89,6 +89,8 @@
 		var creativeData = '';
 		var environmentVars = { slot: w.document.getElementById(lkqdSettings.playerContainerId), videoSlot: w.document.getElementById(lkqdSettings.playerId), videoSlotCanAutoPlay: true, lkqdSettings: lkqdSettings };
 
+		log(environmentVars);
+
 		function onVPAIDLoad()
 		{
 			lkqdVPAID.subscribe(function() { lkqdVPAID.startAd(); }, 'AdLoaded');
