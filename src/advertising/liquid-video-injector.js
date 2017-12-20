@@ -24,11 +24,12 @@
 
 	var scriptName = 'LIQUID INJECTOR',
 		//nameSpace = 'liquidInjector',
-		version = '0.3';
+		version = '0.3',
+		w = window;
 
 	function log() {
-		if (window.top._CMLS && window.top._CMLS.logger) {
-			window.top._CMLS.logger(scriptName + ' v' + version, arguments);
+		if (w.top._CMLS && w.top._CMLS.logger) {
+			w.top._CMLS.logger(scriptName + ' v' + version, arguments);
 		}
 	}
 
@@ -86,7 +87,7 @@
 
 		var lkqdVPAID;
 		var creativeData = '';
-		var environmentVars = { slot: document.getElementById(lkqdSettings.playerContainerId), videoSlot: document.getElementById(lkqdSettings.playerId), videoSlotCanAutoPlay: true, lkqdSettings: lkqdSettings };
+		var environmentVars = { slot: w.document.getElementById(lkqdSettings.playerContainerId), videoSlot: w.document.getElementById(lkqdSettings.playerId), videoSlotCanAutoPlay: true, lkqdSettings: lkqdSettings };
 
 		function onVPAIDLoad()
 		{
@@ -95,7 +96,7 @@
 			lkqdVPAID.subscribe(function() { lkqdVPAID.resumeAd(); }, 'AdViewable');
 		}
 
-		var vpaidFrame = window.document.createElement('iframe');
+		var vpaidFrame = w.document.createElement('iframe');
 		vpaidFrame.id = lkqdSettings.lkqdId;
 		vpaidFrame.name = lkqdSettings.lkqdId;
 		vpaidFrame.style.display = 'none';
@@ -113,7 +114,7 @@
 		};
 		vpaidFrame.onload = vpaidFrameLoaded;
 		vpaidFrame.onerror = vpaidFrameLoaded;
-		window.document.documentElement.appendChild(vpaidFrame);
+		w.document.documentElement.appendChild(vpaidFrame);
 
 	}
 
@@ -124,13 +125,13 @@
 	log('Initialized, use CMLSinjectLiquidAd.push({ pid: #, sid: # }) to inject.');
 
 	// Process existing requests
-	if (window.CMLSinjectLiquidAd && window.CMLSinjectLiquidAd.length) {
-		for(var i = 0; i < window.CMLSinjectLiquidAd.length; i++) {
-			processLiquid(window.CMLSinjectLiquidAd[i]);
+	if (w.CMLSinjectLiquidAd && w.CMLSinjectLiquidAd.length) {
+		for(var i = 0; i < w.CMLSinjectLiquidAd.length; i++) {
+			processLiquid(w.CMLSinjectLiquidAd[i]);
 		}
 	}
 
-	window.CMLSinjectLiquidAd = new LiquidInjectorArray();
+	w.CMLSinjectLiquidAd = new LiquidInjectorArray();
 	log('Listening for future requests.');
 
 }(jQuery, window.self));
