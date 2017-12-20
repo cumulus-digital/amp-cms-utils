@@ -24,7 +24,7 @@
 
 	var scriptName = 'LIQUID INJECTOR',
 		//nameSpace = 'liquidInjector',
-		version = '0.3',
+		version = '0.4',
 		w = window;
 
 	function log() {
