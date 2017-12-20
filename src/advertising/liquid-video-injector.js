@@ -133,4 +133,4 @@
 	window.CMLSinjectLiquidAd = new LiquidInjectorArray();
 	log('Listening for future requests.');
 
-}(jQuery, window));
+}(jQuery, window.self));
