@@ -40,22 +40,17 @@
 		}
 	};
 
-	log('Finding switchstream links on page.');
+	log('Initializing switchstream links on page.');
 
 	$(function(){
-		$('.tgmp-switchstream').each(function(){
-			var $this = $(this);
-
-			if ($this.attr('data-tgmp-switchstream')) {
-				log('Already initialized for this link', this);
-			}
-
+		$('.tgmp-switchstream').on('click', function(e){
+			log('Intercepted click', this);
 			var	classList = this.className,
 				streamid = classList.match(/tgmp\-streamid\-(\w+)/i),
 				theme = classList.indexOf('tgmp-theme') > -1 ? classList.match(/tgmp\-theme\-(\d+)/i)[1] : null,
 				autostart = classList.indexOf('tgmp-autostart') > -1 ? true : false;
 
-			log('Initializing switchstream link', this, streamid, theme, autostart);
+			log('Got switchstream link', this, streamid, theme, autostart);
 
 			if (streamid.length < 2) {
 				log('No stream ID provided, exiting.', streamid, streamid.length);
@@ -63,15 +58,8 @@
 			}
 
 			streamid = streamid[1];
-
-			$this.click(function(e){
-				e.preventDefault();
-				window._CMLS.switchTGMPStream(streamid, autostart, theme);
-			});
-			$this.attr('data-tgmp-switchstream', true);
-
-			log('Initialized for link', this);
-
+			e.preventDefault();
+			window._CMLS.switchTGMPStream(streamid, autostart, theme);
 		});
 	});
 }(jQuery, window.self));
