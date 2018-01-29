@@ -7,142 +7,19 @@
 		"uuidString": "173E6D12-95D9-4A11-ABB8-3CAD58B1B762"
 		}
 	],
-"creatorBuild": "26148",
+"creatorBuild": "26261",
 "files": {
-	"\/dist\/advertising\/auto-refresh-ads-min.js": {
-		"ft": 64,
-		"ma": 1,
-		"mi": 1,
-		"oA": 1,
-		"oAP": "\/dist\/advertising\/auto-refresh-ads-min-min.js",
-		"oF": 0,
-		"sC": 1,
-		"tS": 0
-		},
-	"\/dist\/advertising\/auto-refresh-ads-min.js.map": {
+	"\/.gitignore": {
 		"cB": 0,
 		"ft": 8192,
 		"oA": 2,
-		"oAP": "\/dist\/advertising\/auto-refresh-ads-min.js.map",
+		"oAP": "\/dist\/.gitignore",
 		"oF": 0
 		},
-	"\/dist\/advertising\/nav-through-player-min.js": {
-		"ft": 64,
-		"ma": 1,
-		"mi": 1,
+	"\/dist": {
+		"ft": 65536,
 		"oA": 1,
-		"oAP": "\/dist\/advertising\/nav-through-player-min-min.js",
-		"oF": 0,
-		"sC": 1,
-		"tS": 0
-		},
-	"\/dist\/advertising\/nav-through-player-min.js.map": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 2,
-		"oAP": "\/dist\/advertising\/nav-through-player-min.js.map",
-		"oF": 0
-		},
-	"\/dist\/advertising\/pushdown-min.js": {
-		"ft": 64,
-		"ma": 1,
-		"mi": 1,
-		"oA": 0,
-		"oAP": "\/dist\/advertising\/pushdown-min-min.js",
-		"oF": 0,
-		"sC": 1,
-		"tS": 0
-		},
-	"\/dist\/advertising\/pushdown-min.js.map": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 2,
-		"oAP": "\/dist\/advertising\/pushdown-min.js.map",
-		"oF": 0
-		},
-	"\/dist\/advertising\/wallpaper-injector-min.js": {
-		"ft": 64,
-		"ma": 1,
-		"mi": 1,
-		"oA": 1,
-		"oAP": "\/dist\/advertising\/wallpaper-injector-min-min.js",
-		"oF": 0,
-		"sC": 1,
-		"tS": 0
-		},
-	"\/dist\/advertising\/wallpaper-injector-min.js.map": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 2,
-		"oAP": "\/dist\/advertising\/wallpaper-injector-min.js.map",
-		"oF": 0
-		},
-	"\/dist\/compiled-allsites-min.js": {
-		"ft": 64,
-		"ma": 1,
-		"mi": 1,
-		"oA": 1,
-		"oAP": "\/dist\/compiled-allsites-min-min.js",
-		"oF": 0,
-		"sC": 1,
-		"tS": 0
-		},
-	"\/dist\/compiled-allsites-min.js.map": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 2,
-		"oAP": "\/dist\/compiled-allsites-min.js.map",
-		"oF": 0
-		},
-	"\/dist\/smartbanner\/injector-min.js": {
-		"ft": 64,
-		"ma": 1,
-		"mi": 1,
-		"oA": 1,
-		"oAP": "\/dist\/smartbanner\/injector-min-min.js",
-		"oF": 0,
-		"sC": 1,
-		"tS": 0
-		},
-	"\/dist\/smartbanner\/injector-min.js.map": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 2,
-		"oAP": "\/dist\/smartbanner\/injector-min.js.map",
-		"oF": 0
-		},
-	"\/dist\/smartbanner\/smartbanner-min.js": {
-		"ft": 64,
-		"ma": 1,
-		"mi": 1,
-		"oA": 1,
-		"oAP": "\/dist\/smartbanner\/smartbanner-min-min.js",
-		"oF": 0,
-		"sC": 1,
-		"tS": 0
-		},
-	"\/dist\/smartbanner\/smartbanner-min.js.map": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 2,
-		"oAP": "\/dist\/smartbanner\/smartbanner-min.js.map",
-		"oF": 0
-		},
-	"\/dist\/smartbanner\/smartbanner.css": {
-		"aP": 0,
-		"bl": 0,
-		"ft": 16,
-		"ma": 0,
-		"oA": 1,
-		"oAP": "\/dist\/smartbanner\/smartbanner-min.css",
-		"oF": 0,
-		"oS": 0
-		},
-	"\/dist\/smartbanner\/smartbanner.css.map": {
-		"cB": 0,
-		"ft": 8192,
-		"oA": 2,
-		"oAP": "\/dist\/smartbanner\/smartbanner.css.map",
+		"oAP": "\/dist\/dist",
 		"oF": 0
 		},
 	"\/src\/advertising\/auto-refresh-ads.js": {
@@ -171,7 +48,7 @@
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/advertising\/globalize-sgroups-min.js",
-		"oF": 1,
+		"oF": 0,
 		"sC": 1,
 		"tS": 0
 		},
@@ -181,7 +58,7 @@
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/advertising\/liquid-video-injector-min.js",
-		"oF": 0,
+		"oF": 1,
 		"sC": 1,
 		"tS": 0
 		},
@@ -211,7 +88,7 @@
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/advertising\/player-tracking-dfp-injection-min.js",
-		"oF": 1,
+		"oF": 0,
 		"sC": 1,
 		"tS": 0
 		},
@@ -221,7 +98,7 @@
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/advertising\/pushdown-vast-min.js",
-		"oF": 1,
+		"oF": 0,
 		"sC": 1,
 		"tS": 0
 		},
@@ -241,7 +118,7 @@
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/advertising\/teadsinjector-min.js",
-		"oF": 1,
+		"oF": 0,
 		"sC": 1,
 		"tS": 0
 		},
@@ -291,7 +168,7 @@
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/misc\/addthis-injector-min.js",
-		"oF": 1,
+		"oF": 0,
 		"sC": 1,
 		"tS": 0
 		},
@@ -301,7 +178,7 @@
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/misc\/auto-reload-min.js",
-		"oF": 1,
+		"oF": 0,
 		"sC": 1,
 		"tS": 0
 		},
@@ -321,7 +198,7 @@
 		"mi": 1,
 		"oA": 1,
 		"oAP": "\/dist\/misc\/gtm-promoreel-tracking-min.js",
-		"oF": 1,
+		"oF": 0,
 		"sC": 1,
 		"tS": 0
 		},
@@ -355,13 +232,23 @@
 		"sC": 1,
 		"tS": 0
 		},
+	"\/src\/misc\/tgmp-switchstream.js": {
+		"ft": 64,
+		"ma": 1,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "\/dist\/misc\/tgmp-switchstream-min.js",
+		"oF": 1,
+		"sC": 1,
+		"tS": 0
+		},
 	"\/src\/smartbanner\/injector.js": {
 		"ft": 64,
 		"ma": 1,
 		"mi": 1,
-		"oA": 0,
+		"oA": 1,
 		"oAP": "\/dist\/smartbanner\/injector-min.js",
-		"oF": 0,
+		"oF": 1,
 		"sC": 1,
 		"tS": 0
 		},
@@ -369,9 +256,9 @@
 		"ft": 64,
 		"ma": 1,
 		"mi": 1,
-		"oA": 0,
+		"oA": 1,
 		"oAP": "\/dist\/smartbanner\/smartbanner-min.js",
-		"oF": 0,
+		"oF": 1,
 		"sC": 1,
 		"tS": 0
 		},
@@ -382,9 +269,9 @@
 		"ft": 8,
 		"iC": 1,
 		"ma": 1,
-		"oA": 0,
+		"oA": 1,
 		"oAP": "\/dist\/smartbanner\/smartbanner.css",
-		"oF": 0,
+		"oF": 1,
 		"oS": 1,
 		"rrU": 1
 		}
@@ -397,7 +284,8 @@
 	"creationDate": 500595427,
 	"displayValue": "amp-cms-utils",
 	"displayValueWasSetByUser": 0,
-	"iconImageName": "meme-krieger"
+	"iconImageName": "meme-krieger",
+	"lastBuiltDate": 538941055
 	},
 "projectSettings": {
 	"abortBuildOnError": 1,
@@ -652,8 +540,8 @@
 	"bowerSaveDevDependencies": 0,
 	"bowerUseExactVersion": 0,
 	"browserRefreshDelay": 0,
-	"buildFolderActive": 0,
-	"buildFolderName": "build",
+	"buildFolderActive": 1,
+	"buildFolderName": "dist",
 	"cleanBuild": 1,
 	"coffeeLintFlags2": {
 		"arrow_spacing": {
@@ -968,6 +856,10 @@
 		"id-match": {
 			"active": 0,
 			"optionString": "'^[a-z]+([A-Z][a-z]+)*$', {'properties': false, 'onlyDeclarations': true}"
+			},
+		"implicit-arrow-linebreak": {
+			"active": 0,
+			"optionString": "'beside'"
 			},
 		"indent": {
 			"active": 0,
@@ -2203,7 +2095,7 @@
 		"autoOutputPathRelativePath": "\/min",
 		"autoOutputPathReplace1": "src",
 		"autoOutputPathReplace2": "dist",
-		"autoOutputPathStyle": 3,
+		"autoOutputPathStyle": 0,
 		"createSourceMap": 1,
 		"minifyOutput": 1,
 		"syntaxCheckerStyle": 1,
@@ -2332,7 +2224,7 @@
 		"autoOutputPathRelativePath": "..\/css",
 		"autoOutputPathReplace1": "src",
 		"autoOutputPathReplace2": "dist",
-		"autoOutputPathStyle": 3,
+		"autoOutputPathStyle": 0,
 		"createSourceMap": 1,
 		"debugStyle": 0,
 		"importCSS": 1,
@@ -2374,7 +2266,7 @@
 	"overrideExternalServerCSS": 0,
 	"previewPathAddition": "",
 	"skippedFoldersString": "log, _logs, logs, _cache, cache, \/storage\/framework\/sessions, node_modules",
-	"sourceFolderName": "source",
+	"sourceFolderName": "src",
 	"susyVersion": 3,
 	"uglifyDefinesString": "",
 	"uglifyFlags2": {
@@ -2544,7 +2436,7 @@
 			}
 		},
 	"uglifyReservedNamesString": "$",
-	"websiteRelativeRoot": ""
+	"websiteRelativeRoot": "\/dist"
 	},
 "settingsFileVersion": "3"
 }
