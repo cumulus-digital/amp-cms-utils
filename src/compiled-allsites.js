@@ -6,7 +6,7 @@
 
 // Advertising libraries
 // @codekit-append "advertising/globalize-sgroups.js"
-// @codekit-append "advertising/teadsinjector.js"
+// DISABLED codekit-append "advertising/teadsinjector.js"
 // DISABLED codekit-append "advertising/pushdown-vast.js"
 // @codekit-append "advertising/pushdown-vast.js"
 // DISABLED codekit-append "advertising/liquid-video-injector.js"
