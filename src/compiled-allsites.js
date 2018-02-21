@@ -7,7 +7,6 @@
 // Advertising libraries
 // @codekit-append "advertising/globalize-sgroups.js"
 // DISABLED codekit-append "advertising/teadsinjector.js"
-// DISABLED codekit-append "advertising/pushdown-vast.js"
 // @codekit-append "advertising/pushdown-vast.js"
 // DISABLED codekit-append "advertising/liquid-video-injector.js"
 // @codekit-append "advertising/player-tracking-dfp-injection.js"
@@ -16,6 +15,7 @@
 // @codekit-append "advertising/nav-through-player.js"
 // @codekit-append "advertising/wallpaper-injector.js"
 // @codekit-append "advertising/player-sponsor-logo.js"
+// @codekit-append "advertising/zergnet-injector.js"
 
 // Misc
 // @codekit-append "misc/gtm-stream-tracking.js"
