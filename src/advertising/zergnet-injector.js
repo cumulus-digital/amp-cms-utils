@@ -15,6 +15,11 @@
 		}
 	}
 
+	if (window.top.NO_ZERGNET || window.parent.NO_ZERGNET || window.NO_ZERGNET) {
+		log('Opted out with window.NO_ZERGNET, ejecting.');
+		return false;
+	}
+
 	var d = window.document;
 
 	// Make sure we're in the right layout
