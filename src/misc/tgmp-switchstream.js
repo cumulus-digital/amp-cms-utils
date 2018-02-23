@@ -17,7 +17,7 @@
 	window._CMLS = window._CMLS || {};
 
 	var scriptName = 'SWITCHSTREAM LINKS',
-		version = '0.3';
+		version = '0.4';
 
 	function log() {
 		if (window._CMLS && window._CMLS.logger) {
@@ -57,11 +57,11 @@
 					'autostart': vars.indexOf('tgmp-autostart') > -1 ? true : false
 				};
 			}
-			if (classes.indexOf('tgmp-switchstream')) {
+			if (classes.indexOf('tgmp-switchstream') > -1) {
 				log('Using element classes');
 				commands = getVars(classes);
 			}
-			if (alt.indexOf('tgmp-switchstream')) {
+			if (alt.indexOf('tgmp-switchstream') > -1) {
 				log('Using element alt attribute');
 				commands = getVars(alt);
 			}
