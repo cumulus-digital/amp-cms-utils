@@ -44,42 +44,44 @@
 
 	$(function(){
 		// tgmp-switchstream tgmp-streamid-laxspec tgmp-autostart
-		$('.tgmp-switchstream,img[alt*="tgmp-switchstream"],a[alt*="tgmp-switchstream"]').on('click.cmls-tg-switchstream', function(e){
-			log('Intercepted click', this);
-			var classes = this.className, alt = this.getAttribute('alt'),
-				commands = { 'streamid': null, 'theme': null, 'autostart': false };
+		$('.tgmp-switchstream,img[alt*="tgmp-switchstream"],a[alt*="tgmp-switchstream"]')
+			.off('click.cmls-tg-switchstream')
+			.on('click.cmls-tg-switchstream', function(e){
+				log('Intercepted click', this);
+				var classes = this.className, alt = this.getAttribute('alt'),
+					commands = { 'streamid': null, 'theme': null, 'autostart': false };
 
-			function getVars(vars) {
-				log('Requested vars', vars);
-				return {
-					'streamid': vars.match(/tgmp\-streamid\-(\w+)/i),
-					'theme': vars.indexOf('tgmp-theme') > -1 ? vars.match(/tgmp\-theme\-(\d+)/i)[1] : null,
-					'autostart': vars.indexOf('tgmp-autostart') > -1 ? true : false
-				};
-			}
-			if (classes.indexOf('tgmp-switchstream') > -1) {
-				log('Using element classes');
-				commands = getVars(classes);
-			}
-			if (alt.indexOf('tgmp-switchstream') > -1) {
-				log('Using element alt attribute');
-				commands = getVars(alt);
-			}
+				function getVars(vars) {
+					log('Requested vars', vars);
+					return {
+						'streamid': vars.match(/tgmp\-streamid\-(\w+)/i),
+						'theme': vars.indexOf('tgmp-theme') > -1 ? vars.match(/tgmp\-theme\-(\d+)/i)[1] : null,
+						'autostart': vars.indexOf('tgmp-autostart') > -1 ? true : false
+					};
+				}
+				if (classes.indexOf('tgmp-switchstream') > -1) {
+					log('Using element classes', classes);
+					commands = getVars(classes);
+				}
+				if (alt.indexOf('tgmp-switchstream') > -1) {
+					log('Using element alt attribute', alt);
+					commands = getVars(alt);
+				}
 
-			log('Got switchstream link', this, commands);
+				log('Got switchstream link', this, commands);
 
-			if (commands.streamid && commands.streamid.length < 2) {
-				log('No stream ID provided, exiting.', commands.streamid, commands.streamid.length);
-				return false;
-			}
+				if (commands.streamid && commands.streamid.length < 2) {
+					log('No stream ID provided, exiting.', commands.streamid, commands.streamid.length);
+					return false;
+				}
 
-			commands.streamid = commands.streamid[1];
-			e.preventDefault();
-			window._CMLS.switchTGMPStream(
-				commands.streamid,
-				commands.autostart,
-				commands.theme
-			);
-		});
+				commands.streamid = commands.streamid[1];
+				e.preventDefault();
+				window._CMLS.switchTGMPStream(
+					commands.streamid,
+					commands.autostart,
+					commands.theme
+				);
+			});
 	});
 }(jQuery, window.self));
