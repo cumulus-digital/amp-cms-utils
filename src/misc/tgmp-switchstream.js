@@ -44,12 +44,13 @@
 
 	$(function(){
 		// tgmp-switchstream tgmp-streamid-laxspec tgmp-autostart
-		$('.tgmp-switchstream,img[alt*="tgmp-switchstream"],a[alt*="tgmp-switchstream"]').on('click', function(e){
+		$('.tgmp-switchstream,img[alt*="tgmp-switchstream"],a[alt*="tgmp-switchstream"]').on('click.cmls-tg-switchstream', function(e){
 			log('Intercepted click', this);
 			var classes = this.className, alt = this.getAttribute('alt'),
-				commands = { streamid: null, theme: null, autostart: false };
+				commands = { 'streamid': null, 'theme': null, 'autostart': false };
 
 			function getVars(vars) {
+				log('Requested vars', vars);
 				return {
 					'streamid': vars.match(/tgmp\-streamid\-(\w+)/i),
 					'theme': vars.indexOf('tgmp-theme') > -1 ? vars.match(/tgmp\-theme\-(\d+)/i)[1] : null,
@@ -65,7 +66,7 @@
 
 			log('Got switchstream link', this, commands);
 
-			if (commands.streamid.length < 2) {
+			if (commands.streamid && commands.streamid.length < 2) {
 				log('No stream ID provided, exiting.', commands.streamid, commands.streamid.length);
 				return false;
 			}
