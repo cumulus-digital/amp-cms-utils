@@ -24,8 +24,8 @@
 
 	// Make sure we're in the right layout
 	if (
-		// Must be a single post layout
-		d.body.className.indexOf('layout-single') < 0 ||
+		// Must be a single post
+		d.body.className.indexOf(' single ') < 0 ||
 		// Must not use the full page layout
 		d.body.className.indexOf('layout-using-template-1') > -1
 	) {
@@ -34,7 +34,11 @@
 	}
 
 	// Find the main page article
-	var main_article = d.querySelector('.wrapper-content .row-1 .column-1 article.post.format-standard,.wrapper-content .row-1 .column-1 article.feed_post,.wrapper-content .row-1 .column-1 article.feed_posts');
+	var main_article = d.querySelector(
+		'.wrapper-content > .grid-container > .row-1 > .column-1 > .block-content > .loop > article.post.format-standard,' +
+		'.wrapper-content > .grid-container > .row-1 > .column-1 > .block-content > .loop > article.feed_post,' +
+		'.wrapper-content > .grid-container > .row-1 > .column-1 > .block-content > .loop > article.feed_posts,'
+	);
 	if ( ! main_article) {
 		log('Could not discover main page article.');
 		return false;
