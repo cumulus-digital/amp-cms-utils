@@ -35,9 +35,9 @@
 
 	// Find the main page article
 	var main_article = d.querySelector(
-		'.wrapper-content > .grid-container > .row-1 > .column-1 > .block-content > .loop > article.post.format-standard,' +
-		'.wrapper-content > .grid-container > .row-1 > .column-1 > .block-content > .loop > article.feed_post,' +
-		'.wrapper-content > .grid-container > .row-1 > .column-1 > .block-content > .loop > article.feed_posts,'
+		'.wrapper-content > .grid-container > .row-1 > .column-1 > .block-type-content > .block-content > .loop > article.post.format-standard,' +
+		'.wrapper-content > .grid-container > .row-1 > .column-1 > .block-type-content > .block-content > .loop > article.feed_post,' +
+		'.wrapper-content > .grid-container > .row-1 > .column-1 > .block-type-content > .block-content > .loop > article.feed_posts'
 	);
 	if ( ! main_article) {
 		log('Could not discover main page article.');
