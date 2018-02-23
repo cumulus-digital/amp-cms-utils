@@ -17,7 +17,7 @@
 	window._CMLS = window._CMLS || {};
 
 	var scriptName = 'SWITCHSTREAM LINKS',
-		version = '0.2';
+		version = '0.3';
 
 	function log() {
 		if (window._CMLS && window._CMLS.logger) {
@@ -58,9 +58,11 @@
 				};
 			}
 			if (classes.indexOf('tgmp-switchstream')) {
+				log('Using element classes');
 				commands = getVars(classes);
 			}
 			if (alt.indexOf('tgmp-switchstream')) {
+				log('Using element alt attribute');
 				commands = getVars(alt);
 			}
 
