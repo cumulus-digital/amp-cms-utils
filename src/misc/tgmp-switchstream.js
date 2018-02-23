@@ -43,23 +43,40 @@
 	log('Initializing switchstream links on page.');
 
 	$(function(){
-		$('.tgmp-switchstream').on('click', function(e){
+		// tgmp-switchstream tgmp-streamid-laxspec tgmp-autostart
+		$('.tgmp-switchstream,img[alt*="tgmp-switchstream"],a[alt*="tgmp-switchstream"]').on('click', function(e){
 			log('Intercepted click', this);
-			var	classList = this.className,
-				streamid = classList.match(/tgmp\-streamid\-(\w+)/i),
-				theme = classList.indexOf('tgmp-theme') > -1 ? classList.match(/tgmp\-theme\-(\d+)/i)[1] : null,
-				autostart = classList.indexOf('tgmp-autostart') > -1 ? true : false;
+			var classes = this.className, alt = this.getAttribute('alt'),
+				commands = { streamid: null, theme: null, autostart: false };
 
-			log('Got switchstream link', this, streamid, theme, autostart);
+			function getVars(vars) {
+				return {
+					'streamid': vars.match(/tgmp\-streamid\-(\w+)/i),
+					'theme': vars.indexOf('tgmp-theme') > -1 ? vars.match(/tgmp\-theme\-(\d+)/i)[1] : null,
+					'autostart': vars.indexOf('tgmp-autostart') > -1 ? true : false
+				};
+			}
+			if (classes.indexOf('tgmp-switchstream')) {
+				commands = getVars(classes);
+			}
+			if (alt.indexOf('tgmp-switchstream')) {
+				commands = getVars(alt);
+			}
 
-			if (streamid.length < 2) {
-				log('No stream ID provided, exiting.', streamid, streamid.length);
+			log('Got switchstream link', this, commands);
+
+			if (commands.streamid.length < 2) {
+				log('No stream ID provided, exiting.', commands.streamid, commands.streamid.length);
 				return false;
 			}
 
-			streamid = streamid[1];
+			commands.streamid = commands.streamid[1];
 			e.preventDefault();
-			window._CMLS.switchTGMPStream(streamid, autostart, theme);
+			window._CMLS.switchTGMPStream(
+				commands.streamid,
+				commands.autostart,
+				commands.theme
+			);
 		});
 	});
 }(jQuery, window.self));
