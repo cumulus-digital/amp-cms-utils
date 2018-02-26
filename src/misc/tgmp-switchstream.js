@@ -59,11 +59,11 @@
 						'autostart': vars.indexOf('tgmp-autostart') > -1 ? true : false
 					};
 				}
-				if (classes.indexOf('tgmp-switchstream') > -1) {
+				if (classes && classes.indexOf('tgmp-switchstream') > -1) {
 					log('Using element classes', classes);
 					commands = getVars(classes);
 				}
-				if (alt.indexOf('tgmp-switchstream') > -1) {
+				if (alt && alt.indexOf('tgmp-switchstream') > -1) {
 					log('Using element alt attribute', alt);
 					commands = getVars(alt);
 				}
