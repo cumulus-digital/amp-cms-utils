@@ -50,12 +50,20 @@
 		return false;
 	}
 
+	// Find the parent column
+	var column = d.querySelector('.wrapper-content > .grid-container > .row-1 > .column-1');
+	if ( ! column) {
+		log('Could not determine column.');
+		return false;
+	}
+
 	log('Injecting Zergnet');
 
 	// Create the injection point
 	var injectpoint = d.createElement('div');
 	injectpoint.id = "zergnet-widget-61785";
-	main_article.parentNode.insertBefore(injectpoint, main_article.nextSibling);
+	//main_article.parentNode.insertBefore(injectpoint, main_article.nextSibling);
+	column.appendChild(injectpoint);
 
 	// Zergnet code
 	var zergnet = document.createElement('script');
