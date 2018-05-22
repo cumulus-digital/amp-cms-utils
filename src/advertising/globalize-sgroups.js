@@ -59,10 +59,26 @@
 			window.corpDataLayer = window.corpDataLayer || [];
 
 			log('Firing events');
+			function fireEvents(e) {
+				log('Firing event', e);
+				window.sharedContainerDataLayer.push({'event': e});
+				window.corpDataLayer.push({'event': e});
+				window._CMLS.triggerEvent(window, 'cms-sgroup', e);
+			}
+
+			var isWestwood = false;
 			for (var i = 0, j = events.length; i < j; i++) {
-				window.sharedContainerDataLayer.push({'event': events[i]});
-				window.corpDataLayer.push({'event': events[i]});
-				window._CMLS.triggerEvent(window, 'cms-sgroup', events[i]);
+				fireEvents(events[i]);
+				
+				if (events[i].indexOf('Westwood One') > -1) {
+					isWestwood = true;
+				}
+			}
+			
+			if (isWestwood === true) {
+				fireEvents('Westwood One Property');
+			} else {
+				fireEvents('Cumulus Owned and Operated');
 			}
 		}
 	};

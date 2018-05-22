@@ -7,7 +7,7 @@
 		"uuidString": "173E6D12-95D9-4A11-ABB8-3CAD58B1B762"
 		}
 	],
-"creatorBuild": "26330",
+"creatorBuild": "26680",
 "files": {
 	"\/.gitignore": {
 		"cB": 0,
@@ -295,6 +295,7 @@
 	"displayValue": "amp-cms-utils",
 	"displayValueWasSetByUser": 0,
 	"iconImageName": "meme-krieger",
+	"iconImageWasSetByUser": 0,
 	"lastBuiltDate": 540918857
 	},
 "projectSettings": {
@@ -2098,6 +2099,7 @@
 		"autoOutputPathReplace1": "",
 		"autoOutputPathReplace2": "",
 		"autoOutputPathStyle": 0,
+		"outputFormat": 0,
 		"quality": 100
 		},
 	"languageDefaultsJS": {
