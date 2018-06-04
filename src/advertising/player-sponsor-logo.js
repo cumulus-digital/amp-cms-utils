@@ -84,25 +84,24 @@
 						'}' +
 						'#CMLSPlayerSponsorship.cmls-player-tg {' +
 							'left: 50%;' +
-							'transform: translate(-520px, 0);' +
+							'transform: translate(+300px, 0);' +
 						'}' +
 						'#CMLSPlayerSponsorship.cmls-player-triton {' +
 							'left: 50%;' +
 							'transform: translate(30px, 0);' +
 						'}' +
 						'#CMLSPlayerSponsorship.cmls-player-pos-bottom {' +
-							'bottom: 10px;' +
+							'bottom: 4px;' +
 						'}' +
 						'#CMLSPlayerSponsorship.cmls-player-pos-top {' +
-							'top: 10px;' +
+							'top: 4px;' +
 						'}' +
 						'#CMLSPlayerSponsorship.cmls-player-triton.cmls-player-pos-top {' +
 							'top: 5px;' +
 						'}' +
 						'@media (max-width: 75rem) {' +
 							'#CMLSPlayerSponsorship.cmls-player-tg {' +
-								'left: 80px;' +
-								'transform: translate(0,0);' +
+								'left: 50%;' +
 							'}' +
 						'}' +
 						'@media (max-width: 1042px) {' +
