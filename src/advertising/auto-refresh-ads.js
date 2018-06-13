@@ -42,9 +42,11 @@
 			if (player.type === window._CMLS.const.PLAYER_TUNEGENIE) {
 				var iframe = window.top.querySelector('iframe#page_frame');
 				if (iframe && iframe.contentWindow) {
+					log('Window context is page_frame');
 					return iframe.contentWindow;
 				}
 			}
+			log('Window context is window');
 			return window;
 		}
 
@@ -69,9 +71,9 @@
 				return;
 			}
 
-			var now = (new Date()).getTime();
+			var now = new Date();
 			log('Checking timer', now, fireTime);
-			if (now >= fireTime) {
+			if (now.getTime() >= fireTime.getTime()) {
 				// It's time to fire a refresh!
 				fire();
 				return;
@@ -110,6 +112,7 @@
 
 			// Set the fire time
 			if (initFireTime && initFireTime instanceof Date) {
+				log('Start called with a fire time.', initFireTime);
 				fireTime = initFireTime;
 			} else {
 				me.resetFireTime();
@@ -181,7 +184,7 @@
 		}
 
 		// If we've been instantiated with an initial fire time, use it
-		if (fireTime) {
+		if (fireTime && fireTime instanceof Date) {
 			log('Instantiated with a time to fire, using it!');
 			me.start(fireTime);
 		}
@@ -233,6 +236,7 @@
 		}
 	}
 
+	log('Initializing.');
 	initTest();
 
 }(window.self));
