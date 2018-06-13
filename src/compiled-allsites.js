@@ -7,7 +7,6 @@
 // Advertising interface library
 // @codekit-append "advertising/taginterface/detector.js"
 // 
-// @codekit-append "advertising/globalize-sgroups.js"
 // DISABLED codekit-append "advertising/teadsinjector.js"
 // @codekit-append "advertising/pushdown-vast.js"
 // DISABLED codekit-append "advertising/liquid-video-injector.js"
@@ -29,3 +28,6 @@
 // @codekit-append "misc/social-listen-live-link.js"
 // @codekit-append "misc/inform-video-player.js"
 // @codekit-append "misc/tgmp-switchstream.js"
+
+// Globalize sgroups at the end
+// @codekit-append "advertising/globalize-sgroups.js"
