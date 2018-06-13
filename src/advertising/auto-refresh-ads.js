@@ -40,7 +40,7 @@
 		// Retrieves the window to refresh
 		function getWindow() {
 			if (player.type === window._CMLS.const.PLAYER_TUNEGENIE) {
-				var iframe = window.top.querySelector('iframe#page_frame');
+				var iframe = window.top.document.querySelector('iframe#page_frame');
 				if (iframe && iframe.contentWindow) {
 					log('Window context is page_frame');
 					return iframe.contentWindow;
