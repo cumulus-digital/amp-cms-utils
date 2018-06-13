@@ -195,9 +195,11 @@
 			log('cGroups not available, will wait for cms-sgroup event.');
 			window.addEventListener(
 				'cms-sgroup',
-				function() {
-					log('cms-sgroup event fired!');
-					initTest();
+				function(e) {
+					log('cms-sgroup event fired!', e);
+					if ( ! initialized) {
+						initTest();
+					}
 				},
 				false
 			);
