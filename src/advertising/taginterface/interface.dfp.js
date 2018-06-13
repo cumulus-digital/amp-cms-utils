@@ -39,7 +39,7 @@
 
 		// Queue a command
 		this.queue = function(callback) {
-			this.rawInterface().cmd.push(callback);
+			me.rawInterface().cmd.push(callback);
 		};
 
 		// Return the pubads interface
@@ -49,7 +49,6 @@
 
 		// Adds a listener
 		this.addListener = function(e, func) {
-			var me = this;
 			me.rawInterface().cmd.push(function(){
 				me.pubads().addEventListener(e, func);
 			});
