@@ -112,6 +112,36 @@
 		"sC": 1,
 		"tS": 0
 		},
+	"\/src\/advertising\/taginterface\/detector.js": {
+		"ft": 64,
+		"ma": 1,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "\/dist\/advertising\/taginterface\/detector-min.js",
+		"oF": 0,
+		"sC": 1,
+		"tS": 0
+		},
+	"\/src\/advertising\/taginterface\/interface.dfp.js": {
+		"ft": 64,
+		"ma": 1,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "\/dist\/advertising\/taginterface\/interface.dfp-min.js",
+		"oF": 0,
+		"sC": 1,
+		"tS": 0
+		},
+	"\/src\/advertising\/taginterface\/registration.js": {
+		"ft": 64,
+		"ma": 1,
+		"mi": 1,
+		"oA": 1,
+		"oAP": "\/dist\/advertising\/taginterface\/registration-min.js",
+		"oF": 0,
+		"sC": 1,
+		"tS": 0
+		},
 	"\/src\/advertising\/teadsinjector.js": {
 		"ft": 64,
 		"ma": 1,

@@ -110,11 +110,18 @@
 			}
 
 			var windowContext = getWindow();
+			windowContext._CMLS.adTag().queue(function(){
+				log('Refreshing page ads.');
+				windowContext._CMLS.adTag().refresh();
+				that.start();
+			});
+			/*
 			windowContext.googletag.cmd.push(function(){
 				log('Refreshing page ads.');
 				windowContext.googletag.pubads().refresh();
 				that.start();
 			});
+			*/
 		}
 
 		function getFireTime(){

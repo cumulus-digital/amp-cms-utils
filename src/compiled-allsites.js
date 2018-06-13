@@ -4,7 +4,9 @@
 
 // @codekit-append "common.js"
 
-// Advertising libraries
+// Advertising interface library
+// @codekit-append "advertising/taginterface/detector.js"
+// 
 // @codekit-append "advertising/globalize-sgroups.js"
 // DISABLED codekit-append "advertising/teadsinjector.js"
 // @codekit-append "advertising/pushdown-vast.js"
