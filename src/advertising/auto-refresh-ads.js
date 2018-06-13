@@ -173,9 +173,10 @@
 				return false;
 			}
 
-			log('Firing!');
-
 			var windowContext = getWindow();
+
+			log('Firing!', windowContext._CMLS.adTag);
+
 			windowContext._CMLS.adTag.queue(function() {
 				log('Refreshing page ads.');
 				windowContext._CMLS.adTag.refresh();
