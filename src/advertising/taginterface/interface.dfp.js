@@ -20,7 +20,7 @@
 		}
 	}
 
-	function dfp() {
+	function DFP() {
 
 		this.identity = 'dfp';
 		var me = this;
@@ -108,6 +108,6 @@
 
 	}
 
-	window._CMLS[parentNameSpace].registeredDetectors.push(dfp());
+	window._CMLS[parentNameSpace].registeredDetectors.push(new DFP());
 
 }(window.self, jQuery));
