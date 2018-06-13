@@ -17,7 +17,7 @@
 
 	// Empty stub interface
 	/* jshint ignore:start */
-	window._CMLS.adTag = function() {
+	var StubInterface = function() {
 		var scriptName = 'STUB INTERFACE',
 			nameSpace = 'InterfaceSTUB',
 			parentNameSpace = 'adTagDetection',
@@ -49,6 +49,7 @@
 
 		return this;
 	};
+	window._CMLS.adTag = new StubInterface();
 	/* jshint ignore:end */
 
 	var detectionLoop, detectionTimes;

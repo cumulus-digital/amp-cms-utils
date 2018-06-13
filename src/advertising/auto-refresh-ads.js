@@ -176,9 +176,9 @@
 			log('Firing!');
 
 			var windowContext = getWindow();
-			windowContext._CMLS.adTag().queue(function() {
+			windowContext._CMLS.adTag.queue(function() {
 				log('Refreshing page ads.');
-				windowContext._CMLS.adTag().refresh();
+				windowContext._CMLS.adTag.refresh();
 				me.start();
 			});
 		}
