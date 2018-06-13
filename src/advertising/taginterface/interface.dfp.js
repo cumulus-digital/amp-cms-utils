@@ -6,7 +6,7 @@
 	var scriptName = 'DFP INTERFACE',
 		//nameSpace = 'InterfaceDFP',
 		parentNameSpace = 'adTagDetection',
-		version = '0.1';
+		version = '0.1.1';
 
 	window._CMLS = window._CMLS || {};
 
@@ -20,7 +20,7 @@
 		}
 	}
 
-	var dfp = function dfp() {
+	function dfp() {
 
 		this.identity = 'dfp';
 		var me = this;
@@ -104,9 +104,9 @@
 			});
 		};
 
-		return dfp;
+		return this;
 
-	};
+	}
 
 	window._CMLS[parentNameSpace].registeredDetectors.push(dfp);
 
