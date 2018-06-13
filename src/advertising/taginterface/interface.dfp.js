@@ -20,7 +20,7 @@
 		}
 	}
 
-	function dfp() {
+	var dfp = function dfp() {
 
 		this.identity = 'dfp';
 		var me = this;
@@ -104,9 +104,9 @@
 			});
 		};
 
-		return this;
+		return me;
 
-	}
+	};
 
 	window._CMLS[parentNameSpace].registeredDetectors.push(dfp);
 
