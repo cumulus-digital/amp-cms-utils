@@ -6,7 +6,7 @@
 	
 	var scriptName = "AUTO REFRESH ADS",
 		nameSpace = "autoRefreshAds",
-		version = "0.5";
+		version = "0.5.1";
 
 	function log() {
 		if(window.top._CMLS && window.top._CMLS.hasOwnProperty('logger')) {
@@ -72,7 +72,7 @@
 			}
 
 			var now = new Date();
-			log('Checking timer', now, fireTime);
+			log('Checking timer', [now.toLocaleString(), fireTime.toLocaleString()]);
 			if (now.getTime() >= fireTime.getTime()) {
 				// It's time to fire a refresh!
 				fire();
@@ -80,7 +80,7 @@
 			}
 
 			// Not ready yet, start a new cycle
-			timer = setTimeout(checkTimer, 5000);
+			timer = setTimeout(checkTimer, 10000);
 		}
 
 		// Expose a way to check the current timer state
