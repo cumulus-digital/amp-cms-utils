@@ -1,235 +1,225 @@
-;(function(window, undefined){
-
-	var scriptName = 'AUTO REFRESH ADS',
-		nameSpace = 'autoRefreshAds',
-		version = '0.4.15';
-
-	var w = window,
-		wt = window.top,
-		ws = window.self;
-
-
-	if (w.DISABLE_AUTO_REFRESH_ADS || ws.DISABLE_AUTO_REFRESH_ADS || wt.DISABLE_AUTO_REFRESH_ADS) {
-		return;
-	}
-
-	// Time before refreshing ads, in minutes
-	w._CMLS.autoRefreshAdsTimer = ws._CMLS.autoRefreshAdsTimer || 4;
-
-	if (wt._CMLS && wt._CMLS.hasOwnProperty(nameSpace)) {
-		if (wt._CMLS[nameSpace].checkState()) {
-			wt._CMLS[nameSpace].start();
-		}
-		return;
-	}
+/**
+ * Automatically refresh ads on the page while playing stream
+ * for Talk and Sports format stations.
+ */
+;(function(window, undefined) {
+	
+	var scriptName = "AUTO REFRESH ADS",
+		nameSpace = "autoRefreshAds",
+		version = "0.5";
 
 	function log() {
-		if(wt._CMLS && wt._CMLS.hasOwnProperty('logger')) {
-			wt._CMLS.logger(scriptName + ' v' + version, arguments);
+		if(window.top._CMLS && window.top._CMLS.hasOwnProperty('logger')) {
+			window.top._CMLS.logger(scriptName + ' v' + version, arguments);
 		}
 	}
 
-	var AutoRefresher = function(fireEarly){
-		var player = wt._CMLS.whichPlayer(),
-			timer = null,
-			fireTime = null,
-			on = false,
-			that = this;
+	if (window.DISABLE_AUTO_REFRESH_ADS) {
+		log('Auto Refresh Ads is disabled');
+		return false;
+	}
 
-		function getWindow(){
-			if (w.tgmp) {
-				var iframe = wt.document.querySelector('iframe#page_frame');
+	// Time before refreshing ads
+	window._CMLS.autoRefreshAdsTimer = window._CMLS.autoRefreshAdsTimer || 4;
+
+	var AutoRefresher = function(instFireTime) {
+		var me = this,
+
+			// Determine which player we're using
+			player = window._CMLS.whichPlayer(),
+
+			// Contains the current timer
+			timer = null,
+
+			// When the next firing event should occur
+			fireTime = instFireTime || null,
+
+			// Current state
+			on = false;
+
+		// Retrieves the window to refresh
+		function getWindow() {
+			if (player.type === window._CMLS.const.PLAYER_TUNEGENIE) {
+				var iframe = window.top.querySelector('iframe#page_frame');
 				if (iframe && iframe.contentWindow) {
 					return iframe.contentWindow;
 				}
 			}
-			return w;
+			return window;
 		}
 
-		function checkConditions(){
+		// Checks that autorefresh should happen
+		function checkConditions() {
+			// if autoReload is active, don't refresh ads
 			if (
-				//wt._CMLS.isHomepage(ws) &&
-				wt._CMLS.autoReload &&
-				wt._CMLS.autoReload.active
+				window.top._CMLS.autoReload &&
+				window.top._CMLS.autoReload.active
 			) {
-				log('AutoReloadPage is active, so we will not additionally refresh page ads.');
+				log('AutoReloadPage is active, autoRefreshAds will be disabled.');
 				return false;
 			}
-
 			return true;
 		}
 
-		function checkTimer(){
+		// Check if we should fire now
+		function checkTimer() {
 			if ( ! checkConditions()) {
-				log('Conditions went bad while timer was running, killing timer.');
-				stop();
+				log('Conditions have gone bad, killing timer.');
+				me.stop();
 				return;
 			}
 
-			var now = new Date().getTime();
+			var now = (new Date()).getTime();
 			if (now >= fireTime) {
+				// It's time to fire a refresh!
 				fire();
 				return;
 			}
+
+			// Not ready yet, start a new cycle
 			timer = setTimeout(checkTimer, 5000);
 		}
 
-		function checkState(){
+		// Expose a way to check the current timer state
+		this.checkState = function() {
 			return on;
-		}
-		this.checkState = checkState;
+		};
 
-		function stop(){
+		// Expose a way to stop the timer
+		this.stop = function() {
 			log('Stopping timer.');
 			clearTimeout(timer);
 			timer = null;
 			fireTime = null;
 			on = false;
-		}
-		this.stop = stop;
+		};
 
-		function start(fireEarly){
-			stop();
+		/**
+		 * Exposed method to start the timer
+		 * @param  {boolean} initFireTime (optional) Specify an initial start time
+		 * @return {AutoRefresher}
+		 */
+		this.start = function(initFireTime) {
+			me.stop();
 
-			if ( ! checkConditions()){
-				return;
+			if ( ! checkConditions()) {
+				log('Conditions are bad, timer will not start.');
+				return me;
 			}
 
-			fireTime = fireEarly ? fireEarly : new Date(new Date().getTime() + w._CMLS.autoRefreshAdsTimer*60000);
+			// Set the fire time
+			if (initFireTime && initFireTime instanceof Date) {
+				fireTime = initFireTime;
+			} else {
+				me.resetFireTime();
+			}
+
 			log('Starting timer, will fire at ' + fireTime.toLocaleString());
 			checkTimer();
 			on = true;
-		}
-		this.start = start;
+		};
 
-		function fire(){
+		// Expose method to tear down timer and end listeners
+		this.destroy = function() {
+			me.stop();
+			// Do we need to remove events??
+		};
+
+		// Expose method to retrieve fire time
+		this.getFireTime = function() {
+			return fireTime;
+		};
+
+		// Expose method to reset fire time
+		this.resetFireTime = function() {
+			fireTime = new Date(
+				(new Date()).getTime() + (window._CMLS.autoRefreshAdsTimer * 60000)
+			);
+		};
+
+		// Check current state of TuneGenie player
+		function checkTuneGeniePlayerState(e) {
+			if (e === true) {
+				log('TuneGenie Player is streaming.');
+				me.start();
+				return true;
+			}
+			log('TuneGenie Player has stopped.');
+			me.stop();
+			return false;
+		}
+
+		// Initialize TG player events
+		if (player.type === window._CMLS.const.PLAYER_TUNEGENIE) {
+			if (window.top.tgmp && window.top.TGMP_EVENTS) {
+				window.top.tgmp.addEventListener(
+					window.top.TGMP_EVENTS.streamplaying,
+					checkTuneGeniePlayerState
+				);
+				log('Now listening for TuneGenie Player events.');
+			} else {
+				log('TuneGenie player not available!');
+			}
+		}
+
+		function fire() {
 			if ( ! checkConditions()) {
-				log('Conditions went bad at fire timer, killing timer.');
-				stop();
-				return;
+				log('Conditions have gone bad before firing, killing timer.');
+				me.stop();
+				return false;
 			}
 
 			var windowContext = getWindow();
-			windowContext._CMLS.adTag().queue(function(){
+			windowContext._CMLS.adTag().queue(function() {
 				log('Refreshing page ads.');
 				windowContext._CMLS.adTag().refresh();
-				that.start();
+				me.start();
 			});
-			/*
-			windowContext.googletag.cmd.push(function(){
-				log('Refreshing page ads.');
-				windowContext.googletag.pubads().refresh();
-				that.start();
-			});
-			*/
 		}
 
-		function getFireTime(){
-			return fireTime;
+		// If we've been instantiated with an initial fire time, use it
+		if (fireTime) {
+			log('Instantiated with a time to fire, using it!');
+			me.start(fireTime);
 		}
-		this.getFireTime = getFireTime;
-
-		function resetFireTime(){
-			fireTime = new Date(new Date().getTime() + w._CMLS.autoRefreshAdsTimer*60000);
-		}
-		this.resetFireTime = resetFireTime;
-
-		function checkTGToggle(e){
-			if (e === true) {
-				log('TG Player playing!');
-				start();
-				return;
-			}
-			log('TG Player stopped.');
-			stop();
-		}
-
-		function destroy(){
-			stop();
-			wt.removeEventListener('td-player.playing', start);
-			wt.removeEventListener('td-player.stopped', stop);
-		}
-		this.destroy = destroy;
-
-		log('Initializing.');
-
-		// Initialize for Triton player
-		if (player.type === wt._CMLS.const.PLAYER_TRITON) {
-			wt.addEventListener(
-				'td-player.playing',
-				start,
-				false
-			);
-			wt.addEventListener(
-				'td-player.stopped',
-				stop,
-				false
-			);
-
-			// Restart timer if history changes
-			if (w.History && w.History.Adapter) {
-				w.History.Adapater.bind(
-					w,
-					'pageChange',
-					resetFireTime
-				);
-			}
-		
-			log('Triton Player listeners set.');
-		}
-
-		// Initialize TuneGenie player
-		if (player.type === wt._CMLS.const.PLAYER_TUNEGENIE) {
-			if (wt.tgmp && wt.TGMP_EVENTS) {
-				wt.tgmp.addEventListener(
-					wt.TGMP_EVENTS.streamplaying,
-					checkTGToggle
-				);
-				log('TG Player listener set.');
-			}
-		}
-
-		log('Listeners set.');
-
-		if (fireEarly) {
-			log('Initialized with a time to fire, using it.');
-			start(fireEarly);
-		}
-
 	};
 
 	var initialized = false;
-	function initTest(){
-		log('InitTest called.');
+	function initTest() {
 		if (initialized) {
 			return;
 		}
-		if ( ! w._CMLS.cGroups) {
-			log('Init test called without cGroups available, exiting.');
+		log('Testing initial state.');
+
+		if ( ! window._CMLS.cGroups) {
+			log('cGroups not available, will wait for cms-sgroup event.');
+			window.addEventListener(
+				'cms-sgroup',
+				function() {
+					log('cms-sgroup event fired!');
+					initTest();
+				},
+				false
+			);
 			return;
 		}
-		for (var i = 0, j = w._CMLS.cGroups.length; i < j; i++) {
-			if (
-				/Format\s+(NewsTalk|Talk|Sports|Christian Talk)/i.test(w._CMLS.cGroups[i])
-			) {
-				log('Valid cGroup found, initializing timer.');
-				wt._CMLS[nameSpace] = new AutoRefresher();
+
+		window._CMLS.cGroups.forEach(function(cGroup) {
+			if (initialized) { return; }
+			if (/Format\s+.*(Talk|Sports)/i.test(cGroup)) {
+				log('Station is Talk or Sports format, initializing timer.');
+				window._CMLS[nameSpace] = new AutoRefresher();
 				initialized = true;
+				return;
 			}
+		});
+
+		if ( ! initialized) {
+			log('Station is not Talk or Sports, no timer set.');
+			return false;
 		}
 	}
-	initTest();
-	if ( ! initialized) {
-		w.addEventListener(
-			'cms-sgroup',
-			function(){
-				if ( ! initialized) {
-					initTest();
-				}
-			},
-			false
-		);
-		log('Waiting for cGroups');
-	}
 
-}(window));
+	initTest();
+
+}(window.self));
