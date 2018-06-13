@@ -191,16 +191,24 @@
 		}
 		log('Testing initial state.');
 
+		function testEventListener(e) {
+			if (initialized) {
+				window.removeEventListener(
+					'cms-sgroup',
+					testEventListener
+				);
+			}
+			if (e.detail.indexOf('Format') > -1) {
+				log('cms-sgroup "Format" event fired!');
+				initTest();
+			}
+		}
+
 		if ( ! window._CMLS.cGroups) {
 			log('cGroups not available, will wait for cms-sgroup event.');
 			window.addEventListener(
 				'cms-sgroup',
-				function(e) {
-					log('cms-sgroup event fired!', e);
-					if ( ! initialized) {
-						initTest();
-					}
-				},
+				testEventListener,
 				false
 			);
 			return;
