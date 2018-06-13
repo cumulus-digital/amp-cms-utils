@@ -70,6 +70,7 @@
 			}
 
 			var now = (new Date()).getTime();
+			log('Checking timer', now, fireTime);
 			if (now >= fireTime) {
 				// It's time to fire a refresh!
 				fire();
@@ -168,6 +169,8 @@
 				me.stop();
 				return false;
 			}
+
+			log('Firing!');
 
 			var windowContext = getWindow();
 			windowContext._CMLS.adTag().queue(function() {
