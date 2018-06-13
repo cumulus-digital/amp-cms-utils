@@ -108,6 +108,6 @@
 
 	}
 
-	window._CMLS[parentNameSpace].registeredDetectors.push(dfp);
+	window._CMLS[parentNameSpace].registeredDetectors.push(dfp());
 
 }(window.self, jQuery));

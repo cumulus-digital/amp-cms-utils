@@ -6,7 +6,7 @@
 	
 	var scriptName = 'ADTAG DETECTION',
 		nameSpace = 'adTagDetection',
-		version = '0.1';
+		version = '0.1.1';
 
 	window._CMLS = window._CMLS || {};
 
@@ -63,18 +63,18 @@
 		if (window._CMLS[nameSpace].registeredDetectors) {
 			log('Running registered detectors.', window._CMLS[nameSpace].registeredDetectors);
 			window._CMLS[nameSpace].registeredDetectors.forEach(function(interface) {
-				if ( ! interface().identity) {
-					log('Invalid interface in detector: ' + interface().identity);
+				if ( ! interface.identity) {
+					log('Invalid interface in detector: ' + interface.identity);
 					return false;
 				}
-				log('Checking registered detector: ' + interface().identity);
-				if (interface().detectTag && interface().detectTag()) {
-					log('Interface found in detector: ' + interface().identity);
+				log('Checking registered detector: ' + interface.identity);
+				if (interface.detectTag && interface.detectTag()) {
+					log('Interface found in detector: ' + interface.identity);
 					window._CMLS.adTag = interface;
 				}
 			});
 		}
-		if ( ! window._CMLS.adTag || ! window._CMLS.adTag().rawInterface()) {
+		if ( ! window._CMLS.adTag || ! window._CMLS.adTag.rawInterface()) {
 			log('No interface found, rerunning detection.');
 			loopDetection();
 			return;
