@@ -6,7 +6,7 @@
 	var scriptName = 'DFP INTERFACE',
 		//nameSpace = 'InterfaceDFP',
 		parentNameSpace = 'adTagDetection',
-		version = '0.1.1';
+		version = '0.1.2';
 
 	window._CMLS = window._CMLS || {};
 
