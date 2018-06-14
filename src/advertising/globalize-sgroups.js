@@ -67,7 +67,7 @@
 					return false;
 				}
 
-				log('DFP is not ready, waiting to retry...');
+				log('DFP is not ready, waiting to retry...', 'Cycles: ' + cycles);
 				clearTimeout(timer);
 				timer = null;
 				timer = setTimeout(me.globalize, 500);
