@@ -1,93 +1,88 @@
 /**
- * Reads DFP targeting criteria from googletag.pubads() and generates
- * GTM and window events from them.
+ * Read page targeting criteria and generate events for
+ * Triton's cms-sgroups
  */
-(function(window) {
+;(function(window) {
 
 	var scriptName = 'GLOBALIZE SGROUPS',
 		nameSpace = 'globalizeSGroups',
-		version = '0.5';
+		version = '0.6';
 
 	function log() {
-		window._CMLS.logger(scriptName + ' v' + version, arguments);
+		if(window.top._CMLS && window.top._CMLS.hasOwnProperty('logger')) {
+			window.top._CMLS.logger(scriptName + ' v' + version, arguments);
+		}
 	}
 
 	if (window._CMLS[nameSpace]) {
+		log('Already registered.');
 		return;
 	}
 
-	window._CMLS[nameSpace] = {
-		cycles: 0,
-		timer: null,
+	function GlobalizeSGroups() {
+		var cycles = 0,
+			timer = 0,
+			me = this;
 
-		globalize: function globalize() {
-			var sgroup_container;
-			try {
-				if ( ! window.googletag || ! window.googletag.pubads()) {
-					throw { message: 'Googletag not yet ready.' };
-				}
-				var dfp_props = window.googletag.pubads();
-				for (var z in dfp_props) {
-					if ( ! dfp_props[z].hasOwnProperty('cms-sgroup')) {
-						continue;
-					}
-					sgroup_container = dfp_props[z]['cms-sgroup'];
-					break;
-				}
-			} catch (e) {
-				if (window._CMLS[nameSpace].cycles > 10) {
-					log('TERMINATING. Could not retrieve cms-sgroup in a reasonable time, aborting.');
-					return;
-				}
-				log('Googletag not ready, waiting to retry...');
-				if (window._CMLS[nameSpace].timer) {
-					clearTimeout(window._CMLS[nameSpace].timer);
-					window._CMLS[nameSpace].timer = null;
-				}
-				window._CMLS[nameSpace].timer = setTimeout(window._CMLS[nameSpace].globalize, 500);
-				window._CMLS[nameSpace].cycles++;
-				return;
-			}
+		this.fireEvents = function(e) {
+			window.sharedContainerDataLayer.push({'event': e});
+			window.corpDataLayer.push({'event': e});
+			window._CMLS.triggerEvent(window, 'cms-sgroup', e);
+		};
 
-			log('Globalizing cms-sgroup');
-			window._CMLS.cGroups = window._CMLS.cGroups || [];
-			window._CMLS.cGroups = sgroup_container;
+		this.globalize = function() {
 
-			var events = ['cms-sgroup'].concat(window._CMLS.cGroups);
-
-			window.sharedContainerDataLayer = window.sharedContainerDataLayer || [];
-			window.corpDataLayer = window.corpDataLayer || [];
-
-			log('Firing events');
-			function fireEvents(e) {
-				log('Firing event', e);
-				window.sharedContainerDataLayer.push({'event': e});
-				window.corpDataLayer.push({'event': e});
-				window._CMLS.triggerEvent(window, 'cms-sgroup', e);
-			}
-
-			var isWestwood = false;
-			for (var i = 0, j = events.length; i < j; i++) {
-				fireEvents(events[i]);
+			// Attempt to discover DFP page targeting
+			if (window._CMLS.adTag.pubads() && window._CMLS.adTag.pubads().getTargeting('cms-sgroup')) {
 				
-				if (events[i].indexOf('Westwood One') > -1) {
-					isWestwood = true;
-				}
-			}
-			
-			if (isWestwood === true) {
-				fireEvents('Westwood One Property');
-			} else {
-				fireEvents('Cumulus Owned and Operated');
-			}
-		}
-	};
+				// Register sgroups in our global container
+				window._CMLS.cGroups = window._CMLS.adTag.pubads().getTargeting('cms-sgroup') || [];
 
-	window.googletag = window.googletag || {};
-	window.googletag.cmd = window.googletag.cmd || [];
-	window.googletag.cmd.push(function() {
-		log('Googletag command queue initiated.');
-		window._CMLS[nameSpace].globalize();
+				// Fire events
+				window.sharedContainerDataLayer = window.sharedContainerDataLayer || [];
+				window.corpDataLayer = window.corpDataLayer || [];
+
+
+				var isWestwood = false;
+				window._CMLS.cGroups.forEach(function(cGroup) {
+					log('Firing cms-sgroup event', cGroup);
+					me.fireEvents(cGroup);
+
+					if (cGroup.indexOf('Westwood One') > -1) {
+						isWestwood = true;
+					}
+				});
+
+				if (isWestwood === true) {
+					me.fireEvents('Westwood One Property');
+				} else {
+					me.fireEvents('Cumulus Owned and Operated');
+				}
+
+			} else {
+
+				// DFP is not yet available, retry
+				if (cycles > 10) {
+					log('TERMINATING. Could not retrieve page targeting in a reasonable time.');
+					return false;
+				}
+
+				log('DFP is not ready, waiting to retry...');
+				clearTimeout(timer);
+				timer = null;
+				timer = setTimeout(me.globalize, 500);
+				cycles++;
+				return;
+
+			}
+		};
+
+		me.globalize();
+	}
+
+	window._CMLS.adTag.queue(function() {
+		log('adTag command queue initiated.');
+		window._CMLS[nameSpace] = new GlobalizeSGroups();
 	});
 
-}(window, undefined));
+}(window.self));
