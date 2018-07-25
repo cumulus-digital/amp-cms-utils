@@ -104,27 +104,18 @@
 		 * DFP ID string for use in the generated tag.
 		 */
 		try {
-			var pa = googletag.pubads();
-			var props = Object.getOwnPropertyNames(pa);
-			for (var z in props) {
-				var paprops = pa[props[z]];
-				if (paprops.constructor && paprops.constructor === Array) {
-					for (var x in paprops[0]) {
-						if (
-							paprops[0][x] &&
-							paprops[0][x].constructor === String &&
-							paprops[0][x].indexOf('/' + dfpNetworkCode + '/') > -1
-						) {
-							adPath = paprops[0][x];
-							break;
-						}
+			var pa = googletag.pubads(),
+				slots = pa.getSlots();
+			if (slots.length) {
+				slots.some(function(slot) {
+					var p = slot.getAdUnitPath();
+					if (p.indexOf('/' + dfpNetworkCode +'/') > -1) {
+						adPath = p;
+						return true;
 					}
-				}
-				if (adPath) {
-					break;
-				}
+				});
+				if (adPath === null || adPath === undefined) { throw { message: 'Could not retrieve ad unit path.' }; }
 			}
-			if (adPath === null) { throw { message: 'Could not retrieve ad unit path.' }; }
 		} catch(e) {
 			log('Failed to retrieve DFP properties.', e);
 			return false;
