@@ -20,7 +20,7 @@
 ;(function(jQuery, window, undefined) {
 
 	var scriptName = 'Pushdown Ad',
-		version = '0.5',
+		version = '0.6',
 		dfpNetworkCode = '6717',
 		elementId = 'dfp-pushdown2',
 		defaultTimeout = 8;
