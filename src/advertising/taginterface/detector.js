@@ -23,15 +23,27 @@
 			parentNameSpace = 'adTagDetection',
 			version = 'x';
 
+		var me = this;
+
 		this.identity = 'STUB';
 		this.detectTag = function() {};
 
-		this.queue = function(callback) {};
+		this.rawInterface = function() {};
+
+		this.queue = function(callback) {
+			me.rawInterface().cmd.push(callback);
+		};
+
+		this.pubads = function() {
+			return me.rawInterface().pubads();
+		};
+
+		this.refresh = function(slot) {
+			return me.pubads().refresh(slot);
+		}
 
 		this.addListener = function(e, func) {};
 		this.removeListener = function(e, func) {};
-		this.pubads = function() {};
-		this.refreshAds = function() {};
 		this.setTargeting = function(key, value) {};
 
 		/**
@@ -44,12 +56,16 @@
 		 */
 		this.defineSlot = function(slotOptions, collapse, targeting, initialize) {};
 
-		this.display = function(div) {};
-		this.rawInterface = function() {};
+		this.display = function(div) {
+			me.queue(function() {
+				me.rawInterface().display(div);
+			});
+		};
 
 		return this;
 	};
-	window._CMLS.adTag = new StubInterface();
+	window._CMLS[nameSpace].stubInterface = StubInterface;
+	window._CMLS.adTag = new window._CMLS[nameSpace].stubInterface();
 	/* jshint ignore:end */
 
 	var detectionLoop, detectionTimes;
@@ -60,7 +76,7 @@
 		}
 	}
 
-	function detectTag() {
+	window._CMLS[nameSpace].detectTag = function detectTag() {
 		if (window._CMLS[nameSpace].registeredDetectors) {
 			log('Running registered detectors.', window._CMLS[nameSpace].registeredDetectors);
 			window._CMLS[nameSpace].registeredDetectors.forEach(function(interface) {
@@ -80,15 +96,15 @@
 			loopDetection();
 			return;
 		}
-	}
+	};
 
 	function loopDetection() {
-		detectionLoop = setTimeout(detectTag, 50);
+		detectionLoop = setTimeout(window._CMLS[nameSpace].detectTag, 50);
 		detectionTimes++;
 	}
 
-	detectTag();
+	//detectTag();
 
 }(window.self, jQuery));
 
-// @codekit-prepend "registration.js"
+// @codekit-append "registration.js"

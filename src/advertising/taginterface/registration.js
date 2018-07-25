@@ -4,4 +4,6 @@
  * last detected interface wins. DFP should come first.
  */
 
-// @codekit-append "interface.dfp.js"
+// @codekit-prepend "interface.dfp.js"
+
+window._CMLS.adTagDetection.detectTag();

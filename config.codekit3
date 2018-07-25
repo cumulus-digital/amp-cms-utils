@@ -326,7 +326,7 @@
 	"displayValueWasSetByUser": 0,
 	"iconImageName": "meme-krieger",
 	"iconImageWasSetByUser": 0,
-	"lastBuiltDate": 540918857
+	"lastBuiltDate": 551815048
 	},
 "projectSettings": {
 	"abortBuildOnError": 1,
@@ -2350,7 +2350,7 @@
 			"flagValue": -1
 			},
 		"dead_code": {
-			"active": 0,
+			"active": 1,
 			"flagValue": -1
 			},
 		"drop_console": {
@@ -2414,7 +2414,7 @@
 			"flagValue": -1
 			},
 		"max-line-len": {
-			"active": 1,
+			"active": 0,
 			"flagValue": 32000
 			},
 		"negate_iife": {
@@ -2434,7 +2434,7 @@
 			"flagValue": -1
 			},
 		"screw-ie8": {
-			"active": 0,
+			"active": 1,
 			"flagValue": -1
 			},
 		"semicolons": {
@@ -2474,7 +2474,7 @@
 			"flagValue": -1
 			},
 		"width": {
-			"active": 1,
+			"active": 0,
 			"flagValue": 80
 			}
 		},

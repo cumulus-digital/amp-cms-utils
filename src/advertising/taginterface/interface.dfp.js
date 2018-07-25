@@ -20,93 +20,60 @@
 		}
 	}
 
-	function DFP() {
+	var DFP = new window._CMLS[parentNameSpace].stubInterface();
 
-		this.identity = 'dfp';
-		var me = this;
+	DFP.identity = 'dfp';
+	DFP.detectTag = function(){
+		if (window.googletag) {
+			log('Googletag detected.');
+			return true;
+		}
+	};
 
-		this.detectTag = function() {
-			if (window.googletag) {
-				log('Googletag detected.');
-				return true;
-			}
-		};
+	DFP.rawInterface = function() {
+		return window.googletag;
+	};
 
-		// Return the raw DFP interface (googletag)
-		this.rawInterface = function() {
-			return window.googletag;
-		};
+	DFP.addListener = function(e, func) {
+		DFP.queue(function(){
+			DFP.pubads().addEventListener(e, func);
+		});
+	};
 
-		// Queue a command
-		this.queue = function(callback) {
-			me.rawInterface().cmd.push(callback);
-		};
+	DFP.removeListener = function(e, func) {
+		return DFP.pubads().removeEventListener(e, func);
+	};
 
-		// Return the pubads interface
-		this.pubads = function() {
-			return me.rawInterface().pubads();
-		};
+	DFP.setTargeting = function(key, value) {
+		return DFP.pubads().setTargeting(key, value);
+	};
 
-		// Adds a listener
-		this.addListener = function(e, func) {
-			me.rawInterface().cmd.push(function(){
-				me.pubads().addEventListener(e, func);
-			});
-		};
-
-		// Remove a listener
-		this.removeListener = function(e, func) {
-			return me.pubads().removeEventListener(e, func);
-		};
-
-		// Refresh ads
-		this.refreshAds = function() {
-			return me.pubads().refresh();
-		};
-
-		// Set site-level targeting
-		this.setTargeting = function(key, value) {
-			return me.pubads().setTargeting(key, value);
-		};
-
-		// Create a new slot
-		this.defineSlot = function(slotOptions, collapse, targeting, initialize) {
-			var slot = me.defineSlot.apply(null, slotOptions);
-			if (collapse) {
-				slot = slot.setCollapseEmptyDiv(true);
-			}
-			if (Array.isArray(targeting)) {
-				targeting.forEach(function(target) {
-					for (var k in target) {
-						if (target.hasOwnProperty(k)) {
-							slot = slot.setTargeting(k, target[k]);
-						}
-					}
-				});
-			} else if (typeof targeting === "object") {
-				for (var k in targeting) {
-					if (targeting.hasOwnProperty(k)) {
-						slot = slot.setTargeting(k, targeting[k]);
+	DFP.defineSlot = function(slotOptions, collapse, targeting, initialize) {
+		var slot = DFP.rawInterface().defineSlot.apply(null, slotOptions);
+		if (collapse) {
+			slot = slot.setCollapseEmptyDiv(true);
+		}
+		if (Array.isArray(targeting)) {
+			targeting.forEach(function(target) {
+				for (var k in target) {
+					if (target.hasOwnProperty(k)) {
+						slot = slot.setTargeting(k, target[k]);
 					}
 				}
-			}
-			if (initialize) {
-				slot = slot.addService(me.pubads());
-			}
-			return slot;
-		};
-
-		// Render an ad unit in a given slot ID
-		this.display = function(div) {
-			me.rawInterface().cmd.push(function(){
-				me.rawInterface().display(div);
 			});
-		};
+		} else if (typeof targeting === "object") {
+			for (var k in targeting) {
+				if (targeting.hasOwnProperty(k)) {
+					slot = slot.setTargeting(k, targeting[k]);
+				}
+			}
+		}
+		if (initialize) {
+			slot = slot.addService(DFP.pubads());
+		}
+		return slot;
+	};
 
-		return this;
-
-	}
-
-	window._CMLS[parentNameSpace].registeredDetectors.push(new DFP());
+	window._CMLS[parentNameSpace].registeredDetectors.push(DFP);
 
 }(window.self, jQuery));
