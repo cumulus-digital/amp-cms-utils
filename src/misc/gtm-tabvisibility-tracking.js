@@ -36,8 +36,8 @@
 	function fireEvent(ev, state, time) {
 		try {
 			log('Event fired: ' + ev, state, time);
-			sharedContainerDataLayer.push({'event': ev, 'page-visible': state, 'time-change': time});
-			corpDataLayer.push({'event': ev, 'page-visible': state, 'time-change': time});
+			sharedContainerDataLayer.push({'event': ev, 'page-visible': state, 'page-visible-time-change': time});
+			corpDataLayer.push({'event': ev, 'page-visible': state, 'page-visible-time-change': time});
 		} catch(e){}
 	}
 
