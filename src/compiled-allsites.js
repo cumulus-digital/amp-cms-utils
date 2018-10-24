@@ -21,6 +21,7 @@
 // Misc
 // @codekit-append "misc/gtm-stream-tracking.js"
 // @codekit-append "misc/gtm-promoreel-tracking.js"
+// @codekit-append "misc/gtm-tabvisibility-tracking.js"
 // @codekit-append "misc/auto-reload.js"
 // DISABLED codekit-append "misc/addthis-hider.js"
 // @codekit-append "misc/addthis-injector.js"
