@@ -43,8 +43,8 @@
 
 	function handleVisibilityChange(state) {
 		var changeTime = Math.round((w._CMLS.now() - start) / 1000);
-		if (state !== true && state !== false) {
-			state = w.document[hidden] ? false : true;
+		if (!state) {
+			state = w.document[hidden] ? 'hidden' : 'visible';
 		}
 		fireEvent('page-visibility', state, changeTime);
 		start = w._CMLS.now();
