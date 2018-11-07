@@ -128,7 +128,7 @@ i="adTagDetection",r="0.1.2";t._CMLS=t._CMLS||{},t._CMLS[i]=t._CMLS[i]||{},t._CM
 // @codekit-prepend "interface.dfp.js"
 window._CMLS.adTagDetection.detectTag(),function(o,h,v){function log(){h.top._CMLS&&h.top._CMLS.logger&&h.top._CMLS.logger(t+" v"+e,arguments)}
 // Pushdowns only appear on homepages
-var t="Pushdown Ad",e="0.6",n="6717",_="dfp-pushdown2",i=8,S=h.document;if(!S.querySelector("body.home"))return log("Not on homepage, exiting.");
+var t="Pushdown Ad",e="0.6",n="6717",_="dfp-pushdown2",i=15,S=h.document;if(!S.querySelector("body.home"))return log("Not on homepage, exiting.");
 // Don't run if our tag already exists
 if(S.getElementById(_))return log("Tag already exists, exiting.");
 // Must be run *after* googletag has been defined
@@ -151,7 +151,7 @@ function detectCreative(t){return t.length?t.contents().find("#vpContainer").len
 // Make image responsive
 log("Making image responsive."),e.css({width:"100%",height:"auto"}),
 // Detect an override for timeout
-log("Checking for timeout override");var o=e.prop("alt").match(/timeout=(\d+)/i),n=o&&1<o.length?1e3*o[1]:8e3;return log("Triggering ad display with timeout",n),a.trigger("cmls.display",function(){s.trigger("cmls.start",[n,function(){log("Triggering ad removal."),a.trigger("cmls.hide")}])}),!0}
+log("Checking for timeout override");var o=e.prop("alt").match(/timeout=(\d+)/i),n=o&&1<o.length?1e3*o[1]:15e3;return log("Triggering ad display with timeout",n),a.trigger("cmls.display",function(){s.trigger("cmls.start",[n,function(){log("Triggering ad removal."),a.trigger("cmls.hide")}])}),!0}
 /**
 		 * Setup and display a custom HTML video creative type
 		 * @param  {jQuery} $adFrame

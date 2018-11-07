@@ -23,7 +23,7 @@
 		version = '0.6',
 		dfpNetworkCode = '6717',
 		elementId = 'dfp-pushdown2',
-		defaultTimeout = 8;
+		defaultTimeout = 15;
 
 	var doc = window.document;
 
