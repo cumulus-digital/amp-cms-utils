@@ -16,12 +16,6 @@
 		"oAP": "/dist/.gitignore",
 		"oF": 0
 		},
-	"/dist": {
-		"ft": 65536,
-		"oA": 1,
-		"oAP": "/dist/dist",
-		"oF": 0
-		},
 	"/src/advertising/auto-refresh-ads.js": {
 		"ft": 64,
 		"ma": 1,
@@ -336,7 +330,7 @@
 	"displayValueWasSetByUser": 0,
 	"iconImageName": "meme-krieger",
 	"iconImageWasSetByUser": 0,
-	"lastBuiltDate": 551815048
+	"lastBuiltDate": 566156066.64018404
 	},
 "projectSettings": {
 	"abortBuildOnError": 1,
@@ -2387,7 +2381,7 @@
 			"flagValue": -1
 			},
 		"comments": {
-			"active": 1,
+			"active": 0,
 			"flagValue": -1
 			},
 		"comparisons": {
