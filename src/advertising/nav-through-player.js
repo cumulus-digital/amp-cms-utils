@@ -32,6 +32,10 @@
 				return;
 			}
 
+			if ( ! iframe) {
+				log('Did not receive an iframe node, cannot update', iframe);
+			}
+
 			var $iframe = iframe.jquery ? iframe : $(iframe);
 			
 			// make sure we can access this iframe

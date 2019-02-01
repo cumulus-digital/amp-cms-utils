@@ -16,6 +16,12 @@
 		"oAP": "/dist/.gitignore",
 		"oF": 0
 		},
+	"/dist": {
+		"ft": 65536,
+		"oA": 1,
+		"oAP": "/dist/dist",
+		"oF": 0
+		},
 	"/src/advertising/auto-refresh-ads.js": {
 		"ft": 64,
 		"ma": 1,
