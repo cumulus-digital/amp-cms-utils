@@ -34,6 +34,7 @@
 
 			if ( ! iframe) {
 				log('Did not receive an iframe node, cannot update', iframe);
+				return;
 			}
 
 			var $iframe = iframe.jquery ? iframe : $(iframe);
