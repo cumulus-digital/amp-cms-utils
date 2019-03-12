@@ -54,13 +54,13 @@
 				}
 				log('Ad path found, defining new slot.', adPath);
 
-				var slot = gt.defineSlot(
+				var slot = adTag.defineSlot(
 					adPath,
 					[[120,60]],
 					'CMLSPlayerSponsorship'
 				);
 				if (slot) {
-					slot.addService(gt.pubads())
+					slot.addService(adTag.rawInterface().pubads())
 						.setCollapseEmptyDiv(true)
 						.setTargeting('pos', 'playersponsorlogo');
 				}
