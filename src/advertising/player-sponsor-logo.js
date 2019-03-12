@@ -25,9 +25,8 @@
 	}
 
 	function init(){
-		var gt = window.top.googletag || {};
-		gt.cmd = gt.cmd || [];
-		gt.cmd.push(function(){
+		var adTag = window._CMLS.adTag;
+		adTag.queue(function(){
 			$(function(){
 				// Eject if our tag already exists.
 				if ($('#CMLSPlayerSponsorship').length) {
@@ -39,19 +38,12 @@
 				log('Discovering local site ad path.');
 				var adPath = null;
 				try {
-					var pa = gt.pubads();
-					var props = Object.getOwnPropertyNames(pa);
-					for (var z in props) {
-						var paprops = pa[props[z]];
-						if (paprops.constructor && paprops.constructor === Array) {
-							for (var x in paprops[0]) {
-								if (paprops[0][x] && paprops[0][x].constructor === String && paprops[0][x].indexOf('/6717/') > -1) {
-									adPath = paprops[0][x];
-									break;
-								}
-							}
-						}
-						if (adPath) {
+					var pa = adTag.rawInterface().pubads();
+					var slots = pa.getSlots();
+					for (var s in slots) {
+						var name = slots[s].getSlotId().getName();
+						if (name && name.indexOf('/6717/') > -1) {
+							adPath = name;
 							break;
 						}
 					}

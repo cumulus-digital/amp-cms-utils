@@ -79,15 +79,15 @@
 	window._CMLS[nameSpace].detectTag = function detectTag() {
 		if (window._CMLS[nameSpace].registeredDetectors) {
 			log('Running registered detectors.', window._CMLS[nameSpace].registeredDetectors);
-			window._CMLS[nameSpace].registeredDetectors.forEach(function(interface) {
-				if ( ! interface.identity) {
-					log('Invalid interface in detector: ' + interface.identity);
+			window._CMLS[nameSpace].registeredDetectors.forEach(function(rInterface) {
+				if ( ! rInterface.identity) {
+					log('Invalid interface in detector: ' + rInterface.identity);
 					return false;
 				}
-				log('Checking registered detector: ' + interface.identity);
-				if (interface.detectTag && interface.detectTag()) {
-					log('Interface found in detector: ' + interface.identity);
-					window._CMLS.adTag = interface;
+				log('Checking registered detector: ' + rInterface.identity);
+				if (rInterface.detectTag && rInterface.detectTag()) {
+					log('Interface found in detector: ' + rInterface.identity);
+					window._CMLS.adTag = rInterface;
 				}
 			});
 		}
