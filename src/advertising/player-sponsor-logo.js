@@ -54,16 +54,16 @@
 				}
 				log('Ad path found, defining new slot.', adPath);
 
-				var slot = adTag.defineSlot(
-					adPath,
-					[[120,60]],
-					'CMLSPlayerSponsorship'
+				adTag.defineSlot(
+					[
+						adPath,
+						[[120,60]],
+						'CMLSPlayerSponsorship'
+					],
+					true,
+					{ 'pos': 'playersponsorlogo' },
+					true
 				);
-				if (slot) {
-					slot.addService(adTag.rawInterface().pubads())
-						.setCollapseEmptyDiv(true)
-						.setTargeting('pos', 'playersponsorlogo');
-				}
 
 				// Append ad container styles
 				$('body').append(
