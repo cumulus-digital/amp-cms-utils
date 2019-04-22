@@ -27,7 +27,7 @@
 // @codekit-append "misc/addthis-injector.js"
 // @codekit-append "misc/breaking-news-bar.js"
 // @codekit-append "misc/social-listen-live-link.js"
-// @codekit-append "misc/inform-video-player.js"
+// DISABLED codekit-append "misc/inform-video-player.js"
 // @codekit-append "misc/tgmp-switchstream.js"
 
 // Globalize sgroups at the end
