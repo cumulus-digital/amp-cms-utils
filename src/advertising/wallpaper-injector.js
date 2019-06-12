@@ -438,13 +438,14 @@
 				'position: absolute;' +
 				'z-index: 0;' +
 				'top: 0;' +
-				'left: 0;' +
+				'left: 50%;' +
 				'height: 0 !important;' +
-				'width: 100% !important;' +
+				'width: 100vw !important;' +
 				'overflow: hidden;' +
 				'text-align: center;' +
 				'transition: opacity 0.5s, height 0.6s, background-color 0.4s;' +
 				'opacity: 0;' +
+				'transform: translateX(-50%);' +
 			'}' +
 			'.' + nameSpace + '-container iframe {' +
 				'border: 0;' +
