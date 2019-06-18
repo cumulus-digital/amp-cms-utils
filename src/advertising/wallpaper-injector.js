@@ -130,15 +130,17 @@
 					content: cache.contentNode.css(['position', 'zIndex']),
 					footer: cache.footerNode.css(['position', 'zIndex'])
 				};
-			if (originalStyles.content.position === 'static') {
-				log('Setting content area position to relative.');
-				cache.contentNode.css('position', 'relative');
+			if (originalStyles.content) {
+				if (originalStyles.content.position === 'static') {
+					log('Setting content area position to relative.');
+					cache.contentNode.css('position', 'relative');
+				}
+				if (originalStyles.content.zIndex === 'auto' || originalStyles.content.zIndex <= container.css('zIndex')) {
+					log('Raising content area above wallpaper container.');
+					cache.contentNode.css('zIndex', container.css('zIndex') + 1);
+				}
 			}
-			if (originalStyles.content.zIndex === 'auto' || originalStyles.content.zIndex <= container.css('zIndex')) {
-				log('Raising content area above wallpaper container.');
-				cache.contentNode.css('zIndex', container.css('zIndex') + 1);
-			}
-			if (originalStyles.footer.position === 'static') {
+			if (originalStyles.footer && originalStyles.footer.position === 'static') {
 				log('Setting footer area position to relative.');
 				cache.footerNode.css('position', 'relative');
 				cache.footerNode.css('zIndex', container.css('zIndex') + 2);
@@ -275,122 +277,122 @@
 
 		function _process() {
 			try{
-			if ($(settings.contentNode).height() < 200) {
-				if (processTimer === undefined) {
-					processTimer = 20;
-				}
-				if (processTimer === 0) {
-					log('Timed out waiting for content node.');
-					processTimer = undefined;
+				if ($(settings.contentNode).height() < 200) {
+					if (processTimer === undefined) {
+						processTimer = 20;
+					}
+					if (processTimer === 0) {
+						log('Timed out waiting for content node.');
+						processTimer = undefined;
+						return;
+					}
+					processTimer--;
+					log('Content node is not ready, retrying.', processTimer);
+					setTimeout(function() {
+						_process();
+					}, 500);
 					return;
 				}
-				processTimer--;
-				log('Content node is not ready, retrying.', processTimer);
-				setTimeout(function() {
-					_process();
-				}, 500);
-				return;
-			}
 
-			refreshCache();
-			log('Processing wallpaper slot.');
+				refreshCache();
+				log('Processing wallpaper slot.');
 
-			var slotIframe = cache.dfpSlot.find('iframe'),
-				slotDiv = slotIframe.contents().find('#google_image_div,body').first(),
-				slotLink = slotDiv.find('a:first'),
-				slotImage = slotDiv.find('img.img_ad:first,img:first').first(),
-				slotBgColor = slotImage.prop('alt');
+				var slotIframe = cache.dfpSlot.find('iframe'),
+					slotDiv = slotIframe.contents().find('#google_image_div,body').first(),
+					slotLink = slotDiv.find('a:first'),
+					slotImage = slotDiv.find('img.img_ad:first,img:first').first(),
+					slotBgColor = slotImage.prop('alt');
 
-			log('Checking image.');
-			if ( ! slotImage.length) {
-				log('No image found in ad slot! Resetting.');
-				_reset();
-				return;
-			}
+				log('Checking image.');
+				if ( ! slotImage.length) {
+					log('No image found in ad slot! Resetting.');
+					_reset();
+					return;
+				}
 
-			var container = getContainer();
+				var container = getContainer();
 
-			// We get a simple "hash" of the image url and link so we don't try to
-			// replace the same background twice
-			var hash = checksum((slotLink.length ? slotLink.prop('href') + slotLink.prop('target') : '') + slotImage.prop('src'));
-			log('Generated hash.', hash);
+				// We get a simple "hash" of the image url and link so we don't try to
+				// replace the same background twice
+				var hash = checksum((slotLink.length ? slotLink.prop('href') + slotLink.prop('target') : '') + slotImage.prop('src'));
+				log('Generated hash.', hash);
 
-			if (hash === container.data('hash')) {
-				log('Requested wallpaper is already set.');
-				return;
-			}
+				if (hash === container.data('hash')) {
+					log('Requested wallpaper is already set.');
+					return;
+				}
 
 
-			log('Getting background color.', slotBgColor);
-			var bgColor = 'rgba(255,255,255,0)',
-				bgColorCheck = slotBgColor.match(/(\#[A-Za-z0-9]+)/) || false;
-			if (bgColorCheck && bgColorCheck.length > 1) {
-				bgColor = bgColorCheck[1];
-			}
-			log('Using background color.', bgColor);
+				log('Getting background color.', slotBgColor);
+				var bgColor = 'rgba(255,255,255,0)',
+					bgColorCheck = slotBgColor.match(/(\#[A-Za-z0-9]+)/) || false;
+				if (bgColorCheck && bgColorCheck.length > 1) {
+					bgColor = bgColorCheck[1];
+				}
+				log('Using background color.', bgColor);
 
-			_reset()
-				.then(function() {
-					log ('Building the new wallpaper.');
+				_reset()
+					.then(function() {
+						log ('Building the new wallpaper.');
 
-					var link = '';
-					if (slotLink.length) {
-						link = $('<a />', {
-								'href': slotLink.prop('href'),
-								'target': slotLink.prop('target')
+						var link = '';
+						if (slotLink.length) {
+							link = $('<a />', {
+									'href': slotLink.prop('href'),
+									'target': slotLink.prop('target')
+								});
+
+							// If navThroughPlayer library is available, use it
+							if (window._CMLS.navThroughPlayer) {
+								window._CMLS.navThroughPlayer.updateLink(link[0]);
+							}
+						}
+
+						// Build the iframe
+						var iframe = $('<iframe />', {
+								'name': nameSpace + 'Iframe',
+								'scrolling': 'no',
+								'marginWidth': '0',
+								'marginHeight': '0',
+								'frameborder': '0'
 							});
 
-						// If navThroughPlayer library is available, use it
-						if (window._CMLS.navThroughPlayer) {
-							window._CMLS.navThroughPlayer.updateLink(link[0]);
-						}
-					}
+						log('Injecting iframe into container.');
+						container = getContainer();
+						container
+							.data('hash', hash)
+							.css('backgroundColor', bgColor)
+							.append(iframe);
 
-					// Build the iframe
-					var iframe = $('<iframe />', {
-							'name': nameSpace + 'Iframe',
-							'scrolling': 'no',
-							'marginWidth': '0',
-							'marginHeight': '0',
-							'frameborder': '0'
-						});
+						var iframeStyles = '<style>' +
+							'html,body{background:transparent;margin:0;padding:0;width:100%;height:100%;}' +
+							'body{background:url("' + slotImage.prop('src') +'") no-repeat top center;}' +
+							(slotImage.prop('alt').indexOf('contain') > -1 ? 'body{background-size:100%}' : '') +
+							'a{display:block;width:100%;height:100%;text-decoration:none;}' +
+						'</style>';
 
-					log('Injecting iframe into container.');
-					container = getContainer();
-					container
-						.data('hash', hash)
-						.css('backgroundColor', bgColor)
-						.append(iframe);
-
-					var iframeStyles = '<style>' +
-						'html,body{background:transparent;margin:0;padding:0;width:100%;height:100%;}' +
-						'body{background:url("' + slotImage.prop('src') +'") no-repeat top center;}' +
-						(slotImage.prop('alt').indexOf('contain') > -1 ? 'body{background-size:100%}' : '') +
-						'a{display:block;width:100%;height:100%;text-decoration:none;}' +
-					'</style>';
-
-					iframe
-						.load(function() {
-							log('Injecting wallpaper into iframe.');
-							iframe.contents().find('body')
-								.append(iframeStyles, link);
-						})
-						.prop('src', 'about:blank');
-
-					if (slotImage.length) {
-						log('Initializing preloader.');
-						$('<img />')
-							.bind('load', function() {
-								show();
-								$(this).remove();
+						iframe
+							.load(function() {
+								log('Injecting wallpaper into iframe.');
+								iframe.contents().find('body')
+									.append(iframeStyles, link);
 							})
-							.prop('src', slotImage.prop('src'));
-					} else {
-						show();
-					}
-				});
+							.prop('src', 'about:blank');
+
+						if (slotImage.length) {
+							log('Initializing preloader.');
+							$('<img />')
+								.bind('load', function() {
+									show();
+									$(this).remove();
+								})
+								.prop('src', slotImage.prop('src'));
+						} else {
+							show();
+						}
+					});
 			} catch(e) {
-				console.log('WTF PEOPLE', e);
+				log('WTF PEOPLE', e);
 			}
 		}
 		this.process = _process;
