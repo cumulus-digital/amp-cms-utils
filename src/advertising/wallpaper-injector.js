@@ -130,6 +130,7 @@
 					content: cache.contentNode.css(['position', 'zIndex']),
 					footer: cache.footerNode.css(['position', 'zIndex'])
 				};
+			log('Checking positioning.', originalStyles);
 			if (originalStyles.content) {
 				if (originalStyles.content.position === 'static') {
 					log('Setting content area position to relative.');
