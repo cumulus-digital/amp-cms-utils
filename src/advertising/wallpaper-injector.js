@@ -132,7 +132,7 @@
 				};
 			log('Checking positioning.', originalStyles);
 			if (originalStyles.content) {
-				if (originalStyles.content.position === 'static') {
+				if (originalStyles.content.position === 'relative' || originalStyles.content.position === 'static') {
 					log('Setting content area position to relative.');
 					cache.contentNode.css('position', 'relative');
 				}
