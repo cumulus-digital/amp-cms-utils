@@ -158,4 +158,4 @@
 	}
 	window['_CMLS' + nameSpace] = new BNInjector();
 
-}(jQuery, window));
+}(jQuery, window.self));
