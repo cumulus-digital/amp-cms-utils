@@ -82,7 +82,7 @@
 				var relURL;
 				if ('URLSearchParams' in window) {
 					var u = new URL(l.href),
-						usr = new URLSearchParams(u.click);
+						usr = new URLSearchParams(u.search);
 					relURL = usr.get('adurl');
 				} else {
 					var vars = l.search.split('&'),
