@@ -50,7 +50,9 @@
 
 	DFP.defineSlot = function(slotOptions, collapse, targeting, initialize) {
 		var slot = DFP.rawInterface().defineSlot.apply(null, slotOptions);
-		log(window, slot, DFP.rawInterface());
+		if ( ! slot) {
+			return false;
+		}
 		if (collapse) {
 			slot = slot.setCollapseEmptyDiv(true);
 		}
