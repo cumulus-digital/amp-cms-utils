@@ -72,15 +72,6 @@
 				l = window.document.createElement('a');
 				l.href = $link.prop('href');
 			
-			if (
-				l.href.indexOf('/') === 0 || 
-				(l.hostname !== window.location.hostname && ! force)
-			) {
-				log('Relative URL found, will not modify');
-				l = null;
-				return;
-			}
-
 			// Modify DFP clickthrough links with relative destination URLs
 			// https://adclick.g.doubleclick.net/pcs/click?xai=AKAOjsuvjv8o-MlaMVicrisvj4oUF99EfgdZlQTft_qATngPo-agSxGvJJfpZIdv8lpTnPijPwvHFd1A63O55CPoXAXsiutchSikcVVlu0SRF0lcJAuJ0P8cMPDIMI2fH3pT_EO3VBcav_GBGmT7X1yl9PIZHTTMY34mCfLj1rwSRJvuIXARMXVeXzNdKLExKo41Xro_c4_7-oICux_fvv6X6BF_qo_9beWVsoKJCu4U8M1ZBZQIgXCLmpfsyw&sig=Cg0ArKJSzCv5yAsBtw7xEAE&urlfix=1&adurl=/2019/04/08/bbmas-t2w/
 			if (
@@ -112,8 +103,14 @@
 					$link.prop('href', l.href);
 					log('Modified relative DFP clickthrough', l.href);
 				}
-			} else {
-				log('Not a DFP clickthrough tracking link.');
+			} else if (
+				// Do not modify relative or off-domain URLs
+				l.href.indexOf('/') === 0 || 
+				(l.hostname !== window.location.hostname && ! force)
+			) {
+				log('Relative or off-site URL found, will not modify');
+				l = null;
+				return;
 			}
 
 			$link
