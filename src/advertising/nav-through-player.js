@@ -55,7 +55,7 @@
 				$iframe.contents()
 					.find('a[target="_self"],a[target="_top"],a[target="_parent"]')
 						.each(function() {
-							log('Updating links in slot.', $iframe.prop('id'));
+							log('Updating links in slot.', $iframe.prop('id'), $iframe[0]);
 							window._CMLS[nameSpace].updateLink(this);
 						});
 			} catch(e) {
@@ -76,11 +76,13 @@
 				l.href.indexOf('/') === 0 || 
 				(l.hostname !== window.location.hostname && ! force)
 			) {
+				log('Relative URL found, will not modify');
 				l = null;
 				return;
 			}
 
 			// Modify DFP clickthrough links with relative destination URLs
+			// https://adclick.g.doubleclick.net/pcs/click?xai=AKAOjsuvjv8o-MlaMVicrisvj4oUF99EfgdZlQTft_qATngPo-agSxGvJJfpZIdv8lpTnPijPwvHFd1A63O55CPoXAXsiutchSikcVVlu0SRF0lcJAuJ0P8cMPDIMI2fH3pT_EO3VBcav_GBGmT7X1yl9PIZHTTMY34mCfLj1rwSRJvuIXARMXVeXzNdKLExKo41Xro_c4_7-oICux_fvv6X6BF_qo_9beWVsoKJCu4U8M1ZBZQIgXCLmpfsyw&sig=Cg0ArKJSzCv5yAsBtw7xEAE&urlfix=1&adurl=/2019/04/08/bbmas-t2w/
 			if (
 				l.href.indexOf('doubleclick.net') !== -1 &&
 				l.href.indexOf('adurl=/') !== -1
@@ -110,6 +112,8 @@
 					$link.prop('href', l.href);
 					log('Modified relative DFP clickthrough', l.href);
 				}
+			} else {
+				log('Not a DFP clickthrough tracking link.');
 			}
 
 			$link
