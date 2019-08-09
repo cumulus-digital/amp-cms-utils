@@ -80,6 +80,38 @@
 				return;
 			}
 
+			// Modify DFP clickthrough links with relative destination URLs
+			if (
+				l.href.indexOf('doubleclick.net') !== -1 &&
+				l.href.indexOf('adurl=/') !== -1
+			) {
+				log('Found a DFP clickthrough with a relative adurl!', l.href);
+				var relURL;
+				if ('URLSearchParams' in window) {
+					var u = new URL(l.href),
+						usr = new URLSearchParams(u.click);
+					relURL = usr.get('adurl');
+				} else {
+					var vars = l.search.split('&'),
+						qs = {};
+					vars.some(function(v) {
+						if (v.indexOf('adurl=') < 0) {
+							return;
+						}
+						var pair = v.split['='];
+						if (pair.length > 1) {
+							relURL = pair[1];
+							return true;
+						}
+					});
+				}
+				if (relURL) {
+					l.href.replace('adurl=/', 'adurl=' + window.location.protocol + '//' + window.location.hostname + '/' + relURL);
+					$link.prop('href', l.href);
+					log('Modified relative DFP clickthrough', l.href);
+				}
+			}
+
 			$link
 				.off('.' + nameSpace)
 				.on('click.' + nameSpace, window._CMLS[nameSpace].clickThrough);
