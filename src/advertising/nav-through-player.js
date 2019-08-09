@@ -103,7 +103,7 @@
 					$link.prop('href', l.href);
 					log('Modified relative DFP clickthrough', l.href);
 				} else {
-					log('Could not parse query string in DFP clickthrough');
+					log('Could not parse query string in DFP clickthrough', relURL);
 				}
 			} else if (
 				// Do not modify relative or off-domain URLs
