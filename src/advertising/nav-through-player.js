@@ -99,7 +99,7 @@
 					}
 				}
 				if (relURL) {
-					l.href = l.href.replace('adurl=' + relURL, 'adurl=' + window.location.protocol + '//' + window.location.hostname + '/' + relURL);
+					l.href = l.href.replace('adurl=' + relURL, 'adurl=' + window.location.protocol + '//' + window.location.hostname + relURL);
 					$link.prop('href', l.href);
 					log('Modified relative DFP clickthrough', relURL, l.href);
 				} else {
