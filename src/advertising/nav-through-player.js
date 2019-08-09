@@ -74,6 +74,7 @@
 			
 			// Modify DFP clickthrough links with relative destination URLs
 			// https://adclick.g.doubleclick.net/pcs/click?xai=AKAOjsuvjv8o-MlaMVicrisvj4oUF99EfgdZlQTft_qATngPo-agSxGvJJfpZIdv8lpTnPijPwvHFd1A63O55CPoXAXsiutchSikcVVlu0SRF0lcJAuJ0P8cMPDIMI2fH3pT_EO3VBcav_GBGmT7X1yl9PIZHTTMY34mCfLj1rwSRJvuIXARMXVeXzNdKLExKo41Xro_c4_7-oICux_fvv6X6BF_qo_9beWVsoKJCu4U8M1ZBZQIgXCLmpfsyw&sig=Cg0ArKJSzCv5yAsBtw7xEAE&urlfix=1&adurl=/2019/04/08/bbmas-t2w/
+			// https://adclick.g.doubleclick.net/pcs/click?xai=AKAOjsvw4br-d0qrU4kyoGKAPTkjV23vKmjv5ZtUqiN5FUIvHvGUVsyzD3GIcTZwaWpzX7Iy8XG5ANHDFd4RZWl7mwQdzYOh-XuOnTdxtg93HIa8d4QvPClZthG8JVXTVq7XQ_m8lKJKjl-E5QIOzjG2y94ZHDvuwhmqeVxY7sXmSM2PZjnCM8KFQHwsgRAdpfXkgiaG0SlaKaeOD_9zJYryIzZf-6d3peddeDo54fDIhvJvz0IxM46aaPirng&sig=Cg0ArKJSzAlOWQms07awEAE&urlfix=1&adurl=http://www.test107.com//2019/04/08/bbmas-t2w/2019/04/08/bbmas-t2w/
 			if (
 				l.href.indexOf('doubleclick.net') !== -1 &&
 				l.href.indexOf('adurl=/') !== -1
@@ -100,7 +101,7 @@
 				if (relURL) {
 					l.href = l.href.replace('adurl=/', 'adurl=' + window.location.protocol + '//' + window.location.hostname + '/' + relURL);
 					$link.prop('href', l.href);
-					log('Modified relative DFP clickthrough', l.href);
+					log('Modified relative DFP clickthrough', relURL, l.href);
 				} else {
 					log('Could not parse query string in DFP clickthrough', relURL);
 				}
