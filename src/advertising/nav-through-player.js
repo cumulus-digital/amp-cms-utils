@@ -91,7 +91,7 @@
 						if (v.indexOf('adurl=') < 0) {
 							return;
 						}
-						var pair = v.split['='];
+						var pair = v.split('=');
 						if (pair.length > 1) {
 							relURL = pair[1];
 							return true;
@@ -99,9 +99,11 @@
 					});
 				}
 				if (relURL) {
-					l.href.replace('adurl=/', 'adurl=' + window.location.protocol + '//' + window.location.hostname + '/' + relURL);
+					l.href = l.href.replace('adurl=/', 'adurl=' + window.location.protocol + '//' + window.location.hostname + '/' + relURL);
 					$link.prop('href', l.href);
 					log('Modified relative DFP clickthrough', l.href);
+				} else {
+					log('Could not parse query string in DFP clickthrough');
 				}
 			} else if (
 				// Do not modify relative or off-domain URLs
