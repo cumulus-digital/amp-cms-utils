@@ -81,12 +81,11 @@
 				log('Found a DFP clickthrough with a relative adurl!', l.href);
 				var relURL;
 				if ('URLSearchParams' in window) {
-					var u = new URL(l.href),
-						usr = new URLSearchParams(u.search);
+					var u = new window.URL(l.href),
+						usr = new window.URLSearchParams(u.search);
 					relURL = usr.get('adurl');
 				} else {
-					var vars = l.search.split('&'),
-						qs = {};
+					var vars = l.search.split('&');
 					for (var i = 0, j = vars.length; i < j; i++) {
 						var v = vars[i];
 						if (v.indexOf('adurl=') > -1) {
@@ -132,6 +131,11 @@
 		},
 
 		navigate: function navigate(url) {
+			try {
+				// Attempt to push events to GTM
+				if (window.sharedContainerDataLayer) { window.sharedContainerDataLayer.push({'event': 'relative-ad-click', 'relativeAdURL': url}); }
+				if (window.corpDataLayer) { window.corpDataLayer.push({'event': 'relative-ad-click', 'relativeAdURL': url}); }
+			} catch(e){ console.log(e); }
 			// Triton player
 			if (player.type === window._CMLS.const.PLAYER_TRITON && window.History) {
 				log('Navigating through Triton player.', url);
