@@ -87,16 +87,16 @@
 				} else {
 					var vars = l.search.split('&'),
 						qs = {};
-					vars.some(function(v) {
-						if (v.indexOf('adurl=') < 0) {
-							return;
+					for (var i = 0, j = vars.length; i < j; i++) {
+						var v = vars[i];
+						if (v.indexOf('adurl=') > -1) {
+							var pair = v.split('=');
+							if (pair.length > 1) {
+								relURL = pair[1];
+								break;
+							}
 						}
-						var pair = v.split('=');
-						if (pair.length > 1) {
-							relURL = pair[1];
-							return true;
-						}
-					});
+					}
 				}
 				if (relURL) {
 					l.href = l.href.replace('adurl=/', 'adurl=' + window.location.protocol + '//' + window.location.hostname + '/' + relURL);
