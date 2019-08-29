@@ -24,8 +24,19 @@
 		return;
 	}
 
+	var check_count = 0;
+
 	function init(){
-		var adTag = window._CMLS.adTag;
+		var adTag = window._CMLS.adTag,
+			player = _CMLS.whichPlayer();
+
+		if ( ! player.type && check_count < 5) {
+			log('Player not found, checking again in 1 second... (' + (5 - check_count) + ' checks remaining)');
+			check_count++;
+			setTimeout(init, 1000);
+			return;
+		}
+
 		adTag.queue(function(){
 			$(function(){
 				// Eject if our tag already exists.
@@ -114,7 +125,7 @@
 					'<div id="CMLSPlayerSponsorship">' +
 						'<sc'+'ript>googletag.cmd.push(function() { googletag.display("CMLSPlayerSponsorship")});</sc'+'ript>' +
 					'</div>'
-				), player = _CMLS.whichPlayer();
+				);
 				if (player.position === _CMLS.const.PLAYER_POSITION_TOP) {
 					sponsorContainer.addClass('cmls-player-pos-top');
 				}
