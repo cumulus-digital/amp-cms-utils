@@ -30,12 +30,17 @@
 		var adTag = window._CMLS.adTag,
 			player = _CMLS.whichPlayer();
 
-		if ( ! player.type && check_count < 5) {
+		if ( ! player.type) {
 			log('Player not found, checking again in 1 second... (' + (5 - check_count) + ' checks remaining)');
-			check_count++;
-			setTimeout(init, 1000);
+			if (check_count < 5) {
+				setTimeout(init, 1000);
+			} else {
+				log('Player was not found, exiting for good.');
+			}
 			return;
 		}
+
+		log('Player found', player);
 
 		adTag.queue(function(){
 			$(function(){
