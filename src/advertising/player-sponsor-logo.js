@@ -33,6 +33,7 @@
 		if ( ! player.type) {
 			log('Player not found, checking again in 1 second... (' + (5 - check_count) + ' checks remaining)');
 			if (check_count < 5) {
+				check_count++;
 				setTimeout(init, 1000);
 			} else {
 				log('Player was not found, exiting for good.');
