@@ -179,7 +179,7 @@
 
 			windowContext._CMLS.adTag.queue(function() {
 				log('Refreshing page ads.');
-				windowContext._CMLS.adTag.refreshAds();
+				windowContext._CMLS.adTag.refresh();
 				me.start();
 			});
 		}
