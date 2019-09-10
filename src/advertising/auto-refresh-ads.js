@@ -179,9 +179,33 @@
 
 			windowContext._CMLS.adTag.queue(function() {
 				log('Refreshing page ads.');
-				windowContext._CMLS.adTag.refresh();
+				//windowContext._CMLS.adTag.refresh();
+				
+				try {
+					var ads = windowContext._CMLS.adTag.pubads().getSlots();
+					ads.forEach(function(ad) {
+						var el = windowContext.document.getElementById(ad.getSlotElementId());
+						if (testSlotVisibility(el)) {
+							windowContext._CMLS.adTag.refresh(ad.getSlotId());
+						}
+					});
+				} catch(e) {}
+
 				me.start();
 			});
+		}
+
+		function testSlotVisibility(el) {
+			if ( ! el) {
+				return false;
+			}
+			var bounding = el.getBoundingClientRect();
+		    return (
+		        bounding.top >= 0 &&
+		        bounding.left >= 0 &&
+		        bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+		        bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
+		    );
 		}
 
 		// If we've been instantiated with an initial fire time, use it
