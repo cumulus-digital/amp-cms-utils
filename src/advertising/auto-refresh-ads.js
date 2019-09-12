@@ -6,7 +6,7 @@
 	
 	var scriptName = "AUTO REFRESH ADS",
 		nameSpace = "autoRefreshAds",
-		version = "0.5.3";
+		version = "0.5.4";
 
 	function log() {
 		if(window.top._CMLS && window.top._CMLS.hasOwnProperty('logger')) {
@@ -178,6 +178,7 @@
 			log('Firing!', windowContext._CMLS.adTag);
 
 			windowContext._CMLS.adTag.queue(function() {
+				me.resetFireTime();
 				log('Refreshing viewable page ads.');
 				
 				try {
