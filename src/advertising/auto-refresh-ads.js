@@ -6,7 +6,7 @@
 	
 	var scriptName = "AUTO REFRESH ADS",
 		nameSpace = "autoRefreshAds",
-		version = "0.5.2";
+		version = "0.5.3";
 
 	function log() {
 		if(window.top._CMLS && window.top._CMLS.hasOwnProperty('logger')) {
@@ -20,7 +20,7 @@
 	}
 
 	// Time before refreshing ads
-	window._CMLS.autoRefreshAdsTimer = window._CMLS.autoRefreshAdsTimer || 4;
+	window._CMLS.autoRefreshAdsTimer = window._CMLS.autoRefreshAdsTimer || 2;
 
 	var AutoRefresher = function(instFireTime) {
 		var me = this,
@@ -178,34 +178,56 @@
 			log('Firing!', windowContext._CMLS.adTag);
 
 			windowContext._CMLS.adTag.queue(function() {
-				log('Refreshing page ads.');
-				//windowContext._CMLS.adTag.refresh();
+				log('Refreshing viewable page ads.');
 				
 				try {
-					var ads = windowContext._CMLS.adTag.pubads().getSlots();
+					var ads = windowContext._CMLS.adTag.pubads().getSlots(),
+						visibleSlots = [];
 					ads.forEach(function(ad) {
 						var el = windowContext.document.getElementById(ad.getSlotElementId());
-						if (testSlotVisibility(el)) {
-							windowContext._CMLS.adTag.refresh(ad.getSlotId());
+						if (el && isElementVisible(el)) {
+							visibleSlots.push(ad);
 						}
 					});
-				} catch(e) {}
+					log('Viewable ads:', visibleSlots);
+					windowContext._CMLS.adTag.refresh(visibleSlots);
+				} catch(e) {
+					log('Failed to refresh ads!', e);
+				}
 
 				me.start();
 			});
 		}
 
-		function testSlotVisibility(el) {
-			if ( ! el) {
+		// Test if an element is at least half inside the current viewport
+		function isElementVisible(el) {
+
+			if (typeof jQuery === "function" && el instanceof jQuery) {
+				el = el[0];
+			}
+
+			var rect = el.getBoundingClientRect();
+
+			rect.width = (rect.right - rect.left);
+			rect.height = (rect.bottom - rect.top);
+
+			if (rect.width === 0 || rect.height === 0) {
 				return false;
 			}
-			var bounding = el.getBoundingClientRect();
-		    return (
-		        bounding.top >= 0 &&
-		        bounding.left >= 0 &&
-		        bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-		        bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
-		    );
+
+			var check = {
+				top: rect.top + (rect.height/2),
+				right: rect.right - (rect.width/2),
+				bottom: rect.bottom - (rect.height/2),
+				left: rect.left + (rect.width/2)
+			};
+
+			return (
+				check.bottom >= 0 &&
+				check.right >= 0 &&
+				check.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+				check.left <= (window.innerWidth || document.documentElement.clientWidth)
+			);
 		}
 
 		// If we've been instantiated with an initial fire time, use it
