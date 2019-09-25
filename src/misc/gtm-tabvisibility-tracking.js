@@ -7,7 +7,7 @@
 		nameSpace = 'GTMTabVisibilityTracker',
 		version = '0.1';
 
-	window._CMLS[nameSpace] = true;
+	window._CMLS[nameSpace] = {};
 
 	function log() {
 		window._CMLS.logger(scriptName + ' v' + version, arguments);
@@ -46,6 +46,7 @@
 		if (!state) {
 			state = w.document[hidden] ? 'hidden' : 'visible';
 		}
+		window._CMLS.tabVisible = state;
 		fireEvent('page-visibility', state, changeTime);
 		start = w._CMLS.now();
 	}
