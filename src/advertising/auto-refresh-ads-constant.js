@@ -91,7 +91,7 @@
 		function checkTimer() {
 			if (checkConditions() === 1) {
 				var now = new Date();
-				log('Checking timer', [now.toLocaleString(), fireTime.toLocaleString]);
+				log('Checking timer', [now.toLocaleString(), fireTime.toLocaleString()]);
 				if (now.getTime() >= fireTime.getTime()) {
 					fire();
 					return;
