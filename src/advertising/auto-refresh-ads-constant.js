@@ -5,7 +5,7 @@
 	
 	var scriptName = "AUTO REFRESH ADS",
 		nameSpace = "autoRefreshAds",
-		version = "0.6";
+		version = "0.6.1";
 
 	function log() {
 		if(window.top._CMLS && window.top._CMLS.hasOwnProperty('logger')) {
@@ -89,11 +89,13 @@
 		}
 
 		function checkTimer() {
-			var now = new Date();
-			log('Checking timer', [now.toLocaleString(), fireTime.toLocaleString]);
 			if (checkConditions() === 1) {
-				fire();
-				return;
+				var now = new Date();
+				log('Checking timer', [now.toLocaleString(), fireTime.toLocaleString]);
+				if (now.getTime() >= fireTime.getTime()) {
+					fire();
+					return;
+				}
 			}
 
 			timer = setTimeout(checkTimer, 10000);
