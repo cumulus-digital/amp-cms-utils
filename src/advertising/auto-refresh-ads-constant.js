@@ -103,12 +103,15 @@
 
 		// Determine if given element is at least half within viewport
 		function isElVisible(el) {
+			if ( ! el) {
+				return false;
+			}
 
 			// If element is currently hidden, quickly make it visible
 			// so we can get a reading on it
 			var isHidden = false,
 				originalStyle = {}
-			if (el.style.display && el.style.display == 'none') {
+			if (el.style && el.style.display && el.style.display == 'none') {
 				el.setAttribute('style', 'display: block; width: 1px; height: 1px;');
 			}
 			
