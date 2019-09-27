@@ -109,9 +109,8 @@
 
 			// If element is currently hidden, quickly make it visible
 			// so we can get a reading on it
-			var isHidden = false,
-				originalStyle = {}
-			if (el.style && el.style.display && el.style.display == 'none') {
+			var isHidden = false;
+			if (el.style && el.style.display && el.style.display === 'none') {
 				el.setAttribute('style', 'display: block; width: 1px; height: 1px;');
 			}
 			
