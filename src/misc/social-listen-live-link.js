@@ -35,7 +35,7 @@
 		window.top.tgmp_default_theme = window.top_tgmp_default_theme || window.top.tgmp.options.theme;
 
 		log('Locating Listen Live button.');
-		var button = $('.social-icons img[title="Listen Live!!"],.social-icons-container img[title="Listen Live!!"],.nav-listenlive img');
+		var button = $('.social-icons img[title="Listen Live!!"],.social-icons-container img[title="Listen Live!!"],.nav-listenlive img,.cmlistenlive-start');
 
 		if ( ! button.length) {
 			log('Could not locate Listen Live button in social icons.');
