@@ -23,7 +23,7 @@
 // @codekit-append "misc/gtm-promoreel-tracking.js"
 // @codekit-append "misc/gtm-tabvisibility-tracking.js"
 // @codekit-append "misc/auto-reload.js"
-// DISABLED codekit-append "misc/addthis-hider.js"
+// @codekit-append "misc/addthis-hider.js"
 // @codekit-append "misc/addthis-injector.js"
 // @codekit-append "misc/breaking-news-bar.js"
 // @codekit-append "misc/social-listen-live-link.js"
