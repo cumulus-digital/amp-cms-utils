@@ -84,15 +84,18 @@
 				return;
 			}
 
-			log('Reloading page.');
+			//log('Reloading page.');
 			if (player.type === window._CMLS.const.PLAYER_TRITON && window.History && window.History.Adapter) {
+				log('Reloading through Triton Player.');
 				window.History.Adapter.trigger(window, 'statechange');
 				return;
 			}
 			if (player.type === window._CMLS.const.PLAYER_TUNEGENIE) {
+				log('Reloading through TuneGenie Player.');
 				window.tgmp.updateLocation(window.location.href);
 				return;
 			}
+			log('Reloading page.');
 			window.location.reload();
 		};
 
