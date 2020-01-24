@@ -17,7 +17,7 @@
 	window._CMLS = window._CMLS || {};
 
 	var scriptName = 'SWITCHSTREAM LINKS',
-		version = '0.4';
+		version = '0.5';
 
 	function log() {
 		if (window._CMLS && window._CMLS.logger) {
