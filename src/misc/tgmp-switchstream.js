@@ -89,7 +89,7 @@
 			var tgmp = window.tgmp || window.top.tgmp || null;
 			if (tgmp) {
 				var opts = parseCommand(
-					commands.streamId,
+					commands.streamid,
 					commands.autostart,
 					commands.theme
 				);
