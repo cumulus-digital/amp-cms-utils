@@ -17,7 +17,7 @@
 	window._CMLS = window._CMLS || {};
 
 	var scriptName = 'SWITCHSTREAM LINKS',
-		version = '0.15';
+		version = '0.16';
 
 	function log() {
 		if (window._CMLS && window._CMLS.logger) {
@@ -101,76 +101,19 @@
 				command = $this.data('tgmp-switchstream'),
 				tgmp = window.tgmp || window.top.tgmp || null;
 
+			if ( ! command) {
+				log('Link was not initialized, exiting');
+				return;
+			}
+
 			if ( ! tgmp) {
 				log('TGMP not available!');
 				return;
 			}
+
 			log('Switching stream', command);
 			tgmp.update(command);
 		});
 
-
-		/*
-		function switchStream(e) {
-			log('Intercepted click', this);
-			var $this = $(this),
-				alt = $this.prop('alt'),
-				href = $this.prop('href'),
-				commands = { 'brand': null, 'theme': null, 'autostart': false };
-
-			function getVars(vars) {
-				log('Requested vars', vars);
-				return {
-					'brand': vars.indexOf('tgmp-streamid') > -1 ? vars.match(/tgmp\-streamid\-(\w+)/i)[1] : null,
-					'theme': vars.indexOf('tgmp-theme') > -1 ? ['#' + vars.match(/tgmp\-theme\-(\d+)/i)[1] ] : null,
-					'autostart': vars.indexOf('tgmp-autostart') > -1 ? true: false
-				};
-			}
-
-			if ($this.hasClass('tgmp-switchstream')) {
-				var classes = $this.prop('class');
-				log('Using element classes', classes);
-				commands = getVars(classes);
-			}
-
-			if (alt && alt.indexOf('tgmp-switchstream') > -1) {
-				log('Using element alt attribute', alt);
-				commands = getVars(alt);
-			}
-
-			if (href && href.indexOf('tgmp-switchstream') > -1) {
-				log('Using element href', href);
-				commands = getVars(href);
-			}
-
-			log('Switchstream link', this, commands);
-
-			if ( ! commands.brand || commands.brand.length < 2) {
-				log('No brand provided, exiting.');
-				return false;
-			}
-
-			var tgmp = window.tgmp || window.top.tgmp || null;
-			if ( ! tgmp) {
-				log('TGMP not available, exiting.');
-				return false;
-			}
-
-			tgmp.update(commands);
-			e.preventDefault();
-
-		}
-
-		// Selectors for switch stream delegation
-		var switchSelectors = 
-			'.tgmp-switchstream,' +
-			'img[alt*="tgmp-switchstream"],' +
-			'a[alt*="tgmp-switchstream"],' +
-			'a[href*="tgmp-switchstream"]';
-
-		$(switchSelectors)
-			.off('click.cmls-tg-switchstream')
-			.on('click.cmls-tg-switchstream', switchStream);
-		*/
 	});
 }(jQuery, window.self));
