@@ -17,7 +17,7 @@
 	window._CMLS = window._CMLS || {};
 
 	var scriptName = 'SWITCHSTREAM LINKS',
-		version = '0.6';
+		version = '0.7';
 
 	function log() {
 		if (window._CMLS && window._CMLS.logger) {
@@ -46,7 +46,9 @@
 
 		function switchStream(e) {
 			log('Intercepted click', this);
-			var classes = this.className, alt = this.getAttribute('alt'),
+			var classes = this.className,
+				alt = this.getAttribute('alt'),
+				href = this.href,
 				commands = { 'streamid': null, 'theme': null, 'autostart': false };
 
 			function getVars(vars) {
@@ -64,6 +66,10 @@
 			if (alt && alt.indexOf('tgmp-switchstream') > -1) {
 				log('Using element alt attribute', alt);
 				commands = getVars(alt);
+			}
+			if (href && href.indexOf('tgmp-switchstream') > -1) {
+				log('Using element href', href);
+				commands = getVars(href);
 			}
 
 			log('Got switchstream link', this, commands);
@@ -83,9 +89,14 @@
 		}
 
 		// Selectors for switch stream delegation
-		var switchselector = '.tgmp-switchstream,img[alt*="tgmp-switchstream"],a[alt*="tgmp-switchstream"]';
+		var switchselectors = 
+			'.tgmp-switchstream,' +
+			'img[alt*="tgmp-switchstream"],' +
+			'a[alt*="tgmp-switchstream"],' +
+			'a[href*="tgmp-switchstream"]';
+
 		$('body')
-			.off('click.cmls-tg-switchstream', switchselector, switchStream)
-			.on('click.cmls-tg-switchstream', switchselector, switchStream);
+			.off('click.cmls-tg-switchstream', switchselectors, switchStream)
+			.on('click.cmls-tg-switchstream', switchselectors, switchStream);
 	});
 }(jQuery, window.self));
