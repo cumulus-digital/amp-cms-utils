@@ -17,7 +17,7 @@
 	window._CMLS = window._CMLS || {};
 
 	var scriptName = 'SWITCHSTREAM LINKS',
-		version = '0.10';
+		version = '0.11';
 
 	function log() {
 		if (window._CMLS && window._CMLS.logger) {
@@ -25,23 +25,24 @@
 		}
 	}
 
-	window._CMLS.switchTGMPStream = function(id, autostart, theme) {
-		var tgmp = window.tgmp || window.top.tgmp || null,
-			opts = { brand: id, autostart: false };
+	function parseCommand(id, autostart, theme) {
+		var opts = { brand: id, autostart: false };
 		if (theme && /\d+/.test(theme)) {
 			opts.theme = [ '#' + theme ];
 		}
 		if (autostart) {
 			opts.autostart = true;
 		}
+		return opts;
+	}
+
+	window._CMLS.switchTGMPStream = function(id, autostart, theme) {
+		var tgmp = window.tgmp || window.top.tgmp || null,
+			opts = parseCommand(id, autostart, theme);
+
 		if (tgmp) {
 			log('Switching stream', opts);
 			tgmp.update(opts);
-			if (autostart) {
-				setTimeout(function() {
-					tgmp.playStream();
-				}, 800);
-			}
 		}
 	};
 
@@ -84,14 +85,17 @@
 				return false;
 			}
 
-			e.preventDefault();
-
 			commands.streamid = commands.streamid[1];
-			window._CMLS.switchTGMPStream(
-				commands.streamid,
-				commands.autostart,
-				commands.theme
-			);
+			var tgmp = window.tgmp || window.top.tgmp || null;
+			if (tgmp) {
+				tgmp.update(parseCommand(
+					commands.streamId,
+					commands.autostart,
+					commands.theme
+				));
+			}
+
+			e.preventDefault();
 		}
 
 		// Selectors for switch stream delegation
