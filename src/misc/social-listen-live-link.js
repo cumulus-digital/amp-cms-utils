@@ -6,7 +6,7 @@
 
 	var scriptName = 'SOCIAL LISTEN LIVE LINK',
 		nameSpace = 'socialListenLiveLink',
-		version = '0.1';
+		version = '0.2';
 
 	window._CMLS = window._CMLS || {};
 
@@ -34,31 +34,31 @@
 		window.top.tgmp_default_brand = window.top.tgmp_default_brand || "" + window.top.tgmp.options.brand;
 		window.top.tgmp_default_theme = window.top_tgmp_default_theme || window.top.tgmp.options.theme;
 
-		log('Locating Listen Live button.');
-		var button = $('.social-icons img[title="Listen Live!!"],.social-icons-container img[title="Listen Live!!"],.nav-listenlive img,.cmlistenlive-start');
-
-		if ( ! button.length) {
-			log('Could not locate Listen Live button in social icons.');
-			return;
-		}
-		
-		if (button.parent().is('a')) {
-			button = button.parent();
-		}
-
-		button.click(function(e){
+		function playStream(e) {
 			e.preventDefault();
 			log('Playing stream...');
 			if (window.top.tgmp_default_brand && window.top.tgmp.options.brand !== window.top.tgmp_default_brand) {
 				window.top.tgmp.update({ brand: window.top.tgmp_default_brand, theme: window.top.tgmp_default_theme, autostart: true });
 				return;
 			}
-			window.top.tgmp.playStream();
-		});
+			window.tgmp.playStream();
+		}
+
+		var llSelectors = 
+				'.social-icons img[title="Listen Live!!"]:parent,' +
+				'.social-icons-container img[title="Listen Live!!"]:parent,' +
+				'.nav-listenlive a,' +
+				'.nav-listenlive img,' +
+				'.cmlistenlive-start';
+
+		$('body')
+			.off('click', llSelectors, playStream)
+			.on('click', llSelectors, playStream);
+
 		log('Social Listen Live button activated.');
 	});
 
 	window._CMLS[nameSpace] = version;
 	log('Initialized.');
 
-}(jQuery, window));
+}(jQuery, window.self));
