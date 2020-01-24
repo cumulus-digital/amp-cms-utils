@@ -2,11 +2,11 @@
 	
 	var scriptName = 'AUTO-RELOAD PAGE',
 		//nameSpace = 'autoReload',
-		version = '0.11';
+		version = '0.12';
 
 	function log() {
-		if (window.top._CMLS && window.top._CMLS.logger) {
-			window.top._CMLS.logger(scriptName + ' v' + version, arguments);
+		if (window._CMLS && window._CMLS.logger) {
+			window._CMLS.logger(scriptName + ' v' + version, arguments);
 		}
 	}
 
@@ -23,15 +23,13 @@
 			that = this;
 
 		function checkCondition(){
-			/*
 			// Check if condition is in TuneGenie frame...
 			var iframe = window.top.document.querySelector('iframe#page_frame,iframe[name="pwm_pageFrame"]');
 			if (player.type === window._CMLS.const.PLAYER_TUNEGENIE && iframe && iframe.contentWindow) {
 				return iframe.contentWindow.document.querySelector(settings.condition);
 			}
-			*/
 			// Else check current window document
-			return window.self.document.querySelector(settings.condition);
+			return window.document.querySelector(settings.condition);
 		}
 
 		function getDateWithOffset(offset) {
@@ -96,6 +94,12 @@
 				return;
 			}
 			if (player.type === window._CMLS.const.PLAYER_TUNEGENIE) {
+				var iframe = window.top.document.querySelector('iframe#page_frame,iframe[name="pwm_pageFrame"]');
+				if (iframe && iframe.contentWindow) {
+					log('Reloading through TuneGenie Player frame.');
+					iframe.contentWindow.tgmp.updateLocation(window.location.href);
+					return;
+				}
 				log('Reloading through TuneGenie Player.');
 				window.tgmp.updateLocation(window.location.href);
 				return;
@@ -129,4 +133,4 @@
 		window._CMLS.autoReload.push(freshOptions);
 	}
 
-}(window.self));
+}(window.top));
