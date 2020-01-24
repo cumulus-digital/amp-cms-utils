@@ -143,9 +143,9 @@
 				window.History.pushState(null,null,url);
 			}
 			// TuneGenie player
-			if (player.type === window._CMLS.const.PLAYER_TUNEGENIE && window.top.tgmp) {
+			if (player.type === window._CMLS.const.PLAYER_TUNEGENIE && window.tgmp) {
 				log('Navigating through TuneGenie player.', url);
-				window.top.tgmp.updateLocation(url);
+				window.tgmp.updateLocation(url);
 			}			
 		},
 
