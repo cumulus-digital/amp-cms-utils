@@ -17,7 +17,7 @@
 	window._CMLS = window._CMLS || {};
 
 	var scriptName = 'SWITCHSTREAM LINKS',
-		version = '0.8';
+		version = '0.9';
 
 	function log() {
 		if (window._CMLS && window._CMLS.logger) {
@@ -35,7 +35,9 @@
 			log('Switching stream', opts);
 			tgmp.update(opts);
 			if (autostart) {
-				tgmp.playStream();
+				setTimeout(function() {
+					tgmp.playStream();
+				}, 500);
 			}
 		}
 	};
