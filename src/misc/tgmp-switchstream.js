@@ -17,7 +17,7 @@
 	window._CMLS = window._CMLS || {};
 
 	var scriptName = 'SWITCHSTREAM LINKS',
-		version = '0.11';
+		version = '0.12';
 
 	function log() {
 		if (window._CMLS && window._CMLS.logger) {
@@ -88,11 +88,13 @@
 			commands.streamid = commands.streamid[1];
 			var tgmp = window.tgmp || window.top.tgmp || null;
 			if (tgmp) {
-				tgmp.update(parseCommand(
+				var opts = parseCommand(
 					commands.streamId,
 					commands.autostart,
 					commands.theme
-				));
+				);
+				log('Updating player', opts);
+				tgmp.update(opts);
 			}
 
 			e.preventDefault();
