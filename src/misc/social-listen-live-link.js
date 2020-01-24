@@ -45,7 +45,7 @@
 		}
 
 		var llSelectors = 
-				'.block-type-social a:contains(img[title="Listen Live!!"]),' +
+				'.block-type-social a:has(img[title="Listen Live!!"]),' +
 				'.nav-listenlive a,' +
 				'.nav-listenlive img,' +
 				'.cmlistenlive-start';
