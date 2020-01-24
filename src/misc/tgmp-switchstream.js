@@ -43,10 +43,11 @@
 	log('Initializing switchstream links on page.');
 
 	$(function(){
-		// tgmp-switchstream tgmp-streamid-laxspec tgmp-autostart
-		$('.tgmp-switchstream,img[alt*="tgmp-switchstream"],a[alt*="tgmp-switchstream"]')
-			.off('click.cmls-tg-switchstream')
-			.on('click.cmls-tg-switchstream', function(e){
+		// Selectors for switch stream delegation
+		var switchselector = '.tgmp-switchstream,img[alt*="tgmp-switchstream"],a[alt*="tgmp-switchstream"]';
+		$('body')
+			.off('click.cmls-tg-switchstream', switchselector)
+			.on('click.cmls-tg-switchstream', switchselector, function(e){
 				log('Intercepted click', this);
 				var classes = this.className, alt = this.getAttribute('alt'),
 					commands = { 'streamid': null, 'theme': null, 'autostart': false };
