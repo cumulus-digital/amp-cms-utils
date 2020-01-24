@@ -2,7 +2,7 @@
 	
 	var scriptName = 'AUTO-RELOAD PAGE',
 		//nameSpace = 'autoReload',
-		version = '0.10';
+		version = '0.11';
 
 	function log() {
 		if (window.top._CMLS && window.top._CMLS.logger) {
@@ -31,7 +31,7 @@
 			}
 			*/
 			// Else check current window document
-			return window.document.querySelector(settings.condition);
+			return window.self.document.querySelector(settings.condition);
 		}
 
 		function getDateWithOffset(offset) {
