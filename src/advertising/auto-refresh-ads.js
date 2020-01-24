@@ -40,9 +40,9 @@
 		// Retrieves the window to refresh
 		function getWindow() {
 			if (player.type === window._CMLS.const.PLAYER_TUNEGENIE) {
-				var iframe = window.top.document.querySelector('iframe#page_frame');
+				var iframe = window.top.document.querySelector('iframe#page_frame,iframe[name="pwm_pageFrame"]');
 				if (iframe && iframe.contentWindow) {
-					log('Window context is page_frame');
+					log('Window context is TuneGenie frame');
 					return iframe.contentWindow;
 				}
 			}

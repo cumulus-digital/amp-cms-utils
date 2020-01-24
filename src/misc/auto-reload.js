@@ -23,8 +23,9 @@
 			that = this;
 
 		function checkCondition(){
-			if (player.type === window._CMLS.const.PLAYER_TUNEGENIE && window.page_frame) {
-				return window.page_frame.document.querySelector(settings.condition);
+			var iframe = window.top.document.querySelector('iframe#page_frame,iframe[name="pwm_pageFrame"]');
+			if (player.type === window._CMLS.const.PLAYER_TUNEGENIE && iframe && iframe.contentWindow) {
+				return iframe.contentWindow.document.querySelector(settings.condition);
 			}
 			return window.document.querySelector(settings.condition);
 		}
