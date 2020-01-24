@@ -17,7 +17,7 @@
 	window._CMLS = window._CMLS || {};
 
 	var scriptName = 'SWITCHSTREAM LINKS',
-		version = '0.9';
+		version = '0.10';
 
 	function log() {
 		if (window._CMLS && window._CMLS.logger) {
@@ -31,13 +31,16 @@
 		if (theme && /\d+/.test(theme)) {
 			opts.theme = [ '#' + theme ];
 		}
+		if (autostart) {
+			opts.autostart = true;
+		}
 		if (tgmp) {
 			log('Switching stream', opts);
 			tgmp.update(opts);
 			if (autostart) {
 				setTimeout(function() {
 					tgmp.playStream();
-				}, 500);
+				}, 800);
 			}
 		}
 	};
