@@ -6,7 +6,7 @@
 
 	var scriptName = 'SOCIAL LISTEN LIVE LINK',
 		nameSpace = 'socialListenLiveLink',
-		version = '0.4';
+		version = '0.5';
 
 	window._CMLS = window._CMLS || {};
 
