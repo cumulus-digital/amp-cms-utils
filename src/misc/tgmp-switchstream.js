@@ -50,6 +50,67 @@
 
 	$(function(){
 
+		// Selectors for switch stream delegation
+		var switchSelectors = 
+			'.tgmp-switchstream,' +
+			'img[alt*="tgmp-switchstream"],' +
+			'a[alt*="tgmp-switchstream"],' +
+			'a[href*="tgmp-switchstream"]';
+
+		$(switchSelectors).each(function() {
+			var $this = $(this),
+				alt = $this.prop('alt'),
+				href = $this.prop('href'),
+				commands = { 'brand': null, 'theme': null, 'autostart': false };
+
+			function getVars(vars) {
+				log('Requested vars', vars);
+				return {
+					'brand': vars.indexOf('tgmp-streamid') > -1 ? vars.match(/tgmp\-streamid\-(\w+)/i)[1] : null,
+					'theme': vars.indexOf('tgmp-theme') > -1 ? ['#' + vars.match(/tgmp\-theme\-(\d+)/i)[1] ] : null,
+					'autostart': vars.indexOf('tgmp-autostart') > -1 ? true: false
+				};
+			}
+
+			if ($this.hasClass('tgmp-switchstream')) {
+				var classes = $this.prop('class');
+				log('Using element classes', classes);
+				commands = getVars(classes);
+			}
+
+			if (alt && alt.indexOf('tgmp-switchstream') > -1) {
+				log('Using element alt attribute', alt);
+				commands = getVars(alt);
+			}
+
+			if (href && href.indexOf('tgmp-switchstream') > -1) {
+				log('Using element href', href);
+				commands = getVars(href);
+			}
+
+			if ( ! commands.brand || commands.brand.length < 2) {
+				log('No brand provided, exiting.');
+				return false;
+			}
+
+			$this.data('tgmp-switchstream', commands);
+
+		}).on('click.cmls-tg-switchstream', function(e) {
+			e.preventDefault();
+			var $this = $(this),
+				command = $this.data('tgmp-switchstream'),
+				tgmp = window.tgmp || window.top.tgmp || null;
+
+			if ( ! tgmp) {
+				log('TGMP not available!');
+				return;
+			}
+			log('Switching stream', command);
+			tgmp.update(command);
+		});
+
+
+		/*
 		function switchStream(e) {
 			log('Intercepted click', this);
 			var $this = $(this),
@@ -110,11 +171,6 @@
 		$(switchSelectors)
 			.off('click.cmls-tg-switchstream')
 			.on('click.cmls-tg-switchstream', switchStream);
-
-		/*
-		$('body')
-			.off('click.cmls-tg-switchstream', switchSelectors, switchStream)
-			.on('click.cmls-tg-switchstream', switchSelectors, switchStream);
 		*/
 	});
 }(jQuery, window.self));
