@@ -5,8 +5,8 @@
 		version = '0.9';
 
 	function log() {
-		if (window._CMLS && window._CMLS.logger) {
-			window._CMLS.logger(scriptName + ' v' + version, arguments);
+		if (window.top._CMLS && window.top._CMLS.logger) {
+			window.top._CMLS.logger(scriptName + ' v' + version, arguments);
 		}
 	}
 
@@ -23,10 +23,14 @@
 			that = this;
 
 		function checkCondition(){
+			/*
+			// Check if condition is in TuneGenie frame...
 			var iframe = window.top.document.querySelector('iframe#page_frame,iframe[name="pwm_pageFrame"]');
 			if (player.type === window._CMLS.const.PLAYER_TUNEGENIE && iframe && iframe.contentWindow) {
 				return iframe.contentWindow.document.querySelector(settings.condition);
 			}
+			*/
+			// Else check current window document
 			return window.document.querySelector(settings.condition);
 		}
 
@@ -125,4 +129,4 @@
 		window._CMLS.autoReload.push(freshOptions);
 	}
 
-}(window.top));
+}(window.self));
