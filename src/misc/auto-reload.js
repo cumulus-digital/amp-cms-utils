@@ -2,7 +2,7 @@
 	
 	var scriptName = 'AUTO-RELOAD PAGE',
 		//nameSpace = 'autoReload',
-		version = '0.9';
+		version = '0.10';
 
 	function log() {
 		if (window.top._CMLS && window.top._CMLS.logger) {
