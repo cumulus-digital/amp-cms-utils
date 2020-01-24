@@ -17,7 +17,7 @@
 	window._CMLS = window._CMLS || {};
 
 	var scriptName = 'SWITCHSTREAM LINKS',
-		version = '0.14';
+		version = '0.15';
 
 	function log() {
 		if (window._CMLS && window._CMLS.logger) {
@@ -89,7 +89,7 @@
 				return false;
 			}
 
-			var tgmp = window.tgmp | window.top.tgmp || null;
+			var tgmp = window.tgmp || window.top.tgmp || null;
 			if ( ! tgmp) {
 				log('TGMP not available, exiting.');
 				return false;
