@@ -6,7 +6,7 @@
 
 	var scriptName = 'SOCIAL LISTEN LIVE LINK',
 		nameSpace = 'socialListenLiveLink',
-		version = '0.3';
+		version = '0.4';
 
 	window._CMLS = window._CMLS || {};
 
@@ -45,7 +45,7 @@
 		}
 
 		var llSelectors = 
-				'.block-type-social img[title="Listen Live!!"]:parent,' +
+				'.block-type-social a:contains(img[title="Listen Live!!"]),' +
 				'.nav-listenlive a,' +
 				'.nav-listenlive img,' +
 				'.cmlistenlive-start';
