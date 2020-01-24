@@ -17,7 +17,7 @@
 	window._CMLS = window._CMLS || {};
 
 	var scriptName = 'SWITCHSTREAM LINKS',
-		version = '0.5';
+		version = '0.6';
 
 	function log() {
 		if (window._CMLS && window._CMLS.logger) {
@@ -43,46 +43,49 @@
 	log('Initializing switchstream links on page.');
 
 	$(function(){
+
+		function switchStream(e) {
+			log('Intercepted click', this);
+			var classes = this.className, alt = this.getAttribute('alt'),
+				commands = { 'streamid': null, 'theme': null, 'autostart': false };
+
+			function getVars(vars) {
+				log('Requested vars', vars);
+				return {
+					'streamid': vars.match(/tgmp\-streamid\-(\w+)/i),
+					'theme': vars.indexOf('tgmp-theme') > -1 ? vars.match(/tgmp\-theme\-(\d+)/i)[1] : null,
+					'autostart': vars.indexOf('tgmp-autostart') > -1 ? true : false
+				};
+			}
+			if (classes && classes.indexOf('tgmp-switchstream') > -1) {
+				log('Using element classes', classes);
+				commands = getVars(classes);
+			}
+			if (alt && alt.indexOf('tgmp-switchstream') > -1) {
+				log('Using element alt attribute', alt);
+				commands = getVars(alt);
+			}
+
+			log('Got switchstream link', this, commands);
+
+			if (commands.streamid && commands.streamid.length < 2) {
+				log('No stream ID provided, exiting.', commands.streamid, commands.streamid.length);
+				return false;
+			}
+
+			commands.streamid = commands.streamid[1];
+			e.preventDefault();
+			window._CMLS.switchTGMPStream(
+				commands.streamid,
+				commands.autostart,
+				commands.theme
+			);
+		}
+
 		// Selectors for switch stream delegation
 		var switchselector = '.tgmp-switchstream,img[alt*="tgmp-switchstream"],a[alt*="tgmp-switchstream"]';
 		$('body')
-			.off('click.cmls-tg-switchstream', switchselector)
-			.on('click.cmls-tg-switchstream', switchselector, function(e){
-				log('Intercepted click', this);
-				var classes = this.className, alt = this.getAttribute('alt'),
-					commands = { 'streamid': null, 'theme': null, 'autostart': false };
-
-				function getVars(vars) {
-					log('Requested vars', vars);
-					return {
-						'streamid': vars.match(/tgmp\-streamid\-(\w+)/i),
-						'theme': vars.indexOf('tgmp-theme') > -1 ? vars.match(/tgmp\-theme\-(\d+)/i)[1] : null,
-						'autostart': vars.indexOf('tgmp-autostart') > -1 ? true : false
-					};
-				}
-				if (classes && classes.indexOf('tgmp-switchstream') > -1) {
-					log('Using element classes', classes);
-					commands = getVars(classes);
-				}
-				if (alt && alt.indexOf('tgmp-switchstream') > -1) {
-					log('Using element alt attribute', alt);
-					commands = getVars(alt);
-				}
-
-				log('Got switchstream link', this, commands);
-
-				if (commands.streamid && commands.streamid.length < 2) {
-					log('No stream ID provided, exiting.', commands.streamid, commands.streamid.length);
-					return false;
-				}
-
-				commands.streamid = commands.streamid[1];
-				e.preventDefault();
-				window._CMLS.switchTGMPStream(
-					commands.streamid,
-					commands.autostart,
-					commands.theme
-				);
-			});
+			.off('click.cmls-tg-switchstream', switchselector, switchStream)
+			.on('click.cmls-tg-switchstream', switchselector, switchStream);
 	});
 }(jQuery, window.self));
