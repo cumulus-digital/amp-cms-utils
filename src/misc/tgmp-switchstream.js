@@ -17,7 +17,7 @@
 	window._CMLS = window._CMLS || {};
 
 	var scriptName = 'SWITCHSTREAM LINKS',
-		version = '0.7';
+		version = '0.8';
 
 	function log() {
 		if (window._CMLS && window._CMLS.logger) {
@@ -28,15 +28,15 @@
 	window._CMLS.switchTGMPStream = function(id, autostart, theme) {
 		var tgmp = window.tgmp || window.top.tgmp || null,
 			opts = { brand: id, autostart: false };
-		if (autostart) {
-			opts.autostart = true;
-		}
 		if (theme && /\d+/.test(theme)) {
 			opts.theme = [ '#' + theme ];
 		}
 		if (tgmp) {
 			log('Switching stream', opts);
 			tgmp.update(opts);
+			if (autostart) {
+				tgmp.playStream();
+			}
 		}
 	};
 
@@ -79,8 +79,9 @@
 				return false;
 			}
 
-			commands.streamid = commands.streamid[1];
 			e.preventDefault();
+
+			commands.streamid = commands.streamid[1];
 			window._CMLS.switchTGMPStream(
 				commands.streamid,
 				commands.autostart,
