@@ -17,7 +17,7 @@
 	window._CMLS = window._CMLS || {};
 
 	var scriptName = 'SWITCHSTREAM LINKS',
-		version = '0.12';
+		version = '0.13';
 
 	function log() {
 		if (window._CMLS && window._CMLS.logger) {
@@ -101,14 +101,19 @@
 		}
 
 		// Selectors for switch stream delegation
-		var switchselectors = 
+		var switchSelectors = 
 			'.tgmp-switchstream,' +
 			'img[alt*="tgmp-switchstream"],' +
 			'a[alt*="tgmp-switchstream"],' +
 			'a[href*="tgmp-switchstream"]';
 
+		$(switchSelectors)
+			.on('click.cmls-tg-switchstream', switchStream);
+
+		/*
 		$('body')
-			.off('click.cmls-tg-switchstream', switchselectors, switchStream)
-			.on('click.cmls-tg-switchstream', switchselectors, switchStream);
+			.off('click.cmls-tg-switchstream', switchSelectors, switchStream)
+			.on('click.cmls-tg-switchstream', switchSelectors, switchStream);
+		*/
 	});
 }(jQuery, window.self));
