@@ -189,7 +189,7 @@
 		if (window.tgmp) {
 			window._CMLS.logger('COMMON', ['Found TuneGenie player.']);
 			discovered.type = window._CMLS.const.PLAYER_TUNEGENIE;
-			if (window.tgmp.options.position && window.tgmp.options.position.toLowerCase() === 'bottom') {
+			if (window.tgmp.options.position && window.tgmp.options.position.toLowerCase() !== 'top') {
 				window._CMLS.logger('COMMON', ['TuneGenie player is on the bottom.']);
 				discovered.position = window._CMLS.const.PLAYER_POSITION_BOTTOM;
 			} else if (window.tgmp.options.position && window.tgmp.options.position.toLowerCase() === 'top') {

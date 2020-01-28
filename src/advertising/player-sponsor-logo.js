@@ -132,11 +132,9 @@
 						'<sc'+'ript>googletag.cmd.push(function() { googletag.display("CMLSPlayerSponsorship")});</sc'+'ript>' +
 					'</div>'
 				);
+				var position = 'bottom';
 				if (player.position === _CMLS.const.PLAYER_POSITION_TOP) {
-					sponsorContainer.addClass('cmls-player-pos-top');
-				}
-				if (player.position === _CMLS.const.PLAYER_POSITION_BOTTOM) {
-					sponsorContainer.addClass('cmls-player-pos-bottom');
+					position = 'top';
 				}
 				if (player.type === _CMLS.const.PLAYER_TRITON) {
 					sponsorContainer.addClass('cmls-player-triton');
@@ -144,6 +142,13 @@
 				if (player.type === _CMLS.const.PLAYER_TUNEGENIE) {
 					sponsorContainer.addClass('cmls-player-tg');
 				}
+
+				if (position === 'top') {
+					sponsorContainer.addClass('cmls-player-pos-top');
+				} else {
+					sponsorContainer.addClass('cmls-player-pos-bottom');
+				}
+				
 				$('body').append(sponsorContainer);
 
 				log('Slot initialized.');
