@@ -12,7 +12,7 @@
 // DISABLED codekit-append "advertising/liquid-video-injector.js"
 // @codekit-append "advertising/player-tracking-dfp-injection.js"
 // DISABLED codekit-append "advertising/auto-scroll-homepage-past-leaderboard.js"
-// DISABLED codekit-append "advertising/auto-refresh-ads-constant.js"
+// @codekit-append "advertising/auto-refresh-ads-constant.js"
 // @codekit-append "advertising/nav-through-player.js"
 // @codekit-append "advertising/wallpaper-injector.js"
 // @codekit-append "advertising/player-sponsor-logo.js"
