@@ -241,6 +241,13 @@
 
 	};
 
+	try {
+		window.parent._CMLS[nameSpace].destroy();
+	} catch(e) {}
+	try {
+		window._CMLS[nameSpace].destroy();
+	} catch(e) {}
+
 	window._CMLS[nameSpace] = new AutoRefresher();
 	window._CMLS[nameSpace].start();
 
