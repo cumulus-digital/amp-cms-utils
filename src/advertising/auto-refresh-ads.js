@@ -188,7 +188,6 @@
 						var el = windowContext.document.getElementById(ad.getSlotElementId());
 						if (el && isElementVisible(el)) {
 							visibleSlots.push(ad);
-							el.style.display = 'none';
 						}
 					});
 					log('Viewable ads:', visibleSlots);

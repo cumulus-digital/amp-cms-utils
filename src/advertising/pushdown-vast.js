@@ -277,6 +277,13 @@
 				return false;
 			}
 
+			try {
+				$adFrame.contents();
+			} catch(e) {
+				log('Could not retrieve ad container contents, is this a safe frame?');
+				return false;
+			}
+
 			if ($adFrame.contents().find('#vpContainer').length) {
 				return "vast";
 			}
