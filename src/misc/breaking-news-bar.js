@@ -102,6 +102,8 @@
 		if (settings.beforeText && settings.beforeText.length) {
 			var before = '<div class="' + settings.classPrefix + '-before">' + settings.beforeText + '</div>';
 			template = template.replace('{{BEFORE}}', before);
+		} else {
+			template = template.replace('{{BEFORE}}', '');
 		}
 
 		template = $(template.replace('{{TEXT}}', settings.text));
