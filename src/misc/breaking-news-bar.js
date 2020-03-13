@@ -53,6 +53,7 @@
 			beforeText: 'Breaking News:',
 			text: '',
 			background: '#900',
+			hoverBackground: '#600',
 			color: '#fff'
 		}, settings, injectionPoint = '.wrapper-header';
 
@@ -90,6 +91,7 @@
 			'.' + settings.classPrefix + '-container > a { display: block; color: inherit !important; cursor: pointer; padding: 1em; margin: -1em; }' +
 			'.' + settings.classPrefix + '-container > a:hover .' + settings.classPrefix + '-before { text-decoration: underline; }' +
 			'.' + settings.classPrefix + '-inner { box-sizing: border-box; max-width: 1020px; margin: 0 auto; }' +
+			'.' + settings.classPrefix + '-inner_link:hover { background-color: ' + settings.hoverBackground + '; }' + 
 			'.' + settings.classPrefix + '-before { float: left; font-weight: bold; margin-right: .5em; }' +
 			'.' + settings.classPrefix + '-text { overflow: hidden; }' +
 			'.' + settings.classPrefix + '-inner a { text-decoration: underline !important; color: inherit; }' +
@@ -111,7 +113,8 @@
 		if (settings.link && settings.link.length) {
 			var linkEl = $('<a></a>').prop({
 				href: settings.link,
-				target: settings.target
+				target: settings.target,
+				className: settings.classPrefix + '-inner_link'
 			});
 			template.wrapInner(linkEl);
 		}
