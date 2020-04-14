@@ -131,7 +131,7 @@
 		}
 		if (settings.position === 'below') {
 			$(injectionPoint).after(template);
-			$('#cmlsBreakingNewsStyles').append('.takeover-left,.takeover-right,.skyscraper-left,.skyscraper-right { margin-bottom: -' + template.outerHeight() + 'px; }');
+			$('#cmlsBreakingNewsStyles').append('.takeover-left,.takeover-right,.skyscraper-left,.skyscraper-right { margin-top: ' + template.outerHeight() + 'px; }');
 		} else {
 			$(injectionPoint).before(template);
 		}
