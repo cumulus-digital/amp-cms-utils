@@ -18,8 +18,8 @@
 		return false;
 	}
 
-	// Time before refreshing ads
-	window._CMLS.autoRefreshAdsTimer = window._CMLS.autoRefreshAdsTimer || 1.5;
+	// Time before refreshing ads, in minutes.
+	window._CMLS.autoRefreshAdsTimer = window._CMLS.autoRefreshAdsTimer || 4;
 
 	var AutoRefresher = function(instFireTime) {
 		var me = this,
