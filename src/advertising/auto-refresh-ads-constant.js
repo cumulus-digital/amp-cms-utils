@@ -89,13 +89,18 @@
 		}
 
 		function checkTimer() {
-			if (checkConditions() === 1) {
+			var condition = checkConditions();
+			if (condition === 1) {
 				var now = new Date();
 				log('Checking timer', [now.toLocaleString(), fireTime.toLocaleString()]);
 				if (now.getTime() >= fireTime.getTime()) {
 					fire();
 					return;
 				}
+			}
+			if (condition === -1) {
+				me.stop();
+				return;
 			}
 
 			timer = setTimeout(function(){
