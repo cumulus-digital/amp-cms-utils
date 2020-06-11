@@ -80,7 +80,9 @@
 			}
 
 			// Not ready yet, start a new cycle
-			timer = setTimeout(checkTimer, 10000);
+			timer = setTimeout(function(){
+				checkTimer();
+			}, 10000);
 		}
 
 		// Expose a way to check the current timer state

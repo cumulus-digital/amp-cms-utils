@@ -98,7 +98,9 @@
 				}
 			}
 
-			timer = setTimeout(checkTimer, 10000);
+			timer = setTimeout(function(){
+				checkTimer();
+			}, 10000);
 		}
 
 		// Determine if given element is at least half within viewport
