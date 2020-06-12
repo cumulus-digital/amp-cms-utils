@@ -87,6 +87,15 @@
 				return;
 			}
 
+			// Generate URL
+			var protocol = window.location.protocol,
+				hostname = window.location.hostname,
+				url = window.location.href.replace(protocol + '//' + hostname, '');
+
+			if (url.length < 1) {
+				url = '/';
+			}
+
 			//log('Reloading page.');
 			if (player.type === window._CMLS.const.PLAYER_TRITON && window.History && window.History.Adapter) {
 				log('Reloading through Triton Player.');
@@ -97,11 +106,11 @@
 				var iframe = window.top.document.querySelector('iframe#page_frame,iframe[name="pwm_pageFrame"]');
 				if (iframe && iframe.contentWindow) {
 					log('Reloading through TuneGenie Player frame.');
-					iframe.contentWindow.tgmp.updateLocation(window.location.href);
+					iframe.contentWindow.tgmp.updateLocation(url);
 					return;
 				}
 				log('Reloading through TuneGenie Player.');
-				window.tgmp.updateLocation(window.location.href);
+				window.tgmp.updateLocation(url);
 				return;
 			}
 			log('Reloading page.');
