@@ -13,8 +13,13 @@
 		}
 	}
 
+	if (window.location.search.indexOf('cmlsDisableAdRefresh') > -1) {
+		log('Disabling due to cmlsDisableAdRefresh query.');
+		return;
+	}
+
 	if (window.DISABLE_AUTO_REFRESH_ADS) {
-		log('Auto Refresh Ads is disabled');
+		log('Auto Refresh Ads is disabled locally with window.DISABLE_AUTO_REFRESH_ADS');
 		return false;
 	}
 
