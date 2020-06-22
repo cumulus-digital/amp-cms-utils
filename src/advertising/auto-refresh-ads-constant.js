@@ -178,7 +178,17 @@
 								visibleSlots.push(ad);
 							}
 						});
-						log('Viewable ads:', visibleSlots);
+						var adLog = [];
+						visibleSlots.forEach(function(ad) {
+							adLog.push(
+								'El: ' + ad.getSlotElementId(), 
+								'SlotId: ' + ad.getSlotId(),
+								'Name: ' + ad.getName(), 
+								ad.getSizes(),
+								ad
+							);
+						});
+						log('Viewable ads:', adLog);
 						windowContext._CMLS.adTag.refresh(visibleSlots);
 					} catch(e) {
 						log('Failed to refresh ads!', e);
