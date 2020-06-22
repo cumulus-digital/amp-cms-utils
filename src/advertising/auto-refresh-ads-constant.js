@@ -186,9 +186,9 @@
 						var adLog = [];
 						visibleSlots.forEach(function(ad) {
 							adLog.push(
-								'El: ' + ad.getSlotElementId(), 
+								'El: ' + ad.getSlotElementId(),
 								'SlotId: ' + ad.getSlotId(),
-								'Name: ' + ad.getName(), 
+								'Path: ' + ad.getAdUnitPath(),
 								ad.getSizes(),
 								ad
 							);
