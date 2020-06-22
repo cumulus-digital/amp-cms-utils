@@ -39,6 +39,7 @@
 		};
 
 		this.refresh = function(slot) {
+			log('Refresh called');
 			return me.pubads().refresh(slot);
 		}
 
