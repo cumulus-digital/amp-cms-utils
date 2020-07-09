@@ -93,7 +93,7 @@
 	newsmax.setAttribute('data-version', '3');
 	newsmax.setAttribute('data-url', document.location.href);
 	newsmax.setAttribute('data-zone', '[ZONE]');
-	newsmax.setAttribute('data-load-within-iframe', 'true');
+	newsmax.setAttribute('data-display-within-iframe', 'true');
 	injectpoint.appendChild(newsmax);
 
 }(jQuery, window.self));
