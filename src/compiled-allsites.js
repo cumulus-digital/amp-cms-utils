@@ -16,7 +16,8 @@
 // @codekit-append "advertising/nav-through-player.js"
 // @codekit-append "advertising/wallpaper-injector.js"
 // @codekit-append "advertising/player-sponsor-logo.js"
-// @codekit-append "advertising/zergnet-injector.js"
+// DISABLED codekit-append "advertising/zergnet-injector.js"
+// @codekit-append "advertising/after-post-paid-content-injector.js"
 
 // Misc
 // @codekit-append "misc/gtm-stream-tracking.js"
