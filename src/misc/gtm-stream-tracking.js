@@ -8,18 +8,25 @@
 		nameSpace = 'GTMStreamTracker',
 		version = '0.3';
 
-	/**
-	 * Only load if TG player is enabled
-	 */
-	if ( ! window.top.tgmp || window._CMLS[nameSpace]) {
-		return;
-	}
-
 	window._CMLS[nameSpace] = true;
 
 	function log() {
 		window._CMLS.logger(scriptName + ' v' + version, arguments);
 	}
+
+	/**
+	 * Only load if TG player is enabled
+	 */
+	if ( ! window.top.tgmp || ! window.top.tgmp.addEventListener) {
+		log('TGMP not available or not able to listen to events.');
+		return;
+	}
+
+	if (window._CMLS[nameSpace]) {
+		log('Already loaded, ejecting.');
+		return;
+	}
+
 
 	function fireEvent(ev) {
 		try {
