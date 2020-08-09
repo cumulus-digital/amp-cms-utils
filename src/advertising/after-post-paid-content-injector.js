@@ -86,10 +86,15 @@
 	*/
 
 	// Newsmax code
+	var nmurl = '//static.newsmaxfeednetwork.com/web-clients/bootloaders/jtPvahXLC0BvyCYESN3Fgu/bootloader.js';
+	if (window.matchMedia("only screen and (max-width: 760px)").matches) {
+		nmurl = '//static.newsmaxfeednetwork.com/web-clients/bootloaders/Jx44GJqslQrQU3ZULtFwdD/bootloader.js';
+	}
+
 	var newsmax = document.createElement('script');
 	newsmax.type = 'text/javascript';
 	newsmax.async = true;
-	newsmax.src = '//static.newsmaxfeednetwork.com/web-clients/bootloaders/SJWgGUWaEGkVJuwkgDwJDP/bootloader.js';
+	newsmax.src = nmurl;
 	newsmax.setAttribute('data-version', '3');
 	newsmax.setAttribute('data-url', document.location.href);
 	newsmax.setAttribute('data-zone', '[ZONE]');
