@@ -74,7 +74,7 @@
 	// Create the injection point
 	var injectpoint = d.createElement('div');
 	injectpoint.id = "PAIDCONTENT-" + Math.random()*6;
-	injectpoint.setAttribute('style', 'position:relative!important');
+	injectpoint.setAttribute('style', 'position: relative !important; float: left !important; width: 100% !important');
 	column.appendChild(injectpoint);
 
 	// Zergnet code
