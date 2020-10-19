@@ -24,7 +24,7 @@
 	}
 
 	// Time before refreshing ads, in minutes.
-	window._CMLS.autoRefreshAdsTimer = window._CMLS.autoRefreshAdsTimer || 4;
+	window._CMLS.autoRefreshAdsTimer = window._CMLS.autoRefreshAdsTimer || 1;
 
 	var AutoRefresher = function(instFireTime) {
 		var me = this,
