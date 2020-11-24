@@ -116,9 +116,11 @@
 
 	// Hindsight code
 	// <script src="https://static.solutionshindsight.net/teju-webclient/teju-webclient.min.js"></script>
+	/*
 	var hsurl = '//static.solutionshindsight.net/teju-webclient/teju-webclient.min.js';
 	var hindsight = createScript(hsurl);
 	injectpoint.appendChild(hindsight);
+	*/
 
 	// Newsmax code
 	var nmurl = '//static.newsmaxfeednetwork.com/web-clients/bootloaders/jtPvahXLC0BvyCYESN3Fgu/bootloader.js';
