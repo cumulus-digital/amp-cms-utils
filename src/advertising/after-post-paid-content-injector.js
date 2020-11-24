@@ -74,7 +74,7 @@
 
 	// Create the injection point
 	var injectpoint = d.createElement('div');
-	injectpoint.id = "PAIDCONTENT-" + Math.random()*6;
+	injectpoint.id = "PAIDCONTENT-" + Math.ceil(Math.random()*6000000);
 	injectpoint.setAttribute('style', 'position: relative !important; float: left !important; width: 100% !important');
 	column.appendChild(injectpoint);
 
@@ -117,16 +117,7 @@
 	// Hindsight code
 	// <script src="https://static.solutionshindsight.net/teju-webclient/teju-webclient.min.js"></script>
 	var hsurl = '//static.solutionshindsight.net/teju-webclient/teju-webclient.min.js';
-	var hindsight = createIframe(
-		{
-			width: '100%',
-			height: '400px',
-			loading: 'lazy',
-			frameborder: '0'
-		},
-		'<html><body><script src="' + hsurl + '" async></scr' + 'ipt></body></html>'
-	);
-	hindsight.style.marginBottom = '10px';
+	var hindsight = createScript(hsurl);
 	injectpoint.appendChild(hindsight);
 
 	// Newsmax code
