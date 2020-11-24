@@ -26,6 +26,7 @@
 	if (winDef(
 		'NO_ZERGNET',
 		'NO_NEWSMAX',
+		'NO_HINDSIGHT',
 		'NO_PAIDCONTENT'
 	)) {
 		log('Opted out with window.NO_PAIDCONTENT, ejecting.');
@@ -86,20 +87,57 @@
 	znscr.parentNode.insertBefore(zergnet, znscr);
 	*/
 
+	function createScript(scrUrl, attr) {
+		var scr = document.createElement('script');
+		scr.type = 'text/javascript';
+		scr.async = true;
+		scr.src = scrUrl;
+		if (attr) {
+			for (var a in attr) {
+				scr.setAttribute(a, attr[a]);
+			}
+		}
+		return scr;
+	}
+
+	function createIframe(attr, html) {
+		var ifr = document.createElement('iframe');
+		for(var a in attr) {
+			ifr.setAttribute(a, attr[a]);
+		}
+		ifr.src = 'data:text/html;charset=utf-8,' + encodeURI(html);
+		return ifr;
+	}
+
+	// Hindsight code
+	// <script src="https://static.solutionshindsight.net/teju-webclient/teju-webclient.min.js"></script>
+	var hsurl = '//static.solutionshindsight.net/teju-webclient/teju-webclient.min.js';
+	var hindsight = createIframe(
+		{
+			width: '100%',
+			height: '400px',
+			loading: 'lazy',
+			frameborder: '0'
+		},
+		'<html><body><script src="' + hsurl + '" async></scr' + 'ipt></body></html>'
+	);
+	hindsight.style.marginBottom = '10px';
+	injectpoint.appendChild(hindsight);
+
 	// Newsmax code
 	var nmurl = '//static.newsmaxfeednetwork.com/web-clients/bootloaders/jtPvahXLC0BvyCYESN3Fgu/bootloader.js';
 	if (window.matchMedia("only screen and (max-width: 760px)").matches) {
 		nmurl = '//static.newsmaxfeednetwork.com/web-clients/bootloaders/Jx44GJqslQrQU3ZULtFwdD/bootloader.js';
 	}
-
-	var newsmax = document.createElement('script');
-	newsmax.type = 'text/javascript';
-	newsmax.async = true;
-	newsmax.src = nmurl;
-	newsmax.setAttribute('data-version', '3');
-	newsmax.setAttribute('data-url', document.location.href);
-	newsmax.setAttribute('data-zone', '[ZONE]');
-	newsmax.setAttribute('data-display-within-iframe', 'true');
+	var newsmax = createScript(
+		nmurl,
+		{
+			'data-version': '3',
+			'data-url': document.location.href,
+			'data-zone': '[ZONE]',
+			'data-display-within-iframe': 'true'
+		}
+	);
 	injectpoint.appendChild(newsmax);
 
 }(jQuery, window.self));
