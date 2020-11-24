@@ -105,7 +105,12 @@
 		for(var a in attr) {
 			ifr.setAttribute(a, attr[a]);
 		}
-		ifr.src = 'data:text/html;charset=utf-8,' + encodeURI(html);
+		ifr.onload = function() {
+			ifr.contentWindow.document.open();
+			ifr.contentWindow.document.write(html);
+			ifr.contentWindow.document.close();
+			ifr.onload = false;
+		};
 		return ifr;
 	}
 
