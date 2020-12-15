@@ -43,6 +43,12 @@
 
 		log('Player found', player);
 
+		var dWidthTest = window.matchMedia("(max-width: 1042px)");
+		if (dWidthTest.matches) {
+			log('Device width is below 1042px');
+			return;
+		}
+
 		adTag.queue(function(){
 			$(function(){
 				// Eject if our tag already exists.
