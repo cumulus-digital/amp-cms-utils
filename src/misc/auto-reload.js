@@ -113,8 +113,9 @@
 				window.tgmp.updateLocation(url);
 				return;
 			}
-			log('Reloading page.');
-			window.location.reload();
+			// TG may have issues, do not reload the page normally...
+			// log('Reloading page.');
+			// window.location.reload();
 		};
 
 		this.push = function(options) {
