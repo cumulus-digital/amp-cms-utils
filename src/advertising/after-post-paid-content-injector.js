@@ -157,6 +157,7 @@
 		var hsurl = '//static.solutionshindsight.net/teju-webclient/teju-webclient.min.js';
 		var hindsight = createScript(hsurl);
 		injectpoint.appendChild(hindsight);
+		log('Hindsight injected');
 	}
 
 	// Newsmax code
@@ -174,5 +175,6 @@
 		}
 	);
 	injectpoint.appendChild(newsmax);
+	log('Newsmax injected.');
 
 }(jQuery, window.self));
