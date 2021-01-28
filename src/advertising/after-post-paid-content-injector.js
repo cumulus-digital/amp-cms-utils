@@ -151,8 +151,9 @@
 	];
 	if (
 		window._ampconfig &&
-		window._ampconfig.syn_site_name &&
-		hs_testsites.indexOf(window._ampconfig.syn_site_name)
+		window._ampconfig.settings &&
+		window._ampconfig.settings.syn_site_name &&
+		hs_testsites.indexOf(window._ampconfig.settings.syn_site_name) > -1
 	) {
 		var hsurl = '//static.solutionshindsight.net/teju-webclient/teju-webclient.min.js';
 		var hindsight = createScript(hsurl);
