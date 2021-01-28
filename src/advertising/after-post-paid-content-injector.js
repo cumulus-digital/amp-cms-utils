@@ -116,11 +116,48 @@
 
 	// Hindsight code
 	// <script src="https://static.solutionshindsight.net/teju-webclient/teju-webclient.min.js"></script>
-	/*
-	var hsurl = '//static.solutionshindsight.net/teju-webclient/teju-webclient.min.js';
-	var hindsight = createScript(hsurl);
-	injectpoint.appendChild(hindsight);
-	*/
+	// temporary test sites
+	var hs_testsites = [
+		"WMAL-FM",
+		"KNBR-AF",
+		"WBAP-AM",
+		"WLAV-FM",
+		"KSFO-AM",
+		"KXXR-FM",
+		"WJBC-AM",
+		"WLS-AM1",
+		"KABC-AM",
+		"KRBE-FM",
+		"KTCK-AM",
+		"WJR-AM1",
+		"WKQX-FM",
+		"KGO-AM1",
+		"KMJ-AF1",
+		"KQRS-FM",
+		"KSCS-FM",
+		"WBWN-FM",
+		"KPLX-FM",
+		"WPRO-AM",
+		"WBNQ-FM",
+		"KSAN-FM",
+		"WNTQ-FM",
+		"WWTN-FM",
+		"WQQK-FM",
+		"WWWQ-FM",
+		"KLIF-FM",
+		"WFMS-FM",
+		"WOKI-FM",
+		"WGFX-FM",
+	];
+	if (
+		window._ampconfig &&
+		window._ampconfig.syn_site_name &&
+		hs_testsites.indexOf(window._ampconfig.syn_site_name)
+	) {
+		var hsurl = '//static.solutionshindsight.net/teju-webclient/teju-webclient.min.js';
+		var hindsight = createScript(hsurl);
+		injectpoint.appendChild(hindsight);
+	}
 
 	// Newsmax code
 	var nmurl = '//static.newsmaxfeednetwork.com/web-clients/bootloaders/jtPvahXLC0BvyCYESN3Fgu/bootloader.js';
