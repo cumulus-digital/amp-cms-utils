@@ -6,7 +6,7 @@
 (function($, window, undefined){
 	
 	var scriptName = 'PAIDCONTENT INJECTOR',
-		version = '0.3';
+		version = '0.4';
 
 	function log() {
 		if (window.top._CMLS && window.top._CMLS.logger) {
@@ -47,26 +47,31 @@
 	}
 
 	// Find the main page article
-	var main_article = d.querySelector(
-		'.wrapper-content > .grid-container > .row-1 > .column-1 > .block-type-content > .block-content > .loop > article.post.format-standard,' +
-		'.wrapper-content > .grid-container > .row-1 > .column-1 > .block-type-content > .block-content > .loop > article.feed_post,' +
-		'.wrapper-content > .grid-container > .row-1 > .column-1 > .block-type-content > .block-content > .loop > article.feed_posts'
+	var postId = d.body.className.match(/postid\-(\d+)/i);
+	if ( ! postId || postId.length < 2) {
+		log('Could not determine main post ID.');
+		return false;
+	}
+	postId = postId[1];
+
+	var $main_article = $(
+		'.wrapper-content article.post-' + postId
 	);
-	if ( ! main_article) {
-		log('Could not discover main page article.');
+	if ( ! $main_article.length) {
+		log('Count not discover main page article.');
 		return false;
 	}
 
-	// Check any special conditions on the main page article
-	if (main_article.getBoundingClientRect().width > 800) {
-		log('Found main page article, but it\'s suspiciously wide so we think it is not a normal post.');
+	var w = $main_article.width();
+	if (w > 800 || w < 350) {
+		log('Main article width is suspicious, ejecting.');
 		return false;
 	}
 
 	// Find the parent column
-	var column = d.querySelector('.wrapper-content > .grid-container > .row-1 > .column-1');
-	if ( ! column) {
-		log('Could not determine column.');
+	var $column = $main_article.parents('.column');
+	if ( ! $column.length) {
+		log('Could not determine main page article\'s parent column');
 		return false;
 	}
 
@@ -76,7 +81,7 @@
 	var injectpoint = d.createElement('div');
 	injectpoint.id = "PAIDCONTENT-" + Math.ceil(Math.random()*6000000);
 	injectpoint.setAttribute('style', 'position: relative !important; float: left !important; width: 100% !important');
-	column.appendChild(injectpoint);
+	$column.append(injectpoint);
 
 	// Zergnet code
 	/*
