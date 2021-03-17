@@ -6,7 +6,7 @@
 (function($, window, undefined){
 	
 	var scriptName = 'PAIDCONTENT INJECTOR',
-		version = '0.4';
+		version = '0.5';
 
 	function log() {
 		if (window.top._CMLS && window.top._CMLS.logger) {
@@ -23,12 +23,7 @@
 		return false;
 	}
 
-	if (winDef(
-		'NO_ZERGNET',
-		'NO_NEWSMAX',
-		'NO_HINDSIGHT',
-		'NO_PAIDCONTENT'
-	)) {
+	if (winDef('NO_PAIDCONTENT')) {
 		log('Opted out with window.NO_PAIDCONTENT, ejecting.');
 		return false;
 	}
@@ -75,13 +70,52 @@
 		return false;
 	}
 
+	var creator = {
+		'el': function(type, attr) {
+			var el = d.createElement(type);
+			if (attr !== null && (typeof attr === 'function') || (typeof attr === 'object')) {
+				for (var i in attr) {
+					el.setAttribute(i, attr[i]);
+				}
+			}
+			return el;
+		},
+		'script': function(srcUrl, attr) {
+			var mergedAttr = Object.assign(
+				{},
+				{
+					type: 'text/javascript',
+					async: true,
+					src: srcUrl					
+				},
+				attr
+			);
+			var scr = creator.el('script', mergedAttr);
+			return scr;
+		},
+		'iframe': function(attr, html) {
+			var ifr = creator.el('iframe', attr);
+			ifr.onload = function() {
+				ifr.contentWindow.document.open();
+				ifr.contentWindow.document.write(html);
+				ifr.contentWindow.document.close();
+				ifr.onload = false;
+			};
+			return ifr;
+		}
+	};
+
 	log('Injecting content');
 
 	// Create the injection point
-	var injectpoint = d.createElement('div');
-	injectpoint.id = "PAIDCONTENT-" + Math.ceil(Math.random()*6000000);
-	injectpoint.setAttribute('style', 'position: relative !important; float: left !important; width: 100% !important');
-	$column.append(injectpoint);
+	var injectPoint = creator.el(
+		'div',
+		{
+			id: "PAIDCONTENT-" + Math.ceil(Math.random()*6000000),
+			style: 'position: relative !important; float: left !important; width: 100% !important'
+		}
+	);
+	$column.append(injectPoint);
 
 	// Zergnet code
 	/*
@@ -92,95 +126,72 @@
 	znscr.parentNode.insertBefore(zergnet, znscr);
 	*/
 
-	function createScript(scrUrl, attr) {
-		var scr = document.createElement('script');
-		scr.type = 'text/javascript';
-		scr.async = true;
-		scr.src = scrUrl;
-		if (attr) {
-			for (var a in attr) {
-				scr.setAttribute(a, attr[a]);
-			}
-		}
-		return scr;
-	}
-
-	function createIframe(attr, html) {
-		var ifr = document.createElement('iframe');
-		for(var a in attr) {
-			ifr.setAttribute(a, attr[a]);
-		}
-		ifr.onload = function() {
-			ifr.contentWindow.document.open();
-			ifr.contentWindow.document.write(html);
-			ifr.contentWindow.document.close();
-			ifr.onload = false;
-		};
-		return ifr;
-	}
-
 	// Hindsight code
 	// <script src="https://static.solutionshindsight.net/teju-webclient/teju-webclient.min.js"></script>
-	// temporary test sites
-	var hs_testsites = [
-		"WMAL-FM",
-		"KNBR-AF",
-		"WBAP-AM",
-		"WLAV-FM",
-		"KSFO-AM",
-		"KXXR-FM",
-		"WJBC-AM",
-		"WLS-AM1",
-		"KABC-AM",
-		"KRBE-FM",
-		"KTCK-AM",
-		"WJR-AM1",
-		"WKQX-FM",
-		"KGO-AM1",
-		"KMJ-AF1",
-		"KQRS-FM",
-		"KSCS-FM",
-		"WBWN-FM",
-		"KPLX-FM",
-		"WPRO-AM",
-		"WBNQ-FM",
-		"KSAN-FM",
-		"WNTQ-FM",
-		"WWTN-FM",
-		"WQQK-FM",
-		"WWWQ-FM",
-		"KLIF-FM",
-		"WFMS-FM",
-		"WOKI-FM",
-		"WGFX-FM",
-	];
-	if (
-		window._ampconfig &&
-		window._ampconfig.settings &&
-		window._ampconfig.settings.syn_site_name &&
-		hs_testsites.indexOf(window._ampconfig.settings.syn_site_name) > -1
-	) {
-		var hsurl = '//static.solutionshindsight.net/teju-webclient/teju-webclient.min.js';
-		var hindsight = createScript(hsurl);
-		injectpoint.appendChild(hindsight);
-		log('Hindsight injected');
+	if ( ! winDef('NO_HINDSIGHT')) {
+		// temporary test sites
+		var hs_testsites = [
+			"WMAL-FM",
+			"KNBR-AF",
+			"WBAP-AM",
+			"WLAV-FM",
+			"KSFO-AM",
+			"KXXR-FM",
+			"WJBC-AM",
+			"WLS-AM1",
+			"KABC-AM",
+			"KRBE-FM",
+			"KTCK-AM",
+			"WJR-AM1",
+			"WKQX-FM",
+			"KGO-AM1",
+			"KMJ-AF1",
+			"KQRS-FM",
+			"KSCS-FM",
+			"WBWN-FM",
+			"KPLX-FM",
+			"WPRO-AM",
+			"WBNQ-FM",
+			"KSAN-FM",
+			"WNTQ-FM",
+			"WWTN-FM",
+			"WQQK-FM",
+			"WWWQ-FM",
+			"KLIF-FM",
+			"WFMS-FM",
+			"WOKI-FM",
+			"WGFX-FM",
+		];
+		if (
+			window._ampconfig &&
+			window._ampconfig.settings &&
+			window._ampconfig.settings.syn_site_name &&
+			hs_testsites.indexOf(window._ampconfig.settings.syn_site_name) > -1
+		) {
+			var hsurl = '//static.solutionshindsight.net/teju-webclient/teju-webclient.min.js';
+			var hindsight = creator.script(hsurl);
+			injectPoint.appendChild(hindsight);
+			log('Hindsight injected');
+		}
 	}
 
 	// Newsmax code
-	var nmurl = '//static.newsmaxfeednetwork.com/web-clients/bootloaders/jtPvahXLC0BvyCYESN3Fgu/bootloader.js';
-	if (window.matchMedia("only screen and (max-width: 760px)").matches) {
-		nmurl = '//static.newsmaxfeednetwork.com/web-clients/bootloaders/Jx44GJqslQrQU3ZULtFwdD/bootloader.js';
-	}
-	var newsmax = createScript(
-		nmurl,
-		{
-			'data-version': '3',
-			'data-url': document.location.href,
-			'data-zone': '[ZONE]',
-			'data-display-within-iframe': 'true'
+	if ( ! winDef('NO_NEWSMAX')) {
+		var nmurl = '//static.newsmaxfeednetwork.com/web-clients/bootloaders/jtPvahXLC0BvyCYESN3Fgu/bootloader.js';
+		if (window.matchMedia("only screen and (max-width: 760px)").matches) {
+			nmurl = '//static.newsmaxfeednetwork.com/web-clients/bootloaders/Jx44GJqslQrQU3ZULtFwdD/bootloader.js';
 		}
-	);
-	injectpoint.appendChild(newsmax);
-	log('Newsmax injected.');
+		var newsmax = creator.script(
+			nmurl,
+			{
+				'data-version': '3',
+				'data-url': document.location.href,
+				'data-zone': '[ZONE]',
+				'data-display-within-iframe': 'true'
+			}
+		);
+		injectPoint.appendChild(newsmax);
+		log('Newsmax injected.');
+	}
 
 }(jQuery, window.self));
