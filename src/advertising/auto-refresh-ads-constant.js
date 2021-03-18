@@ -79,6 +79,7 @@
 		function checkConditions() {
 			// if autoReload is active, don't refresh ads
 			if (
+				window.top._CMLS &&
 				window.top._CMLS.autoReload &&
 				window.top._CMLS.autoReload.active
 			) {
