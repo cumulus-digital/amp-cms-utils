@@ -58,7 +58,7 @@
 	}
 
 	var w = $main_article.width();
-	if (w > 800 || w < 350) {
+	if (w > 800 || w < 300) {
 		log('Main article width is suspicious, ejecting.');
 		return false;
 	}
