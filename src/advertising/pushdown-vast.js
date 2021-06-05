@@ -318,8 +318,14 @@
 
 			// Detect an override for timeout
 			log('Checking for timeout override');
-			var altTest = $img.prop('alt').match(/timeout=(\d+)/i);
-			var timeout = altTest && altTest.length > 1 ? altTest[1] * 1000 : defaultTimeout * 1000;
+			var altTest = $img.prop('alt');
+			var timeout = defaultTimeout * 1000;
+			if (altTest) {
+				altTest = altTest.match(/timeout=(\d+)/i);
+				if (altTest.length > 1) {
+					timeout = altTest[1] * 1000;
+				}
+			}
 
 			log('Triggering ad display with timeout', timeout);			
 			$pushdownContainer.trigger('cmls.display', function() {
