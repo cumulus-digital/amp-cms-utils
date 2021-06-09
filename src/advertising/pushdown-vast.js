@@ -104,17 +104,21 @@
 		 * DFP ID string for use in the generated tag.
 		 */
 		try {
-			var pa = googletag.pubads(),
-				slots = pa.getSlots();
-			if (slots.length) {
-				slots.some(function(slot) {
-					var p = slot.getAdUnitPath();
-					if (p.indexOf('/' + dfpNetworkCode +'/') > -1) {
-						adPath = p;
-						return true;
-					}
-				});
-				if (adPath === null || adPath === undefined) { throw { message: 'Could not retrieve ad unit path.' }; }
+			if (window.GPT_SITE_ID) {
+				adPath = window.GPT_SITE_ID;
+			} else {
+				var pa = googletag.pubads(),
+					slots = pa.getSlots();
+				if (slots.length) {
+					slots.some(function(slot) {
+						var p = slot.getAdUnitPath();
+						if (p.indexOf('/' + dfpNetworkCode +'/') > -1) {
+							adPath = p;
+							return true;
+						}
+					});
+					if (adPath === null || adPath === undefined) { throw { message: 'Could not retrieve ad unit path.' }; }
+				}
 			}
 		} catch(e) {
 			log('Failed to retrieve DFP properties.', e);
