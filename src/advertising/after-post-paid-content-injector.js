@@ -170,8 +170,7 @@
 				(
 					window._ampconfig.settings.syn_site_name &&
 					hs_testsites.indexOf(window._ampconfig.settings.syn_site_name.toUpperCase()) > -1
-				)
-				||
+				) ||
 				// Include News/Talk format
 				(
 					window._ampconfig.settings.format &&
