@@ -124,35 +124,43 @@
 			// so we can get a reading on it
 			var isHidden = false;
 			if (el.style && el.style.display && el.style.display === 'none') {
+				isHidden = true;
 				el.setAttribute('style', 'display: block; width: 1px; height: 1px;');
 			}
 			
 			var rect = el.getBoundingClientRect();
 
-			rect.width = (rect.right - rect.left);
-			rect.height = (rect.bottom - rect.top);
-
-			if (rect.width === 0 || rect.height === 0) {
-				return false;
-			}
-
 			if (isHidden) {
-				el.setAttribute('style', 'display: none');
+				el.style.display = 'none';
+				//el.setAttribute('style', 'display: none');
 			}
 
-			var check = {
-				top: rect.top + (rect.height/2),
-				right: rect.right - (rect.width/2),
-				bottom: rect.bottom - (rect.height/2),
-				left: rect.left + (rect.width/2)
-			};
+			if (rect.width && rect.height && rect.width > 0 && rect.height > 0) {
 
-			return (
-				check.bottom >= 0 &&
-				check.right >= 0 &&
-				check.top <= (window.innerHeight || document.documentElement.clientHeight) &&
-				check.left <= (window.innerWidth || document.documentElement.clientWidth)
-			);
+				rect.width = (rect.right - rect.left);
+				rect.height = (rect.bottom - rect.top);
+
+				if (rect.width === 0 || rect.height === 0) {
+					return false;
+				}
+
+				var check = {
+					top: rect.top + (rect.height/4),
+					right: rect.right - (rect.width/4),
+					bottom: rect.bottom - (rect.height/4),
+					left: rect.left + (rect.width/4)
+				};
+
+				return (
+					check.bottom >= 0 &&
+					check.right >= 0 &&
+					check.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+					check.left <= (window.innerWidth || document.documentElement.clientWidth)
+				);
+
+			}
+
+			return false;
 		}
 
 		function recordTabVisibility(state) {
