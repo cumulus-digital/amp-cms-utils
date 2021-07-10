@@ -77,7 +77,7 @@
 				}
 				log('Ad path found, defining new slot.', adPath);
 
-				adTag.defineSlot(
+				var slot = adTag.defineSlot(
 					[
 						adPath,
 						[[120,60]],
@@ -87,6 +87,13 @@
 					{ 'pos': 'playersponsorlogo' },
 					true
 				);
+				if (adTag.identity === 'dfp') {
+					var sizeMap = adTag.rawInterface().sizeMapping()
+							.addSize([800, 0], [[120,60]])
+							.addSize([0, 0], [])
+							.build();
+					slot.defineSizeMapping(sizeMap);
+				}
 
 				// Append ad container styles
 				$('body').append(
@@ -119,6 +126,7 @@
 								'left: 50%;' +
 							'}' +
 						'}' +
+						/*
 						'@media (max-width: 1042px) {' +
 							'#CMLSPlayerSponsorship.cmls-player-tg {' +
 								'display: none' +
@@ -129,6 +137,7 @@
 								'display: none' +
 							'}' +
 						'}' +
+						*/
 					'</style>'
 				);
 
