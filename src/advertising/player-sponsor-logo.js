@@ -106,7 +106,7 @@
 						'}' +
 						'#CMLSPlayerSponsorship.cmls-player-tg {' +
 							'left: 50%;' +
-							'transform: translate(+300px, 0);' +
+							'transform: translate(+290px, 0);' +
 						'}' +
 						'#CMLSPlayerSponsorship.cmls-player-triton {' +
 							'left: 50%;' +
