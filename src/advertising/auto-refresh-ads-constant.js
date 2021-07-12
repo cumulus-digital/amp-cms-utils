@@ -145,17 +145,21 @@
 				}
 
 				var check = {
-					top: rect.top + (rect.height*0.75),
-					right: rect.right - (rect.width*0.75),
-					bottom: rect.bottom - (rect.height*0.75),
-					left: rect.left + (rect.width*0.75)
+					top: rect.top + (rect.height*0.25),
+					right: rect.right - (rect.width*0.25),
+					bottom: rect.bottom - (rect.height*0.25),
+					left: rect.left + (rect.width*0.25)
 				};
 
 				return (
-					check.bottom >= 0 &&
-					check.right >= 0 &&
-					check.top <= (window.innerHeight || document.documentElement.clientHeight) &&
-					check.left <= (window.innerWidth || document.documentElement.clientWidth)
+					(
+						check.bottom >= 0 || 
+						check.top <= (window.innerHeight || document.documentElement.clientHeight)
+					) &&
+					(
+						check.right >= 0 ||
+						check.left <= (window.innerWidth || document.documentElement.clientWidth)
+					)
 				);
 
 			}
