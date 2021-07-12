@@ -145,10 +145,10 @@
 				}
 
 				var check = {
-					top: rect.top + (rect.height/4),
-					right: rect.right - (rect.width/4),
-					bottom: rect.bottom - (rect.height/4),
-					left: rect.left + (rect.width/4)
+					top: rect.top + (rect.height*0.75),
+					right: rect.right - (rect.width*0.75),
+					bottom: rect.bottom - (rect.height*0.75),
+					left: rect.left + (rect.width*0.75)
 				};
 
 				return (
