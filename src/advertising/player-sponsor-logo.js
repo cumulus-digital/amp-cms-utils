@@ -95,22 +95,20 @@
 					slot.defineSizeMapping(sizeMap);
 				}
 
-				// update z-index after load
+				// update z-index after 2 seconds
 				var zIndex = 200000;
-				$(window).on('load', function() {
-					setTimeout(function() {
-						if (player.type === window._CMLS.const.PLAYER_TUNEGENIE) {
-							var tgObj = $('#' + window.top.tgmp.divId);
-							if (tgObj.css('z-index')) {
-								zIndex = tgObj.css('z-index') + 1;
-							}
+				setTimeout(function() {
+					if (player.type === window._CMLS.const.PLAYER_TUNEGENIE) {
+						var tgObj = $('#' + window.top.tgmp.divId);
+						if (tgObj.css('z-index')) {
+							zIndex = tgObj.css('z-index') + 1;
 						}
-						if (zIndex > 2147483647) {
-							zIndex = 2147483647;
-						}
-						$('#CMLSPlayerSponsorship').css('z-index', zIndex);
-					}, 100);
-				});
+					}
+					if (zIndex > 2147483647) {
+						zIndex = 2147483647;
+					}
+					$('#CMLSPlayerSponsorship').css('z-index', zIndex);
+				}, 2000);
 
 				// Append ad container styles
 				$('body').append(
