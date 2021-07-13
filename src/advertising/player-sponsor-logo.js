@@ -95,12 +95,24 @@
 					slot.defineSizeMapping(sizeMap);
 				}
 
+				// get z-index of player
+				var zIndex = 2000000;
+				if (player.type === window._CMLS.const.PLAYER_TUNEGENIE) {
+					var tgObj = $('#' + window.top.tgmp.divId);
+					if (tgObj.css('z-index')) {
+						zIndex = tgObj.css('z-index') + 1;
+					}
+				}
+				if (zIndex > 2147483647) {
+					zIndex = 2147483647;
+				}
+
 				// Append ad container styles
 				$('body').append(
 					'<style id="CMLSPlayerSponsorshipStyle">' +
 						'#CMLSPlayerSponsorship {' +
 							'position: fixed;' +
-							'z-index: 2147483647;' +
+							'z-index: ' + zIndex + ';' +
 							'width: 120px;' +
 							'height: 60px;' +
 						'}' +
