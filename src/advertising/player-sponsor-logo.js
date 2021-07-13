@@ -101,7 +101,7 @@
 					if (player.type === window._CMLS.const.PLAYER_TUNEGENIE) {
 						var tgObj = $('#' + window.top.tgmp.divId);
 						if (tgObj.css('z-index')) {
-							zIndex = tgObj.css('z-index') + 1;
+							zIndex = parseInt(tgObj.css('z-index'), 10) + 1;
 						}
 					}
 					if (zIndex > 2147483647) {
