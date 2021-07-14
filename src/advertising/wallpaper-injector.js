@@ -352,62 +352,60 @@
 					bgColor = bgColorCheck[1];
 				} else {
 
-					function toDataURL(url, callback) {
-						var xhr = new XMLHttpRequest();
-						xhr.onload = function() {
-							var reader = new FileReader();
-							reader.onloadend = function() {
-								callback(reader.result);
+					var xhr = new XMLHttpRequest();
+					xhr.onload = function() {
+
+						var reader = new FileReader();
+						reader.onloadend = function() {
+
+							var dataURI = reader.result;
+							if (dataURI) {
+								var imageData = new window.Image();
+								imageData.src = dataURI;
+								imageData.onload = function() {
+
+									var $img = $(imageData),
+										canvas = window.document.createElement('canvas'),
+										context = canvas.getContext('2d'),
+										centerPoint = {
+											x: $img.width()/2,
+											y: $img.height()/2
+										};
+
+									canvas.width = $img.width();
+									canvas.height = $img.height();
+
+									context.drawImage($img[0], 0, 0);
+									var colorData = context.getImageData(
+										centerPoint.x,
+										centerPoint.y,
+										centerPoint.x+1,
+										centerPoint.y+1
+									);
+
+									if (colorData && colorData.data) {
+										var newColor = [
+											colorData.data[0],
+											colorData.data[1],
+											colorData.data[2],
+											colorData.data[3]
+										];
+										bgColor = 'rgba(' + newColor.join(',') + ')';
+										log('Got updated background color!', bgColor);
+										$('#' + nameSpace + 'Container').css('backgroundColor', bgColor);
+									}
+
+								};
 							}
-							reader.readAsDataURL(xhr.response);
+
 						};
-						xhr.open('GET', url);
-						xhr.responseType = 'blob';
-						xhr.send();
-					}
+						reader.readAsDataURL(xhr.response);
 
-					var imageDataURI = toDataURI(slotImage.prop('src'));
-					if (imageDataURI) {
+					};
+					xhr.open('GET', slotImage.prop('src'));
+					xhr.responseType = 'blob';
+					xhr.send();
 
-						// Get a color from the center of the slot image
-						var imageData = new window.Image,
-							imageCanvas = window.document.createElement('canvas'),
-							canvasContext = imageCanvas.getContext('2d'),
-							imageWidth = slotImage.width(),
-							imageHeight = slotImage.height(),
-							centerPoint = {
-								x: imageWidth/2,
-								y: imageHeight/2
-							};
-
-						imgData.src = imageDataURI;
-
-						imageCanvas.height = imageHeight;
-						imageCanvas.width = imageWidth;
-
-						canvasContext.drawImage(imageDataURI, 0, 0);
-						
-						log('Getting image data for center point', centerPoint);
-						var colorData = canvasContext.getImageData(
-							centerPoint.x,
-							centerPoint.y,
-							centerPoint.x+1,
-							centerPoint.y+1
-						);
-
-						if (colorData && colorData.data) {
-							log('Got color data from image', colorData.data);
-							var newColor = [
-								colorData.data[0],
-								colorData.data[1],
-								colorData.data[2],
-								colorData.data[3]
-							];
-							log('Setting background color from image center');
-							bgColor = 'rgba(' + newColor.join(',') + ')';
-						}
-
-					}
 				}
 				log('Using background color.', bgColor);
 
