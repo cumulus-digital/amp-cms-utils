@@ -364,7 +364,11 @@
 					imageCanvas.height = imageHeight;
 					imageCanvas.width = imageWidth;
 
-					canvasContext.drawImage(slotImage, 0, 0);
+					var imageData = slotImage;
+					if (slotImage instanceof jQuery) {
+						imageData = slotImage.get(0);
+					}
+					canvasContext.drawImage(imageData, 0, 0);
 					
 					var colorData = canvasContext.getImageData(
 						centerPoint.x,
