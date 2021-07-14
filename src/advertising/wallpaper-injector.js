@@ -134,7 +134,7 @@
 			if (originalStyles.content) {
 				if (originalStyles.content.position === 'relative' || originalStyles.content.position === 'static') {
 					log('Setting content area position to relative.');
-					cache.contentNode.css('position', 'relative');
+					cache.injectionNode.css('position', 'relative');
 				}
 				if (originalStyles.content.zIndex === 'auto' || originalStyles.content.zIndex <= container.css('zIndex')) {
 					log('Raising content area above wallpaper container.');
@@ -157,7 +157,17 @@
 			container
 				.off(transitionEvent)
 				.addClass(nameSpace + '-open');
-			cache.obstructiveNode.hide();
+			
+			// Remove obstructiveNodes
+			if (window.GPT_SITE_SLOTS) {
+				cache.obstructiveNode.find('[id^="div-gpt-ad"]').each(function() {
+					if (window.GPT_SITE_SLOTS.hasOwnProperty(this.id)) {
+						window.googletag.destroySlots(window.GPT_SITE_SLOTS[this.id]);
+					}
+				});
+			}
+			cache.obstructiveNode.remove();
+
 			startTrackingScroll();
 		}
 
@@ -325,10 +335,43 @@
 
 
 				log('Getting background color.', slotBgColor);
-				var bgColor = 'rgba(255,255,255,0)',
+				var bgColor = 'rgba(0,0,0,0)',
 					bgColorCheck = slotBgColor.match(/(\#[A-Za-z0-9]+)/) || false;
 				if (bgColorCheck && bgColorCheck.length > 1) {
 					bgColor = bgColorCheck[1];
+				} else {
+					// Get a color from the center of the slot image
+					var imageCanvas = window.document.createElement('canvas'),
+						canvasContext = imageCanvas.getContext('2d'),
+						imageWidth = slotImage.width(),
+						imageHeight = slotImage.height(),
+						centerPoint = {
+							x: imageWidth/2,
+							y: imageHeight/2
+						};
+
+					imageCanvas.height = imageHeight;
+					imageCanvas.width = imageWidth;
+
+					canvasContext.drawImage(slotImage, 0, 0);
+					
+					var colorData = canvasContext.getImageData(
+						centerPoint.x,
+						centerPoint.y,
+						centerPoint.x+1,
+						centerPoint.y+1
+					);
+
+					if (colorData && colorData.data) {
+						var newColor = [
+							colorData[0].r,
+							colorData[0].g,
+							colorData[0].b,
+							colorData[0].a
+						];
+						log('Setting background color from image center');
+						bgColor = 'rgba(' + newColor.join(',') + ')';
+					}
 				}
 				log('Using background color.', bgColor);
 
@@ -393,7 +436,7 @@
 						}
 					});
 			} catch(e) {
-				log('WTF PEOPLE', e);
+				log('Unknown error!', e);
 			}
 		}
 		this.process = _process;
