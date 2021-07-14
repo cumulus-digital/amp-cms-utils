@@ -346,7 +346,7 @@
 
 
 				log('Getting background color.', slotBgColor);
-				var bgColor = 'rgba(0,0,0,0)',
+				var bgColor = 'rgba(0,0,0,1)',
 					bgColorCheck = slotBgColor.match(/(\#[A-Za-z0-9]+)/) || false;
 				if (bgColorCheck && bgColorCheck.length > 1) {
 					bgColor = bgColorCheck[1];
