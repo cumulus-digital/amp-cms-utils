@@ -352,6 +352,10 @@
 					bgColor = bgColorCheck[1];
 				} else {
 
+					// To attempt to get background color from the image itself,
+					// I need to load the image through XHR to transform it into
+					// a data URI in order to get around cross-origin restrictions
+					// on loading images into a canvas.
 					var xhr = new XMLHttpRequest();
 					xhr.onload = function() {
 
@@ -360,7 +364,7 @@
 
 							var dataURI = reader.result;
 							if (dataURI) {
-								log('Got data URI for image', dataURI);
+								log('Got data URI for image');
 								var image = new window.Image();
 								image.onload = function() {
 
@@ -391,7 +395,7 @@
 									);
 
 									if (colorData && colorData.data) {
-										log('Got new color data!', colorData, canvas);
+										log('Got new color data!', colorData);
 										var newColor = [
 											colorData.data[0],
 											colorData.data[1],
