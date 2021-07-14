@@ -351,42 +351,62 @@
 				if (bgColorCheck && bgColorCheck.length > 1) {
 					bgColor = bgColorCheck[1];
 				} else {
-					// Get a color from the center of the slot image
-					var imageCanvas = window.document.createElement('canvas'),
-						canvasContext = imageCanvas.getContext('2d'),
-						imageWidth = slotImage.width(),
-						imageHeight = slotImage.height(),
-						centerPoint = {
-							x: imageWidth/2,
-							y: imageHeight/2
+
+					function toDataURL(url, callback) {
+						var xhr = new XMLHttpRequest();
+						xhr.onload = function() {
+							var reader = new FileReader();
+							reader.onloadend = function() {
+								callback(reader.result);
+							}
+							reader.readAsDataURL(xhr.response);
 						};
-
-					imageCanvas.height = imageHeight;
-					imageCanvas.width = imageWidth;
-
-					var imageData = slotImage;
-					if (slotImage instanceof jQuery) {
-						imageData = slotImage.get(0);
+						xhr.open('GET', url);
+						xhr.responseType = 'blob';
+						xhr.send();
 					}
-					canvasContext.drawImage(imageData, 0, 0);
-					
-					var colorData = canvasContext.getImageData(
-						centerPoint.x,
-						centerPoint.y,
-						centerPoint.x+1,
-						centerPoint.y+1
-					);
 
-					if (colorData && colorData.data) {
-						log('Got color data from image', colorData.data);
-						var newColor = [
-							colorData.data[0].r,
-							colorData.data[0].g,
-							colorData.data[0].b,
-							colorData.data[0].a
-						];
-						log('Setting background color from image center');
-						bgColor = 'rgba(' + newColor.join(',') + ')';
+					var imageDataURI = toDataURI(slotImage.prop('src'));
+					if (imageDataURI) {
+
+						// Get a color from the center of the slot image
+						var imageData = new window.Image,
+							imageCanvas = window.document.createElement('canvas'),
+							canvasContext = imageCanvas.getContext('2d'),
+							imageWidth = slotImage.width(),
+							imageHeight = slotImage.height(),
+							centerPoint = {
+								x: imageWidth/2,
+								y: imageHeight/2
+							};
+
+						imgData.src = imageDataURI;
+
+						imageCanvas.height = imageHeight;
+						imageCanvas.width = imageWidth;
+
+						canvasContext.drawImage(imageDataURI, 0, 0);
+						
+						log('Getting image data for center point', centerPoint);
+						var colorData = canvasContext.getImageData(
+							centerPoint.x,
+							centerPoint.y,
+							centerPoint.x+1,
+							centerPoint.y+1
+						);
+
+						if (colorData && colorData.data) {
+							log('Got color data from image', colorData.data);
+							var newColor = [
+								colorData.data[0],
+								colorData.data[1],
+								colorData.data[2],
+								colorData.data[3]
+							];
+							log('Setting background color from image center');
+							bgColor = 'rgba(' + newColor.join(',') + ')';
+						}
+
 					}
 				}
 				log('Using background color.', bgColor);
