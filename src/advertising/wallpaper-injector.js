@@ -362,7 +362,7 @@
 							if (dataURI) {
 								log('Got data URI for image', dataURI);
 								var image = new window.Image();
-								imageData.onload = function() {
+								image.onload = function() {
 
 									var canvas = window.document.createElement('canvas'),
 										context = canvas.getContext('2d'),
@@ -371,7 +371,7 @@
 											image.width,
 										iH = image.naturalHeight ||
 											image.offsetHeight ||
-											image.height
+											image.height,
 										centerPoint = {
 											x: iW/2,
 											y: iH/2
