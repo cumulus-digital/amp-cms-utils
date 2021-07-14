@@ -378,11 +378,12 @@
 					);
 
 					if (colorData && colorData.data) {
+						log('Got color data from image', colorData.data);
 						var newColor = [
-							colorData[0].r,
-							colorData[0].g,
-							colorData[0].b,
-							colorData[0].a
+							colorData.data[0].r,
+							colorData.data[0].g,
+							colorData.data[0].b,
+							colorData.data[0].a
 						];
 						log('Setting background color from image center');
 						bgColor = 'rgba(' + newColor.join(',') + ')';
