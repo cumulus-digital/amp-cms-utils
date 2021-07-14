@@ -360,6 +360,7 @@
 
 							var dataURI = reader.result;
 							if (dataURI) {
+								log('Got data URI for image', dataURI);
 								var imageData = new window.Image();
 								imageData.src = dataURI;
 								imageData.onload = function() {
@@ -376,6 +377,8 @@
 									canvas.height = $img.height();
 
 									context.drawImage($img[0], 0, 0);
+
+									log('Getting color data for center point', centerPoint);
 									var colorData = context.getImageData(
 										centerPoint.x,
 										centerPoint.y,
@@ -384,6 +387,7 @@
 									);
 
 									if (colorData && colorData.data) {
+										log('Got new color data!', colorData, canvas);
 										var newColor = [
 											colorData.data[0],
 											colorData.data[1],
