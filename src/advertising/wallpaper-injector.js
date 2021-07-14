@@ -127,14 +127,25 @@
 		function raiseContentArea() {
 			var container = getContainer(),
 				originalStyles = {
+					injection: cache.injectionNode.css(['position', 'zIndex']),
 					content: cache.contentNode.css(['position', 'zIndex']),
 					footer: cache.footerNode.css(['position', 'zIndex'])
 				};
 			log('Checking positioning.', originalStyles);
+			if (
+				originalStyles.injection &&
+				(
+					originalStyles.injection.position === 'relative' ||
+					originalStyles.injection.position === 'static'
+				)
+			) {
+				log('Setting injection position to relative.');
+				cache.injectionNode.css('position', 'relative');
+			}
 			if (originalStyles.content) {
 				if (originalStyles.content.position === 'relative' || originalStyles.content.position === 'static') {
-					log('Setting content area position to relative.');
-					cache.injectionNode.css('position', 'relative');
+					log('Setting injection position to relative.');
+					cache.contentNode.css('position', 'relative');
 				}
 				if (originalStyles.content.zIndex === 'auto' || originalStyles.content.zIndex <= container.css('zIndex')) {
 					log('Raising content area above wallpaper container.');
