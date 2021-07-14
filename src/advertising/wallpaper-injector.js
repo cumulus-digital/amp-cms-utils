@@ -361,22 +361,26 @@
 							var dataURI = reader.result;
 							if (dataURI) {
 								log('Got data URI for image', dataURI);
-								var imageData = new window.Image();
-								imageData.src = dataURI;
+								var image = new window.Image();
 								imageData.onload = function() {
 
-									var $img = $(imageData),
-										canvas = window.document.createElement('canvas'),
+									var canvas = window.document.createElement('canvas'),
 										context = canvas.getContext('2d'),
+										iW = image.naturalWidth ||
+											image.offsetWidth ||
+											image.width,
+										iH = image.naturalHeight ||
+											image.offsetHeight ||
+											image.height
 										centerPoint = {
-											x: $img.width()/2,
-											y: $img.height()/2
+											x: iW/2,
+											y: iH/2
 										};
 
-									canvas.width = $img.width();
-									canvas.height = $img.height();
+									canvas.width = iW;
+									canvas.height = iH;
 
-									context.drawImage($img[0], 0, 0);
+									context.drawImage(image, 0, 0);
 
 									log('Getting color data for center point', centerPoint);
 									var colorData = context.getImageData(
@@ -400,6 +404,8 @@
 									}
 
 								};
+								image.src = dataURI;
+
 							}
 
 						};
