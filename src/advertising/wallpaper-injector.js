@@ -173,7 +173,7 @@
 			if (window.GPT_SITE_SLOTS) {
 				cache.obstructiveNode.find('[id^="div-gpt-ad"]').each(function() {
 					if (window.GPT_SITE_SLOTS.hasOwnProperty(this.id)) {
-						window.googletag.destroySlots(window.GPT_SITE_SLOTS[this.id]);
+						window.googletag.destroySlots([window.GPT_SITE_SLOTS[this.id]]);
 					}
 				});
 			}
