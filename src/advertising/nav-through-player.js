@@ -106,13 +106,17 @@
 					log('Could not parse query string in DFP clickthrough', relURL);
 				}
 			} else if (
-				// Do not modify relative or off-domain URLs
-				l.href.indexOf('/') === 0 || 
-				(l.hostname !== window.location.hostname && ! force)
+				// Do not modify off-domain URLs
+				l.href.indexOf('/') !== 0 &&
+				l.hostname !== window.location.hostname &&
+				! force
 			) {
-				log('Relative or off-site URL found, will not modify');
+				log('Off-site URL found, will not modify');
 				l = null;
 				return;
+			} else if (l.href.indexOf('/') === 0) {
+				log('Relative link found');
+				l.setAttribute('target', '_top');
 			}
 
 			$link
@@ -146,7 +150,7 @@
 			if (player.type === window._CMLS.const.PLAYER_TUNEGENIE && window.tgmp) {
 				log('Navigating through TuneGenie player.', url);
 				window.tgmp.updateLocation(url);
-			}			
+			}
 		},
 
 		init: function init() {
