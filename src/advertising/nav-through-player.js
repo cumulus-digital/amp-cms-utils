@@ -6,7 +6,7 @@
 
 	var scriptName = "NAV THROUGH PLAYER",
 		nameSpace = "navThroughPlayer",
-		version = "0.1",
+		version = "0.2",
 
 		player = window._CMLS.whichPlayer();
 
@@ -111,14 +111,15 @@
 				l.hostname !== window.location.hostname &&
 				! force
 			) {
-				log('Off-site URL found, will not modify');
+				log('Off-site URL found, will not modify', l);
 				l = null;
 				return;
 			} else if (l.href.indexOf('/') === 0) {
-				log('Relative link found');
+				log('Relative link found', l);
 				l.setAttribute('target', '_top');
 			}
 
+			log('Setting ad link to navigate through player.', l);
 			$link
 				.off('.' + nameSpace)
 				.on('click.' + nameSpace, window._CMLS[nameSpace].clickThrough);
