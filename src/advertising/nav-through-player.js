@@ -55,7 +55,7 @@
 				$iframe.contents()
 					.find('a[target="_self"],a[target="_top"],a[target="_parent"]')
 						.each(function() {
-							log('Updating links in slot.', $iframe.prop('id'), $iframe[0]);
+							log('Updating links in slot.', $iframe.prop('id'), $iframe[0], this);
 							window._CMLS[nameSpace].updateLink(this);
 						});
 			} catch(e) {
@@ -64,7 +64,12 @@
 		},
 
 		updateLink: function updateLink(link, force) {
-			if ( ! window._CMLS[nameSpace].isPlayerActive || ! link) {
+			if ( ! window._CMLS[nameSpace].isPlayerActive) {
+				log('updateLink: Player is not active.');
+				return;
+			}
+			if ( ! link) {
+				log('updateLink: did not receive a valid link.');
 				return;
 			}
 
@@ -169,17 +174,22 @@
 					if (e && e.slot) {
 						var id = e.slot.getSlotElementId(),
 							iframe = window.document.getElementById(id);
+						log('Caught render event', e);
 						window._CMLS[nameSpace].updateIframeLinks(iframe);
+					} else {
+						log('Caught render event but it was invalid.');
 					}
 				});
 			});
 
 			// Update any existing ads on the page
 			$('iframe[id^="google_ads_iframe"],#cmlsWallpaperInjectorContainer iframe').each(function() {
+				log('Addressing existing google ad frame', this);
 				window._CMLS[nameSpace].updateIframeLinks(this);
 			});
 			$(window).load(function() {
 				$('iframe[id^="google_ads_iframe"],#cmlsWallpaperInjectorContainer iframe').each(function() {
+					log('Addressing existing google ad frame', this);
 					window._CMLS[nameSpace].updateIframeLinks(this);
 				});
 			});
