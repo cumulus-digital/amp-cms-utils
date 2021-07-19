@@ -174,10 +174,10 @@
 					if (e && e.slot) {
 						var id = e.slot.getSlotElementId(),
 							iframe = window.document.getElementById(id);
-						log('Caught render event', e);
+						log('Caught render event', id, iframe, e);
 						window._CMLS[nameSpace].updateIframeLinks(iframe);
 					} else {
-						log('Caught render event but it was invalid.');
+						log('Caught render event but it was invalid.', e);
 					}
 				});
 			});
