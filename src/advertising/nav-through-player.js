@@ -37,6 +37,11 @@
 				return;
 			}
 
+			if (iframe.tagName.toLowerCase() !== 'iframe') {
+				log('Received an updateIframeLinks request for a non-iframe', iframe);
+				return;
+			}
+
 			var $iframe = iframe.jquery ? iframe : $(iframe);
 			
 			// make sure we can access this iframe
@@ -174,6 +179,9 @@
 					if (e && e.slot) {
 						var id = e.slot.getSlotElementId(),
 							iframe = window.document.getElementById(id);
+						if (iframe.tagName.toLowerCase() !== 'iframe') {
+							iframe = iframe.querySelector('iframe[id*="google_ads_iframe"]');
+						}
 						log('Caught render event', id, iframe, e);
 						window._CMLS[nameSpace].updateIframeLinks(iframe);
 					} else {
