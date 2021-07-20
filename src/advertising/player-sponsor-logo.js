@@ -54,8 +54,8 @@
 			$(function(){
 				// Eject if our tag already exists.
 				if (
-					window.document.getElementById('CMLSPlayerSponsorship') ||
-					window.parent.getElementById('CMLSPlayerSponsorship') ||
+					window.self.document.getElementById('CMLSPlayerSponsorship') ||
+					window.self.parent.getElementById('CMLSPlayerSponsorship') ||
 					window.top.document.getElementById('CMLSPlayerSponsorship')
 				) {
 					log('Container already exists, exiting.');
