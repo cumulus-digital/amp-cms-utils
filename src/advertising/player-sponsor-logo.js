@@ -18,6 +18,7 @@
 	 */
 	if (window.self !== window.top) {
 		$(function(){
+			log('Within TuneGenie frame, activating player sponsor init in parent window.');
 			window.parent._CMLSPlayerSponsorshipInit = window.parent._CMLSPlayerSponsorshipInit || [];
 			window.parent._CMLSPlayerSponsorshipInit.push(1);
 		});
