@@ -53,7 +53,11 @@
 		adTag.queue(function(){
 			$(function(){
 				// Eject if our tag already exists.
-				if ($('#CMLSPlayerSponsorship').length) {
+				if (
+					window.document.getElementById('CMLSPlayerSponsorship') ||
+					window.parent.getElementById('CMLSPlayerSponsorship') ||
+					window.top.document.getElementById('CMLSPlayerSponsorship')
+				) {
 					log('Container already exists, exiting.');
 					return;
 				}
