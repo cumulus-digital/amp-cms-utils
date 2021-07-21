@@ -75,6 +75,12 @@
 							break;
 						}
 					}
+					for (var t in slots) {
+						if (slots[t].getSlotElementId() === 'CMLSPlayerSponsorship') {
+							log('Destroying existing slot');
+							adTag.rawInterface().destroySlots(slots[t]);
+						}
+					}
 					if (adPath === null) { throw { message: 'Could not retrieve ad unit path.' }; }
 				} catch(e) {
 					log('Failed to retrieve DFP properties.', e);
@@ -116,75 +122,79 @@
 				}, 2000);
 
 				// Append ad container styles
-				$('body').append(
-					'<style id="CMLSPlayerSponsorshipStyle">' +
-						'#CMLSPlayerSponsorship {' +
-							'position: fixed;' +
-							'z-index: ' + zIndex + ';' +
-							'width: 120px;' +
-							'height: 60px;' +
-						'}' +
-						'#CMLSPlayerSponsorship.cmls-player-tg {' +
-							'left: 50%;' +
-							'transform: translate(+290px, 0);' +
-						'}' +
-						'#CMLSPlayerSponsorship.cmls-player-triton {' +
-							'left: 50%;' +
-							'transform: translate(30px, 0);' +
-						'}' +
-						'#CMLSPlayerSponsorship.cmls-player-pos-bottom {' +
-							'bottom: 4px;' +
-						'}' +
-						'#CMLSPlayerSponsorship.cmls-player-pos-top {' +
-							'top: 4px;' +
-						'}' +
-						'#CMLSPlayerSponsorship.cmls-player-triton.cmls-player-pos-top {' +
-							'top: 5px;' +
-						'}' +
-						'@media (max-width: 75rem) {' +
+				if ( ! $('#CMLSPlayerSponsorshipStyle').length) {
+					$('body').append(
+						'<style id="CMLSPlayerSponsorshipStyle">' +
+							'#CMLSPlayerSponsorship {' +
+								'position: fixed;' +
+								'z-index: ' + zIndex + ';' +
+								'width: 120px;' +
+								'height: 60px;' +
+							'}' +
 							'#CMLSPlayerSponsorship.cmls-player-tg {' +
 								'left: 50%;' +
+								'transform: translate(+290px, 0);' +
 							'}' +
-						'}' +
-						/*
-						'@media (max-width: 1042px) {' +
-							'#CMLSPlayerSponsorship.cmls-player-tg {' +
-								'display: none' +
-							'}' +
-						'}' +
-						'@media (max-width: 800px) {' +
 							'#CMLSPlayerSponsorship.cmls-player-triton {' +
-								'display: none' +
+								'left: 50%;' +
+								'transform: translate(30px, 0);' +
 							'}' +
-						'}' +
-						*/
-					'</style>'
-				);
+							'#CMLSPlayerSponsorship.cmls-player-pos-bottom {' +
+								'bottom: 4px;' +
+							'}' +
+							'#CMLSPlayerSponsorship.cmls-player-pos-top {' +
+								'top: 4px;' +
+							'}' +
+							'#CMLSPlayerSponsorship.cmls-player-triton.cmls-player-pos-top {' +
+								'top: 5px;' +
+							'}' +
+							'@media (max-width: 75rem) {' +
+								'#CMLSPlayerSponsorship.cmls-player-tg {' +
+									'left: 50%;' +
+								'}' +
+							'}' +
+							/*
+							'@media (max-width: 1042px) {' +
+								'#CMLSPlayerSponsorship.cmls-player-tg {' +
+									'display: none' +
+								'}' +
+							'}' +
+							'@media (max-width: 800px) {' +
+								'#CMLSPlayerSponsorship.cmls-player-triton {' +
+									'display: none' +
+								'}' +
+							'}' +
+							*/
+						'</style>'
+					);
+				}
 
 				// Append ad container
-				var sponsorContainer = $(
-					'<div id="CMLSPlayerSponsorship">' +
-						'<sc'+'ript>googletag.cmd.push(function() { googletag.display("CMLSPlayerSponsorship")});</sc'+'ript>' +
-					'</div>'
-				);
-				var position = 'bottom';
-				if (player.position === _CMLS.const.PLAYER_POSITION_TOP) {
-					position = 'top';
-				}
-				if (player.type === _CMLS.const.PLAYER_TRITON) {
-					sponsorContainer.addClass('cmls-player-triton');
-				}
-				if (player.type === _CMLS.const.PLAYER_TUNEGENIE) {
-					sponsorContainer.addClass('cmls-player-tg');
-				}
+				if ( ! $('#CMLSPlayerSponsorship').length) {
+					var sponsorContainer = $(
+						'<div id="CMLSPlayerSponsorship">' +
+							'<sc'+'ript>googletag.cmd.push(function() { googletag.display("CMLSPlayerSponsorship")});</sc'+'ript>' +
+						'</div>'
+					);
+					var position = 'bottom';
+					if (player.position === _CMLS.const.PLAYER_POSITION_TOP) {
+						position = 'top';
+					}
+					if (player.type === _CMLS.const.PLAYER_TRITON) {
+						sponsorContainer.addClass('cmls-player-triton');
+					}
+					if (player.type === _CMLS.const.PLAYER_TUNEGENIE) {
+						sponsorContainer.addClass('cmls-player-tg');
+					}
 
-				if (position === 'top') {
-					sponsorContainer.addClass('cmls-player-pos-top');
-				} else {
-					sponsorContainer.addClass('cmls-player-pos-bottom');
+					if (position === 'top') {
+						sponsorContainer.addClass('cmls-player-pos-top');
+					} else {
+						sponsorContainer.addClass('cmls-player-pos-bottom');
+					}
+					
+					$('body').append(sponsorContainer);
 				}
-				
-				$('body').append(sponsorContainer);
 
 				log('Slot initialized.');
 
