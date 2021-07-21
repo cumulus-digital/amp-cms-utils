@@ -464,7 +464,7 @@
 						'</style>';
 
 						iframe
-							.load(function() {
+							.on('load', function() {
 								log('Injecting wallpaper into iframe.');
 								iframe.contents().find('body')
 									.append(iframeStyles, link);

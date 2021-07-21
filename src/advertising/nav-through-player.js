@@ -195,7 +195,7 @@
 				log('Addressing existing google ad frame', this);
 				window._CMLS[nameSpace].updateIframeLinks(this);
 			});
-			$(window).load(function() {
+			$(window).on('load', function() {
 				$('iframe[id^="google_ads_iframe"],#cmlsWallpaperInjectorContainer iframe').each(function() {
 					log('Addressing existing google ad frame', this);
 					window._CMLS[nameSpace].updateIframeLinks(this);
