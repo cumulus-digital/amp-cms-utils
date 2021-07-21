@@ -78,7 +78,7 @@
 					for (var t in slots) {
 						if (slots[t].getSlotElementId() === 'CMLSPlayerSponsorship') {
 							log('Destroying existing slot');
-							adTag.rawInterface().destroySlots(slots[t]);
+							adTag.rawInterface().destroySlots([slots[t]]);
 						}
 					}
 					if (adPath === null) { throw { message: 'Could not retrieve ad unit path.' }; }
