@@ -41,6 +41,7 @@
 	];
 	*/
 
+	/*
 	if (window.self !== window.top) {
 		log('Not top window.');
 		if (window.top.addthisDestroyer){
@@ -50,13 +51,6 @@
 			log('Removing AddThis layers.');
 			$('.addthis-smartlayers').remove();
 		});
-		/*
-		for(var i in addthis_properties) {
-			try {
-				delete window.self[addthis_properties[i]];
-			} catch(e) { log(e); }
-		}
-		*/
 	} else {
 		log('Loaded in top window.');
 		window.top.addthisDestroyer = function(){
@@ -74,6 +68,7 @@
 			}
 		};
 	}
+	*/
 
 	if (window.self.NO_ADDTHIS_HERE) {
 		log('NO_ADDTHIS_HERE found, will not build.');
