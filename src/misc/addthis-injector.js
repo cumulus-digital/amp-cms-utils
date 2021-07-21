@@ -94,7 +94,7 @@
 	};
 	scr.src = '//s7.addthis.com/js/300/addthis_widget.js#pubid=' + addThisPubId;
 	scr.id = nameSpace + '-script';
-	scr.async = true;
+	//scr.async = true;
 	window.self.document.head.appendChild(scr);
 
 	log('Injected.');
