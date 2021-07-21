@@ -97,7 +97,7 @@
 	scr.onload = function(){
 		//buildLayer();
 	};
-	scr.src = '//s7.addthis.com/js/300/addthis_widget.js#async=1';
+	scr.src = '//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-55dc79597bae383e';
 	scr.id = nameSpace + '-script';
 	scr.async = true;
 	window.self.document.head.appendChild(scr);
@@ -126,4 +126,4 @@
 	*/
 	
 
-}(jQuery, window));
+}(jQuery, window.self));
