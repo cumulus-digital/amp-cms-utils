@@ -47,7 +47,7 @@
 		if (window.top.addthisDestroyer){
 			window.top.addthisDestroyer();
 		}
-		$(window).unload(function(){
+		$(window).on('unload', function(){
 			log('Removing AddThis layers.');
 			$('.addthis-smartlayers').remove();
 		});

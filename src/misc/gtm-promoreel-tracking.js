@@ -23,7 +23,7 @@
 
 	$(function(){
 		var prItems = $('.home .sliderItem');
-		prItems.click(function(){
+		prItems.on('click', function(){
 			var $this = $(this),
 				url = $this.attr('data-href');
 			if ( ! url || url.length < 1) {

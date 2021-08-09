@@ -160,7 +160,7 @@
 			'</style>'
 		).appendTo($slotDiv);
 		$scripts = $('<div id="' + elementId + '"><script>googletag.cmd.push(function() { googletag.display("' + elementId + '")});</sc'+'ript></div>').appendTo($slotDiv);
-		$closeBox = $('<div id="' + elementId + '-close" title="Close">✕</div>').click(hideAd).appendTo($slotDiv);
+		$closeBox = $('<div id="' + elementId + '-close" title="Close">✕</div>').on('click', hideAd).appendTo($slotDiv);
 		$timerDiv = $('<div id="' + elementId + '-timer"></div>').appendTo($slotDiv);
 
 		// Hook into the DFP render event so we know when to hide/show the ad

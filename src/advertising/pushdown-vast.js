@@ -209,7 +209,7 @@
 			closeBox.title = 'Close';
 			closeBox.innerText = '✕';
 		$closeBox = $(closeBox)
-			.click(function() {
+			.on('click', function() {
 				$pushdownContainer.trigger('cmls.hide');
 			})
 			.appendTo($pushdownContainer);
