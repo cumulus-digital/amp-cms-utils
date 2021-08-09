@@ -8,7 +8,7 @@
 // @codekit-append "advertising/taginterface/detector.js"
 // 
 // DISABLED codekit-append "advertising/teadsinjector.js"
-// DISABLED codekit-append "advertising/pushdown-vast.js"
+// @codekit-append "advertising/pushdown-vast.js"
 // DISABLED codekit-append "advertising/liquid-video-injector.js"
 // DISABLED codekit-append "advertising/auto-scroll-homepage-past-leaderboard.js"
 // DISABLED codekit-append "advertising/zergnet-injector.js"

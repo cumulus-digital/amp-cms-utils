@@ -127,7 +127,7 @@
       "ft" : 64,
       "ma" : 1,
       "mi" : 1,
-      "oA" : 0,
+      "oA" : 1,
       "oAP" : "\/dist\/advertising\/pushdown-vast-min.js",
       "oF" : 0,
       "sC" : 1,
