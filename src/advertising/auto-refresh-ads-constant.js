@@ -86,6 +86,10 @@
 				log('AutoReloadPage is active, autoRefreshAds will be disabled.');
 				return -1;
 			}
+			if (window.DISABLE_AUTO_REFRESH_ADS) {
+				log('window.DISABLE_AUTO_REFRESH_ADS has been set, autoRefreshAds will be disabled.');
+				return -1;
+			}
 			// If window is currently hidden, don't refresh ads
 			if (tabVisibility !== 'visible') {
 				log('Tab is hidden, autoRefreshAds will skip this cycle.');
