@@ -207,6 +207,7 @@
 			log('RESET!');
 
 			if (container && container.length) {
+				log('Container exists', container);
 				container
 					.off(transitionEvent)
 					.removeData()
@@ -232,6 +233,7 @@
 					}
 				}, 800);
 			} else {
+				log('Container does not yet exist.');
 				finishRemoval();
 			}
 
@@ -425,7 +427,7 @@
 
 				_reset()
 					.then(function() {
-						log ('Building the new wallpaper.');
+						log('Building the new wallpaper.');
 
 						var link = '';
 						if (slotLink.length) {
