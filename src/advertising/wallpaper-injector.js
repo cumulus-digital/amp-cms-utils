@@ -352,78 +352,9 @@
 					bgColorCheck = slotBgColor.match(/(\#[A-Za-z0-9]+)/) || false;
 				if (bgColorCheck && bgColorCheck.length > 1) {
 					bgColor = bgColorCheck[1];
-				} else {
-
-					// To attempt to get background color from the image itself,
-					// I need to load the image through XHR to transform it into
-					// a data URI in order to get around cross-origin restrictions
-					// on loading images into a canvas.
-					var xhr = new XMLHttpRequest();
-					xhr.onload = function() {
-
-						var reader = new FileReader();
-						reader.onloadend = function() {
-
-							var dataURI = reader.result;
-							if (dataURI) {
-								log('Got data URI for image');
-								var image = new window.Image();
-								image.onload = function() {
-
-									var canvas = window.document.createElement('canvas'),
-										context = canvas.getContext('2d'),
-										iW = image.naturalWidth ||
-											image.offsetWidth ||
-											image.width,
-										iH = image.naturalHeight ||
-											image.offsetHeight ||
-											image.height,
-										centerPoint = {
-											x: iW/2,
-											y: iH/2
-										};
-
-									canvas.width = iW;
-									canvas.height = iH;
-
-									context.drawImage(image, 0, 0);
-
-									log('Getting color data for center point', centerPoint);
-									var colorData = context.getImageData(
-										centerPoint.x,
-										centerPoint.y,
-										centerPoint.x+1,
-										centerPoint.y+1
-									);
-
-									if (colorData && colorData.data) {
-										log('Got new color data!', colorData);
-										var newColor = [
-											colorData.data[0],
-											colorData.data[1],
-											colorData.data[2],
-											colorData.data[3]
-										];
-										bgColor = 'rgba(' + newColor.join(',') + ')';
-										log('Got updated background color!', bgColor);
-										$('#' + nameSpace + 'Container').css('backgroundColor', bgColor);
-									}
-
-								};
-								image.src = dataURI;
-
-							}
-
-						};
-						reader.readAsDataURL(xhr.response);
-
-					};
-					xhr.open('GET', slotImage.prop('src'));
-					xhr.responseType = 'blob';
-					xhr.send();
-
 				}
-				log('Using background color.', bgColor);
+
+				//log('Using background color.', bgColor);
 
 				_reset()
 					.then(function() {
@@ -473,6 +404,7 @@
 							})
 							.prop('src', 'about:blank');
 
+						/*
 						if (slotImage.length) {
 							log('Initializing preloader.');
 							$('<img />')
@@ -483,6 +415,78 @@
 								.prop('src', slotImage.prop('src'));
 						} else {
 							show();
+						}
+						*/
+						show();
+
+						// To attempt to get background color from the image itself,
+						// I need to load the image through XHR to transform it into
+						// a data URI in order to get around cross-origin restrictions
+						// on loading images into a canvas.
+						if ( ! bgColorCheck) {
+							var xhr = new XMLHttpRequest();
+							xhr.onload = function() {
+
+								var reader = new FileReader();
+								reader.onloadend = function() {
+
+									var dataURI = reader.result;
+									if (dataURI) {
+										log('Got data URI for image');
+										var image = new window.Image();
+										image.onload = function() {
+
+											var canvas = window.document.createElement('canvas'),
+												context = canvas.getContext('2d'),
+												iW = image.naturalWidth ||
+													image.offsetWidth ||
+													image.width,
+												iH = image.naturalHeight ||
+													image.offsetHeight ||
+													image.height,
+												centerPoint = {
+													x: iW/2,
+													y: iH/2
+												};
+
+											canvas.width = iW;
+											canvas.height = iH;
+
+											context.drawImage(image, 0, 0);
+
+											log('Getting color data for center point', centerPoint);
+											var colorData = context.getImageData(
+												centerPoint.x,
+												centerPoint.y,
+												centerPoint.x+1,
+												centerPoint.y+1
+											);
+
+											if (colorData && colorData.data) {
+												log('Got new color data!', colorData);
+												var newColor = [
+													colorData.data[0],
+													colorData.data[1],
+													colorData.data[2],
+													colorData.data[3]
+												];
+												bgColor = 'rgba(' + newColor.join(',') + ')';
+												log('Got updated background color!', bgColor);
+												$('#' + nameSpace + 'Container').css('backgroundColor', bgColor);
+											}
+
+										};
+										image.src = dataURI;
+
+									}
+
+								};
+								reader.readAsDataURL(xhr.response);
+
+							};
+							xhr.open('GET', slotImage.prop('src'));
+							xhr.responseType = 'blob';
+							xhr.send();
 						}
 					});
 			} catch(e) {
