@@ -73,6 +73,8 @@
 				{ 'pos': 'w7m' },
 				true
 			);
+			window.GPT_SITE_SLOTS = window.GPT_SITE_SLOTS || {};
+			window.GPT_SITE_SLOTS[elementId] = slot;
 
 			var $container = $(`
 				<div id="${elementId}">
