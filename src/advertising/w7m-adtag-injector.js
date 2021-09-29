@@ -1,7 +1,7 @@
 /**
  * Inject a new GPT ad tag for W7M exclusive use.
  * Contains the pos targeting key set to "w7m"
- * Added to global window.autoRefreshAdsExclusion list
+ * Added to global window._CMLS.autoRefreshAdsExclusion list
  */
 ;(function($, window, undefined) {
 
@@ -23,6 +23,10 @@
 		log('DFP library must be included and "googletag" window variable must be available before including this library.');
 		return false;
 	}
+
+	// Add tag to global refresh exclusion
+	window._CMLS.autoRefreshAdsExclusion = window._CMLS.autoRefreshAdsExclusion || [];
+	window._CMLS.autoRefreshAdsExclusion.push(elementId);
 
 	$(function() {
 
