@@ -26,6 +26,9 @@
 	// Time before refreshing ads, in minutes.
 	window._CMLS.autoRefreshAdsTimer = window._CMLS.autoRefreshAdsTimer || 1;
 
+	// Global refresh exclusion list
+	window._CMLS.autoRefreshAdsExclusion = window._CMLS.autoRefreshAdsExclusion || [];
+
 	var AutoRefresher = function(instFireTime) {
 		var me = this,
 
@@ -195,7 +198,13 @@
 						var ads = windowContext._CMLS.adTag.pubads().getSlots(),
 							visibleSlots = [];
 						ads.forEach(function(ad) {
-							var el = windowContext.document.getElementById(ad.getSlotElementId());
+							var id = ad.getSlotElementId();
+							var el = windowContext.document.getElementById(id);
+							// Do not refresh excluded element IDs
+							if (window._CMLS.autoRefreshAdsExclusion.indexOf(id) > -1) {
+								log('ID excluded from refresh', id, window._CMLS.autoRefreshAdsExclusion);
+								return;
+							}
 							if (el && isElVisible(el)) {
 								visibleSlots.push(ad);
 							}

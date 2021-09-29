@@ -7,7 +7,7 @@
       "uuidString" : "173E6D12-95D9-4A11-ABB8-3CAD58B1B762"
     }
   ],
-  "creatorBuild" : "34127",
+  "creatorBuild" : "34214",
   "files" : {
     "\/.gitignore" : {
       "cB" : 0,
@@ -31,7 +31,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/advertising\/after-post-paid-content-injector-min.js",
       "oF" : 0,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/advertising\/auto-refresh-ads-constant.js" : {
@@ -42,7 +42,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/advertising\/auto-refresh-ads-constant-min.js",
       "oF" : 0,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/advertising\/auto-refresh-ads.js" : {
@@ -53,7 +53,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/advertising\/auto-refresh-ads-min.js",
       "oF" : 1,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/advertising\/auto-scroll-homepage-past-leaderboard.js" : {
@@ -64,7 +64,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/advertising\/auto-scroll-homepage-past-leaderboard-min.js",
       "oF" : 1,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/advertising\/globalize-sgroups.js" : {
@@ -75,7 +75,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/advertising\/globalize-sgroups-min.js",
       "oF" : 0,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/advertising\/liquid-video-injector.js" : {
@@ -86,7 +86,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/advertising\/liquid-video-injector-min.js",
       "oF" : 1,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/advertising\/nav-through-player.js" : {
@@ -97,7 +97,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/advertising\/nav-through-player-min.js",
       "oF" : 0,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/advertising\/player-sponsor-logo.js" : {
@@ -108,7 +108,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/advertising\/player-sponsor-logo-min.js",
       "oF" : 0,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/advertising\/player-tracking-dfp-injection.js" : {
@@ -119,7 +119,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/advertising\/player-tracking-dfp-injection-min.js",
       "oF" : 0,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/advertising\/pushdown-vast.js" : {
@@ -130,7 +130,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/advertising\/pushdown-vast-min.js",
       "oF" : 0,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/advertising\/pushdown.js" : {
@@ -141,7 +141,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/advertising\/pushdown-min.js",
       "oF" : 1,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/advertising\/taginterface\/detector.js" : {
@@ -152,7 +152,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/advertising\/taginterface\/detector-min.js",
       "oF" : 0,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/advertising\/taginterface\/interface.dfp.js" : {
@@ -163,7 +163,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/advertising\/taginterface\/interface.dfp-min.js",
       "oF" : 0,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/advertising\/taginterface\/registration.js" : {
@@ -174,7 +174,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/advertising\/taginterface\/registration-min.js",
       "oF" : 0,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/advertising\/teadsinjector.js" : {
@@ -185,7 +185,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/advertising\/teadsinjector-min.js",
       "oF" : 0,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/advertising\/wallpaper-injector.js" : {
@@ -196,7 +196,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/advertising\/wallpaper-injector-min.js",
       "oF" : 0,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/advertising\/zergnet-injector.js" : {
@@ -207,7 +207,7 @@
       "oA" : 0,
       "oAP" : "\/dist\/advertising\/zergnet-injector-min.js",
       "oF" : 0,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/common.js" : {
@@ -218,7 +218,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/common-min.js",
       "oF" : 0,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/compiled-allsites.js" : {
@@ -229,7 +229,7 @@
       "oA" : 0,
       "oAP" : "\/dist\/compiled-allsites-min.js",
       "oF" : 0,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/misc\/addthis-hider.js" : {
@@ -240,7 +240,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/misc\/addthis-hider-min.js",
       "oF" : 1,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/misc\/addthis-injector.js" : {
@@ -251,7 +251,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/misc\/addthis-injector-min.js",
       "oF" : 0,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/misc\/auto-reload.js" : {
@@ -262,7 +262,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/misc\/auto-reload-min.js",
       "oF" : 0,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/misc\/breaking-news-bar.js" : {
@@ -273,7 +273,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/misc\/breaking-news-bar-min.js",
       "oF" : 0,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/misc\/gtm-promoreel-tracking.js" : {
@@ -284,7 +284,7 @@
       "oA" : 0,
       "oAP" : "\/dist\/misc\/gtm-promoreel-tracking-min.js",
       "oF" : 0,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/misc\/gtm-stream-tracking.js" : {
@@ -295,7 +295,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/misc\/gtm-stream-tracking-min.js",
       "oF" : 0,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/misc\/gtm-tabvisibility-tracking.js" : {
@@ -306,7 +306,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/misc\/gtm-tabvisibility-tracking-min.js",
       "oF" : 0,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/misc\/inform-video-player.js" : {
@@ -317,7 +317,7 @@
       "oA" : 0,
       "oAP" : "\/dist\/misc\/inform-video-player-min.js",
       "oF" : 0,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/misc\/social-listen-live-link.js" : {
@@ -328,7 +328,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/misc\/social-listen-live-link-min.js",
       "oF" : 0,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/misc\/tgmp-switchstream.js" : {
@@ -339,7 +339,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/misc\/tgmp-switchstream-min.js",
       "oF" : 1,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/smartbanner\/injector.js" : {
@@ -350,7 +350,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/smartbanner\/injector-min.js",
       "oF" : 1,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/smartbanner\/smartbanner.js" : {
@@ -361,7 +361,7 @@
       "oA" : 1,
       "oAP" : "\/dist\/smartbanner\/smartbanner-min.js",
       "oF" : 1,
-      "sC" : 1,
+      "sC" : 3,
       "tS" : 0
     },
     "\/src\/smartbanner\/smartbanner.styl" : {
@@ -897,7 +897,7 @@
         "optionString" : "{'exceptMethods': []}"
       },
       "comma-dangle" : {
-        "active" : 1,
+        "active" : 0,
         "optionString" : "'never'"
       },
       "comma-spacing" : {
@@ -1149,7 +1149,7 @@
         "optionString" : "{'allowParens': false}"
       },
       "no-console" : {
-        "active" : 1,
+        "active" : 0,
         "optionString" : "{'allow': ['warn', 'error']}"
       },
       "no-const-assign" : {
@@ -1197,7 +1197,7 @@
         "active" : 0
       },
       "no-empty" : {
-        "active" : 1,
+        "active" : 0,
         "optionString" : "{'allowEmptyCatch': false}"
       },
       "no-empty-character-class" : {
@@ -1234,11 +1234,11 @@
         "active" : 0
       },
       "no-extra-parens" : {
-        "active" : 1,
+        "active" : 0,
         "optionString" : "'all', {'conditionalAssign': false, 'returnAssign': false, 'nestedBinaryExpressions': false}"
       },
       "no-extra-semi" : {
-        "active" : 1
+        "active" : 0
       },
       "no-fallthrough" : {
         "active" : 1
@@ -1327,7 +1327,8 @@
         "optionString" : ""
       },
       "no-multi-assign" : {
-        "active" : 0
+        "active" : 0,
+        "optionString" : "{'ignoreNonDeclaration': false}"
       },
       "no-multi-spaces" : {
         "active" : 0,
@@ -1450,7 +1451,8 @@
         "active" : 1
       },
       "no-sequences" : {
-        "active" : 0
+        "active" : 0,
+        "optionString" : "{'allowInParentheses': true}"
       },
       "no-setter-return" : {
         "active" : 1
@@ -1490,7 +1492,7 @@
         "optionString" : "{'skipBlankLines': false}"
       },
       "no-undef" : {
-        "active" : 1,
+        "active" : 0,
         "optionString" : "{'typeof': false}"
       },
       "no-undef-init" : {
@@ -1539,7 +1541,7 @@
         "active" : 1
       },
       "no-unused-vars" : {
-        "active" : 1,
+        "active" : 0,
         "optionString" : "{'vars': 'all', 'args': 'after-used', 'caughtErrors': 'none'}"
       },
       "no-use-before-define" : {
@@ -1814,354 +1816,6 @@
     "gitIgnoreBuildFolder" : 1,
     "hideConfigFile" : 0,
     "jsCheckerReservedNamesString" : "",
-    "jsHintFlags2" : {
-      "asi" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "bitwise" : {
-        "active" : 1,
-        "flagValue" : -1
-      },
-      "boss" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "browser" : {
-        "active" : 1,
-        "flagValue" : -1
-      },
-      "browserify" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "camelcase" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "couch" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "curly" : {
-        "active" : 1,
-        "flagValue" : -1
-      },
-      "debug" : {
-        "active" : 1,
-        "flagValue" : -1
-      },
-      "devel" : {
-        "active" : 1,
-        "flagValue" : -1
-      },
-      "dojo" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "elision" : {
-        "active" : 1,
-        "flagValue" : -1
-      },
-      "eqeqeq" : {
-        "active" : 1,
-        "flagValue" : -1
-      },
-      "eqnull" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "es3" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "esnext" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "evil" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "expr" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "forin" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "freeze" : {
-        "active" : 1,
-        "flagValue" : -1
-      },
-      "funcscope" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "futurehostile" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "globalstrict" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "immed" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "indent" : {
-        "active" : 0,
-        "flagValue" : 4
-      },
-      "iterator" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "jasmine" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "jquery" : {
-        "active" : 1,
-        "flagValue" : -1
-      },
-      "lastsemic" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "latedef" : {
-        "active" : 1,
-        "flagValue" : -1
-      },
-      "laxbreak" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "laxcomma" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "loopfunc" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "maxcomplexity" : {
-        "active" : 0,
-        "flagValue" : 10
-      },
-      "maxdepth" : {
-        "active" : 0,
-        "flagValue" : 3
-      },
-      "maxlen" : {
-        "active" : 0,
-        "flagValue" : 150
-      },
-      "maxparams" : {
-        "active" : 0,
-        "flagValue" : 3
-      },
-      "maxstatements" : {
-        "active" : 0,
-        "flagValue" : 4
-      },
-      "mocha" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "mootools" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "moz" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "multistr" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "newcap" : {
-        "active" : 1,
-        "flagValue" : -1
-      },
-      "noarg" : {
-        "active" : 1,
-        "flagValue" : -1
-      },
-      "nocomma" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "node" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "noempty" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "nonbsp" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "nonew" : {
-        "active" : 1,
-        "flagValue" : -1
-      },
-      "nonstandard" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "notypeof" : {
-        "active" : 1,
-        "flagValue" : -1
-      },
-      "noyield" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "onecase" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "phantom" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "plusplus" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "proto" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "prototypejs" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "qunit" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "regexp" : {
-        "active" : 1,
-        "flagValue" : -1
-      },
-      "rhino" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "scripturl" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "shadow" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "shelljs" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "singleGroups" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "strict" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "sub" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "supernew" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "typed" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "undef" : {
-        "active" : 1,
-        "flagValue" : -1
-      },
-      "unused" : {
-        "active" : 1,
-        "flagValue" : -1
-      },
-      "varstmt" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "withstmt" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "worker" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "wsh" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "yui" : {
-        "active" : 0,
-        "flagValue" : -1
-      }
-    },
-    "jsLintFlags2" : {
-      "bitwise" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "browser" : {
-        "active" : 1,
-        "flagValue" : -1
-      },
-      "couch" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "devel" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "es6" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "eval" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "for" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "maxlen" : {
-        "active" : 0,
-        "flagValue" : 150
-      },
-      "node" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "this" : {
-        "active" : 0,
-        "flagValue" : -1
-      },
-      "white" : {
-        "active" : 0,
-        "flagValue" : -1
-      }
-    },
     "languageDefaultsCOFFEE" : {
       "autoOutputAction" : 0,
       "autoOutputPathFilenamePattern" : "*.js",
@@ -2237,7 +1891,7 @@
       "bundleFormat" : 0,
       "minifierStyle" : 1,
       "sourceMapStyle" : 0,
-      "syntaxCheckerStyle" : 1,
+      "syntaxCheckerStyle" : 3,
       "transpilerStyle" : 0
     },
     "languageDefaultsJSON" : {
@@ -2470,6 +2124,7 @@
     "tsEmitBOM" : 0,
     "tsEmitDecoratorMetadata" : 0,
     "tsESModuleInterop" : 0,
+    "tsExactOptionalPropertyTypes" : 0,
     "tsForceConsistentCasingInFileNames" : 0,
     "tsImportHelpers" : 0,
     "tsIsolatedModules" : 0,
@@ -2478,6 +2133,7 @@
     "tsNoEmitHelpers" : 0,
     "tsNoFallthroughCasesInSwitch" : 0,
     "tsNoImplicitAny" : 0,
+    "tsNoImplicitOverride" : 0,
     "tsNoImplicitReturns" : 0,
     "tsNoImplicitThis" : 0,
     "tsNoImplicitUseStrict" : 0,
@@ -2498,6 +2154,7 @@
     "tsStripInternal" : 0,
     "tsSuppressExcessPropertyErrors" : 0,
     "tsSuppressImplicitAnyIndexErrors" : 0,
+    "tsUseUnknownInCatchVariables" : 0,
     "uglifyDefinesString" : "",
     "uglifyFlags2" : {
       "arguments" : {

@@ -77,6 +77,10 @@
 		return slot;
 	};
 
+	DFP.isInitialLoadDisabled = function() {
+		return DFP.pubads().isInitialLoadDisabled();
+	};
+
 	window._CMLS[parentNameSpace].registeredDetectors.push(DFP);
 
 }(window.self, jQuery));

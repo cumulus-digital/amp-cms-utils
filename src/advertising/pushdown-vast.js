@@ -67,7 +67,7 @@
 	/*ignore jslint start*/
 
 	// Override context of jQuery
-	var jQuery = jQuery.noConflict();
+	jQuery = jQuery.noConflict();
 	var $ = function(selector,context) {
 		return new jQuery.fn.init(selector, context||window.document);
 	};
