@@ -6,7 +6,7 @@
 	
 	var scriptName = "AUTO REFRESH ADS",
 		nameSpace = "autoRefreshAds",
-		version = "0.5.4";
+		version = "0.5.5";
 
 	function log() {
 		if(window.top._CMLS && window.top._CMLS.hasOwnProperty('logger')) {

@@ -18,6 +18,7 @@
 // @codekit-append "advertising/wallpaper-injector.js"
 // @codekit-append "advertising/player-sponsor-logo.js"
 // @codekit-append "advertising/after-post-paid-content-injector.js"
+// @codekit-append "advertising/w7m-adtag-injector.js"
 
 // Misc
 // DISABLED codekit-append "misc/gtm-promoreel-tracking.js"
