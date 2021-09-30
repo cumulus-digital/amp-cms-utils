@@ -75,13 +75,25 @@
 			);
 			window.GPT_SITE_SLOTS = window.GPT_SITE_SLOTS || {};
 			window.GPT_SITE_SLOTS[elementId] = slot;
+			log('Defined slot', slot, window.GPT_SITE_SLOTS);
 
 			var $container = $(`
 				<div id="${elementId}">
-					<script>googletag.cmd.push(function() { googletag.display("${elementId}"); });</script>
+					<script>
+						googletag.cmd.push(function() {
+							googletag.display("${elementId}");
+							if (
+								googletag.pubads().isInitialLoadDisabled()
+								&& window.GPT_SITE_SLOTS
+								&& window.GPT_SITE_SLOTS["${elementId}"]
+							) {
+								googletag.pubads().refresh(window.GPT_SITE_SLOTS["${elementId}"])
+							}
+						});
+					</script>
 				</div>
 			`);
-			$container.appendTo('body');
+			$container.prependTo('body');
 			log('Ad tag appended to body with ID', elementId);
 
 		});
