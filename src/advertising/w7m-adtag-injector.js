@@ -6,7 +6,7 @@
 ;(function($, window, undefined) {
 
 	var scriptName = 'W7M Ad Tag Injector',
-		version = '0.2',
+		version = '0.3',
 		dfpNetworkCode = '6717',
 		elementId = 'dfp-w7mtag';
 
@@ -95,7 +95,7 @@
 								&& window.GPT_SITE_SLOTS["${elementId}"]
 								&& ! window.GPT_SITE_SLOTS["${elementId}"].wasRequested
 							) {
-								googletag.pubads().refresh(window.GPT_SITE_SLOTS["${elementId}"])
+								googletag.pubads().refresh([window.GPT_SITE_SLOTS["${elementId}"]]);
 							}
 						});
 					</script>
