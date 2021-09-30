@@ -79,6 +79,7 @@
 				var slot = e.slot;
 				if (slot.getSlotElementId() === elementId) {
 					slot.wasRequested = true;
+					log('Our slot was requested.', slot);
 				}
 			});
 			log('Defined slot', slot, window.GPT_SITE_SLOTS);
@@ -92,6 +93,7 @@
 								googletag.pubads().isInitialLoadDisabled()
 								&& window.GPT_SITE_SLOTS
 								&& window.GPT_SITE_SLOTS["${elementId}"]
+								&& ! window.GPT_SITE_SLOTS["${elementId}"].wasRequested
 							) {
 								googletag.pubads().refresh(window.GPT_SITE_SLOTS["${elementId}"])
 							}
