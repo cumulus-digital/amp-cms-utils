@@ -6,7 +6,7 @@
 ;(function($, window, undefined) {
 
 	var scriptName = 'W7M Ad Tag Injector',
-		version = '0.1',
+		version = '0.2',
 		dfpNetworkCode = '6717',
 		elementId = 'dfp-w7mtag';
 
@@ -75,6 +75,12 @@
 			);
 			window.GPT_SITE_SLOTS = window.GPT_SITE_SLOTS || {};
 			window.GPT_SITE_SLOTS[elementId] = slot;
+			adTag.addListener('slotRequested', function(e) {
+				var slot = e.slot;
+				if (slot.getSlotElementId() === elementId) {
+					slot.wasRequested = true;
+				}
+			});
 			log('Defined slot', slot, window.GPT_SITE_SLOTS);
 
 			var $container = $(`
