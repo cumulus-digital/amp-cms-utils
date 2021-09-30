@@ -6,7 +6,7 @@
 ;(function($, window, undefined) {
 
 	var scriptName = 'W7M Ad Tag Injector',
-		version = '0.3',
+		version = '0.4',
 		dfpNetworkCode = '6717',
 		elementId = 'dfp-w7mtag';
 
@@ -85,7 +85,7 @@
 			log('Defined slot', slot, window.GPT_SITE_SLOTS);
 
 			var $container = $(`
-				<div id="${elementId}">
+				<div id="${elementId}" style="height: 0;">
 					<script>
 						googletag.cmd.push(function() {
 							googletag.display("${elementId}");
