@@ -67,7 +67,7 @@
 				log('Requested vars', vars);
 				return {
 					'brand': vars.indexOf('tgmp-streamid') > -1 ? vars.match(/tgmp\-streamid\-(\w+)/i)[1] : null,
-					'theme': vars.indexOf('tgmp-theme') > -1 ? ['#' + vars.match(/tgmp\-theme\-(\d+)/i)[1] ] : null,
+					'theme': vars.indexOf('tgmp-theme') > -1 ? ['#' + vars.match(/tgmp\-theme\-([a-z0-9]+)/i)[1] ] : null,
 					'autostart': vars.indexOf('tgmp-autostart') > -1 ? true: false
 				};
 			}
