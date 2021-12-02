@@ -187,11 +187,12 @@
 
 	// Newsmax code
 	if (
-		! winDef('NO_NEWSMAX') ||
-		// Don't inject if Daily Wire's HotWire is used
-		! document.getElementById('hotwire-incontent') ||
-		! $column.find('.dwcw-widget').length
+		winDef('NO_NEWSMAX') ||
+		document.getElementById('hotwire-incontent') ||
+		$column.find('.dwcw-widget-container').length
 	) {
+		// Don't inject Newsmax
+	} else {
 		var nmurl = '//static.newsmaxfeednetwork.com/web-clients/bootloaders/jtPvahXLC0BvyCYESN3Fgu/bootloader.js';
 		if (window.matchMedia("only screen and (max-width: 760px)").matches) {
 			nmurl = '//static.newsmaxfeednetwork.com/web-clients/bootloaders/Jx44GJqslQrQU3ZULtFwdD/bootloader.js';
