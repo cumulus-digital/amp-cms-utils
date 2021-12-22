@@ -5,7 +5,7 @@
 
 	var scriptName = 'PLAYER SPONSOR INJECTOR',
 		nameSpace = 'playerSponsorInjector',
-		version = '0.7',
+		version = '0.8',
 		dfpNetworkCode = '6717',
 		elementId = 'CMLSPlayerSponsorship',
 		zIndex = 200000,
@@ -195,6 +195,7 @@
 									.setCollapseEmptyDiv(true) \
 									.setTargeting("pos", "playersponsorlogo"); \
 								googletag.display("' + elementId + '"); \
+								googletag.refresh([window.GPT_SITE_SLOTS["' + elementId + '"]]); \
 							}); \
 						</sc'+'ript>'
 					);
