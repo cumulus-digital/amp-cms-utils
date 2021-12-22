@@ -5,7 +5,7 @@
 
 	var scriptName = 'PLAYER SPONSOR INJECTOR',
 		nameSpace = 'playerSponsorInjector',
-		version = '0.6',
+		version = '0.7',
 		dfpNetworkCode = '6717',
 		elementId = 'CMLSPlayerSponsorship',
 		zIndex = 200000,
@@ -180,7 +180,7 @@
 				}, 2000);
 
 				// Append ad container
-				var sponsorContainer = $('<div />', { id: elementId, class: "cmls-player-tg cmls-player-pos-top" });
+				var sponsorContainer = $('<div />', { id: elementId, class: "cmls-player-tg cmls-player-pos-bottom" });
 					sponsorContainer.html(
 						'<script> \
 							googletag.cmd.push(function() { \
