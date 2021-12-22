@@ -5,7 +5,7 @@
 
 	var scriptName = 'PLAYER SPONSOR INJECTOR',
 		nameSpace = 'playerSponsorInjector',
-		version = '0.3',
+		version = '0.4',
 		dfpNetworkCode = '6717',
 		elementId = 'CMLSPlayerSponsorship',
 		zIndex = 200000,
@@ -180,33 +180,30 @@
 				}, 2000);
 
 				// Append ad container
-				var sponsorContainer = $(
-					'<div id="' + elementId + '" class="cmls-player-tg cmls-player-pos-top"> \
-						<script> \
+				var sponsorContainer = $('<div />', { id: elementId, class: "cmls-player-tg cmls-player-pos-top" });
+					sponsorContainer.html(
+						'<script> \
 							googletag.cmd.push(function() { \
 								var sizeMap = .sizeMapping() \
 									.addSize([800, 0], [[120,60]]) \
 									.addSize([0, 0], []) \
 									.build(); \
-								googletag.defineSlot(' + adPath + ', [120,60], ' + elementId + ') \
+								googletag.defineSlot("' + adPath + '", [120,60], "' + elementId + '") \
 									.setCollapseEmptyDiv(true) \
 									.setTargeting("pos", "playersponsorlogo") \
 									.addService(googletag.pubads()) \
 									.defineSizeMapping(sizeMap); \
 								googletag.display("' + elementId + '"); \
 							}); \
-						</sc'+'ript> \
-					</div>'
-				);
-				var position = 'bottom';
+						</sc'+'ript>'
+					);
+
 				if (player.position === _CMLS.const.PLAYER_POSITION_TOP) {
-					sponsorContainer
-						.removeClass('cmls-player-pos-bottom')
+					sponsorContainer.removeClass('cmls-player-pos-bottom')
 						.addClass('cmls-player-pos-top');
 				}
 				if (player.type === _CMLS.const.PLAYER_TRITON) {
-					sponsorContainer
-						.removeClass('cmls-player-tg')
+					sponsorContainer.removeClass('cmls-player-tg')
 						.addClass('cmls-player-triton');
 				}
 
