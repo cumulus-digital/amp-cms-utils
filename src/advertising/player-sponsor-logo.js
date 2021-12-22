@@ -7,6 +7,7 @@
 		nameSpace = 'playerSponsorInjector',
 		version = '0.1',
 		dfpNetworkCode = '6717',
+		elementId = 'CMLSPlayerSponsorship',
 		_CMLS = window._CMLS;
 
 	function log() {
@@ -55,9 +56,9 @@
 			$(function(){
 				// Eject if our tag already exists.
 				if (
-					window.self.document.getElementById('CMLSPlayerSponsorship') ||
-					window.self.parent.document.getElementById('CMLSPlayerSponsorship') ||
-					window.top.document.getElementById('CMLSPlayerSponsorship')
+					window.self.document.getElementById(elementId) ||
+					window.self.parent.document.getElementById(elementId) ||
+					window.top.document.getElementById(elementId)
 				) {
 					log('Container already exists, exiting.');
 					return;
@@ -93,7 +94,7 @@
 					[
 						adPath,
 						[[120,60]],
-						'CMLSPlayerSponsorship'
+						elementId
 					],
 					true,
 					{ 'pos': 'playersponsorlogo' },
@@ -119,49 +120,49 @@
 					if (zIndex > 2147483647) {
 						zIndex = 2147483647;
 					}
-					$('#CMLSPlayerSponsorship').css('z-index', zIndex);
+					$('#' + elementId).css('z-index', zIndex);
 				}, 2000);
 
 				// Append ad container styles
-				if ( ! $('#CMLSPlayerSponsorshipStyle').length) {
+				if ( ! $('#' + elementId + 'Style').length) {
 					$('body').append(
-						'<style id="CMLSPlayerSponsorshipStyle">' +
-							'#CMLSPlayerSponsorship {' +
+						'<style id="' + elementId + 'Style">' +
+							'#' + elementId + ' {' +
 								'position: fixed;' +
 								'z-index: ' + zIndex + ';' +
 								'width: 120px;' +
 								'height: 60px;' +
 							'}' +
-							'#CMLSPlayerSponsorship.cmls-player-tg {' +
+							'#' + elementId + '.cmls-player-tg {' +
 								'left: 50%;' +
 								'transform: translate(+290px, 0);' +
 							'}' +
-							'#CMLSPlayerSponsorship.cmls-player-triton {' +
+							'#' + elementId + '.cmls-player-triton {' +
 								'left: 50%;' +
 								'transform: translate(30px, 0);' +
 							'}' +
-							'#CMLSPlayerSponsorship.cmls-player-pos-bottom {' +
+							'#' + elementId + '.cmls-player-pos-bottom {' +
 								'bottom: 4px;' +
 							'}' +
-							'#CMLSPlayerSponsorship.cmls-player-pos-top {' +
+							'#' + elementId + '.cmls-player-pos-top {' +
 								'top: 4px;' +
 							'}' +
-							'#CMLSPlayerSponsorship.cmls-player-triton.cmls-player-pos-top {' +
+							'#' + elementId + '.cmls-player-triton.cmls-player-pos-top {' +
 								'top: 5px;' +
 							'}' +
 							'@media (max-width: 75rem) {' +
-								'#CMLSPlayerSponsorship.cmls-player-tg {' +
+								'#' + elementId + '.cmls-player-tg {' +
 									'left: 50%;' +
 								'}' +
 							'}' +
 							/*
 							'@media (max-width: 1042px) {' +
-								'#CMLSPlayerSponsorship.cmls-player-tg {' +
+								'#' + elementId + '.cmls-player-tg {' +
 									'display: none' +
 								'}' +
 							'}' +
 							'@media (max-width: 800px) {' +
-								'#CMLSPlayerSponsorship.cmls-player-triton {' +
+								'#' + elementId + '.cmls-player-triton {' +
 									'display: none' +
 								'}' +
 							'}' +
@@ -171,11 +172,15 @@
 				}
 
 				// Append ad container
-				if ( ! $('#CMLSPlayerSponsorship').length) {
+				if ( ! $('#' + elementId).length) {
 					var sponsorContainer = $(
-						'<div id="CMLSPlayerSponsorship">' +
-							'<sc'+'ript>googletag.cmd.push(function() { googletag.display("CMLSPlayerSponsorship")});</sc'+'ript>' +
-						'</div>'
+						'<div id="' + elementId + '"> \
+							<script> \
+								googletag.cmd.push(function() { \
+									googletag.display("' + elementId + '"); \
+								}); \
+							</sc'+'ript> \
+						</div>'
 					);
 					var position = 'bottom';
 					if (player.position === _CMLS.const.PLAYER_POSITION_TOP) {
