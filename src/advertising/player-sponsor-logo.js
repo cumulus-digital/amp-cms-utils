@@ -5,7 +5,7 @@
 
 	var scriptName = 'PLAYER SPONSOR INJECTOR',
 		nameSpace = 'playerSponsorInjector',
-		version = '0.2',
+		version = '0.3',
 		dfpNetworkCode = '6717',
 		elementId = 'CMLSPlayerSponsorship',
 		zIndex = 200000,
@@ -181,27 +181,6 @@
 
 				// Append ad container
 				var sponsorContainer = $(
-					`
-						<div id="${elementId}">
-							<script>
-								googletag.cmd.push(function() {
-									var sizeMap = .sizeMapping()
-										.addSize([800, 0], [[120,60]])
-										.addSize([0, 0], [])
-										.build();
-									googletag.defineSlot('${adPath}', [120,60], '${elementId}')
-										.setCollapseEmptyDiv(true)
-										.setTargeting("pos", "playersponsorlogo")
-										.addService(googletag.pubads())
-										.defineSizeMapping(sizeMap);
-									googletag.display('${elementId}');
-								});
-							<\/script>
-						</div>
-					`
-				);
-				/*
-				var sponsorContainer = $(
 					'<div id="' + elementId + '" class="cmls-player-tg cmls-player-pos-top"> \
 						<script> \
 							googletag.cmd.push(function() { \
@@ -219,7 +198,6 @@
 						</sc'+'ript> \
 					</div>'
 				);
-				 */
 				var position = 'bottom';
 				if (player.position === _CMLS.const.PLAYER_POSITION_TOP) {
 					sponsorContainer
