@@ -5,9 +5,10 @@
 
 	var scriptName = 'PLAYER SPONSOR INJECTOR',
 		nameSpace = 'playerSponsorInjector',
-		version = '0.1',
+		version = '0.2',
 		dfpNetworkCode = '6717',
 		elementId = 'CMLSPlayerSponsorship',
+		zIndex = 200000,
 		_CMLS = window._CMLS;
 
 	function log() {
@@ -165,7 +166,6 @@
 				*/
 
 				// update z-index after 2 seconds
-				var zIndex = 200000;
 				setTimeout(function() {
 					if (player.type === window._CMLS.const.PLAYER_TUNEGENIE) {
 						var tgObj = $('#' + window.top.tgmp.divId);
