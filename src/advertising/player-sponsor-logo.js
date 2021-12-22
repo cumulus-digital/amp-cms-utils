@@ -6,6 +6,7 @@
 	var scriptName = 'PLAYER SPONSOR INJECTOR',
 		nameSpace = 'playerSponsorInjector',
 		version = '0.1',
+		dfpNetworkCode = '6717',
 		_CMLS = window._CMLS;
 
 	function log() {
@@ -66,22 +67,22 @@
 				log('Discovering local site ad path.');
 				var adPath = null;
 				try {
-					var pa = adTag.rawInterface().pubads();
-					var slots = pa.getSlots();
-					for (var s in slots) {
-						var name = slots[s].getSlotId().getName();
-						if (name && name.indexOf('/6717/') > -1) {
-							adPath = name;
-							break;
+					if (window.GPT_SITE_ID) {
+						adPath = window.GPT_SITE_ID;
+					} else {
+						var pa = adTag.rawInterface().pubads(),
+							slots = pa.getSlots();
+						if (slots.length) {
+							slots.some(function(slot) {
+								var p = slot.getAdUnitPath();
+								if (p.indexOf('/' + dfpNetworkCode +'/') > -1) {
+									adPath = p;
+									return true;
+								}
+							});
+							if (adPath === null || adPath === undefined) { throw { message: 'Could not retrieve ad unit path.' }; }
 						}
 					}
-					for (var t in slots) {
-						if (slots[t].getSlotElementId() === 'CMLSPlayerSponsorship') {
-							log('Destroying existing slot');
-							adTag.rawInterface().destroySlots([slots[t]]);
-						}
-					}
-					if (adPath === null) { throw { message: 'Could not retrieve ad unit path.' }; }
 				} catch(e) {
 					log('Failed to retrieve DFP properties.', e);
 					return;
