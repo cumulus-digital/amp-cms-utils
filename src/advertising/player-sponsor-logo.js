@@ -5,7 +5,7 @@
 
 	var scriptName = 'PLAYER SPONSOR INJECTOR',
 		nameSpace = 'playerSponsorInjector',
-		version = '0.5',
+		version = '0.6',
 		dfpNetworkCode = '6717',
 		elementId = 'CMLSPlayerSponsorship',
 		zIndex = 200000,
@@ -185,15 +185,15 @@
 						'<script> \
 							googletag.cmd.push(function() { \
 								window.GPT_SITE_SLOTS = window.GPT_SITE_SLOTS || {}; \
-								var sizeMap = .sizeMapping() \
+								var sizeMap = googletag.sizeMapping() \
 									.addSize([800, 0], [[120,60]]) \
 									.addSize([0, 0], []) \
 									.build(); \
 								window.GPT_SITE_SLOTS["' + elementId + '"] = googletag.defineSlot("' + adPath + '", [120,60], "' + elementId + '") \
-									.setCollapseEmptyDiv(true) \
-									.setTargeting("pos", "playersponsorlogo") \
 									.addService(googletag.pubads()) \
-									.defineSizeMapping(sizeMap); \
+									.defineSizeMapping(sizeMap) \
+									.setCollapseEmptyDiv(true) \
+									.setTargeting("pos", "playersponsorlogo"); \
 								googletag.display("' + elementId + '"); \
 							}); \
 						</sc'+'ript>'
