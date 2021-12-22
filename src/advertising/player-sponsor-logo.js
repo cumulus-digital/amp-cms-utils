@@ -5,7 +5,7 @@
 
 	var scriptName = 'PLAYER SPONSOR INJECTOR',
 		nameSpace = 'playerSponsorInjector',
-		version = '0.4',
+		version = '0.5',
 		dfpNetworkCode = '6717',
 		elementId = 'CMLSPlayerSponsorship',
 		zIndex = 200000,
@@ -140,12 +140,12 @@
 				}
 				log('Ad path found, defining new slot.', adPath);
 
+				/*
 				var slot = adTag.rawInterface().defineSlot(adPath, [120,60], elementId)
 					.setCollapseEmptyDiv(true)
 					.setTargeting('pos', 'playersponsorlogo')
 					.addService(googletag.pubads());
 
-				/*
 				var slot = adTag.defineSlot(
 					[
 						adPath,
@@ -184,11 +184,12 @@
 					sponsorContainer.html(
 						'<script> \
 							googletag.cmd.push(function() { \
+								window.GPT_SITE_SLOTS = window.GPT_SITE_SLOTS || {}; \
 								var sizeMap = .sizeMapping() \
 									.addSize([800, 0], [[120,60]]) \
 									.addSize([0, 0], []) \
 									.build(); \
-								googletag.defineSlot("' + adPath + '", [120,60], "' + elementId + '") \
+								window.GPT_SITE_SLOTS["' + elementId + '"] = googletag.defineSlot("' + adPath + '", [120,60], "' + elementId + '") \
 									.setCollapseEmptyDiv(true) \
 									.setTargeting("pos", "playersponsorlogo") \
 									.addService(googletag.pubads()) \
@@ -206,6 +207,8 @@
 					sponsorContainer.removeClass('cmls-player-tg')
 						.addClass('cmls-player-triton');
 				}
+
+				log('Generated sponsorContainer', sponsorContainer.html());
 
 				$('body').append(sponsorContainer);
 
