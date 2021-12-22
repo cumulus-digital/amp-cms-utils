@@ -195,7 +195,7 @@
 									.setCollapseEmptyDiv(true) \
 									.setTargeting("pos", "playersponsorlogo"); \
 								googletag.display("' + elementId + '"); \
-								googletag.refresh([window.GPT_SITE_SLOTS["' + elementId + '"]]); \
+								googletag.pubads().refresh([window.GPT_SITE_SLOTS["' + elementId + '"]]); \
 							}); \
 						</sc'+'ript>'
 					);
