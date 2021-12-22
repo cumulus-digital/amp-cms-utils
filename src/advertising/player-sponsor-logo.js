@@ -52,13 +52,62 @@
 			return;
 		}
 
+		// Append ad container styles
+		if ( ! $('#' + elementId + 'Style').length) {
+			$('body').append(
+				'<style id="' + elementId + 'Style">' +
+					'#' + elementId + ' {' +
+						'position: fixed;' +
+						'z-index: ' + zIndex + ';' +
+						'width: 120px;' +
+						'height: 60px;' +
+					'}' +
+					'#' + elementId + '.cmls-player-tg {' +
+						'left: 50%;' +
+						'transform: translate(+290px, 0);' +
+					'}' +
+					'#' + elementId + '.cmls-player-triton {' +
+						'left: 50%;' +
+						'transform: translate(30px, 0);' +
+					'}' +
+					'#' + elementId + '.cmls-player-pos-bottom {' +
+						'bottom: 4px;' +
+					'}' +
+					'#' + elementId + '.cmls-player-pos-top {' +
+						'top: 4px;' +
+					'}' +
+					'#' + elementId + '.cmls-player-triton.cmls-player-pos-top {' +
+						'top: 5px;' +
+					'}' +
+					'@media (max-width: 75rem) {' +
+						'#' + elementId + '.cmls-player-tg {' +
+							'left: 50%;' +
+						'}' +
+					'}' +
+					/*
+					'@media (max-width: 1042px) {' +
+						'#' + elementId + '.cmls-player-tg {' +
+							'display: none' +
+						'}' +
+					'}' +
+					'@media (max-width: 800px) {' +
+						'#' + elementId + '.cmls-player-triton {' +
+							'display: none' +
+						'}' +
+					'}' +
+					*/
+				'</style>'
+			);
+		}
+
 		adTag.queue(function(){
 			$(function(){
 				// Eject if our tag already exists.
 				if (
 					window.self.document.getElementById(elementId) ||
 					window.self.parent.document.getElementById(elementId) ||
-					window.top.document.getElementById(elementId)
+					window.top.document.getElementById(elementId) ||
+					$('#' + elementId).length
 				) {
 					log('Container already exists, exiting.');
 					return;
@@ -90,6 +139,12 @@
 				}
 				log('Ad path found, defining new slot.', adPath);
 
+				var slot = adTag.rawInterface().defineSlot(adPath, [120,60], elementId)
+					.setCollapseEmptyDiv(true)
+					.setTargeting('pos', 'playersponsorlogo')
+					.addService(googletag.pubads());
+
+				/*
 				var slot = adTag.defineSlot(
 					[
 						adPath,
@@ -107,6 +162,7 @@
 							.build();
 					slot.defineSizeMapping(sizeMap);
 				}
+				*/
 
 				// update z-index after 2 seconds
 				var zIndex = 200000;
@@ -123,84 +179,60 @@
 					$('#' + elementId).css('z-index', zIndex);
 				}, 2000);
 
-				// Append ad container styles
-				if ( ! $('#' + elementId + 'Style').length) {
-					$('body').append(
-						'<style id="' + elementId + 'Style">' +
-							'#' + elementId + ' {' +
-								'position: fixed;' +
-								'z-index: ' + zIndex + ';' +
-								'width: 120px;' +
-								'height: 60px;' +
-							'}' +
-							'#' + elementId + '.cmls-player-tg {' +
-								'left: 50%;' +
-								'transform: translate(+290px, 0);' +
-							'}' +
-							'#' + elementId + '.cmls-player-triton {' +
-								'left: 50%;' +
-								'transform: translate(30px, 0);' +
-							'}' +
-							'#' + elementId + '.cmls-player-pos-bottom {' +
-								'bottom: 4px;' +
-							'}' +
-							'#' + elementId + '.cmls-player-pos-top {' +
-								'top: 4px;' +
-							'}' +
-							'#' + elementId + '.cmls-player-triton.cmls-player-pos-top {' +
-								'top: 5px;' +
-							'}' +
-							'@media (max-width: 75rem) {' +
-								'#' + elementId + '.cmls-player-tg {' +
-									'left: 50%;' +
-								'}' +
-							'}' +
-							/*
-							'@media (max-width: 1042px) {' +
-								'#' + elementId + '.cmls-player-tg {' +
-									'display: none' +
-								'}' +
-							'}' +
-							'@media (max-width: 800px) {' +
-								'#' + elementId + '.cmls-player-triton {' +
-									'display: none' +
-								'}' +
-							'}' +
-							*/
-						'</style>'
-					);
-				}
-
 				// Append ad container
-				if ( ! $('#' + elementId).length) {
-					var sponsorContainer = $(
-						'<div id="' + elementId + '"> \
-							<script> \
-								googletag.cmd.push(function() { \
-									googletag.display("' + elementId + '"); \
-								}); \
-							</sc'+'ript> \
-						</div>'
-					);
-					var position = 'bottom';
-					if (player.position === _CMLS.const.PLAYER_POSITION_TOP) {
-						position = 'top';
-					}
-					if (player.type === _CMLS.const.PLAYER_TRITON) {
-						sponsorContainer.addClass('cmls-player-triton');
-					}
-					if (player.type === _CMLS.const.PLAYER_TUNEGENIE) {
-						sponsorContainer.addClass('cmls-player-tg');
-					}
-
-					if (position === 'top') {
-						sponsorContainer.addClass('cmls-player-pos-top');
-					} else {
-						sponsorContainer.addClass('cmls-player-pos-bottom');
-					}
-					
-					$('body').append(sponsorContainer);
+				var sponsorContainer = $(
+					`
+						<div id="${elementId}">
+							<script>
+								googletag.cmd.push(function() {
+									var sizeMap = .sizeMapping()
+										.addSize([800, 0], [[120,60]])
+										.addSize([0, 0], [])
+										.build();
+									googletag.defineSlot('${adPath}', [120,60], '${elementId}')
+										.setCollapseEmptyDiv(true)
+										.setTargeting("pos", "playersponsorlogo")
+										.addService(googletag.pubads())
+										.defineSizeMapping(sizeMap);
+									googletag.display('${elementId}');
+								});
+							<\/script>
+						</div>
+					`
+				);
+				/*
+				var sponsorContainer = $(
+					'<div id="' + elementId + '" class="cmls-player-tg cmls-player-pos-top"> \
+						<script> \
+							googletag.cmd.push(function() { \
+								var sizeMap = .sizeMapping() \
+									.addSize([800, 0], [[120,60]]) \
+									.addSize([0, 0], []) \
+									.build(); \
+								googletag.defineSlot(' + adPath + ', [120,60], ' + elementId + ') \
+									.setCollapseEmptyDiv(true) \
+									.setTargeting("pos", "playersponsorlogo") \
+									.addService(googletag.pubads()) \
+									.defineSizeMapping(sizeMap); \
+								googletag.display("' + elementId + '"); \
+							}); \
+						</sc'+'ript> \
+					</div>'
+				);
+				 */
+				var position = 'bottom';
+				if (player.position === _CMLS.const.PLAYER_POSITION_TOP) {
+					sponsorContainer
+						.removeClass('cmls-player-pos-bottom')
+						.addClass('cmls-player-pos-top');
 				}
+				if (player.type === _CMLS.const.PLAYER_TRITON) {
+					sponsorContainer
+						.removeClass('cmls-player-tg')
+						.addClass('cmls-player-triton');
+				}
+
+				$('body').append(sponsorContainer);
 
 				log('Slot initialized.');
 
