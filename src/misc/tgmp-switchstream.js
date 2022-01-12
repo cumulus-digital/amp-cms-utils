@@ -59,8 +59,8 @@
 
 		$(switchSelectors).each(function() {
 			var $this = $(this),
-				alt = $this.prop('alt'),
-				href = $this.prop('href'),
+				alt = $this.attr('alt'),
+				href = $this.attr('href'),
 				commands = { 'brand': null, 'theme': null, 'autostart': false };
 
 			function getVars(vars) {
@@ -73,7 +73,7 @@
 			}
 
 			if ($this.hasClass('tgmp-switchstream')) {
-				var classes = $this.prop('class');
+				var classes = $this.attr('class');
 				log('Using element classes', classes);
 				commands = getVars(classes);
 			}
