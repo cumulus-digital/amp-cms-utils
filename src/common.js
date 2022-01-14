@@ -62,7 +62,11 @@
 		//message = header.concat(message);
 
 		// Chop long messages
-		if (message.length > 200) {
+		if (Array.isArray(message)) {
+			window.top.console.groupCollapsed.apply(window.top.console, [header, message[0]]);
+			window.top.console.log(message.slice(1));
+		}
+		else if (message.length > 200) {
 			window.top.console.groupCollapsed.apply(window.top.console, [header, message.subsring(0, 200) + '...']);
 			window.top.console.log(message);
 		} else {
