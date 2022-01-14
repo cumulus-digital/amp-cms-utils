@@ -62,21 +62,27 @@
 		//message = header.concat(message);
 
 		// Chop long messages
-		if (Array.isArray(message) && message.length > 1) {
-			window.top.console.groupCollapsed.apply(
-				window.top.console,
-				header.concat(
-					message[0],
-					Array.isArray(message[1]) ? null : message[1].toString().substring(0,100) + '...'
-				)
-			);
-			window.top.console.log(message.slice(1));
-		}
-		else if (message.length > 100) {
-			window.top.console.groupCollapsed.apply(window.top.console, header.concat(message.toString().subsring(0, 100) + '...'));
-			window.top.console.log(message);
+		if ( ! message) {
+			window.top.groupCollapsed.apply(window.top.console, header);
 		} else {
-			window.top.console.groupCollapsed.apply(window.top.console, header.concat(message));
+			if (Array.isArray(message) && message.length > 1) {
+				window.top.console.groupCollapsed.apply(
+					window.top.console,
+					header.concat(
+						message[0],
+						message[1] ? message[1].toString().substring(0,100) + '...' : null
+					)
+				);
+				window.top.console.log(message.slice(1));
+			}
+			else if (message.length > 100) {
+				window.top.console.groupCollapsed.apply(window.top.console, header.concat(
+					message ? message.toString().subsring(0, 100) + '...' : null
+				));
+				window.top.console.log(message);
+			} else {
+				window.top.console.groupCollapsed.apply(window.top.console, header.concat(message));
+			}
 		}
 		window.top.console.log('TIMESTAMP:', ts);
 		window.top.console.trace();
