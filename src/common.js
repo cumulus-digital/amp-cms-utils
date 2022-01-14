@@ -59,32 +59,36 @@
 
 		var header = ['%c[' + name + ']', 'background: #' + background + '; color: #' + complement];
 
-		//message = header.concat(message);
-
-		// Chop long messages
-		if ( ! message) {
-			window.top.groupCollapsed.apply(window.top.console, header);
-		} else {
-			if (Array.isArray(message) && message.length > 1) {
-				window.top.console.groupCollapsed.apply(
-					window.top.console,
-					header.concat(
-						message[0],
-						message[1] ? message[1].toString().substring(0,100) + '...' : null
-					)
-				);
-				window.top.console.log(message.slice(1));
+		function makeSmallString(e) {
+			if ( ! e) {
+				return e;
 			}
-			else if (message.length > 100) {
-				window.top.console.groupCollapsed.apply(window.top.console, header.concat(
-					message ? message.toString().subsring(0, 100) + '...' : null
-				));
-				window.top.console.log(message);
+			var ret;
+			if (e instanceof Element) {
+				ret = e.innerHTML;
 			} else {
-				window.top.console.groupCollapsed.apply(window.top.console, header.concat(message));
+				ret = e.toString();
 			}
+			return ret.substring(0, 100);
 		}
-		window.top.console.log('TIMESTAMP:', ts);
+
+		//message = header.concat(message);
+		if (message) {
+			if (Array.isArray(message)) {
+				header = header.concat(makeSmallString(message[0]));
+				if (message.length > 1) {
+					header = header.concat(makeSmallString(message[1]));
+				}
+			} else {
+				header = header.concat(makeSmallString(message));
+			}
+			window.top.console.groupCollapsed.apply(window.top.console, header);
+			window.top.console.debug(message);
+		} else {
+			window.top.console.groupCollapsed.apply(window.top.console, header);
+		}
+
+		window.top.console.debug('TIMESTAMP:', ts);
 		window.top.console.trace();
 		window.top.console.groupEnd();
 	};
