@@ -62,12 +62,18 @@
 		//message = header.concat(message);
 
 		// Chop long messages
-		if (Array.isArray(message)) {
-			window.top.console.groupCollapsed.apply(window.top.console, header.concat(message[0]));
+		if (Array.isArray(message) && message.length > 1) {
+			window.top.console.groupCollapsed.apply(
+				window.top.console,
+				header.concat(
+					message[0],
+					Array.isArray(message[1]) ? null : message[1].toString().substring(0,100) + '...'
+				)
+			);
 			window.top.console.log(message.slice(1));
 		}
-		else if (message.length > 200) {
-			window.top.console.groupCollapsed.apply(window.top.console, header.concat(message.subsring(0, 200) + '...'));
+		else if (message.length > 100) {
+			window.top.console.groupCollapsed.apply(window.top.console, header.concat(message.toString().subsring(0, 100) + '...'));
 			window.top.console.log(message);
 		} else {
 			window.top.console.groupCollapsed.apply(window.top.console, header.concat(message));
