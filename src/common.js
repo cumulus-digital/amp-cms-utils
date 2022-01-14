@@ -59,9 +59,15 @@
 
 		var header = ['%c[' + name + ']', 'background: #' + background + '; color: #' + complement];
 
-		message = header.concat(message);
+		//message = header.concat(message);
 
-		window.top.console.groupCollapsed.apply(window.top.console, message);
+		// Chop long messages
+		if (message.length > 200) {
+			window.top.console.groupCollapsed.apply(window.top.console, [header, message.subsring(0, 200) + '...']);
+			window.top.console.log(message);
+		} else {
+			window.top.console.groupCollapsed.apply(window.top.console, header.concat(message));
+		}
 		window.top.console.log('TIMESTAMP:', ts);
 		window.top.console.trace();
 		window.top.console.groupEnd();
