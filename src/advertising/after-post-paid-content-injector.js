@@ -126,6 +126,31 @@
 	znscr.parentNode.insertBefore(zergnet, znscr);
 	*/
 
+	// Newsmax code
+	if (
+		winDef('NO_NEWSMAX') ||
+		document.getElementById('hotwire-incontent')
+		//$column.find('.dwcw-widget-container').length
+	) {
+		// Don't inject Newsmax
+	} else {
+		var nmurl = '//static.newsmaxfeednetwork.com/web-clients/bootloaders/jtPvahXLC0BvyCYESN3Fgu/bootloader.js';
+		if (window.matchMedia("only screen and (max-width: 760px)").matches) {
+			nmurl = '//static.newsmaxfeednetwork.com/web-clients/bootloaders/Jx44GJqslQrQU3ZULtFwdD/bootloader.js';
+		}
+		var newsmax = creator.script(
+			nmurl,
+			{
+				'data-version': '3',
+				'data-url': document.location.href,
+				'data-zone': '[ZONE]',
+				'data-display-within-iframe': 'true'
+			}
+		);
+		injectPoint.appendChild(newsmax);
+		log('Newsmax injected.');
+	}
+
 	// Hindsight code
 	// <script src="https://static.solutionshindsight.net/teju-webclient/teju-webclient.min.js"></script>
 	if ( ! winDef('NO_HINDSIGHT')) {
@@ -183,31 +208,6 @@
 			injectPoint.appendChild(hindsight);
 			log('Hindsight injected');
 		}
-	}
-
-	// Newsmax code
-	if (
-		winDef('NO_NEWSMAX') ||
-		document.getElementById('hotwire-incontent') ||
-		$column.find('.dwcw-widget-container').length
-	) {
-		// Don't inject Newsmax
-	} else {
-		var nmurl = '//static.newsmaxfeednetwork.com/web-clients/bootloaders/jtPvahXLC0BvyCYESN3Fgu/bootloader.js';
-		if (window.matchMedia("only screen and (max-width: 760px)").matches) {
-			nmurl = '//static.newsmaxfeednetwork.com/web-clients/bootloaders/Jx44GJqslQrQU3ZULtFwdD/bootloader.js';
-		}
-		var newsmax = creator.script(
-			nmurl,
-			{
-				'data-version': '3',
-				'data-url': document.location.href,
-				'data-zone': '[ZONE]',
-				'data-display-within-iframe': 'true'
-			}
-		);
-		injectPoint.appendChild(newsmax);
-		log('Newsmax injected.');
 	}
 
 }(jQuery, window.self));
