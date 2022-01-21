@@ -28,6 +28,8 @@
 	window._CMLS.autoRefreshAdsExclusion = window._CMLS.autoRefreshAdsExclusion || [];
 	window._CMLS.autoRefreshAdsExclusion.push(elementId);
 
+	window._CMLS.W7M_REQUESTED = false;
+
 	$(function() {
 
 		var adTag = window._CMLS.adTag;
@@ -78,7 +80,7 @@
 			adTag.addListener('slotRequested', function(e) {
 				var slot = e.slot;
 				if (slot.getSlotElementId() === elementId) {
-					slot.wasRequested = true;
+					window.self._CMLS.W7M_REQUESTED = true;
 					log('Our slot was requested.', slot);
 				}
 			});
@@ -89,11 +91,12 @@
 					<script>
 						googletag.cmd.push(function() {
 							googletag.display("${elementId}");
+						});
+						googletag.cmd.push(function() {
 							if (
 								googletag.pubads().isInitialLoadDisabled()
-								&& window.GPT_SITE_SLOTS
-								&& window.GPT_SITE_SLOTS["${elementId}"]
-								&& ! window.GPT_SITE_SLOTS["${elementId}"].wasRequested
+								&& window.self._CMLS
+								&& ! window.self._CMLS.W7M_REQUESTED
 							) {
 								googletag.pubads().refresh([window.GPT_SITE_SLOTS["${elementId}"]]);
 							}
