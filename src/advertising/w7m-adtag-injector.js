@@ -80,6 +80,7 @@
 			adTag.addListener('slotRequested', function(e) {
 				var slot = e.slot;
 				if (slot.getSlotElementId() === elementId) {
+					window.self._CMLS = window.self._CMLS || {};
 					window.self._CMLS.W7M_REQUESTED = true;
 					log('Our slot was requested.', slot);
 				}
@@ -99,7 +100,7 @@
 									&& window.self._CMLS
 									&& ! window.self._CMLS.W7M_REQUESTED
 								) {
-									googletag.pubads().refresh([window.GPT_SITE_SLOTS["${elementId}"]]);
+									googletag.pubads().refresh([window.self.GPT_SITE_SLOTS["${elementId}"]]);
 								}
 							}, 1000);
 						});
