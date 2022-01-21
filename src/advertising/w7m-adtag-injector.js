@@ -93,13 +93,15 @@
 							googletag.display("${elementId}");
 						});
 						googletag.cmd.push(function() {
-							if (
-								googletag.pubads().isInitialLoadDisabled()
-								&& window.self._CMLS
-								&& ! window.self._CMLS.W7M_REQUESTED
-							) {
-								googletag.pubads().refresh([window.GPT_SITE_SLOTS["${elementId}"]]);
-							}
+							setTimeout(function(){
+								if (
+									googletag.pubads().isInitialLoadDisabled()
+									&& window.self._CMLS
+									&& ! window.self._CMLS.W7M_REQUESTED
+								) {
+									googletag.pubads().refresh([window.GPT_SITE_SLOTS["${elementId}"]]);
+								}
+							}, 1000);
 						});
 					</script>
 				</div>
