@@ -2,6 +2,10 @@
  * Compiled script for ALL SITES
  */
 
+if (window.self.location.search.indexOf('cmlsDisable') > -1) {
+    throw new Error("cmls script utils execution cancelled by presence of cmlsDisable in location.search.");
+}
+
 // @codekit-append "common.js"
 
 // Advertising interface library
