@@ -5,7 +5,7 @@
 
 	var scriptName = 'PLAYER SPONSOR INJECTOR',
 		nameSpace = 'playerSponsorInjector',
-		version = '0.8',
+		version = '0.9',
 		dfpNetworkCode = '6717',
 		elementId = 'CMLSPlayerSponsorship',
 		zIndex = 200000,
@@ -189,7 +189,7 @@
 							.addSize([800, 0], [[120,60]])
 							.addSize([0, 0], [])
 							.build();
-						window.GPT_SITE_SLOTS["${elementId}"] = googletag.defineSlot("${adPath}"), [120,60], "${elementId}");
+						window.GPT_SITE_SLOTS["${elementId}"] = googletag.defineSlot("${adPath}", [120,60], "${elementId}");
 						window.GPT_SITE_SLOTS["${elementId}"]
 							.addService(googletag.pubads())
 							.defineSizeMapping(sizeMap)
