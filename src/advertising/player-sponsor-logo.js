@@ -180,26 +180,26 @@
 				}, 2000);
 
 				// Append ad container
-				var sponsorContainer = $('<div />', { id: elementId, class: "cmls-player-tg cmls-player-pos-bottom" });
-					sponsorContainer.html(
-						'<script> \
-							googletag.cmd.push(function() { \
-								window.GPT_SITE_SLOTS = window.GPT_SITE_SLOTS || {}; \
-								var sizeMap = googletag.sizeMapping() \
-									.addSize([800, 0], [[120,60]]) \
-									.addSize([0, 0], []) \
-									.build(); \
-								window.GPT_SITE_SLOTS["' + elementId + '"] = googletag.defineSlot("' + adPath + '", [120,60], "' + elementId + '") \
-									.addService(googletag.pubads()) \
-									.defineSizeMapping(sizeMap) \
-									.setCollapseEmptyDiv(true) \
-									.setTargeting("pos", "playersponsorlogo"); \
-								googletag.display("' + elementId + '"); \
-								googletag.pubads().refresh([window.GPT_SITE_SLOTS["' + elementId + '"]]); \
-							}); \
-						</sc'+'ript>'
-					);
-
+				var sponsorContainer = $('<div />', { id: elementId, class: "cmls-player-tg cmls-player-pos-bottom" }),
+					innerScript = window.document.createElement('script');
+				innerScript.innerHTML = `
+					googletag.cmd.push(function playersponsorlogo() {
+						window.GPT_SITE_SLOTS = window.GPT_SITE_SLOTS || {};
+						var sizeMap = googletag.sizeMapping()
+							.addSize([800, 0], [[120,60]])
+							.addSize([0, 0], [])
+							.build();
+						window.GPT_SITE_SLOTS["${elementId}"] = googletag.defineSlot("${adPath}"), [120,60], "${elementId}");
+						window.GPT_SITE_SLOTS["${elementId}"]
+							.addService(googletag.pubads())
+							.defineSizeMapping(sizeMap)
+							.setCollapseEmptyDiv(true)
+							.setTargeting("pos", "playersponsorlogo");
+						googletag.display("${elementId}");
+						googletag.pubads().refresh([window.GPT_SITE_SLOTS["${elementId}"]]);
+					});
+				`;
+				sponsorContainer.append(innerScript);
 				if (player.position === _CMLS.const.PLAYER_POSITION_TOP) {
 					sponsorContainer.removeClass('cmls-player-pos-bottom')
 						.addClass('cmls-player-pos-top');
