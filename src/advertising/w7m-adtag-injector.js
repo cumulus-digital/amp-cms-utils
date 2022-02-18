@@ -18,6 +18,12 @@
 		}
 	}
 
+	if (window.DISABLE_W7MTAG) {
+		log('W7M adtag is disabled by window.DISABLE_W7MTAG');
+		return false;
+	}
+
+
 	// Must be run *after* googletag has been defined
 	if (!window.hasOwnProperty("googletag")) {
 		log('DFP library must be included and "googletag" window variable must be available before including this library.');
