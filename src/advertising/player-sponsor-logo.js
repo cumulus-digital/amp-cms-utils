@@ -185,14 +185,12 @@
 				innerScript.innerHTML = `
 					googletag.cmd.push(function playersponsorlogo() {
 						window.GPT_SITE_SLOTS = window.GPT_SITE_SLOTS || {};
-						var sizeMap = googletag.sizeMapping()
-							.addSize([800, 0], [[120,60]])
-							.addSize([0, 0], [])
-							.build();
-						window.GPT_SITE_SLOTS["${elementId}"] = googletag.defineSlot("${adPath}", [120,60], "${elementId}");
-						window.GPT_SITE_SLOTS["${elementId}"]
+						var size = [];
+						if (self.innerWidth >= 800) {
+							size = [[120, 60]];
+						}
+						window.GPT_SITE_SLOTS["${elementId}"] = googletag.defineSlot("${adPath}", [120,60], "${elementId}")
 							.addService(googletag.pubads())
-							.defineSizeMapping(sizeMap)
 							.setCollapseEmptyDiv(true)
 							.setTargeting("pos", "playersponsorlogo");
 						googletag.display("${elementId}");
