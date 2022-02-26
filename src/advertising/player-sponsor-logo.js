@@ -103,6 +103,8 @@
 
 		adTag.queue(function(){
 			$(function(){
+				window.GPT_SITE_SLOTS = window.top.GPT_SITE_SLOTS || window.self.GPT_SITE_SLOTS || {};
+
 				// Eject if our tag already exists.
 				if (
 					window.self.document.getElementById(elementId) ||
@@ -140,31 +142,6 @@
 				}
 				log('Ad path found, defining new slot.', adPath);
 
-				/*
-				var slot = adTag.rawInterface().defineSlot(adPath, [120,60], elementId)
-					.setCollapseEmptyDiv(true)
-					.setTargeting('pos', 'playersponsorlogo')
-					.addService(googletag.pubads());
-
-				var slot = adTag.defineSlot(
-					[
-						adPath,
-						[[120,60]],
-						elementId
-					],
-					true,
-					{ 'pos': 'playersponsorlogo' },
-					true
-				);
-				if (adTag.identity === 'dfp') {
-					var sizeMap = adTag.rawInterface().sizeMapping()
-							.addSize([800, 0], [[120,60]])
-							.addSize([0, 0], [])
-							.build();
-					slot.defineSizeMapping(sizeMap);
-				}
-				*/
-
 				// update z-index after 2 seconds
 				setTimeout(function() {
 					if (player.type === window._CMLS.const.PLAYER_TUNEGENIE) {
@@ -184,15 +161,17 @@
 					innerScript = window.document.createElement('script');
 				innerScript.innerHTML = `
 					googletag.cmd.push(function playersponsorlogo() {
-						window.GPT_SITE_SLOTS = window.GPT_SITE_SLOTS || {};
-						var size = [];
-						if (self.innerWidth >= 800) {
-							size = [[120, 60]];
+						window.GPT_SITE_SLOTS = window.top.GPT_SITE_SLOTS || window.self.GPT_SITE_SLOTS || {};
+						if ( ! window.GPT_SITE_SLOTS.hasOwnProperty("${elementId}")) {
+							var size = [];
+							if (self.innerWidth >= 800) {
+								size = [[120, 60]];
+							}
+							window.GPT_SITE_SLOTS["${elementId}"] = googletag.defineSlot("${adPath}", [120,60], "${elementId}")
+								.addService(googletag.pubads())
+								.setCollapseEmptyDiv(true)
+								.setTargeting("pos", "playersponsorlogo");
 						}
-						window.GPT_SITE_SLOTS["${elementId}"] = googletag.defineSlot("${adPath}", [120,60], "${elementId}")
-							.addService(googletag.pubads())
-							.setCollapseEmptyDiv(true)
-							.setTargeting("pos", "playersponsorlogo");
 						googletag.display("${elementId}");
 						googletag.pubads().refresh([window.GPT_SITE_SLOTS["${elementId}"]]);
 					});
